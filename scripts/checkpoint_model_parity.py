@@ -87,6 +87,15 @@ def _require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
+def _add_note(error: BaseException, note: str) -> None:
+    """Attach a note; Python 3.10 runtime images lack ``BaseException.add_note``."""
+    note_adder = getattr(error, "add_note", None)
+    if callable(note_adder):
+        note_adder(note)
+    else:
+        error.__notes__ = [*getattr(error, "__notes__", ()), note]
+
+
 def _canonical_json(value: Any) -> bytes:
     try:
         return json.dumps(
@@ -744,7 +753,7 @@ def _open_windows_custody_handle(
         try:
             _close_windows_handle(handle)
         except ContractError as close_error:
-            error.add_note(str(close_error))
+            _add_note(error, str(close_error))
         raise
 
 
@@ -791,7 +800,7 @@ def _windows_manifest_custody(
         if close_errors:
             message = "; ".join(close_errors)
             if active_error is not None:
-                active_error.add_note(message)
+                _add_note(active_error, message)
             else:
                 raise ContractError(message)
 

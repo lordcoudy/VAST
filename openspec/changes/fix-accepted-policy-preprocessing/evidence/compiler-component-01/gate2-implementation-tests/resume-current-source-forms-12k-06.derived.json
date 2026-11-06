@@ -1,0 +1,191 @@
+{
+  "SOURCE_Git_bytes": 606208,
+  "SOURCE_distinct_Git_forms": 10,
+  "SOURCE_limit_bytes": 1032192,
+  "SOURCE_remaining_bytes": 40960,
+  "SOURCE_total_bytes": 991232,
+  "SOURCE_working_bytes": 385024,
+  "all22_historical_Git_blobs_size_sha1_sha256_verified": true,
+  "current14": [
+    {
+      "git_blob": "ce2c2dc805a91fbf1c6dd07306afb364526e7dc9",
+      "included_SOURCE": true,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 131072,
+      "sha256": "5a6c4b08ce3d381c355cbf72f93057c991b4adcb9d6ca8c43a638acd64f2ecf9",
+      "size_bytes": 130783,
+      "slot": 0,
+      "working_plus_metadata_bytes": 135168
+    },
+    {
+      "git_blob": "5a342c2c2efa44aa5add3f91ae94518c143acece",
+      "included_SOURCE": true,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 32768,
+      "sha256": "329fb13f2c6dcee0872e5a29ec1fd769dc6e57ce92ee1076fef6737f1da86d88",
+      "size_bytes": 32732,
+      "slot": 1,
+      "working_plus_metadata_bytes": 36864
+    },
+    {
+      "git_blob": "b15741dd81851d29d481734d8d6cc79f19f732db",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 106496,
+      "sha256": "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03",
+      "size_bytes": 103925,
+      "slot": 2,
+      "working_plus_metadata_bytes": 110592
+    },
+    {
+      "git_blob": "d5f65c6dd099c5f16e0b81c971d216ab531be416",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 24576,
+      "sha256": "438c5d1a16a0712d5483ac2af0841e329daf875c301e9595a51d0004be350c07",
+      "size_bytes": 23351,
+      "slot": 3,
+      "working_plus_metadata_bytes": 28672
+    },
+    {
+      "git_blob": "9be152ff1192202f815fd14f3ea169566ffc423c",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json",
+      "same_fd_allocation_bytes": 32768,
+      "sha256": "ee45f10961781d812e88d185659b74e893031a4bd4e90d3cce0857d5308ba8cf",
+      "size_bytes": 31921,
+      "slot": 4,
+      "working_plus_metadata_bytes": 36864
+    },
+    {
+      "git_blob": "22a27d6637974d0fb3d02663c922fca7fe70823f",
+      "included_SOURCE": false,
+      "path": "scripts/publication_operational_request_domain_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 32768,
+      "sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6",
+      "size_bytes": 30328,
+      "slot": 5,
+      "working_plus_metadata_bytes": 36864
+    },
+    {
+      "git_blob": "e4e93d6ffbd86e6402585e42ee7c17f9698dcade",
+      "included_SOURCE": true,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 53248,
+      "sha256": "1f84f927ad2098e5ef5a317bdf1c2da4b5eb358b4615266d904bf3c69508d1c3",
+      "size_bytes": 50190,
+      "slot": 6,
+      "working_plus_metadata_bytes": 57344
+    },
+    {
+      "git_blob": "99c4260709b1f90979c9d836dafa1596433faf9a",
+      "included_SOURCE": true,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 69632,
+      "sha256": "3cb7ebf819ac8db49458ea909a08b306602fa4f45984482c020572132ce9a903",
+      "size_bytes": 69194,
+      "slot": 7,
+      "working_plus_metadata_bytes": 73728
+    },
+    {
+      "git_blob": "6e00541b3b5af4cf56d4687f86f36813971adf07",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 49152,
+      "sha256": "31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb",
+      "size_bytes": 48660,
+      "slot": 8,
+      "working_plus_metadata_bytes": 53248
+    },
+    {
+      "git_blob": "7b92ea26ce5838980354a8e202dfb9b01e31910d",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 20480,
+      "sha256": "f230fd6fd88d0b99309d3ec5b12a942a05c6ac131062ace734033a1fe2e8c013",
+      "size_bytes": 19404,
+      "slot": 9,
+      "working_plus_metadata_bytes": 24576
+    },
+    {
+      "git_blob": "8cf0afbf9dd122de6acb5682d9e470e4eacec358",
+      "included_SOURCE": true,
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/component-admission-plan.v8.md",
+      "same_fd_allocation_bytes": 40960,
+      "sha256": "dc130a657a7c582c084f364425773f17e2487afb95cd65825e2e815041cf83d6",
+      "size_bytes": 40901,
+      "slot": 10,
+      "working_plus_metadata_bytes": 45056
+    },
+    {
+      "git_blob": "7cc70e05fb5a0722b225c46674383d812aa4149b",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 49152,
+      "sha256": "807263a7e499a5a4ccbd6d275acf9effa08a2ded35273e5bfbe816f28b527323",
+      "size_bytes": 48892,
+      "slot": 11,
+      "working_plus_metadata_bytes": 53248
+    },
+    {
+      "git_blob": "469a45efe8929cd77431d9897f583deab6bc6ef5",
+      "included_SOURCE": false,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 45056,
+      "sha256": "58f33fb1993b83ae40d9f2d9ea39fe21867e5861486a80cbe07fa8b7d0174648",
+      "size_bytes": 45056,
+      "slot": 12,
+      "working_plus_metadata_bytes": 49152
+    },
+    {
+      "git_blob": "cc9b6a1b7e6e6ff2f9b750ea67b20cf7213d09b0",
+      "included_SOURCE": true,
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py",
+      "python_3_10_grammar": true,
+      "same_fd_allocation_bytes": 32768,
+      "sha256": "5fd7d2d6ee62ff584d2a4662757ca804a3d3300d30bb966319901870c4c85670",
+      "size_bytes": 32739,
+      "slot": 13,
+      "working_plus_metadata_bytes": 36864
+    }
+  ],
+  "current_production_quote_matches_independent_sum": true,
+  "global_candidate_bytes": 536834048,
+  "global_limit_bytes": 536870912,
+  "global_margin_bytes": 36864,
+  "index": {
+    "git_blob": "e24df3c8616fd5c343b8eb6d5b98eb4a5d6a4020",
+    "same_fd_allocation_bytes": 12288,
+    "sha256": "d310418f13e8a0afd287a1d774056ace70287f1d37a5841270a52e8dc5f8109c",
+    "size_bytes": 9998,
+    "two_forms_quote_bytes": 32768
+  },
+  "new_Git_objects_written": 0,
+  "one_more_distinct_40KiB_plan_Git_refuses": true,
+  "one_more_plan_total": 1036288,
+  "outside_already_globally_funded": true,
+  "outside_helpers_bytes": 204800,
+  "physical_acceptance": false,
+  "planning_commit": "b5f64480cccddebf3656e8c17c6520d448e26d7a",
+  "scope": "Actual Windows read-only same-held-FD bytes and NT allocation for all14 current files, full size/SHA1/SHA256 verification of all22 historical Git blobs, independent SOURCE arithmetic plus current production quote. OP process ownership/status fix rebound; first implemented-source Git forms remain prospective. No native operation, source approval, physical meter or acceptance.",
+  "subcap_assignment_sums": {
+    "F": 4372992,
+    "N": 1019136,
+    "O": 516352,
+    "P": 2102272,
+    "S": 991232
+  },
+  "task_2_10_complete": false,
+  "utc": "2026-10-17T02:38:34.943161+00:00"
+}

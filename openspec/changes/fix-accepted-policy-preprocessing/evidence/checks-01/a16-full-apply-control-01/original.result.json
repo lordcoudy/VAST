@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/retain_a16_full_originals.py",
+    "apply",
+    "--plan",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-full-originals.retention-plan.v1.json",
+    "--reviewed-plan-sha256",
+    "e7ed026de152f1e2f3e2472669c87db66eaa937e5b970909a82d8c846a66ee19"
+  ],
+  "finished_utc": "2026-10-12T00:03:54.995580+00:00",
+  "interruptions": [],
+  "original_exit_code": 0,
+  "started_utc": "2026-10-12T00:03:52.949827+00:00",
+  "streams": {
+    "original.stderr.raw": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    "original.stdout.raw": {
+      "sha256": "4a00066622879376ac4c490abc2e81d17c1f77f79bd47118caac21c95803f0f0",
+      "size_bytes": 297
+    }
+  }
+}

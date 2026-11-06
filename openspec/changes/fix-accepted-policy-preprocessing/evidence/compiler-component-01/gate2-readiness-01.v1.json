@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_readiness_hold_v1",
+  "planning_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "physical_execution": false,
+  "historical_endpoint": {
+    "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/b3-01/outputs/probe.result.original.json",
+    "sha256": "04fe470728acf9083b818a18a7620a45c52acb8a49f3ba12dcf13ecb045d1f18",
+    "measurement": {
+      "c_free_bytes": 104354775040,
+      "ext4_used_bytes": 313127182336,
+      "journal": "Archived and active journals take up 800.0M in the file system."
+    }
+  },
+  "observation": {
+    "kind": "read_only_readiness_not_execution_authority",
+    "c_free_bytes": 100952293376,
+    "ext4_used_bytes": 313118924800,
+    "fragment_bytes": 4096,
+    "uid": 1000,
+    "time_ns": 1792155560629153438
+  },
+  "component_seal_bytes": 536870912,
+  "decision": "No historical-idle-gap arithmetic hold under approved per-operation accounting. Exact implementation review/CI/approval, packet approval, fresh floors and all execution gates remain required.",
+  "unverified": "Host cause of C: free-space decrease is not attributed by this read-only capacity observation. No new physical run has started.",
+  "task_2_10_complete": false,
+  "subsequent_interpretation_review": {
+    "reviewer": "separate Codex agent /root/gate2_owner_readiness",
+    "verdict": "Historical idle gap is not a mandatory operation charge; initial HOLD was an added constraint.",
+    "citations": [
+      "V7 section5 lines360-375: before and after each run; C: free decrease over the run.",
+      "V7 section2: C: free changes on its own, so it is a floor, not an equality.",
+      "V8 sections1/5: fixed B1-B3 carry-in11890688B plus finite new F2/export/D intervals."
+    ],
+    "corroboration": "Accepted B1-after106388316160 to B2-before104462168064 idle drop1926148096B was excluded from the fixed B carry-in.",
+    "required_boundary": "Fresh measurement before each operation first allocation; end after owned work/capture/persistence/accounting tail; carry cumulative charges and all outstanding component liabilities unchanged. Charge host noise inside the operation; fresh floors/identity outside it. No idle label can conceal component writes or copies.",
+    "decision_kind": "Correction to implementation interpretation, not a waiver, seal expansion, ledger reset or planning amendment.",
+    "current_floor_bytes": 43620761600,
+    "observed_free_bytes": 100952293376,
+    "physical_execution": false
+  },
+  "initial_interpretation": {
+    "gap_charge_bytes": 3402481664,
+    "gap_alone_exceeds_seal": true,
+    "decision": "HOLD physical F2/P0/C/D. Complete and review code/controlled tests; no silent baseline reset, seal increase, retry, cleanup, configuration change or image deletion/offload.",
+    "status": "superseded after independent requirements review"
+  },
+  "historical_idle_gap_bytes": 3402481664
+}

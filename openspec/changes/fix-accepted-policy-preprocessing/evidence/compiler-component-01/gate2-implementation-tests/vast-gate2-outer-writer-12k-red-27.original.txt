@@ -1,0 +1,96 @@
+test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576 (caller.CommonFragmentTests.test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576) ... 
+  test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576 (caller.CommonFragmentTests.test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576) (setup=False) ... FAIL
+test_twelve_kibibyte_selected_json_and_maximum_canonical_ack_are_accepted (caller.HeldWriterTests.test_twelve_kibibyte_selected_json_and_maximum_canonical_ack_are_accepted) ... FAIL
+test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open (caller.HeldWriterTests.test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open) ... 
+  test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open (caller.HeldWriterTests.test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open) (ack_bytes=16526) ... FAIL
+  test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open (caller.HeldWriterTests.test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open) (ack_bytes=24577) ... FAIL
+test_new_writer_floor_includes_full_32768_forms_before_open (caller.HeldWriterTests.test_new_writer_floor_includes_full_32768_forms_before_open) ... FAIL
+test_new_ack_duplicates_types_and_noncanonical_input_never_compile_or_open (caller.HeldWriterTests.test_new_ack_duplicates_types_and_noncanonical_input_never_compile_or_open) ... ok
+test_new_nt_allocation_12289_refuses_with_known_closed_full_prefix (caller.HeldWriterTests.test_new_nt_allocation_12289_refuses_with_known_closed_full_prefix) ... ok
+test_twelve_kibibyte_fsync_then_close_fault_keeps_primary_and_full_source_facts (caller.HeldWriterTests.test_twelve_kibibyte_fsync_then_close_fault_keeps_primary_and_full_source_facts) ... FAIL
+
+======================================================================
+FAIL: test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576 (caller.CommonFragmentTests.test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576) (setup=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 898, in test_fixed_role_heads_keep_setup_ack_16384_and_writer_ack_24576
+    self.assertEqual(observed, [expected])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [16385] != [24577]
+
+First differing element 0:
+16385
+24577
+
+- [16385]
++ [24577]
+
+======================================================================
+FAIL: test_twelve_kibibyte_selected_json_and_maximum_canonical_ack_are_accepted (caller.HeldWriterTests.test_twelve_kibibyte_selected_json_and_maximum_canonical_ack_are_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 926, in test_twelve_kibibyte_selected_json_and_maximum_canonical_ack_are_accepted
+    self.assertEqual(code, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open (caller.HeldWriterTests.test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open) (ack_bytes=16526)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 941, in test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open
+    self.assertEqual(caps, [24577])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [16385] != [24577]
+
+First differing element 0:
+16385
+24577
+
+- [16385]
++ [24577]
+
+======================================================================
+FAIL: test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open (caller.HeldWriterTests.test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open) (ack_bytes=24577)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 941, in test_payload_12289_and_ack_24577_refuse_before_exec_or_exclusive_open
+    self.assertEqual(caps, [24577])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [16385] != [24577]
+
+First differing element 0:
+16385
+24577
+
+- [16385]
++ [24577]
+
+======================================================================
+FAIL: test_new_writer_floor_includes_full_32768_forms_before_open (caller.HeldWriterTests.test_new_writer_floor_includes_full_32768_forms_before_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 949, in test_new_writer_floor_includes_full_32768_forms_before_open
+    self.assertEqual((code, lines, opened), (1, [{'ready': True, 'schema_version': 1}], []))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Tuples differ: (0, [{'ready': True, 'schema_version': 1},[942 chars]50)]) != (1, [{'ready': True, 'schema_version': 1}], [])
+
+First differing element 0:
+0
+1
+
+Diff is 1429 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_twelve_kibibyte_fsync_then_close_fault_keeps_primary_and_full_source_facts (caller.HeldWriterTests.test_twelve_kibibyte_fsync_then_close_fault_keeps_primary_and_full_source_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 990, in test_twelve_kibibyte_fsync_then_close_fault_keeps_primary_and_full_source_facts
+    self.assertEqual(len(lines), 2)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.119s
+
+FAILED (failures=6)

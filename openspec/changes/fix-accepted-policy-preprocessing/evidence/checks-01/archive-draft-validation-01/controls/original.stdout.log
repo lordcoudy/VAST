@@ -1,0 +1,39 @@
+{
+  "artifact_kind": "vast_archive_check_draft_static_validation_v1",
+  "bash_syntax_command": [
+    "/bin/bash",
+    "-n",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/run_archive_checks_v1.sh"
+  ],
+  "bash_syntax_original_rc": 0,
+  "embedded_python_parse_count": 7,
+  "focused_ordered_module_count": 33,
+  "fresh_copy": {
+    "disclosed_recipe_origin_ast_sha256": "cf667f7c49495dabd6dcbc62a846478200c96f8da605650729f3e9cbf3739612",
+    "normalized_ast_sha256": "0f145cec23bf51bd789816d0f9c2b89c5ff86ee2962057365ed0f7c50916f5e3",
+    "normalized_entire_operational_module_ast_equal": true
+  },
+  "launcher_modes_executed": false,
+  "ordinary_observed_limit_ast_equal": true,
+  "passed": true,
+  "python_module_parse_count": 4,
+  "qualification_authority": false,
+  "reviewed_bytes_before_after_unchanged": true,
+  "reviewed_input_sha256": {
+    "compare_final_source_inputs_v2.py": "3c55fb6d43aa7873622f936de3d573969f161a691684f05c79f124a8ddb7bb57",
+    "compare_final_source_inputs_v3.py": "246ffcfb9e9b3a8841435166d0a8e65c548aeacbb56b48d66f1607c4d5f70ea2",
+    "copy_fresh_check_inputs.py": "dfe4456b27f2bbadcc1866d5a08f2be4e5cf5d73da03bf53705e13f57fbe5243",
+    "copy_fresh_check_inputs_v2.py": "1360c08500c0006dcc06f4908c73c782a39a6fe67fcf7dcfff43acfd6eabe3d0",
+    "private_runtime_namespace.sh": "19197711989ce2693ddeae547b65dd30579a7a33e7e5d751ea6656296494c36e",
+    "run_archive_checks_v1.sh": "5058f38055b534f356ce68d4d1cc75ebf96a08059cb86d7038dab7b323af1fed",
+    "run_ext4_suite.sh": "045cdded701dfb59100ce600344079f615a7be5991778befa4123eb209cb106d",
+    "run_focused_suite.sh": "237ae90c628d187b9d6e66847b3176f24f399d7ed700350df9257d983477ca42"
+  },
+  "reviewed_module_imports": false,
+  "source_clone_copy_mount_archive_actions": false,
+  "source_comparison": {
+    "normalized_ast_sha256": "c760fa3c6b6708981142a60f9bb7b838b5f96cfaf57da5e6456b56de6ac11093",
+    "normalized_entire_predicate_module_ast_equal": true
+  },
+  "strict_portable_report_ast_equal": true
+}

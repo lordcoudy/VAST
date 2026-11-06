@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261007a/independent_audits/audit_model_parity_v1.py", line 206, in <module>
+    main()
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261007a/independent_audits/audit_model_parity_v1.py", line 130, in main
+    proven_source = describe(ROOT / 'artifacts/fix_benchmark_preparations_20260927f/audit_model_parity.py')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261007a/independent_audits/audit_model_parity_v1.py", line 47, in describe
+    info = physical(path)
+           ^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261007a/independent_audits/audit_model_parity_v1.py", line 39, in physical
+    require(path.resolve(strict=True) == path and all(not parent.is_symlink() for parent in (path, *path.parents)), f'symbolic or noncanonical path: {path}')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/fix_benchmark_preparations_20260927f'

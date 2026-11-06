@@ -1,0 +1,33 @@
+.................................EE.
+======================================================================
+ERROR: test_failed_git_native_preserves_pid_status_eof_and_exact_prefixes_in_exception (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.ReviewedSourceTests.test_failed_git_native_preserves_pid_status_eof_and_exact_prefixes_in_exception)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 145, in test_failed_git_native_preserves_pid_status_eof_and_exact_prefixes_in_exception
+    self.assertEqual(facts["native"]["pid"],1234)
+                     ~~~~~^^^^^^^^^^
+KeyError: 'native'
+
+======================================================================
+ERROR: test_git_start_exception_keeps_unknown_pid_and_start_facts_without_retry (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.ReviewedSourceTests.test_git_start_exception_keeps_unknown_pid_and_start_facts_without_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 155, in test_git_start_exception_keeps_unknown_pid_and_start_facts_without_retry
+    capture.git_v1(["rev-parse","--verify","HEAD"],64)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 337, in git_v1
+    process=subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+OSError: controlled start
+
+----------------------------------------------------------------------
+Ran 36 tests in 0.151s
+
+FAILED (errors=2)

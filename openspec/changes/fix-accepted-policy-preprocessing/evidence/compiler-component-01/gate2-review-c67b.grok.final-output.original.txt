@@ -1,0 +1,25 @@
+**CLEAR_WITH_NOTES** for exact commit `c67b25cd4e87499dc9575ed4e58c5159ac9abf18`. HEAD was that commit before the review and again immediately before this verdict. Parent is `e16273e4a3f450fd16c6d2079b22c05de389eb10`. No file was edited.
+
+This is source review only. It is not CI acceptance, delegated AGENT approval, or physical qualification. Task 2.10 stays open. The preserved e162 BLOCK and the later contiguous-envelope CLEAR_WITH_NOTES are unchanged history. This commit implements that envelope in tracked helpers.
+
+## What the new source does
+
+`accepted_policy_fixture_compiler_gate2_setup_v1.py` and `accepted_policy_fixture_compiler_gate2_capture_v1.py` match the stated SHA-256 values `fe7e2ffc8a854456e4ed7d1cc032558ccefe6cefb18b7eb3b765bbe2d5753077` and `0aa45af74336821943dc198c7a218de1b3be3a8c866b22d412d597c31a0c4d4b`. The operator manifest’s 30 source/test rows and 43 new evidence rows all match current bytes. `gate2-implementation-verification.v1.json` is not in the diff and still records the historical 363-test snapshot. The four Temp drafts rehash byte-exact to `gate2-retired-operator-drafts.v1.json` (`121,873` B, `runtime_authority` false). The helpers do not read them.
+
+The approved commit is an argument. Both helpers require `git rev-parse HEAD` to equal that 40-hex value, then authenticate both helpers’ `ls-tree` blobs, `cat-file` bytes, working-tree bytes, and SHA-1 `blob` ids before export or meter work. The PR9 comment URL is shape-checked only. `authority_record_v1` sets `external_approval_required` true. `physical_acceptance` and `external_packet_approval` stay false. Runtime `CODE` is the same 10 paths. Linux phases require UID/GID 1000, Python 3.12.3, and `-B` bytecode suppression. P0 still uses its own root `wsl.exe` argv, 30 s, and 10 s caps. F2 still uses its own 90 s / 5 s helper. The outer window is the inherited 150 s Windows deadline, with the Linux deadline projected no later than Linux start plus 150 s.
+
+The charge baseline is the pre-meter sample, taken before the first export mkdir. `funded_requirement` (`setup_v1.py:478-483`) is fixed B `11,890,688` plus the old `1,048,576` B root, plus `max(C: free decrease, ext4 growth, root+F2+outside forms)`, plus the unused fresh `1,048,576` B and `524,288` B earmarks and the live F2 tail. Packet storage uses `max(old interior minimum, that outer total) + 65,536` (`:611-612`). The old F2-last credit cannot reduce the stored integer below the outer total. Post-meter recomputes the same outer total, including capture files, and refuses if it exceeds the funded integer. `review.evidence_sha256` is the SHA-256 of the actual `operator.authority.original.json` bytes, and the post-meter reads that file and checks commit, approval, helper descriptors, and context (`capture_v1.py:183-196`).
+
+Failure capture keeps driver stdout at `12,288` B and stderr at `32,768` B, persists no status file and starts no post-meter, and bounds the newline-inclusive diagnostic at `32,768` B. Core facts use a `16,384` B whole document or an `8,192` B prefix with hash, count, and `facts_remainder_unknown`, while known status, closure, and write fields are kept. Git failures keep `4,096` B prefixes, full observed counts and hashes, and explicit omitted or unknown remainder. The four `open("xb", buffering=0)` edits make a partial raw write raise into the existing unknown-extent flag. `writer-extent-red-02.original.txt` still shows the old false known extent (`written_bytes` 29, `write_extent_unknown` false). RED-01 remains the import harness error. The cp1251 enclosing display failure and CPU run `38911635009` remain recorded failures. Host job success is not treated as CPU success.
+
+## Notes
+
+The closing `+65,536` sits on top of the `524,288` B outside earmark, which already has to contain that capture reserve. The extra `65,536` B can only overcharge. It fits in the unchanged `692,224` B unallocated seal margin and does not drop a form.
+
+`53248` is logical stdout `12,288` plus stderr `32,768` plus `4,096` metadata each. The controlled check rounds clusters first: `(12,288→16,384)+4,096+(32,768)+4,096 = 57,344`, then requires `57,344 <= 65,536`. The binding fund is `65,536`.
+
+`packet.initial_measurement` is the pre-packet interior sample. The envelope start is `context.baseline` inside the authority record. Later evidence review has to use that binding and the funded integer, not treat the interior sample as the whole-operation baseline.
+
+No protected-image action, retry, storage or config change, Q1, archive, or merge is added. cc1 direct version stays unavailable. C3 attribution and D’s single `4,352` B later index are untouched. Actual native return proof remains outside these files.
+
+Required exact-commit CI, delegated AGENT approval, and a real contiguous F2/P0/packet/capture run with independent packet approval are still pending. Controlled-test logs were not re-executed here.

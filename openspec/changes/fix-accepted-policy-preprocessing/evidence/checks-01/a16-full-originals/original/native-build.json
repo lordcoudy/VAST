@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "cmake",
+    "--build",
+    "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/ext4-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original/build",
+    "--parallel",
+    "2",
+    "--target",
+    "vast_native_gst_probe",
+    "vast_checkpoint_source",
+    "gstadaptivescheduler",
+    "gstvastanalyticsterminal",
+    "gstvastanalyticsqueue",
+    "gstvastcheckpointprefixqueue"
+  ],
+  "cleanup_error": null,
+  "elapsed_s": 15.851614158018492,
+  "returncode": 0,
+  "timed_out": false
+}

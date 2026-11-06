@@ -1138,7 +1138,10 @@ def _write_immutable_json(
             or observed_payload != payload
             or observed_identity != identity
             or stat_identity != identity
-            or observed_mode != 0o444
+            or not (
+                observed_mode == 0o444
+                or (observed_mode == 0o555 and not holder.permission_modes_enforced)
+            )
         ):
             raise QualificationError(
                 f"immutable qualification output collision: {path.name}"
@@ -1205,7 +1208,14 @@ def _cold_read_promoted_json(
         mode, stat_identity = custody.stat_regular_identity(path, label=label)
     except PublicationPhysicalIoV1Error as error:
         raise QualificationError(f"{label} cold validation failed") from error
-    if payload is None or identity != stat_identity or mode != 0o444:
+    if (
+        payload is None
+        or identity != stat_identity
+        or not (
+            mode == 0o444
+            or (mode == 0o555 and not custody.permission_modes_enforced)
+        )
+    ):
         raise QualificationError(f"{label} is not one readonly immutable file")
 
     def unique_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:

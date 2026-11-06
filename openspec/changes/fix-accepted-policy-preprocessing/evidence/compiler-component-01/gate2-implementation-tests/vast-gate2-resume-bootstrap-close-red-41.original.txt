@@ -1,0 +1,20 @@
+F
+======================================================================
+FAIL: test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 39, in test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary
+    self.assertEqual([fd for fd,b in writes],[2])
+AssertionError: Lists differ: [1] != [2]
+
+First differing element 0:
+1
+2
+
+- [1]
++ [2]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.034s
+
+FAILED (failures=1)

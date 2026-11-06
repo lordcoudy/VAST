@@ -1,0 +1,22 @@
+E....
+======================================================================
+ERROR: test_bootstrap_missing_source_is_bounded_refusal_without_project_import (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_bootstrap_missing_source_is_bounded_refusal_without_project_import)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 834, in test_bootstrap_missing_source_is_bounded_refusal_without_project_import
+    exec(compile(ast.Module(body=[block],type_ignores=[]),'<controlled-bootstrap>','exec'),namespace)
+  File "<controlled-bootstrap>", line 31, in <module>
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+FileNotFoundError
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.023s
+
+FAILED (errors=1)

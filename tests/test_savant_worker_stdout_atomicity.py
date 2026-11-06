@@ -16,6 +16,9 @@ from checkpoint_savant_container_runtime_v3 import (
 
 DEFAULT = b'max_fps_dur 8.33333e+06 min_fps_dur 2e+08\n'
 CONFIGURED = b'max_fps_dur 1.66667e+06 min_fps_dur 1.66667e+06\n'
+# Worker stderr is piped to its owner, never into native_children.stderr.log;
+# each worker exit writes exactly one clamp line there.
+WALL_CLOCK_EXIT = b'[savant-sdk-runtime][wall-clock] max_clamp_ns=0\n'
 
 
 @unittest.skipUnless(sys.platform == 'linux', 'Native worker descriptors require Linux')
@@ -51,12 +54,12 @@ class SavantWorkerStdoutAtomicityTests(unittest.TestCase):
                 assert child.exitcode == 0, child.exitcode
         ''')
         self.assertEqual(result.returncode, 0, result.stderr.decode())
-        self.assertEqual(result.stderr, b'')
+        self.assertEqual(result.stderr, WALL_CLOCK_EXIT * 2)
         self.assertEqual(result.stdout, (DEFAULT + CONFIGURED) * 2)
         with tempfile.TemporaryDirectory() as name:
             stdout, stderr = Path(name) / 'out', Path(name) / 'err'
             stdout.write_bytes(result.stdout)
-            stderr.write_bytes(result.stderr)
+            stderr.write_bytes(b'')
             audit = validate_savant_native_stdio(stdout, stderr, expected_worker_count=2)
             self.assertEqual(audit['nvstreammux_default_timing_line_count'], 2)
 

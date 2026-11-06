@@ -1,0 +1,431 @@
+{
+  "artifact_kind": "vast_reconstruction_check_input_copy_plan_v2",
+  "authority_source_sha256": {
+    "scripts/extract_kpp_legacy_iss.py": "dd24e80076a87db63e41c078d07c04aa32ddbd30f179796b90d59f8a7d2588e1",
+    "scripts/freeze_kpp_frozen_reconstruction_v1.py": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+    "scripts/freeze_kpp_iss_publication_v3.py": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+    "scripts/freeze_kpp_legacy_iss_v2_transcodes.py": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+    "scripts/kpp_frozen_reconstruction_v1_dataset.py": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d"
+  },
+  "campaign_authority": false,
+  "catalog_sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086",
+  "copy_only": true,
+  "destination_root": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "expected_stock_descriptors": [
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_front_gate.mp4",
+      "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+      "size_bytes": 63131711
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_underbody.mp4",
+      "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+      "size_bytes": 1079445865
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_front_gate.mp4",
+      "sha256": "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+      "size_bytes": 14910770
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_underbody.mp4",
+      "sha256": "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+      "size_bytes": 223684192
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_authorization_receipt.json",
+      "sha256": "9eec424ef1112efc46283d9dd644782d3e6f67184f32cda7eada73c8bbfec803",
+      "size_bytes": 2431
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json",
+      "sha256": "043cb90be4a16bbc0d636236a6a2c5d2c63f187d94aadf8358c9871bf8e6751a",
+      "size_bytes": 5751
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/iss_v2_underbody_metadata.json",
+      "sha256": "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
+      "size_bytes": 12731945
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_authorization_receipt.json",
+      "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee",
+      "size_bytes": 3300
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_manifest.json",
+      "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24",
+      "size_bytes": 7225
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_extraction_receipt.json",
+      "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05",
+      "size_bytes": 2495
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_materialization_receipt.json",
+      "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33",
+      "size_bytes": 28131
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_transcode_receipt.json",
+      "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470",
+      "size_bytes": 7092
+    }
+  ],
+  "helper_sha256": "d6e3fc1286fabb9127cae9417de0b6f05689c6d3e1c90951dd0149cbe4bbfbf6",
+  "historical_source_unchanged": true,
+  "limits": [
+    "Ignored check inputs only; no source, receipt, manifest or CI policy changes.",
+    "The stock corpus authorizes performance/topology publication only, not historical-v1 identity equivalence.",
+    "No freeze, media transformation, symlink, hardlink, overwrite or partial-run adoption is permitted."
+  ],
+  "schema_version": 1,
+  "selected_source_root": "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a",
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "stock_file_count": 12,
+  "target_root": "data/videos/kpp/kpp_frozen_reconstruction_v1",
+  "total_bytes": 1393960908,
+  "validated_source_inventories": {
+    "/mnt/e/STUDY/VAST": [
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_front_gate.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588803918732300,
+          "st_dev": 115,
+          "st_ino": 38280596833587525,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588803918732300,
+          "st_nlink": 1,
+          "st_size": 63131711
+        },
+        "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+        "size_bytes": 63131711
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_underbody.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588800749019100,
+          "st_dev": 115,
+          "st_ino": 41376821577404740,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588800749019100,
+          "st_nlink": 1,
+          "st_size": 1079445865
+        },
+        "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+        "size_bytes": 1079445865
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_front_gate.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588806379546600,
+          "st_dev": 115,
+          "st_ino": 43628621391089991,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806379546600,
+          "st_nlink": 1,
+          "st_size": 14910770
+        },
+        "sha256": "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+        "size_bytes": 14910770
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_underbody.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588804861728800,
+          "st_dev": 115,
+          "st_ino": 25614222881608006,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588804861728800,
+          "st_nlink": 1,
+          "st_size": 223684192
+        },
+        "sha256": "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+        "size_bytes": 223684192
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_authorization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588806494906600,
+          "st_dev": 115,
+          "st_ino": 15481123720024393,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806494906600,
+          "st_nlink": 1,
+          "st_size": 2431
+        },
+        "sha256": "9eec424ef1112efc46283d9dd644782d3e6f67184f32cda7eada73c8bbfec803",
+        "size_bytes": 2431
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588806496854400,
+          "st_dev": 115,
+          "st_ino": 36873221950034250,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806496854400,
+          "st_nlink": 1,
+          "st_size": 5751
+        },
+        "sha256": "043cb90be4a16bbc0d636236a6a2c5d2c63f187d94aadf8358c9871bf8e6751a",
+        "size_bytes": 5751
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/iss_v2_underbody_metadata.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794565758000,
+          "st_dev": 115,
+          "st_ino": 16325548650156352,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794565758000,
+          "st_nlink": 1,
+          "st_size": 12731945
+        },
+        "sha256": "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
+        "size_bytes": 12731945
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_authorization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794515694100,
+          "st_dev": 115,
+          "st_ino": 16044073673445684,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794515694100,
+          "st_nlink": 1,
+          "st_size": 3300
+        },
+        "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee",
+        "size_bytes": 3300
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_manifest.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794509313200,
+          "st_dev": 115,
+          "st_ino": 39406496740430131,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794509313200,
+          "st_nlink": 1,
+          "st_size": 7225
+        },
+        "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24",
+        "size_bytes": 7225
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_extraction_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794521693700,
+          "st_dev": 115,
+          "st_ino": 38843546787008821,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794521693700,
+          "st_nlink": 1,
+          "st_size": 2495
+        },
+        "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05",
+        "size_bytes": 2495
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_materialization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794640917200,
+          "st_dev": 115,
+          "st_ino": 16044073673445699,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794640917200,
+          "st_nlink": 1,
+          "st_size": 28131
+        },
+        "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33",
+        "size_bytes": 28131
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_transcode_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1787588794528463000,
+          "st_dev": 115,
+          "st_ino": 43065671437668671,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794528463000,
+          "st_nlink": 1,
+          "st_size": 7092
+        },
+        "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470",
+        "size_bytes": 7092
+      }
+    ],
+    "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a": [
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_front_gate.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351177674349500,
+          "st_dev": 115,
+          "st_ino": 1407374886008056,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588803000000000,
+          "st_nlink": 1,
+          "st_size": 63131711
+        },
+        "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+        "size_bytes": 63131711
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_underbody.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351186112115300,
+          "st_dev": 115,
+          "st_ino": 1407374886008057,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588800000000000,
+          "st_nlink": 1,
+          "st_size": 1079445865
+        },
+        "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+        "size_bytes": 1079445865
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_front_gate.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351186343754300,
+          "st_dev": 115,
+          "st_ino": 1407374886008059,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806000000000,
+          "st_nlink": 1,
+          "st_size": 14910770
+        },
+        "sha256": "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+        "size_bytes": 14910770
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_underbody.mp4",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188641600200,
+          "st_dev": 115,
+          "st_ino": 1407374886008060,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588804000000000,
+          "st_nlink": 1,
+          "st_size": 223684192
+        },
+        "sha256": "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+        "size_bytes": 223684192
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_authorization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188651681100,
+          "st_dev": 115,
+          "st_ino": 1407374886008062,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806000000000,
+          "st_nlink": 1,
+          "st_size": 2431
+        },
+        "sha256": "9eec424ef1112efc46283d9dd644782d3e6f67184f32cda7eada73c8bbfec803",
+        "size_bytes": 2431
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188663463100,
+          "st_dev": 115,
+          "st_ino": 1407374886008063,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588806000000000,
+          "st_nlink": 1,
+          "st_size": 5751
+        },
+        "sha256": "043cb90be4a16bbc0d636236a6a2c5d2c63f187d94aadf8358c9871bf8e6751a",
+        "size_bytes": 5751
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/iss_v2_underbody_metadata.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188758583800,
+          "st_dev": 115,
+          "st_ino": 1407374886008065,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 12731945
+        },
+        "sha256": "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
+        "size_bytes": 12731945
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_authorization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188770344400,
+          "st_dev": 115,
+          "st_ino": 1407374886008066,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 3300
+        },
+        "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee",
+        "size_bytes": 3300
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_manifest.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188783027300,
+          "st_dev": 115,
+          "st_ino": 1407374886008067,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 7225
+        },
+        "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24",
+        "size_bytes": 7225
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_extraction_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188796508100,
+          "st_dev": 115,
+          "st_ino": 1407374886008068,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 2495
+        },
+        "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05",
+        "size_bytes": 2495
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_materialization_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188810016800,
+          "st_dev": 115,
+          "st_ino": 1407374886008069,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 28131
+        },
+        "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33",
+        "size_bytes": 28131
+      },
+      {
+        "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_transcode_receipt.json",
+        "physical_epoch": {
+          "st_ctime_ns": 1791351188823444800,
+          "st_dev": 115,
+          "st_ino": 1407374886008070,
+          "st_mode": 33279,
+          "st_mtime_ns": 1787588794000000000,
+          "st_nlink": 1,
+          "st_size": 7092
+        },
+        "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470",
+        "size_bytes": 7092
+      }
+    ]
+  }
+}

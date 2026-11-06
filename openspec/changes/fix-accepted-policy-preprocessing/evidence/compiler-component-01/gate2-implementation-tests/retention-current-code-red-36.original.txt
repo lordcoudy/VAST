@@ -1,0 +1,94 @@
+........EEEEEEE.............F...............................
+======================================================================
+ERROR: test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse) (key='size_bytes', value=20.0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 301, in test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse
+    with self.assertRaises(component.ComponentRecipeError): self.quote()
+                                                            ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+ERROR: test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse) (key='size_bytes', value=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 301, in test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse
+    with self.assertRaises(component.ComponentRecipeError): self.quote()
+                                                            ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+ERROR: test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse) (key='sha256', value='0000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 301, in test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse
+    with self.assertRaises(component.ComponentRecipeError): self.quote()
+                                                            ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+ERROR: test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse) (key='git_blob', value='0000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 301, in test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse
+    with self.assertRaises(component.ComponentRecipeError): self.quote()
+                                                            ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+ERROR: test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 304, in test_exact_keys_typed_descriptors_and_unknown_or_excess_native_allocation_refuse
+    with patch.object(self,"code",changed),self.assertRaises(component.ComponentRecipeError): self.quote()
+                                                                                              ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+ERROR: test_unchanged_aliases_and_changed_full_working_plus_git_forms (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_unchanged_aliases_and_changed_full_working_plus_git_forms)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 287, in test_unchanged_aliases_and_changed_full_working_plus_git_forms
+    self.assertEqual(component.CURRENT_CODE_FORMS_V1,524288)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'CURRENT_CODE_FORMS_V1'
+
+======================================================================
+ERROR: test_windows_missing_block_field_uses_rounding_without_claiming_native_blocks (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.CurrentCodeFormsTests.test_windows_missing_block_field_uses_rounding_without_claiming_native_blocks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 317, in test_windows_missing_block_field_uses_rounding_without_claiming_native_blocks
+    self.assertEqual(self.quote(),16384)
+                     ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 276, in quote
+    return component.current_code_forms_quote_v1(self.repo,code=self.code,plan=self.plan)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'current_code_forms_quote_v1'
+
+======================================================================
+FAIL: test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.AccountingTests.test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 274, in test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding
+    self.assertEqual(value, 524288 + 6291456 + 11890688 + 1048576 + 1048576 + 4000000 + 524288 + 540672)
+AssertionError: 25344256 != 25868544
+
+----------------------------------------------------------------------
+Ran 56 tests in 0.767s
+
+FAILED (failures=1, errors=7)

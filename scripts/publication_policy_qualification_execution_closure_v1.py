@@ -3219,7 +3219,11 @@ def load_publication_policy_qualification_execution_closure_v1(
                 (lifecycle_path, "guardian lifecycle snapshot"),
             ):
                 mode, _identity = custody.stat_regular_identity(path, label=label)
-                _require(mode == 0o444, f"{label} is not readonly")
+                _require(
+                    mode == 0o444
+                    or (mode == 0o555 and not custody.permission_modes_enforced),
+                    f"{label} is not readonly",
+                )
             custody.verify()
     except QualificationExecutionClosureV1Error:
         raise

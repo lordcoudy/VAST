@@ -1,0 +1,33 @@
+**CLEAR_WITH_NOTES.** Source review only of exact commit `4e1ecf793280e8af04403ed478a5b742d5b88071`. This is not physical acceptance, not task 2.10 completion, not required-CI approval, and not human or delegated AGENT approval.
+
+HEAD before and after this read-only review: `4e1ecf793280e8af04403ed478a5b742d5b88071`. Parent: `c67b25cd4e87499dc9575ed4e58c5159ac9abf18`. Prior e162 BLOCK, e162 contiguous-envelope CLEAR_WITH_NOTES, and c67 CLEAR_WITH_NOTES stay in force for those bytes.
+
+The C/D invocation accounting in this commit matches the approved V8 caps. Both future forms are added after the measured maximum, the 16,384 B liability stays inside the existing D/control/seal limits, and the isolated CLI does not take arbitrary paths.
+
+## Findings
+
+No blocking source defect in the committed C/D accounting.
+
+**NOTE.** `gate2-implementation-conformance.v1.md:334` says the selected frame is 2,604 B with an 818 B quoted command. The bound original `d-native-frame-measurement-12.original.txt:7` records command 816 B and frame 2,602 B, with stdout 538 B and stderr 388 B. Those stream sizes sum to the stated 926 B. Both frame sizes are under the test bounds of 3,200 B and 4,096 B. The 4,334 B quote-filled counterexample remains the negative case in `d-native-entry-red-03.original.txt:44`. This review did not re-run the producer.
+
+**NOTE.** `accepted_policy_fixture_compiler_gate2_d_v1.py:671-672` still requires the real uid/gid/euid/egid to be 1000 before binding or allocation. That check was already at c67. Hosted c67 CPU run `38922339662` failed 15 controlled D tests as uid/gid 1001. This commit does not mock those getters. Required CI must be a new run on these bytes. c67 CI cannot approve them.
+
+## What was checked
+
+Committed helper SHA-256 values match the request: C `79b55f9d1ae2aa2a1e3ff0f0dc01e3523512d16658007cd4ab62ed53a6c25382` (98,603 B), D `31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb` (48,660 B). The cumulative diff is 43 files. `gate2-invocation-verification.v1.json` binds 33 source/test rows and 35 new originals; every size and SHA-256 matches the committed blob. The 363-test and 433-test manifests are the same blobs as at c67.
+
+`CODE_PATHS` is the same 10 paths (`accepted_policy_fixture_compiler_gate2_c_v1.py:72-82`). Their raw size is 480,941 B. Setup export rounding gives quote 544,768 B, packet cap 106,496 B, code total 651,520 B, plus P0 maximum 387,328 B = 1,038,848 B, inside 1,048,576 B. Minimum outside quote is 441,856 B inside 524,288 B. `CAPTURE_RESERVE` remains 65,536 B. The native root length is 95.
+
+D limits are unchanged around the new liability: other-controls 98,304 B, controls 524,288 B, aggregate 2,097,152 B, seal 536,870,912 B. Receipt cap is 20,480 B (`d_v1.py:59`). External capture is 16,384 B and the ext4 index remains 4,352 B (`d_v1.py:60-62`). The charge at `d_v1.py:830-831` is `max(retained_actual, C-free fall, ext4 growth, 0) + 16384 + 4352`. The authentic measurement original records receipt 16,444 B, JSON bound 19,833 B, other-all-forms 87,296 B, control-all-forms 513,280 B, and charge 526,080 B, which is retained 505,344 B plus the two future forms. The precopy/preexec quote is 1,578,752 B, under 2 MiB. Before-phase reserve is only the next observation plus the permanent 16,384 B (`d_v1.py:521-536`, `603`). Full child/after/receipt/index/outer reserve runs before ELF copy and again before exec (`d_v1.py:539-551`, `738-745`).
+
+The old whitespace-filled GPU case is specified to refuse with `d_control_reserve` before copy, exec, or receipt. Flat `before.`/`after.` names replace the two directories. Budget, floor, ledger, and allocation denials set `receipt_skipped_after_budget_denial` and skip the receipt, including after child rc 0 (`d_v1.py:776-791`). `os.walk` uses `onerror` and statvfs/allocation `OSError` becomes `d_floor_measurement_unknown` or `d_control_allocation_unknown`. Finalization requires a valid post-receipt usage dict (`d_v1.py:185-215`); missing or malformed usage cannot finalize or accept.
+
+The CLI accepts only a 40-hex commit, a positive packet size at or below the existing packet limit, a SHA-256, and an ordered prior `size:SHA` list, then derives the fixed export and `outer.invocation.original.json` paths (`c_v1.py:127-146`). C calls `complete_c_invocation_v1` only after `run_c_v1` returns, on the original `started + 150s` deadline (`c_v1.py:231-236`, `1040-1101`, `1240-1244`). D’s stdout summary is at most 768 B and carries receipt identity, post-receipt measurement, ledger, and evaluation (`d_v1.py:861-869`). Stdout is one `os.write` with known partial versus unknown extent, and the original deadline is checked before the write, before flush, and after flush (`c_v1.py:204-228`). Failure projection walks at most 24 fixed nested dictionaries, keeps at most four causes and two sourced observations, and records a bounded facts hash, count, 16-byte prefix, and explicit remainder unknown (`c_v1.py:149-201`). Bootstrap and D’s late C import fall back to a fixed rc 1 when the producer is unavailable (`d_v1.py:25-54`, `847-880`).
+
+`gate2-invocation-advisory-01.v1.json` is advisory only. Its earlier nested-facts, import, sticky-budget, finalization, and unknown-meter blocks are closed in these sources. `invocation-integrated-03.original.txt` records 468 passes. That run was not repeated here. Task 2.10 remains unchecked. The manifest records progress 24/46 and `physical_execution: false`.
+
+## Residual conditions
+
+A green in-memory D evaluation can set `physical_acceptance` when `controlled` is false. `campaign_authority` stays false, and that flag does not close task 2.10, Q1, archive, or merge. A deadline miss after a successful stdout write returns rc 1 with the payload already written. Enclosing status, EOF, and completed persistence remain external evidence. The contiguous setup envelope from the c67 review still applies before any physical F2, P0, C, or D. No such physical run is accepted here.
+
+The worktree changed during this review. Uncommitted edits and new untracked evidence, including the hosted-actor materials, are not part of `4e1e` and were not reviewed as a substitute for it. They were left untouched.

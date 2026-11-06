@@ -1,0 +1,53 @@
+test_baseline_join_pairs_native_input_key_not_worker_local_ordinals (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_baseline_workers_use_distinct_observed_pids_and_emit_live_join (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_blueprint_expands_to_24_baseline_and_6_shared_process_assignments (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_central_admission_is_durable_before_failed_ack (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_common_start_rejects_unknown_native_clock_epoch (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_common_start_selects_clock_matching_native_ready_epoch (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_cpp_admission_transport_round_trips_binary_payload_and_rejects_truncation (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_cpp_analytics_terminal_transport_rejects_identity_and_ambiguous_drop (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_cpp_emitter_writes_parseable_gap_free_protocol (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_cpp_gstreamer_frame_mapping_uses_negotiated_video_info (test_checkpoint_runtime.CheckpointRuntimeTests) ... skipped 'GStreamer video development packages are not available'
+test_cpp_resource_interval_emitter_writes_runtime_only_fanout_contract (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_decoder_placement_status_closes_during_warmup_before_measurement (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_decoder_placement_status_is_required_before_measurement (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_decoder_placement_worker_exit_reports_identity_code_and_states (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_early_exit_before_ready_lists_process_and_returncode (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_explicit_native_branch_drop_resolves_frame_without_creating_join (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_full_publication_pair_plan_binds_h264_and_h265_exactly (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_gstreamer_analytics_terminal_and_queue_emit_native_outcomes (test_checkpoint_runtime.CheckpointRuntimeTests) ... skipped 'C++/CMake/pkg-config toolchain is not available'
+test_gstreamer_engineering_specs_bind_every_blueprint_process_without_unblocking (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_gstreamer_native_runtime_selects_v2_join_contract (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_incomplete_shared_branch_remains_unresolved_and_cannot_create_join (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_join_coordinator_keeps_v1_and_v2_shapes_strictly_separate (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_analytics_terminal_mode_requires_explicit_branch_aware_adapter (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_policy_worker_specs_bind_exact_policy_and_deadline (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_policy_worker_specs_inject_frozen_manifest_identities (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_postdecode_prefix_drop_closes_baseline_after_decode (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_postdecode_prefix_drop_closes_every_shared_branch_after_decode (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_predecode_ingress_drop_is_rejected_for_baseline (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_predecode_ingress_drop_is_rejected_for_shared (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_probe_source_contains_physical_checkpoint_graphs_and_direct_emitter (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_native_subprocess_environment_does_not_leak_python_import_paths (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_parent_must_arrive_on_direct_pipe_before_child (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_post_start_failure_preserves_primary_process_stderr (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_publication_runtime_requires_gpu_aware_registry_refresh (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_ready_timeout_lists_missing_workers (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_reference_analytics_terminal_requires_verified_branch_model_manifest (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_registry_template_is_copied_to_distinct_immutable_runtime_seeds (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_runtime_branch_terminal_artifact_preserves_v3_without_becoming_accepted (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_runtime_fanout_fragments_are_topology_bound_and_not_accepted (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_runtime_stage_contract_fragments_are_pid_bound_merged_and_validated (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_shared_worker_emits_one_prefix_four_fanouts_and_live_join (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_slow_ready_does_not_consume_synchronized_execution_budget (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_source_provenance_validation_rejects_manifest_hash_drift (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_spawn_fd_close_failure_still_reaps_the_original_child (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_term_ignoring_children_are_killed_and_reaped_before_cleanup_returns (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_terminal_cohort_uses_half_open_schedule_offsets_not_wall_clock_jitter (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_worker_cannot_claim_join_or_skip_sequence (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+test_worker_policy_sock_seqpacket_fd_is_inherited_and_served (test_checkpoint_runtime.CheckpointRuntimeTests) ... ok
+
+----------------------------------------------------------------------
+Ran 48 tests in 8.899s
+
+OK (skipped=2)

@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "VAST_REPAIR_CHECK_ROOT=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "VAST_REPAIR_INTEGRATION_RUN_SUFFIX=01",
+    "/bin/bash",
+    "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/run_integration_lane.sh",
+    "a16f243e7e80f093342ccdddf717d59d6d46f0a8"
+  ],
+  "source_code_writes_permitted": false,
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "integration_recipe_controls_permitted": true,
+  "campaign_authority": false,
+  "started_utc": "2026-10-11T22:54:50.3465727+00:00"
+}

@@ -1,0 +1,44 @@
+test_setup_empty_payload_and_third_source_arg_authenticate_without_exec (caller.CommonFragmentTests.test_setup_empty_payload_and_third_source_arg_authenticate_without_exec) ... ERROR
+test_setup_uses_original_end_minus_ten_seconds (caller.CommonFragmentTests.test_setup_uses_original_end_minus_ten_seconds) ... ERROR
+test_writer_keeps_original_end_without_setup_reserve (caller.CommonFragmentTests.test_writer_keeps_original_end_without_setup_reserve) ... ERROR
+
+======================================================================
+ERROR: test_setup_empty_payload_and_third_source_arg_authenticate_without_exec (caller.CommonFragmentTests.test_setup_empty_payload_and_third_source_arg_authenticate_without_exec)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 856, in test_setup_empty_payload_and_third_source_arg_authenticate_without_exec
+    code, lines = self.invoke_role(setup=True)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 832, in invoke_role
+    head = SETUP_COMMON_HEAD if setup else WRITER_HEAD
+           ^^^^^^^^^^^^^^^^^
+NameError: name 'SETUP_COMMON_HEAD' is not defined
+
+======================================================================
+ERROR: test_setup_uses_original_end_minus_ten_seconds (caller.CommonFragmentTests.test_setup_uses_original_end_minus_ten_seconds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 863, in test_setup_uses_original_end_minus_ten_seconds
+    code, lines = self.invoke_role(setup=True, phase_now=140_000_000_100)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 832, in invoke_role
+    head = SETUP_COMMON_HEAD if setup else WRITER_HEAD
+           ^^^^^^^^^^^^^^^^^
+NameError: name 'SETUP_COMMON_HEAD' is not defined
+
+======================================================================
+ERROR: test_writer_keeps_original_end_without_setup_reserve (caller.CommonFragmentTests.test_writer_keeps_original_end_without_setup_reserve)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 867, in test_writer_keeps_original_end_without_setup_reserve
+    code, lines = self.invoke_role(setup=False, selected=b'x', phase_now=140_000_000_100)
+                  ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 832, in invoke_role
+    head = SETUP_COMMON_HEAD if setup else WRITER_HEAD
+                                           ^^^^^^^^^^^
+NameError: name 'WRITER_HEAD' is not defined. Did you mean: 'WRITER_READY'?
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.021s
+
+FAILED (errors=3)

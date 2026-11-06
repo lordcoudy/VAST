@@ -1,0 +1,389 @@
+{
+  "advisory_independent_source_review": {
+    "reviewer": "/root/gate2_v8_review",
+    "scope": "Frozen working source/test correctness, not exact pushed commit or physical approval",
+    "tests_rerun_by_reviewer": false,
+    "verdict": "CLEAR_WITH_NOTES"
+  },
+  "archive_or_merge_authorized_by_this_record": false,
+  "artifact_kind": "gate2_p0_cooperative_correctness_followup_v1",
+  "checks": [
+    {
+      "command": [
+        "validate",
+        "--all",
+        "--strict",
+        "--no-interactive"
+      ],
+      "failed": 0,
+      "label": "strict OpenSpec all",
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-openspec-01.original.txt",
+        "sha256": "5f51cd14a7b0eb5d4d1ca61c3e1bfeda6df0a584a2f2a3d33994ce6b941aae55",
+        "size_bytes": 3655
+      },
+      "passed": 6,
+      "returncode": 0
+    },
+    {
+      "command": [
+        "validate",
+        "--archived",
+        "--no-interactive"
+      ],
+      "failed": 0,
+      "label": "existing archives validation only, no archive action",
+      "original": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-archive-validation-01.original.txt",
+        "sha256": "d4de148ddcd080aea9dfc976c4b1250238e6e5be2afcfcc70671f41224fe8ea8",
+        "size_bytes": 285
+      },
+      "passed": 5,
+      "returncode": 0
+    }
+  ],
+  "controlled_original_logs": [
+    {
+      "byte_exact": true,
+      "retained_copy": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-windows-red-01.original.txt",
+        "sha256": "754587c8976951a24b82c626a92b4b491f282cf8190f992e6b6ef9834a675fa9",
+        "size_bytes": 2394
+      },
+      "temp_original": {
+        "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-p0-cooperative-red-01.original.txt",
+        "sha256": "754587c8976951a24b82c626a92b4b491f282cf8190f992e6b6ef9834a675fa9",
+        "size_bytes": 2394
+      }
+    },
+    {
+      "byte_exact": true,
+      "retained_copy": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-windows-full-02.original.txt",
+        "sha256": "bad5c2cd76fee7100a9a9c971c2cdadf1a1f2c28ed1c72c3509cdb0c3097db13",
+        "size_bytes": 6399
+      },
+      "temp_original": {
+        "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-p0-cooperative-green-02.original.txt",
+        "sha256": "bad5c2cd76fee7100a9a9c971c2cdadf1a1f2c28ed1c72c3509cdb0c3097db13",
+        "size_bytes": 6399
+      }
+    },
+    {
+      "byte_exact": true,
+      "retained_copy": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-windows-portable-03.original.txt",
+        "sha256": "9cc1c5ac440f17ee13ee80e9e5ab9b97c3bdebd1a66e65f545b8a1d0c24f462e",
+        "size_bytes": 671
+      },
+      "temp_original": {
+        "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-p0-cooperative-portable-green-03.original.txt",
+        "sha256": "9cc1c5ac440f17ee13ee80e9e5ab9b97c3bdebd1a66e65f545b8a1d0c24f462e",
+        "size_bytes": 671
+      }
+    },
+    {
+      "byte_exact": true,
+      "retained_copy": {
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-cooperative-canonical-integrated-01.original.txt",
+        "sha256": "b21897490f8608f7f4b71a25f754fd1602807b6dad478f0571d54e26773af1bd",
+        "size_bytes": 646
+      },
+      "temp_original": {
+        "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-p0-cooperative-canonical-integrated-01.original.txt",
+        "sha256": "b21897490f8608f7f4b71a25f754fd1602807b6dad478f0571d54e26773af1bd",
+        "size_bytes": 646
+      }
+    }
+  ],
+  "current_code_forms": {
+    "excess_bytes": 90112,
+    "new_p0_full_two_forms_bytes": 147456,
+    "physical_recipe_status": "HOLD; old reserve refuses and sole-successor admission is consumed",
+    "provenance": "Selected full working/new-Git logical quote from current working bytes and frozen c75 identities; Git object IDs computed, not a new commit observation or native allocation audit",
+    "quote_bytes": 614400,
+    "reserve_increased": false,
+    "rows": [
+      {
+        "changed_from_frozen_c75": true,
+        "computed_git_blob": "a02a5388479b8e9be2014aa9cb614e755e99edd5",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 221184,
+        "sha256": "d710312b63f315fdb2fbe9f69179b66ec6d9828dc2f4b924a88da0e51b8d17b4",
+        "size_bytes": 104346
+      },
+      {
+        "changed_from_frozen_c75": true,
+        "computed_git_blob": "306ac2918ce6b2a5eaf1c9314f18c5b3c0569131",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 65536,
+        "sha256": "0df1b1854ac2c2e89f9609f037744cc42af752bfaa467341ae9af1df1eee8981",
+        "size_bytes": 25410
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "b15741dd81851d29d481734d8d6cc79f19f732db",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03",
+        "size_bytes": 103925
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "d5f65c6dd099c5f16e0b81c971d216ab531be416",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "438c5d1a16a0712d5483ac2af0841e329daf875c301e9595a51d0004be350c07",
+        "size_bytes": 23351
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "9be152ff1192202f815fd14f3ea169566ffc423c",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "ee45f10961781d812e88d185659b74e893031a4bd4e90d3cce0857d5308ba8cf",
+        "size_bytes": 31921
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "22a27d6637974d0fb3d02663c922fca7fe70823f",
+        "path": "scripts/publication_operational_request_domain_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6",
+        "size_bytes": 30328
+      },
+      {
+        "changed_from_frozen_c75": true,
+        "computed_git_blob": "e4e93d6ffbd86e6402585e42ee7c17f9698dcade",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 114688,
+        "sha256": "1f84f927ad2098e5ef5a317bdf1c2da4b5eb358b4615266d904bf3c69508d1c3",
+        "size_bytes": 50190
+      },
+      {
+        "changed_from_frozen_c75": true,
+        "computed_git_blob": "99c4260709b1f90979c9d836dafa1596433faf9a",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 147456,
+        "sha256": "3cb7ebf819ac8db49458ea909a08b306602fa4f45984482c020572132ce9a903",
+        "size_bytes": 69194
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "6e00541b3b5af4cf56d4687f86f36813971adf07",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb",
+        "size_bytes": 48660
+      },
+      {
+        "changed_from_frozen_c75": false,
+        "computed_git_blob": "7b92ea26ce5838980354a8e202dfb9b01e31910d",
+        "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+        "selected_full_working_and_new_git_quote_bytes": 0,
+        "sha256": "f230fd6fd88d0b99309d3ec5b12a942a05c6ac131062ace734033a1fe2e8c013",
+        "size_bytes": 19404
+      },
+      {
+        "changed_from_frozen_c75": true,
+        "computed_git_blob": "4194c90dcfbc3dd4b44b71a4ce05c70192967397",
+        "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/component-admission-plan.v8.md",
+        "selected_full_working_and_new_git_quote_bytes": 65536,
+        "sha256": "f024bfccb48e26be34b05b05fbc16082791b134f82967613177ad81a916d2d94",
+        "size_bytes": 25355
+      }
+    ],
+    "unchanged_existing_reserve_bytes": 524288
+  },
+  "existing_planning_authority": {
+    "approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6197982436",
+    "commit": "c8362f290be986a60403eac306375e26fac43f39",
+    "decision": 15,
+    "requirement_or_numeric_change": false
+  },
+  "failed_actual_successor": {
+    "actual_capture_exit_code": 1,
+    "admission_consumed": true,
+    "c_or_d_invoked": false,
+    "code_commit": "465ab7986939c67ae3594344ee3b6266cd2abd7a",
+    "driver_both_eof": true,
+    "driver_exit_code": 1,
+    "driver_full_known_extents_flush_fsync_close": true,
+    "driver_stderr_bytes": 6392,
+    "driver_stdout_bytes": 0,
+    "f2": {
+      "archive_members": 13,
+      "controls": [
+        {
+          "name": "f2.originals.v1.json",
+          "sha256": "75a187535a735c66172aecde70b51ee2378c8797343a93e048856296b639f337",
+          "size_bytes": 5194
+        },
+        {
+          "name": "f2.supplement.v1.json",
+          "sha256": "d24565fa70175907a20b2c5a1d99978ba80020ed7ca98b093cda00cb2da2d4e2",
+          "size_bytes": 26717
+        },
+        {
+          "name": "f2.final-accounting.v1.json",
+          "sha256": "52b7575a4e1b1a6e4f4656aaa46fda4587e0fce03f83ced379c589007939b4ce",
+          "size_bytes": 739
+        }
+      ],
+      "decoded_tar_bytes": 4112896,
+      "http_200": 19,
+      "http_gets": 19,
+      "prefix_envelope_bytes": 5345280,
+      "prefix_is_not_setup_final_charge_or_peak": true,
+      "raw_bytes": 4205032,
+      "raw_originals": 38,
+      "recorded_prefix_charge_bytes": 5050368,
+      "reserved_tail_bytes": 294912
+    },
+    "failure_and_independent_retention_review": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6223871586",
+    "p0": {
+      "both_eof": true,
+      "causes": [
+        "deadline_late",
+        "linux_child_closure_unknown",
+        "persistence_incomplete",
+        "persisted_prefix_extent_unknown"
+      ],
+      "commands_attempted": 1,
+      "ctr_commands_attempted": 0,
+      "failure_completion_bytes": 1081,
+      "failure_control_bytes": 2538,
+      "failure_records_complete_write_proofs": true,
+      "linux_child_closure": "unknown",
+      "raw_id_streams_persisted": false,
+      "root_id_observed_stdout_bytes": 2,
+      "root_id_returncode": null
+    },
+    "packet_created": false,
+    "retained_temp_driver_stderr_no_extra_copy": {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-gate2-setup-465ab7986939c67ae3594344ee3b6266cd2abd7a.driver.stderr.original",
+      "sha256": "a901390e93fb9fb2be6fa88f6c81b41286681251ddfc652773b0b9bee489f476",
+      "size_bytes": 6392
+    },
+    "retry_authorized": false,
+    "selected_outer_tool_frame": {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-successor-465a.outer-tool.original.json",
+      "sha256": "7fc5ef24fb7d226b33a88cab6a57643ef8c86eb774f99cb6e655bb3c69663079",
+      "size_bytes": 3609
+    },
+    "setup_completed": false,
+    "source_approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6223768900",
+    "whole_setup_closing_meter": "UNAVAILABLE",
+    "whole_setup_peak": "UNAVAILABLE"
+  },
+  "historical_preservation": {
+    "frozen_retention_index": {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-f2-c75a-retention.v1.json",
+      "sha256": "8925428192e339d52d2bcc7a2f99587303765796dc0769f47dcf192ce40ce006",
+      "size_bytes": 9637
+    },
+    "no_additional_raw_failure_receipt_or_stream_copy": true,
+    "old_logs_and_raw_sources_unchanged": true,
+    "successor_verification": {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-f2-successor-verification.v1.json",
+      "sha256": "53bcad9a8f5998c64fdb18b8bdd7532374fdc3fe111f445aa1417cb25cc1ade1",
+      "size_bytes": 63914
+    }
+  },
+  "parent_commit": "465ab7986939c67ae3594344ee3b6266cd2abd7a",
+  "physical_admission": false,
+  "physical_execution_by_fix": false,
+  "production_fix": {
+    "capture_cutoff": "Both EOFs without known status remain incomplete at the original cutoff",
+    "changed_conditions": 2,
+    "unchanged": [
+      "30s P0 absolute deadline",
+      "10s command deadline",
+      "7.5s capture cutoff",
+      "owned-parent termination and persistence reserves",
+      "fixed argv/environment",
+      "ownership",
+      "allocation bounds",
+      "late/forced/unknown refusal",
+      "persistence requirements"
+    ],
+    "unchanged_poll_state": "Yield via the existing idle seam regardless of clock advance so queued asyncio process-exit callbacks can run"
+  },
+  "remaining_gates": [
+    "exact new commit independent review",
+    "required CI on new exact head",
+    "task2.10/component admission remains blocked",
+    "any future physical recipe requires separately reviewed authority and complete accounting; no third setup authorized",
+    "whole1.5",
+    "reader2.12",
+    "genuine consumers and package renewal",
+    "final conformance",
+    "archive",
+    "final approval"
+  ],
+  "schema_version": 1,
+  "scope": "Source correctness and failed-physical-evidence retention only; no further physical admission",
+  "source_and_tests": [
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "sha256": "3cb7ebf819ac8db49458ea909a08b306602fa4f45984482c020572132ce9a903",
+      "size_bytes": 69194
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "sha256": "19acdab4df886a116049a8923ea66cf94aba4ab7d7a5e259ae5cd14cbbe10e23",
+      "size_bytes": 75692
+    }
+  ],
+  "task_progress": {
+    "complete": 24,
+    "task_2_10_complete": false,
+    "total": 46
+  },
+  "test_results": {
+    "canonical_wsl": {
+      "elapsed_seconds": 15.48,
+      "errors": 0,
+      "failures": 0,
+      "physical_component_execution": false,
+      "python": "3.12.3",
+      "returncode": 0,
+      "skips": 0,
+      "tests_run": 545,
+      "tool_chunk": "aee039",
+      "uid_euid_gid_egid": [
+        1000,
+        1000,
+        1000,
+        1000
+      ]
+    },
+    "python310_grammar": {
+      "passed": true,
+      "source_and_test_files": 2
+    },
+    "windows_full": {
+      "errors": 2,
+      "failures": 1,
+      "interpretation": "Observed native-block availability limitations; no old-source baseline was run; no allocation guard weakened",
+      "successful": false,
+      "tests_run": 38
+    },
+    "windows_portable_subset": {
+      "all_four_new_cases_included": true,
+      "errors": 0,
+      "excluded_names": [
+        "test_all_stream_caps_and_rounded_all_forms_ceiling_accept_exact_maxima",
+        "test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan",
+        "test_rereads_fixed_originals_and_keeps_external_completion_proof_separate"
+      ],
+      "failures": 0,
+      "tests_run": 35
+    },
+    "windows_red": {
+      "actual_native_commands": 0,
+      "failures": 3,
+      "tests_run": 4
+    }
+  }
+}

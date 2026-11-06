@@ -1,0 +1,25 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+...........EE
+======================================================================
+ERROR: test_identity_refuses_drift_before_owner_and_records_only_four_gets (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_identity_refuses_drift_before_owner_and_records_only_four_gets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 307, in test_identity_refuses_drift_before_owner_and_records_only_four_gets
+    result = gate.observe_identity_v1(output_dir=Path(tmp).resolve(), expected_cids=list(gate.B_CIDS),
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'observe_identity_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_native_guard_is_fixed_bounded_and_preserves_overflow_prefix (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_native_guard_is_fixed_bounded_and_preserves_overflow_prefix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 276, in test_native_guard_is_fixed_bounded_and_preserves_overflow_prefix
+    gate.capture_guard_v1("gpu", output_dir=root, absolute_deadline_ns=10_000_000_000,
+    ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'capture_guard_v1'
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 13 tests in 0.248s
+System.Management.Automation.RemoteException
+FAILED (errors=2)

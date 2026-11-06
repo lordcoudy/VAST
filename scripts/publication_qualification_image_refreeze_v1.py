@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import importlib.util
 import json
 import os
 import re
@@ -21,6 +20,9 @@ import subprocess
 from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Mapping, Sequence
 
+from publication_image_freeze_receipt_validation_v1 import (
+    load_publication_image_freeze_receipt,
+)
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
     PublicationPhysicalIoV1Error,
@@ -443,19 +445,10 @@ def _runtime_capture_references(
     return candidate[0], (candidate[1], candidate[2])
 
 
-def _load_build_module():
-    path = Path(__file__).resolve().with_name("publication_image_build_v1.py")
-    spec = importlib.util.spec_from_file_location("publication_image_build_for_qualification_refreeze_v1", path)
-    _require(spec is not None and spec.loader is not None, "publication image build module is unavailable")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
 def _load_build_receipt(root: Path, path: Path, *, group: str, registry_sha256: str) -> tuple[dict[str, Any], dict[str, Any]]:
     physical = _physical_file(root, path)
     try:
-        value = _load_build_module().load_publication_image_freeze_receipt(physical)
+        value = load_publication_image_freeze_receipt(physical)
     except (OSError, ValueError) as error:
         raise QualificationImageRefreezeV1Error(f"invalid {group} image receipt") from error
     _require(

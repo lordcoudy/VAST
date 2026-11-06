@@ -1,0 +1,671 @@
+{
+  "artifact_kind": "vast_failed_consumer_result_retention_v1",
+  "campaign_authority": false,
+  "catalogue": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results.v1.json",
+  "consumer_positive_asserted": false,
+  "exclusions": [
+    "Operational37 plans and raw runtime/native/input trees",
+    "Both execution-code-closure JSONs outside requested original controls/failure subset",
+    "Nonexistent larger attempts05/07",
+    "Live ext4 full-suite outputs",
+    "Any new consumer/source snapshot"
+  ],
+  "file_count": 41,
+  "files": [
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754369415908139,
+        "st_dev": 2128,
+        "st_ino": 948833,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754369415908139,
+        "st_nlink": 1,
+        "st_size": 712
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.result.v1.json",
+      "sha256": "adb84d570387ee2c921f9afadda435fed70cb39874e9eb1b0d318126c1a743c5",
+      "size_bytes": 712,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754369415908139,
+        "st_dev": 2128,
+        "st_ino": 948832,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754369415908139,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754369415908139,
+        "st_dev": 2128,
+        "st_ino": 948831,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754369415908139,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.stdout.raw",
+      "sha256": "71b2447365dc526211312013239ae03cf02f7cea0e62e4e9eadf0db5d0cfc891",
+      "size_bytes": 223,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/after.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753881566133697,
+        "st_dev": 2128,
+        "st_ino": 951798,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753881566133697,
+        "st_nlink": 1,
+        "st_size": 712
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.result.v1.json",
+      "sha256": "adb84d570387ee2c921f9afadda435fed70cb39874e9eb1b0d318126c1a743c5",
+      "size_bytes": 712,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753881566133697,
+        "st_dev": 2128,
+        "st_ino": 951797,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753881566133697,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753881566133697,
+        "st_dev": 2128,
+        "st_ino": 951792,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753881566133697,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.stdout.raw",
+      "sha256": "71b2447365dc526211312013239ae03cf02f7cea0e62e4e9eadf0db5d0cfc891",
+      "size_bytes": 223,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/before.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753892258772561,
+        "st_dev": 2128,
+        "st_ino": 952009,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753892258772561,
+        "st_nlink": 1,
+        "st_size": 400
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.result.v1.json",
+      "sha256": "59312b3b8c19879f1097459f5a18f3a31030fac61fdfd47753fca939b02625e9",
+      "size_bytes": 400,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753892258772561,
+        "st_dev": 2128,
+        "st_ino": 952008,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753892258772561,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753892258772561,
+        "st_dev": 2128,
+        "st_ino": 952007,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753892258772561,
+        "st_nlink": 1,
+        "st_size": 6100
+      },
+      "retained": "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.stdout.raw",
+      "sha256": "01df39b45180153d3f8bd78b4c3a210bf63191e82f0dda3b53dc72ce9a7dd95e",
+      "size_bytes": 6100,
+      "source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45/check-only.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521430791048,
+        "st_dev": 2128,
+        "st_ino": 952189,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521430791048,
+        "st_nlink": 1,
+        "st_size": 548
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/finished.v1.json",
+      "sha256": "cd37af0275f565c7aafdc9d0056d9d39c31ecc01da7e4ecbfb01e46180e3f762",
+      "size_bytes": 548,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521422790678,
+        "st_dev": 2128,
+        "st_ino": 952187,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521422790678,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/original-exit-code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/original-exit-code.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521430791048,
+        "st_dev": 2128,
+        "st_ino": 952186,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521430791048,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/source-head.after.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278481322883,
+        "st_dev": 2128,
+        "st_ino": 948634,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278481322883,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/source-head.before.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521430791048,
+        "st_dev": 2128,
+        "st_ino": 952188,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521430791048,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278481322883,
+        "st_dev": 2128,
+        "st_ino": 948635,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278481322883,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278481322883,
+        "st_dev": 2128,
+        "st_ino": 948636,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278481322883,
+        "st_nlink": 1,
+        "st_size": 1004
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/started.v1.json",
+      "sha256": "f221941dfb4d7a5e6b18ed746455a146cd506afa7a8c373ab87d2710d32d14cd",
+      "size_bytes": 1004,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521386789013,
+        "st_dev": 2128,
+        "st_ino": 948638,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521386789013,
+        "st_nlink": 1,
+        "st_size": 3254
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/stderr.raw",
+      "sha256": "486b93edca7810e0aa23ddb62d1cc5eee3e9fdecc1cbf40a1b895b547585bd6a",
+      "size_bytes": 3254,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752279077352795,
+        "st_dev": 2128,
+        "st_ino": 948637,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752279077352795,
+        "st_nlink": 1,
+        "st_size": 264
+      },
+      "retained": "consumer-complete-04-controls/consumer-fixture-04-minimum30/stdout.raw",
+      "sha256": "6860ed0607bd0b768d5147d4656b58a2e1e45be5a667b62d7cc3d919c73cf8a6",
+      "size_bytes": 264,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/consumer-fixture-04-minimum30/stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278473322481,
+        "st_dev": 2128,
+        "st_ino": 948627,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278473322481,
+        "st_nlink": 1,
+        "st_size": 2409
+      },
+      "retained": "consumer-complete-04-controls/run-plan.v1.json",
+      "sha256": "25adf3d6a0dc8912095b1924b125c0802a1402bdffceeee98957200200fc676e",
+      "size_bytes": 2409,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/run-plan.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521434791234,
+        "st_dev": 2128,
+        "st_ino": 952192,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521434791234,
+        "st_nlink": 1,
+        "st_size": 797
+      },
+      "retained": "consumer-complete-04-controls/run-result.v1.json",
+      "sha256": "8b7ecc396778af0a05230db7537ba374c40d8a431f35f3f8d15dbaaf0f33b411",
+      "size_bytes": 797,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/run-result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521434791234,
+        "st_dev": 2128,
+        "st_ino": 952190,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521434791234,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-04-controls/source-head.after.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278473322481,
+        "st_dev": 2128,
+        "st_ino": 948625,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278473322481,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-04-controls/source-head.before.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521434791234,
+        "st_dev": 2128,
+        "st_ino": 952191,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521434791234,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-04-controls/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752278473322481,
+        "st_dev": 2128,
+        "st_ino": 948626,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752278473322481,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-04-controls/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-04-controls/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156525640979,
+        "st_dev": 2128,
+        "st_ino": 949029,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156525640979,
+        "st_nlink": 1,
+        "st_size": 4645
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/finished.v1.json",
+      "sha256": "7f19e7a4b4d7cde9ee45a39d77dc52b496f16138e203d3c7ae52a12c38b07dc6",
+      "size_bytes": 4645,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156509640103,
+        "st_dev": 2128,
+        "st_ino": 948873,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156509640103,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/original-exit-code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/original-exit-code.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156513640322,
+        "st_dev": 2128,
+        "st_ino": 949023,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156513640322,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/source-head.after.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899851223848,
+        "st_dev": 2128,
+        "st_ino": 952228,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899851223848,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/source-head.before.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156513640322,
+        "st_dev": 2128,
+        "st_ino": 949024,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156513640322,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899851223848,
+        "st_dev": 2128,
+        "st_ino": 952229,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899851223848,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899851223848,
+        "st_dev": 2128,
+        "st_ino": 952230,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899851223848,
+        "st_nlink": 1,
+        "st_size": 5175
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/started.v1.json",
+      "sha256": "412e9c128b29c662721db8ebb934ab116ef795d54d53dced8a99ea6bb77fd145",
+      "size_bytes": 5175,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156465637694,
+        "st_dev": 2128,
+        "st_ino": 952232,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156465637694,
+        "st_nlink": 1,
+        "st_size": 2996
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/stderr.raw",
+      "sha256": "12dafac55959a6c418d0183351fb681610b754f80cf37e8fc533d038569d30cf",
+      "size_bytes": 2996,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753901259307021,
+        "st_dev": 2128,
+        "st_ino": 952231,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753901259307021,
+        "st_nlink": 1,
+        "st_size": 264
+      },
+      "retained": "consumer-complete-06-controls/consumer-fixture-06-minimum30/stdout.raw",
+      "sha256": "2101c7a627360f4608ed3a4e7afda32bd3735dc80e513ffc0fc2a29e9894715d",
+      "size_bytes": 264,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/consumer-fixture-06-minimum30/stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899843223376,
+        "st_dev": 2128,
+        "st_ino": 952226,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899843223376,
+        "st_nlink": 1,
+        "st_size": 2705
+      },
+      "retained": "consumer-complete-06-controls/run-plan.v1.json",
+      "sha256": "e59312013222e005e30076a120d4e76ba5f69a2c7dfcf53d7ee4ca5f33a76e39",
+      "size_bytes": 2705,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/run-plan.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156533641417,
+        "st_dev": 2128,
+        "st_ino": 949036,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156533641417,
+        "st_nlink": 1,
+        "st_size": 4894
+      },
+      "retained": "consumer-complete-06-controls/run-result.v1.json",
+      "sha256": "d43babf96676d1b5590bb12546e4022b9ab14ddf45039060a2249d409285ae3f",
+      "size_bytes": 4894,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/run-result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156529641198,
+        "st_dev": 2128,
+        "st_ino": 949034,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156529641198,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-06-controls/source-head.after.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899843223376,
+        "st_dev": 2128,
+        "st_ino": 952223,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899843223376,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-06-controls/source-head.before.txt",
+      "sha256": "5ac9c7200e569991a2a30d8cced096745bbacd039ec440017362212b53ef8e14",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156529641198,
+        "st_dev": 2128,
+        "st_ino": 949035,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156529641198,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-06-controls/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791753899843223376,
+        "st_dev": 2128,
+        "st_ino": 952225,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791753899843223376,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-06-controls/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-complete-06-controls/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791752521386789013,
+        "st_dev": 2128,
+        "st_ino": 952184,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791752521386789013,
+        "st_nlink": 1,
+        "st_size": 29563
+      },
+      "retained": "consumer-fixture-04-minimum30/producer-failure.v2.json",
+      "sha256": "c9575fb136f35f2b39df9c4f739949b89be33749fbd1fc3760137eca0e7fc416",
+      "size_bytes": 29563,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-fixture-04-minimum30/producer-failure.v2.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791754156465637694,
+        "st_dev": 2128,
+        "st_ino": 948844,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791754156465637694,
+        "st_nlink": 1,
+        "st_size": 29354
+      },
+      "retained": "consumer-fixture-06-minimum30/producer-failure.v2.json",
+      "sha256": "cbaf25e96fa9b97263711082a6b9b2c83571e0ea64a99553f68138e0daa4089c",
+      "size_bytes": 29354,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a/consumer-fixture-06-minimum30/producer-failure.v2.json"
+    }
+  ],
+  "groups": {
+    "apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45": {
+      "after_original_exit_code": 0,
+      "before_original_exit_code": 0,
+      "check_only_original_exit_code": 0,
+      "completion_evidence": "Original result/stream files plus completed attempt06; no invented timestamp.",
+      "consumer_positive_asserted": false
+    },
+    "consumer-complete-04-controls": {
+      "both_complete_consumers_passed": false,
+      "finished_utc": "2026-10-11T21:02:01.441588+00:00",
+      "original_error": "original stock operational source parent directory mutated during custody",
+      "original_exit_code": 1,
+      "source_commit": "591a93e778a9a7839da6278326d215e24e91ea45",
+      "source_state_unchanged": true
+    },
+    "consumer-complete-06-controls": {
+      "both_complete_consumers_passed": false,
+      "finished_utc": "2026-10-11T21:29:16.534030+00:00",
+      "original_error": "analytics execution endpoint is not a reachable live SOCK_SEQPACKET transport: [Errno 111] Connection refused",
+      "original_exit_code": 1,
+      "source_commit": "591a93e778a9a7839da6278326d215e24e91ea45",
+      "source_state_unchanged": true
+    }
+  },
+  "helper_sha256": "50e7555f763ba94be32605930bb8402d69ab120350267310ec4e65cd606be915",
+  "limits": [
+    "Original attempts04/06 remain failed; retention does not grant semantic acceptance.",
+    "Observed readiness originals do not establish a complete consumer positive."
+  ],
+  "readiness_source": "/var/tmp/apf06-readiness-591a93e778a9a7839da6278326d215e24e91ea45",
+  "retention_output": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/failed-consumer-results",
+  "reviewed_plan_sha256": "8da8e787cb0958629be105c5454602db19b2b93dfe2dbcca61c9fd5905415378",
+  "schema_version": 1,
+  "snapshot_helper_sha256": "01e4d5bfe1738167e8ec1da5b45104e349b2c5052fddc89ea71b5ba92bd4b6ed",
+  "source_base": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/artifacts/accepted_policy_repair_20261011a",
+  "source_commit": "591a93e778a9a7839da6278326d215e24e91ea45",
+  "source_read_only": true,
+  "status": "retained_exactly",
+  "total_bytes": 96574
+}

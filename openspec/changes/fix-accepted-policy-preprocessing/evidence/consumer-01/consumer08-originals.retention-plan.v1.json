@@ -1,0 +1,760 @@
+{
+  "artifact_kind": "vast_consumer08_original_retention_plan_v1",
+  "campaign_authority": false,
+  "catalogue": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals.v1.json",
+  "completed_state": {
+    "complete_consumer_positive_asserted": false,
+    "consumer09_unstarted": true,
+    "finished_utc": "2026-10-11T23:07:15.352021+00:00",
+    "original_child_raw_source_proofs": {
+      "after": {
+        "finished_utc": "2026-10-11T23:07:15.840755+00:00",
+        "original_exit_code": 0,
+        "raw_committed_bytes_verified": true,
+        "started_utc": "2026-10-11T23:07:15.360472+00:00",
+        "tracked_path_count": 12115
+      },
+      "before": {
+        "finished_utc": "2026-10-11T23:03:05.165940+00:00",
+        "original_exit_code": 0,
+        "raw_committed_bytes_verified": true,
+        "started_utc": "2026-10-11T23:03:04.702398+00:00",
+        "tracked_path_count": 12115
+      }
+    },
+    "original_error": "openvino_gva OpenVINO device probe failed closed",
+    "original_exit_code": 1,
+    "original_outer_raw_source_proofs": {
+      "after": {
+        "finished_utc": "2026-10-11T23:07:16.305509+00:00",
+        "original_exit_code": 0,
+        "raw_committed_bytes_verified": true,
+        "started_utc": "2026-10-11T23:07:15.849452+00:00",
+        "tracked_path_count": 12115
+      },
+      "before": {
+        "finished_utc": "2026-10-11T23:03:04.693327+00:00",
+        "original_exit_code": 0,
+        "raw_committed_bytes_verified": true,
+        "started_utc": "2026-10-11T23:03:04.202862+00:00",
+        "tracked_path_count": 12115
+      }
+    },
+    "postmortem_boundary": "Existing separately captured retained-ELF diagnostic is referenced, not the original invocation or consumer success.",
+    "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "source_state_unchanged": true,
+    "started_utc": "2026-10-11T23:03:05.166123+00:00"
+  },
+  "consumer_positive_asserted": false,
+  "exclusions": [
+    "Unstarted larger09",
+    "All native/runtime/operational37/corpus/model/tensor/fixture input trees",
+    "Live full-suite outputs",
+    "Existing managed postmortem records (referenced only)",
+    "Any new consumer run"
+  ],
+  "existing_managed_postmortem_references_untouched": [
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687725128600,
+        "st_dev": 114,
+        "st_ino": 1970324838643429,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687725128600,
+        "st_nlink": 1,
+        "st_size": 10682
+      },
+      "sha256": "facc3a1195a61fb153dbf84b83e27bb8121487dc59252a63a2ef7bb641ba72f9",
+      "size_bytes": 10682,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/diagnostic-result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687209991700,
+        "st_dev": 114,
+        "st_ino": 1970324838643417,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687209991700,
+        "st_nlink": 1,
+        "st_size": 1218
+      },
+      "sha256": "b72b590b5af7117a82d3ec9410456c73ea8db7651647db81ceb5eb213abb8c10",
+      "size_bytes": 1218,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/openvino_gva.started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687214955100,
+        "st_dev": 114,
+        "st_ino": 1970324838643420,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687214955100,
+        "st_nlink": 1,
+        "st_size": 1390
+      },
+      "sha256": "7455d8e8e0e022568164b74ee0fed84b9a1a655a4784c3621075e6975b095166",
+      "size_bytes": 1390,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/openvino_gva.finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687212156300,
+        "st_dev": 114,
+        "st_ino": 1970324838643418,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687212156300,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/openvino_gva.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687212156300,
+        "st_dev": 114,
+        "st_ino": 1970324838643419,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687212156300,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/openvino_gva.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687216439800,
+        "st_dev": 114,
+        "st_ino": 1970324838643421,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687216439800,
+        "st_nlink": 1,
+        "st_size": 1313
+      },
+      "sha256": "af370ff12c56c5407d6fece01c442ee990c1507822563a0695b9ef13ecfb3356",
+      "size_bytes": 1313,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/gstreamer_custom.started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687222128200,
+        "st_dev": 114,
+        "st_ino": 1970324838643424,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687222128200,
+        "st_nlink": 1,
+        "st_size": 1485
+      },
+      "sha256": "3ff9d7edf3779773f08fd8e041d82b95f337b2e088621973fbb35a769e269043",
+      "size_bytes": 1485,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/gstreamer_custom.finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687218278200,
+        "st_dev": 114,
+        "st_ino": 1970324838643422,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687218278200,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/gstreamer_custom.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687218278200,
+        "st_dev": 114,
+        "st_ino": 1970324838643423,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687218278200,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/gstreamer_custom.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760681959967100,
+        "st_dev": 114,
+        "st_ino": 6192449489301692,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760681959967100,
+        "st_nlink": 1,
+        "st_size": 837
+      },
+      "sha256": "74275a8db4b50fe02016275911c1ba84801fc2109f28b046629a98754307e1cb",
+      "size_bytes": 837,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-before.started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687207688300,
+        "st_dev": 114,
+        "st_ino": 2533274792064728,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687207688300,
+        "st_nlink": 1,
+        "st_size": 1010
+      },
+      "sha256": "d3100c0a5b874273b39210e684d862ddae0c0075684ad4302de66ddfe4fcf116",
+      "size_bytes": 1010,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-before.finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687202645100,
+        "st_dev": 114,
+        "st_ino": 10414574139891097,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687202645100,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-before.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687205196400,
+        "st_dev": 114,
+        "st_ino": 5348024559171275,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687205196400,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-before.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687240984700,
+        "st_dev": 114,
+        "st_ino": 1970324838643425,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687240984700,
+        "st_nlink": 1,
+        "st_size": 837
+      },
+      "sha256": "762db6a1730e90e449868fadbdf1ed73c69190031444b5151b0c8a3e1376d340",
+      "size_bytes": 837,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-after.started.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687723940700,
+        "st_dev": 114,
+        "st_ino": 1970324838643428,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687723940700,
+        "st_nlink": 1,
+        "st_size": 1010
+      },
+      "sha256": "e9c4cb7fa1f272bf5ffc5ab62fdfa3f945a59fb5c9eac448c7576f0dd3e948d6",
+      "size_bytes": 1010,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-after.finished.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687720352600,
+        "st_dev": 114,
+        "st_ino": 7881299349562530,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687720352600,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-after.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760687721803800,
+        "st_dev": 114,
+        "st_ino": 1970324838643427,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791760687721803800,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/probe-boundary-diagnosis-01/raw-source-after.stderr.raw"
+    }
+  ],
+  "file_count": 28,
+  "files": [
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035836041646,
+        "st_dev": 2128,
+        "st_ino": 984933,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035836041646,
+        "st_nlink": 1,
+        "st_size": 3085
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/finished.v3.json",
+      "sha256": "733555d932a2ebc4476202e2c2dee7f999e9c04a1b7e102c4348e3ab21c14147",
+      "size_bytes": 3085,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/finished.v3.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/finished.v3.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035348014291,
+        "st_dev": 2128,
+        "st_ino": 984919,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035348014291,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/original-exit-code.txt",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/original-exit-code.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/original-exit-code.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035836041646,
+        "st_dev": 2128,
+        "st_ino": 984932,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035836041646,
+        "st_nlink": 1,
+        "st_size": 1249
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.result.v1.json",
+      "sha256": "4b8a143898648f40bcdb49e61cc6df77f5aa562bd93100eadf2d944f034116c2",
+      "size_bytes": 1249,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035836041646,
+        "st_dev": 2128,
+        "st_ino": 984931,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035836041646,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035836041646,
+        "st_dev": 2128,
+        "st_ino": 984930,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035836041646,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stdout.raw",
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-after.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759785161608211,
+        "st_dev": 2128,
+        "st_ino": 987769,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759785161608211,
+        "st_nlink": 1,
+        "st_size": 1249
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.result.v1.json",
+      "sha256": "456b6ec76dda6ed3321ab91faae455e6eec21b527bad714a61ad4fc5bd7df9aa",
+      "size_bytes": 1249,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759785161608211,
+        "st_dev": 2128,
+        "st_ino": 987768,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759785161608211,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759785161608211,
+        "st_dev": 2128,
+        "st_ino": 987765,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759785161608211,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stdout.raw",
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/raw-source-before.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035356014739,
+        "st_dev": 2128,
+        "st_ino": 984918,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035356014739,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.after.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784697582000,
+        "st_dev": 2128,
+        "st_ino": 987734,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784697582000,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.before.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035356014739,
+        "st_dev": 2128,
+        "st_ino": 984920,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035356014739,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784697582000,
+        "st_dev": 2128,
+        "st_ino": 987755,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784697582000,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759785161608211,
+        "st_dev": 2128,
+        "st_ino": 987770,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759785161608211,
+        "st_nlink": 1,
+        "st_size": 1045
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/started.v3.json",
+      "sha256": "773e81d4068cc837818516fc654bb3988da71f5b8c684ad8cee40eab29ac27ee",
+      "size_bytes": 1045,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/started.v3.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/started.v3.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035308012049,
+        "st_dev": 2128,
+        "st_ino": 987772,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035308012049,
+        "st_nlink": 1,
+        "st_size": 3276
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/stderr.raw",
+      "sha256": "a878b5fb579f0b7a8b0ab12ea17d01ece093e6ec71b7ef86397aabd888391895",
+      "size_bytes": 3276,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759785793643910,
+        "st_dev": 2128,
+        "st_ino": 987771,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759785793643910,
+        "st_nlink": 1,
+        "st_size": 264
+      },
+      "retained": "consumer-complete-08-controls/consumer-fixture-08-minimum30/stdout.raw",
+      "sha256": "753609db61f9927c07c6c255b3b61cb2beca8f61c37fef63438570932b231f12",
+      "size_bytes": 264,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/consumer-fixture-08-minimum30/stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/consumer-fixture-08-minimum30/stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760036300067656,
+        "st_dev": 2128,
+        "st_ino": 984946,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760036300067656,
+        "st_nlink": 1,
+        "st_size": 1249
+      },
+      "retained": "consumer-complete-08-controls/raw-source-after.result.v1.json",
+      "sha256": "19e819b4b25a8153ec8a5b47bb996b9e378e76c70a4acff1c50728d85c6d11cd",
+      "size_bytes": 1249,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-after.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-after.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760036300067656,
+        "st_dev": 2128,
+        "st_ino": 984944,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760036300067656,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/raw-source-after.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-after.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-after.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760036300067656,
+        "st_dev": 2128,
+        "st_ino": 984941,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760036300067656,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "consumer-complete-08-controls/raw-source-after.stdout.raw",
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-after.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-after.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784689581549,
+        "st_dev": 2128,
+        "st_ino": 987753,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784689581549,
+        "st_nlink": 1,
+        "st_size": 1249
+      },
+      "retained": "consumer-complete-08-controls/raw-source-before.result.v1.json",
+      "sha256": "1b962ab1f6f4f274dc4165ce57765464d2e880ae8d8c11e4e8d2b598a4d6e397",
+      "size_bytes": 1249,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-before.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-before.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784689581549,
+        "st_dev": 2128,
+        "st_ino": 987748,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784689581549,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/raw-source-before.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-before.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-before.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784689581549,
+        "st_dev": 2128,
+        "st_ino": 987745,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784689581549,
+        "st_nlink": 1,
+        "st_size": 223
+      },
+      "retained": "consumer-complete-08-controls/raw-source-before.stdout.raw",
+      "sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0",
+      "size_bytes": 223,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/raw-source-before.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/raw-source-before.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784201553982,
+        "st_dev": 2128,
+        "st_ino": 987743,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784201553982,
+        "st_nlink": 1,
+        "st_size": 2634
+      },
+      "retained": "consumer-complete-08-controls/run-plan.v3.json",
+      "sha256": "0d04599ad32e4e2a84f8a0606735b6bc407b441ce0109cec67509acd03ac2c31",
+      "size_bytes": 2634,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/run-plan.v3.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/run-plan.v3.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760036300067656,
+        "st_dev": 2128,
+        "st_ino": 984947,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760036300067656,
+        "st_nlink": 1,
+        "st_size": 5871
+      },
+      "retained": "consumer-complete-08-controls/run-result.v3.json",
+      "sha256": "7229da361a506656620f7f0c5cc7ff0af4f70a3d093f401d813b1fcb2fa0178f",
+      "size_bytes": 5871,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/run-result.v3.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/run-result.v3.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035844042094,
+        "st_dev": 2128,
+        "st_ino": 984934,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035844042094,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-08-controls/source-head.after.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/source-head.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/source-head.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784197553756,
+        "st_dev": 2128,
+        "st_ino": 987741,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784197553756,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "consumer-complete-08-controls/source-head.before.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/source-head.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/source-head.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035844042094,
+        "st_dev": 2128,
+        "st_ino": 984935,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035844042094,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/source-tracked-status.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/source-tracked-status.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/source-tracked-status.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759784197553756,
+        "st_dev": 2128,
+        "st_ino": 987742,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759784197553756,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "consumer-complete-08-controls/source-tracked-status.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-complete-08-controls/source-tracked-status.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-complete-08-controls/source-tracked-status.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791760035308012049,
+        "st_dev": 2128,
+        "st_ino": 984910,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791760035308012049,
+        "st_nlink": 1,
+        "st_size": 29575
+      },
+      "retained": "consumer-fixture-08-minimum30/producer-failure.v2.json",
+      "sha256": "bbbea1cd3350bbbc946de402810704c0f88f123cde20d7112914c165f8a6d790",
+      "size_bytes": 29575,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/consumer-fixture-08-minimum30/producer-failure.v2.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals/consumer-fixture-08-minimum30/producer-failure.v2.json"
+    }
+  ],
+  "helper_sha256": "89eff34e1ff8222a4417187daf490a65b1b0293bde9cb37654995b039590ca2f",
+  "limits": [
+    "Original08 remains failed before native observations or complete consumers.",
+    "Separate postmortem diagnostics do not replace the original exit or prove acceptance.",
+    "No original record is rewritten, normalized or invented; retention is not qualification or Q1."
+  ],
+  "retention_output": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals",
+  "schema_version": 1,
+  "snapshot_helper_sha256": "65fb7ef980246e1fd5b8054a4eaad6c04e6015928523532420c9f5e37bc68941",
+  "source_base": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a",
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "source_read_only": true,
+  "total_bytes": 51804
+}

@@ -1,0 +1,44 @@
+FF
+======================================================================
+FAIL: test_preparation_crossing_work_cutoff_refuses_before_spawn (tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1.ChildTests.test_preparation_crossing_work_cutoff_refuses_before_spawn)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py", line 217, in test_preparation_crossing_work_cutoff_refuses_before_spawn
+    self.assertEqual(world.calls, [])
+AssertionError: Lists differ: [(['/controlled/D/engine'], {'stdin': -1, [365 chars] 0})] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+(['/controlled/D/engine'], {'stdin': -1, 'stdout': -1, 'stderr': -1, 'cwd': '/controlled/D', 'env': {'PATH': '/usr/bin:/bin', 'LANG': 'C', 'LC_ALL': 'C', 'HOME': '/controlled/D', 'TMPDIR': '/controlled/D', 'TMP': '/controlled/D', 'TEMP': '/controlled/D'}, 'start_new_session': True, 'close_fds': True, 'pass_fds': (11,), 'preexec_fn': <function run_child_v1.<locals>.<lambda> at 0x73774ebd00e0>, 'bufsize': 0})
+
++ []
+- [(['/controlled/D/engine'],
+-   {'bufsize': 0,
+-    'close_fds': True,
+-    'cwd': '/controlled/D',
+-    'env': {'HOME': '/controlled/D',
+-            'LANG': 'C',
+-            'LC_ALL': 'C',
+-            'PATH': '/usr/bin:/bin',
+-            'TEMP': '/controlled/D',
+-            'TMP': '/controlled/D',
+-            'TMPDIR': '/controlled/D'},
+-    'pass_fds': (11,),
+-    'preexec_fn': <function run_child_v1.<locals>.<lambda> at 0x73774ebd00e0>,
+-    'start_new_session': True,
+-    'stderr': -1,
+-    'stdin': -1,
+-    'stdout': -1})]
+
+======================================================================
+FAIL: test_signal_crossing_absolute_cutoff_does_not_begin_another_observation (tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1.ChildTests.test_signal_crossing_absolute_cutoff_does_not_begin_another_observation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py", line 224, in test_signal_crossing_absolute_cutoff_does_not_begin_another_observation
+    self.assertTrue(result['late'] and result['unknown_closure'])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+FAILED (failures=2)

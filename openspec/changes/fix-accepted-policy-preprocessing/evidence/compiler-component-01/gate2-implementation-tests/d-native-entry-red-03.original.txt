@@ -1,0 +1,49 @@
+FEEEE
+======================================================================
+ERROR: test_controlled_or_incomplete_return_cannot_become_native_success (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_controlled_or_incomplete_return_cannot_become_native_success) (changed={'controlled': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 815, in test_controlled_or_incomplete_return_cannot_become_native_success
+    self.assertEqual(stage.native_main_v1(self.args),1);emit.assert_not_called()
+                     ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1' has no attribute 'native_main_v1'
+
+======================================================================
+ERROR: test_controlled_or_incomplete_return_cannot_become_native_success (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_controlled_or_incomplete_return_cannot_become_native_success) (changed={'evaluation': {'passed': True, 'finalization_complete': False}})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 815, in test_controlled_or_incomplete_return_cannot_become_native_success
+    self.assertEqual(stage.native_main_v1(self.args),1);emit.assert_not_called()
+                     ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1' has no attribute 'native_main_v1'
+
+======================================================================
+ERROR: test_fixed_native_entry_outputs_only_bounded_final_summary (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_fixed_native_entry_outputs_only_bounded_final_summary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 789, in test_fixed_native_entry_outputs_only_bounded_final_summary
+    self.assertEqual(stage.native_main_v1(self.args),0)
+                     ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1' has no attribute 'native_main_v1'
+
+======================================================================
+ERROR: test_native_failure_preserves_bounded_diagnostic_without_traceback_or_receipt_duplicate (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_native_failure_preserves_bounded_diagnostic_without_traceback_or_receipt_duplicate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 806, in test_native_failure_preserves_bounded_diagnostic_without_traceback_or_receipt_duplicate
+    self.assertEqual(stage.native_main_v1(self.args),1)
+                     ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1' has no attribute 'native_main_v1'
+
+======================================================================
+FAIL: test_command_and_maximum_native_output_tool_envelope_fit_one_4k_form (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_command_and_maximum_native_output_tool_envelope_fit_one_4k_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 824, in test_command_and_maximum_native_output_tool_envelope_fit_one_4k_form
+    self.assertLessEqual(len(recipe.canonical_json_v1(envelope)),4096)
+AssertionError: 4334 not less than or equal to 4096
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.021s
+
+FAILED (failures=1, errors=4)

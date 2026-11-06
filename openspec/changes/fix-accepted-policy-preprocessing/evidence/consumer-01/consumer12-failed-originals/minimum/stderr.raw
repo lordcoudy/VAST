@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_policy_qualification_execution_closure_v1.py", line 2274, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_policy_qualification_execution_closure_v1.py", line 2219, in _reconcile_operational_capture_binding_v1
+    process_summary = original_process_validator_v1(project_root=root, receipt_path=output["process_receipt"]["path"],
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_operational_process_custody_v1.py", line 686, in original_process_validator_v1
+    receipt_path = _path(receipt_path)
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_operational_process_custody_v1.py", line 63, in _path
+    _require(path.is_absolute() and str(path) == os.path.normpath(str(path)) and path.resolve(strict=True) == path,
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_operational_process_custody_v1.py", line 54, in _require
+    raise ValueError(message)
+ValueError: original process path is not physically canonical
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 189, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 167, in main
+    consumers = complete_fixture_production_consumers_v2(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 141, in complete_fixture_production_consumers_v2
+    chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 117, in materialize_fixture_completed_execution_v2
+    closure = materialize_publication_policy_qualification_execution_closure_v1(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_policy_qualification_execution_closure_v1.py", line 3030, in materialize_publication_policy_qualification_execution_closure_v1
+    _validate_chain(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_policy_qualification_execution_closure_v1.py", line 2934, in _validate_chain
+    guardian["operational_accounting"] = reconcile_operational_capture_binding_v1(
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a2fc7f464cc71b89ff1453132bf254a0abeea5e8/scripts/publication_policy_qualification_execution_closure_v1.py", line 2278, in reconcile_operational_capture_binding_v1
+    raise QualificationExecutionClosureV1Error(
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: original operational execution binding validation failed: original process path is not physically canonical

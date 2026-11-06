@@ -1,0 +1,23 @@
+FF
+======================================================================
+FAIL: test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 664, in test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution
+    self.native_shaped_controls(gpu_empty=False,refusal=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 642, in native_shaped_controls
+    self.assertFalse((self.root/'outputs/D/controls/d.result.original.json').exists())
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_full_aggregate_reserve_denial_does_not_start_receipt_copy_or_child (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_full_aggregate_reserve_denial_does_not_start_receipt_copy_or_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 595, in test_full_aggregate_reserve_denial_does_not_start_receipt_copy_or_child
+    self.assertFalse((self.root/'outputs/D/controls/d.result.original.json').exists())
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.085s
+
+FAILED (failures=2)

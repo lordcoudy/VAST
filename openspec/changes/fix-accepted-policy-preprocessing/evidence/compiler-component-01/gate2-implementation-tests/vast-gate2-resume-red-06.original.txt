@@ -1,0 +1,14 @@
+E......
+======================================================================
+ERROR: test_actual_nested_p0_failure_preserves_status_eof_and_extent_facts (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_nested_p0_failure_preserves_status_eof_and_extent_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 83, in test_actual_nested_p0_failure_preserves_status_eof_and_extent_facts
+    self.assertTrue(keys['eof_stdout']);self.assertTrue(keys['eof_stderr'])
+                    ~~~~^^^^^^^^^^^^^^
+KeyError: 'eof_stdout'
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.015s
+
+FAILED (errors=1)

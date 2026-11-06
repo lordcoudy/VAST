@@ -1,0 +1,16 @@
+command: canonical WSL Python3.12.3 controlled C unittest
+exit_code: 1
+......................E.......
+======================================================================
+ERROR: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat) (late_fault='completion_final_measure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 643, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    self.assertTrue(found.exception.facts["write_facts"]["complete"])
+                    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 'write_facts'
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 30 tests in 1.287s
+System.Management.Automation.RemoteException
+FAILED (errors=1)

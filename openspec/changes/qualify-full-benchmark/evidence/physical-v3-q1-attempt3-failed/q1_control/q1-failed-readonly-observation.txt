@@ -1,0 +1,31 @@
+2026-10-08T15:03:18Z
+/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008d/q1_control/q1_06_guardian.rc: 78
+/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/qualify_full_benchmark_20261008d/q1_control/q1_09_owner_execute.rc: 78
+process captures: 6/37
+original operational owner failed: original container custody failed: original_measurement_failed
+--- docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+--- nvidia compute
+--- rc
+code-closure-validate.guardian.rc 0
+code-closure-validate.owner.rc 0
+code-closure-validate.runtime-inputs.rc 0
+q1_00_preflight.rc 0
+q1_02_transaction.rc 0
+q1_03_preprocessing.rc 0
+q1_04_code_closure.rc 0
+q1_05_capture_plan.rc 0
+q1_06_guardian.rc 78
+q1_07_guardian_ready.rc 0
+q1_08_runtime_inputs.rc 0
+q1_09_owner_execute.rc 78
+--- owner stderr
+original operational owner failed: original container custody failed: original_measurement_failed
+--- guardian stderr
+{"accepted_evidence_written": false, "artifact_kind": "vast_gstreamer_analytics_sidecar_error", "message": "analytics production guardian failed: analytics production service failed: failed to receive analytics execution datagram: [Errno 104] Connection reset by peer", "publication_ready": false, "schema_version": 1, "status": "engineering_failed_nonpublication"}
+--- deepstream independent process_id lengths vs worker_id cap 37
+deepstream-stream-0-branch-foreign_object 41
+deepstream-stream-0-branch-vehicle_type 39
+deepstream-stream-0-branch-plate_number 39
+deepstream-stream-0-branch-damage 33
+deepstream-stream-0-shared-video-dag 36

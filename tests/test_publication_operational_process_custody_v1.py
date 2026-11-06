@@ -336,6 +336,39 @@ class ProcessCustodyTests(unittest.TestCase):
             self.assertEqual(adjunct["stdout"]["size_bytes"], 0)
             self.assertEqual(adjunct["stderr"]["size_bytes"], 0)
 
+    def test_empty_failure_channel_mode_follows_custody_posix_mode_enforcement(self):
+        # A 9p/drvfs root without metadata reports a created 0444 leaf as 0555.
+        # The empty channel accepts it only where custody does not enforce modes.
+        for ordinal, enforced in enumerate((False, True)):
+            output_dir = self.root / f"outputs/empty-mode-{ordinal}"
+            with self.subTest(enforced=enforced), \
+                    self.assertRaises((ValueError, observer.PublicationPhysicalIoV1Error)):
+                # The capture has no measurement call, so its own exit always fails.
+                with self.capture(output_dir=output_dir) as capture:
+                    custody = capture.custody
+                    create = custody._write_exclusive_posix
+
+                    def reported_as_0555(relative, payload, *, label, mode, create_parents):
+                        self.assertEqual(mode, 0o444)
+                        return create(relative, payload, label=label, mode=0o555, create_parents=create_parents)
+
+                    path = output_dir / "engine_01.failure.stderr.raw"
+                    with mock.patch.object(custody, "_posix_mode_enforced", enforced), \
+                            mock.patch.object(custody, "_write_exclusive_posix", reported_as_0555):
+                        if enforced:
+                            with self.assertRaises((ValueError, observer.PublicationPhysicalIoV1Error)):
+                                observer._write_failure_channel(capture, path, b"")
+                        else:
+                            try:
+                                descriptor = observer._write_failure_channel(capture, path, b"")
+                                capture.verify()
+                            except (ValueError, observer.PublicationPhysicalIoV1Error) as error:
+                                self.fail(f"unenforced 0555 empty channel was rejected: {error}")
+                            self.assertEqual(descriptor, {"path": str(path), "size_bytes": 0,
+                                                          "sha256": hashlib.sha256(b"").hexdigest()})
+                            self.assertEqual(path.stat().st_mode & 0o777, 0o555)
+                            self.assertEqual(len(capture.empty_failure_channels), 1)
+
     def test_failed_measurement_capture_flags_keep_original_prefix_and_bounds(self):
         # Flag transport is an explicit wrapper fixture; these are genuine
         # original children, not a claim of actual pipe overflow/drain failure.

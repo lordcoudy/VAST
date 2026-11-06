@@ -1,0 +1,134 @@
+head=(worktree codex/qualify-full-benchmark 4bf651b4, uncommitted 6F.1 tests on top)
+python=3.12.3 platform=Linux 6.6.87.2-microsoft-standard-WSL2 cwd=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests PYTHONPATH=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST TMPDIR=unset
+command=python -B -m unittest -v test_publication_qualification_policy_pilot_validator_v2
+test_policy_assess_and_promote_pass_the_f5_validator (test_publication_qualification_policy_pilot_validator_v2.PolicyCommandsUseF5Tests.test_policy_assess_and_promote_pass_the_f5_validator) ... ERROR
+test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) ... 
+  test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'completed'}, trace='t1') ... ERROR
+  test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'censored'}, trace='t1') ... ERROR
+  test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'completed'}, trace='t9') ... ERROR
+test_copy_differs_from_stock_only_by_the_reviewed_hunks (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_copy_differs_from_stock_only_by_the_reviewed_hunks) ... FAIL
+test_cpu_and_gpu_with_transfer_samples_equal_stock (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_cpu_and_gpu_with_transfer_samples_equal_stock) ... 
+  test_cpu_and_gpu_with_transfer_samples_equal_stock (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_cpu_and_gpu_with_transfer_samples_equal_stock) (resource='cpu') ... ERROR
+  test_cpu_and_gpu_with_transfer_samples_equal_stock (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_cpu_and_gpu_with_transfer_samples_equal_stock) (resource='gpu') ... ERROR
+test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) ... 
+  test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) (case='replay') ... ERROR
+  test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) (case='cell') ... ERROR
+test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) ... ERROR
+test_dropped_gpu_decision_without_transfer_is_not_a_sample (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_gpu_decision_without_transfer_is_not_a_sample) ... ERROR
+test_sidecars_are_revalidated_with_reset_evidence_and_six_streams (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_sidecars_are_revalidated_with_reset_evidence_and_six_streams) ... ERROR
+
+======================================================================
+ERROR: test_policy_assess_and_promote_pass_the_f5_validator (test_publication_qualification_policy_pilot_validator_v2.PolicyCommandsUseF5Tests.test_policy_assess_and_promote_pass_the_f5_validator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 250, in test_policy_assess_and_promote_pass_the_f5_validator
+    self.assertIs(assess.call_args.kwargs["pilot_validator"], promotion.policy_pilot_validator)
+                  ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: 'pilot_validator'
+
+======================================================================
+ERROR: test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'completed'}, trace='t1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 194, in test_completed_or_unknown_gpu_decision_without_transfer_is_refused
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'censored'}, trace='t1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 194, in test_completed_or_unknown_gpu_decision_without_transfer_is_refused
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_completed_or_unknown_gpu_decision_without_transfer_is_refused (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_completed_or_unknown_gpu_decision_without_transfer_is_refused) (ingress={'t1': 'completed'}, trace='t9')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 194, in test_completed_or_unknown_gpu_decision_without_transfer_is_refused
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_cpu_and_gpu_with_transfer_samples_equal_stock (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_cpu_and_gpu_with_transfer_samples_equal_stock) (resource='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 221, in test_cpu_and_gpu_with_transfer_samples_equal_stock
+    self.assertEqual(arm.run(promotion.policy_pilot_validator), arm.run(stock._default_pilot_validator))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_cpu_and_gpu_with_transfer_samples_equal_stock (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_cpu_and_gpu_with_transfer_samples_equal_stock) (resource='gpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 221, in test_cpu_and_gpu_with_transfer_samples_equal_stock
+    self.assertEqual(arm.run(promotion.policy_pilot_validator), arm.run(stock._default_pilot_validator))
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) (case='replay')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 205, in test_dropped_decision_is_still_fully_validated
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated) (case='cell')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 205, in test_dropped_decision_is_still_fully_validated
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_dropped_decision_is_still_fully_validated (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_decision_is_still_fully_validated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 211, in test_dropped_decision_is_still_fully_validated
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_dropped_gpu_decision_without_transfer_is_not_a_sample (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_dropped_gpu_decision_without_transfer_is_not_a_sample)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 182, in test_dropped_gpu_decision_without_transfer_is_not_a_sample
+    samples = arm.run(promotion.policy_pilot_validator)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+ERROR: test_sidecars_are_revalidated_with_reset_evidence_and_six_streams (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_sidecars_are_revalidated_with_reset_evidence_and_six_streams)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 172, in test_sidecars_are_revalidated_with_reset_evidence_and_six_streams
+    arm.run(promotion.policy_pilot_validator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'publication_qualification_promotion_v2' has no attribute 'policy_pilot_validator'
+
+======================================================================
+FAIL: test_copy_differs_from_stock_only_by_the_reviewed_hunks (test_publication_qualification_policy_pilot_validator_v2.PolicyPilotValidatorV2Tests.test_copy_differs_from_stock_only_by_the_reviewed_hunks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_policy_pilot_validator_v2.py", line 225, in test_copy_differs_from_stock_only_by_the_reviewed_hunks
+    self.assertEqual(hashlib.sha256(stock_path.read_bytes()).hexdigest(), STOCK_SHA256)
+AssertionError: 'f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde' != '__STOCK_SHA256__'
+- f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde
++ __STOCK_SHA256__
+
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.041s
+
+FAILED (failures=1, errors=11)
+exit=1

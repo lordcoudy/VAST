@@ -1,0 +1,19 @@
+E
+======================================================================
+ERROR: test_idle_c6_gap_is_not_charged_but_actual_d_interval_growth_is (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_idle_c6_gap_is_not_charged_but_actual_d_interval_growth_is)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 504, in test_idle_c6_gap_is_not_charged_but_actual_d_interval_growth_is
+    result = self.run_d(observer=observer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 627, in run_d_v1
+    raise StageDRefusal('d_global_gap_reserve')
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_global_gap_reserve
+
+----------------------------------------------------------------------
+Ran 1 test in 0.025s
+
+FAILED (errors=1)

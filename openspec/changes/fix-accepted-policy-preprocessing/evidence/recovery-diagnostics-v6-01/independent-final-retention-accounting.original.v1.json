@@ -1,0 +1,140 @@
+{
+  "accounting": {
+    "aggregate_bytes_including_this_receipt": 15559685,
+    "existing_evidence_bytes": 1605560,
+    "ignored_controls_bytes": 16971,
+    "limit_bytes": 16777216,
+    "original_source_bytes": 13931754,
+    "residual_bytes": 1217531,
+    "this_review_receipt_bytes": 5400
+  },
+  "attributes": {
+    "all_10_existing_artifact_filtered_git_blob_hashes_equal_raw_bytes": true,
+    "archive_destination_pattern_preserves_bytes": true,
+    "current_evidence_eol": "unspecified",
+    "current_evidence_text": "unset",
+    "filter_working_tree_encoding_ident": "unspecified",
+    "gitattributes_sha256": "9dda70382b777f8a06467ad7751c87aa3c48aa2b72b4e9021376bcc05e332ecf",
+    "new_review_receipt_scope_matches": true,
+    "original_source_and_artifact_sha256_unchanged": true
+  },
+  "evidence_before_this_review": [
+    {
+      "bytes": 1005529,
+      "name": "diagnostic-cohort.original.v1.tar.gz",
+      "sha256": "1f030c72abb90c4d9f693682885e0642d0b93e7d8f2d083cf2a0b3f34eb27520"
+    },
+    {
+      "bytes": 103,
+      "name": "diagnostic-cohort.original.v1.tar.gz.sha256",
+      "sha256": "be1e49dc87c16be893bae71390fde40ab2f22f3e728633b5dbe06309da24e2db"
+    },
+    {
+      "bytes": 685,
+      "name": "independent-retention-review.original.v1.json",
+      "sha256": "c94ff85893ed59b15573ebc49be47f52f100c844725c56fac3bc3f184b6d872a"
+    },
+    {
+      "bytes": 572989,
+      "name": "members.original.v1.json",
+      "sha256": "b58b0768b6519442a8aad72ffc5179c655078c5565f494cf81ec232d12e6b0b6"
+    },
+    {
+      "bytes": 2258,
+      "name": "README.md",
+      "sha256": "5ba42d1ae8a2d4fb342b5dcc8a2d4b36ea7326cdbed806af24de760f27b2d7fd"
+    },
+    {
+      "bytes": 13401,
+      "name": "retain_frozen_d7.v1.py",
+      "sha256": "d962cfb72a1d779acca45464bb5521ec06bb726aaa8ea419bd6d3f04c09c4d51"
+    },
+    {
+      "bytes": 1818,
+      "name": "retention-final-scope.original.v1.json",
+      "sha256": "0ca6cd323d006c7a522db1cf4b41ff0e06076a59a7c4fd8bfd13c209eec542fb"
+    },
+    {
+      "bytes": 2192,
+      "name": "retention-final-scope.original.v2.json",
+      "sha256": "37ad9badef3e5a5f2054d0a118aed4a48ab15b661e777aabb515fea3f5ff1ca2"
+    },
+    {
+      "bytes": 3015,
+      "name": "verification.original.v1.json",
+      "sha256": "928990d5db34fdc4062ad12e0fca272a273f548979105032f57cb97b6be8a555"
+    },
+    {
+      "bytes": 3570,
+      "name": "verify_retention_independent.v1.py",
+      "sha256": "9d5fd5b19e5694851f441f2ec613aef91fdacfb468ef9d0bd7102739843623f0"
+    }
+  ],
+  "final_scope_v2": {
+    "name": "retention-final-scope.original.v2.json",
+    "recomputed_aggregate_before_this_review": 15554285,
+    "sha256": "37ad9badef3e5a5f2054d0a118aed4a48ab15b661e777aabb515fea3f5ff1ca2",
+    "valid_original_snapshot": true
+  },
+  "fixture": true,
+  "historical_failed_and_block_witnesses_retained": true,
+  "ignored_controls": [
+    {
+      "bytes": 13401,
+      "path": "E:\\STUDY\\VAST\\tmp\\completion-implementation-20261015\\d7-retention-01\\retain_frozen_d7.v1.py",
+      "retained_copy_equal": true,
+      "sha256": "d962cfb72a1d779acca45464bb5521ec06bb726aaa8ea419bd6d3f04c09c4d51"
+    },
+    {
+      "bytes": 3570,
+      "path": "E:\\STUDY\\VAST\\tmp\\completion-implementation-20261015\\d7-retention-01\\verify_retention_independent.v1.py",
+      "retained_copy_equal": true,
+      "sha256": "9d5fd5b19e5694851f441f2ec613aef91fdacfb468ef9d0bd7102739843623f0"
+    }
+  ],
+  "independent_archive_review": {
+    "full_member_readback_source_catalog_equality": true,
+    "receipt": "independent-retention-review.original.v1.json",
+    "reviewer": "/root",
+    "sha256": "c94ff85893ed59b15573ebc49be47f52f100c844725c56fac3bc3f184b6d872a",
+    "this_reviewer_did_not_rerun_archive_readback": true,
+    "verdict": "CLEAR"
+  },
+  "invalid_retained_v1": {
+    "actual_at_v1": 15552093,
+    "claimed_aggregate": 13950543,
+    "name": "retention-final-scope.original.v1.json",
+    "omitted_bytes": 1601550,
+    "reason": "PowerShell dictionary Measure-Object omitted listed target byte lengths; no content/hash row was silently discarded. Original v1 remains unchanged and must not be used as valid aggregate evidence.",
+    "sha256": "0ca6cd323d006c7a522db1cf4b41ff0e06076a59a7c4fd8bfd13c209eec542fb",
+    "verdict": "INVALID_ACCOUNTING"
+  },
+  "kind": "D7_independent_final_retention_accounting.v1",
+  "open_gates": [
+    "backing rehearsal",
+    "full restore",
+    "whole-chain capacity",
+    "exact human image action confirmation",
+    "packaged full2.8",
+    "genuine/full consumers",
+    "renewal",
+    "task1.7",
+    "final PR acceptance"
+  ],
+  "originals_overwritten_moved_or_deleted": false,
+  "recorded_utc": "2026-10-15T00:10:55.210930+00:00",
+  "recovery_acceptance": false,
+  "reviewer": "/root/audit_s3_delivery",
+  "scope": "Independent audit of root final accounting/extensions/scoped attributes; not repeat approval of reviewer-authored original retainer. No archive member rerun/extraction, staging/commit/push or task closure.",
+  "source": {
+    "all_member_names_bytes_hashes_equal_frozen_catalog": true,
+    "bytes": 13931754,
+    "directories": 385,
+    "directory_set_sha256": "6f5ac2df5b0f7b29200e9ef8c657bac8f0a267294141e44726e7f27354f93e3d",
+    "files": 3810,
+    "source_helpers_unchanged": true,
+    "tree_sha256": "567804140dcff4ad37968cef5a1dcb51e8e58545500c59f536a21383e68d9521",
+    "zero_byte_files": 982
+  },
+  "verdict": "CLEAR"
+}

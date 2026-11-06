@@ -1,0 +1,31 @@
+2026-10-16T11:34:30.016821Z  WARN mixpanel track failed error=HTTP request failed: error sending request for url (https://api.mixpanel.com/track?verbose=1) event=grok-shell-permission_prompted
+2026-10-16T11:34:30.016964Z  WARN mixpanel track failed error=HTTP request failed: error sending request for url (https://api.mixpanel.com/track?verbose=1) event=grok-shell-model_response_received
+2026-10-16T11:34:30.017031Z  WARN mixpanel track failed error=HTTP request failed: error sending request for url (https://api.mixpanel.com/track?verbose=1) event=grok-shell-permission_decision
+2026-10-16T11:34:30.312884Z  WARN mixpanel track failed error=HTTP request failed: error sending request for url (https://api.mixpanel.com/track?verbose=1) event=grok-shell-tool_call_completed
+**CLEAR_WITH_NOTES**
+
+Reviewed SHA: `f83de10a4ea72ba59ee899130bb9f26bf6bcb70c` (parent `5c557489a7bff4e5a804405413e1165bf7d860cf`). HEAD was that SHA before and after this read-only pass. The commit diff is the V8 plan, the excerpt-review record, and the proposal/design/tasks paragraphs. This is a planning review of that commit only. Implementation, and any F2/C/D run, still wait for the second exact-commit review, required CI, and recorded delegated AGENT approval, then the implemented-packet approval.
+
+The excerpt BLOCK is not carried forward. Full source and the B originals close those five points.
+
+- `SOURCE_LIMIT` is 8 MiB (`accepted_policy_fixture_compiler_publisher_v1.py:23`, `accepted_policy_fixture_compiler_v1.py:17`). The 1 MiB ceiling is the channel (`publisher_v1.py:25`, owner stderr `compiler_v1.py:830`). C4 source is 1,360,072 B from `_c4()` and fits that 8 MiB reader (`compiler_v1.py:1545`, retention quote `:1557`).
+- `inspect_owned` compares every requested HostConfig key (`compiler_v1.py:1536-1540`), including `Privileged`, `Binds`, `Devices`, `PidMode`, `NetworkMode`, `SecurityOpt`, and `CapAdd: []` (`:1131-1145`). B1 `config_diff` has two rows: Labels 26 = 3 requested + 23 image labels, no collisions, and Volumes `{}` read back as null.
+- The C6 normal-close wait is `compiler_v1.py:1709-1720`. TERM/KILL is reached only when that wait does not observe a stopped container (`:1724-1729`). V8 requires that wait to see stop with `forced` false and no HTTP 409 (`component-admission-plan.v8.md:179-184`). Any other outcome stops.
+- Publisher order is overflow or `compiler_deadline`, then `compiler_term_attempted`, optional `descendant_exit_nonzero`, then `compiler_exit_nonzero` (`publisher_v1.py:277-318`, `:347-348`, `:450-451`). `compiler_kill_attempted` is a later branch (`:293-294`, `:269`). V8 accepts only the two lists and stops on KILL, unknown EOF, or any other cause (`v8.md:157-178`, `:249-250`). Cutoff is publisher entry +45 s with 5/5/5 s TERM, KILL, and export reserve (`publisher_v1.py:28-31`, `:117-118`), matching C5. B1’s flat 20 s trace stays a projection (`v8.md:29-32`).
+- B2 manifest: 37 local entries match, the two full dmesg files are absent here, and line 36’s self-hash does not match the file. V8 keeps that line non-authoritative (`v8.md:33-38`).
+
+F2, N3, proofs, and the ledger match the stated bounds.
+
+- Exactly 13 paths, member sum 4,088,780 B, tar-cap sum 4,226,048 B. Each tar cap is the member plus 10,240 B, rounded up to 512 B. One 90 s deadline, at most 5 s and no retry, 19 RPCs, separate instance, owner metadata ceiling left at 256 KiB (`v8.md:49-118`; owner `LIMIT = 262144` at `compiler_v1.py:333`).
+- Logical wire-plus-raw is 12 MiB at 2×; persisted raw HTTP is at most 6 MiB; decoded tar is at most 4,226,048 B and is not persisted; supplement is at most 256 KiB; Git gets no raw HTTP or tar (`v8.md:80-118`). B1 inspect/info replies are tens of KiB, so the six identity calls plus the tar caps fit those caps. Tar rules require status 200, one regular member, exact basename and size, and no links, devices, directories, or traversal (`v8.md:95-102`).
+- cc1 `--version` stays empty and cannot close 2.10 (`v8.md:107-110`; B1 README and `compiler.stdout.original`).
+- N3 is only the 23-label union and empty Volumes `{}`/`null`. CapAdd stays `[]` (`v8.md:122-127`).
+- Seed/admission stay component-only, `component_seed: null`, each ≤ 4096 B (`accepted_policy_fixture_compiler_component_v1.py:185-195`). All five proof hashes are required non-null and bound by the external packet to reviewed Git blobs (`v8.md:129-138`, `:152-153`).
+- D is 983,040 B ELF copy + 1,048,576 B child-file liability + 65,536 B controls = 2,097,152 B (`v8.md:198-210`). Container FSIZE stays 16 MiB.
+- Ledger: 11,890,688 + 1,048,576 + 1,048,576 + 8,388,608 + 402,653,184 + 25,165,824 + 83,886,080 + 2,097,152 = 536,178,688. Seal 536,870,912. Unallocated 692,224. B3 README line 27 is the cumulative 11,890,688. Floor remains `c_bytes + additional_disk_upper_bytes` = 43,620,761,600 (`component_v1.py:26-27`). Old B root and the new 1 MiB code/packet root are separate. C4 source is charged to that C’s 64 MiB, not to the 1 MiB stderr or code export (`v8.md:140-144`, `:219-231`). No Q1, image, storage, provider, or merge authority (`v8.md:4-10`, `:263`; `proposal.md:55-57`; `design.md:174`; `tasks.md:111`).
+
+Notes to carry, without changing this verdict:
+
+1. The 13 paths are the transfer allowlist. B1 `compiler.stdout.original` already hashes `crti.o`, `crtn.o`, `ld-linux-x86-64.so.2`, `libc_nonshared.a` (5,594 B), and `libgcc.a` (3,001,414 B). `libgcc.a` does not fit the 6 MiB raw cap beside the 4,088,780 B member sum. V8 stops on an unknown linker-script reference and forbids widening the path set (`v8.md:98-102`, `:118`). Those B1 hashes remain the authority for those paths.
+2. This commit has no separate stat original for the 13 member sizes. The sums and per-row caps are internally consistent. A size or content change stops recovery (`v8.md:89-102`).
+3. The D pre-exec seam must pass `setrlimit` FSIZE 1,048,576 bytes. B2 README lines 72-76 record that bash `ulimit -c` counted 1 KiB blocks. V8’s 983,040 B and 1 MiB figures are byte counts (`v8.md:201-210`).

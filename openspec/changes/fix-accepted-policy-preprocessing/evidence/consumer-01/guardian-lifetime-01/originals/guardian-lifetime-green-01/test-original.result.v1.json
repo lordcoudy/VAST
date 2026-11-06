@@ -1,0 +1,30 @@
+{
+  "executable": "wsl.exe",
+  "arguments": [
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--cd",
+    "/home/s-a-balashov/work/vast-guardian-lifetime-green-20261012-01",
+    "--exec",
+    "env",
+    "-u",
+    "PYTHONPATH",
+    "-u",
+    "PYTHONHOME",
+    "HOME=/home/s-a-balashov",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-c",
+    "import importlib\nimport json\nfrom pathlib import Path\nimport sys\nimport unittest\n\nroot = Path('/home/s-a-balashov/work/vast-guardian-lifetime-green-20261012-01')\nif root.resolve(strict=True) != root or Path.cwd().resolve(strict=True) != root:\n    raise RuntimeError('Focused regression overlay root is not canonical')\nexpected = {\n    'tests.test_accepted_policy_guardian_lifecycle_fixture_v1': root / 'tests/test_accepted_policy_guardian_lifecycle_fixture_v1.py',\n    'tests.fixtures.accepted_policy_guardian_lifecycle_fixture_v1': root / 'tests/fixtures/accepted_policy_guardian_lifecycle_fixture_v1.py',\n    'checkpoint_gstreamer_analytics_sidecar': root / 'scripts/checkpoint_gstreamer_analytics_sidecar.py',\n}\nobserved = {}\nfor name, path in expected.items():\n    module = importlib.import_module(name)\n    loaded = Path(module.__file__).resolve(strict=True)\n    if loaded != path or path.resolve(strict=True) != path:\n        raise RuntimeError(f'Focused regression module origin drifted: {name}: {loaded}')\n    observed[name] = str(loaded)\nsuite = unittest.defaultTestLoader.loadTestsFromName('tests.test_accepted_policy_guardian_lifecycle_fixture_v1')\ndef selected_test_ids(value):\n    for item in value:\n        if isinstance(item, unittest.TestSuite):\n            yield from selected_test_ids(item)\n        else:\n            yield item.id()\nselected = list(selected_test_ids(suite))\nif suite.countTestCases() != 3 or selected.count('tests.test_accepted_policy_guardian_lifecycle_fixture_v1.AcceptedPolicyGuardianLifecycleFixtureTests.test_owner_lifetime_survives_fixture_clock_advance_and_explicit_close') != 1:\n    raise RuntimeError('Lifecycle loader did not select three tests with the target regression exactly once')\nprint(json.dumps({'module_origin_guards_passed': True, 'loaded_paths': observed, 'test_execution_count_planned': 3, 'selected_test_ids': selected, 'target_regression_selection_count': 1}, sort_keys=True), flush=True)\nresult = unittest.TextTestRunner(stream=sys.stderr, verbosity=2).run(suite)\nif result.testsRun != 3:\n    raise RuntimeError('Lifecycle runner did not execute exactly three tests')\nsys.exit(0 if result.wasSuccessful() else 1)"
+  ],
+  "started_utc": "2026-10-12T11:41:37.4309121Z",
+  "finished_utc": "2026-10-12T11:41:39.5698137Z",
+  "elapsed_seconds": 2.1388269,
+  "original_exit_code": 0,
+  "stdout_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-green-01\\test-original.stdout.raw",
+  "stderr_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-green-01\\test-original.stderr.raw",
+  "stdout_sha256": "d2f2f640d9a472c248648d648772161a02b46c50397080b20a7f3e20d589bafe",
+  "stderr_sha256": "ec5e8886ad22f50a6de6d93b30f7538a9fb6ef917bb019d2c55bc50ec267a1ea"
+}

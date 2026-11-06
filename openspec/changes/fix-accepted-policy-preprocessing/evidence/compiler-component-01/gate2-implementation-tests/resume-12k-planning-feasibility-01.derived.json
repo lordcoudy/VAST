@@ -1,0 +1,51 @@
+{
+  "closed_assignment_sums": {
+    "N": 1019136,
+    "O": 516352,
+    "S": 991232
+  },
+  "current_plan_binding": null,
+  "future_available": 507547648,
+  "future_liabilities": 507510784,
+  "global": 536834048,
+  "global_margin": 36864,
+  "initial_non_C": 29323264,
+  "limits": {
+    "active_f2": 7995392,
+    "events": 8192,
+    "fresh_interval": 2650112,
+    "global": 536870912,
+    "global_candidate": 536834048,
+    "index": 12288,
+    "index_forms": 32768,
+    "logical_code_packet_seed": 655360,
+    "native": 1048576,
+    "native_candidate": 1019136,
+    "old_active_f2_prefix_tail": 5345280,
+    "old_f2_proof": 393216,
+    "outer": 12288,
+    "outer_forms": 32768,
+    "outside": 524288,
+    "outside_candidate": 516352,
+    "packet": 32768,
+    "parent_growth": 8192,
+    "prior_carry": 6291456,
+    "prior_owned": 2162688,
+    "source": 1032192,
+    "source_candidate": 991232
+  },
+  "new_version_array_index": 21,
+  "new_version_ordinal": 22,
+  "old_index_descriptor": {
+    "sha256": "ceef345a82f39c8301706ecda73ea5d12cd1cf825e321b9214e409c6a64c2ab7",
+    "size_bytes": 9829,
+    "untracked_derived_prototype": true
+  },
+  "physical_acceptance": false,
+  "prospective_index_bytes": 9998,
+  "prospective_index_forms_bytes": 32768,
+  "prospective_index_sha256_not_authority": "d310418f13e8a0afd287a1d774056ace70287f1d37a5841270a52e8dc5f8109c",
+  "scope": "PURE IN-MEMORY planning feasibility only; new index NOT written/authenticated/approved. Prospective plan blob must be verified from actual Git only after exact planning approval. No runtime/test/cap change.",
+  "tail_after_max": 45312,
+  "unchanged_first21versions_and_four_roles": true
+}

@@ -55,8 +55,10 @@ from publication_policy_contract import (
     select_static_hybrid_map,
 )
 from publication_q4_authority_source_material_v1 import (
+    PublicationQ4AuthoritySourceMaterialV1Error,
     build_publication_q4_authority_source_material_request_v1,
     build_publication_q4_authority_source_material_v1,
+    reject_foreign_accepted_source_kinds_v1,
     validate_publication_q4_authority_source_material_request_v1,
 )
 from publication_q4_runtime_contract_v4 import (
@@ -2000,6 +2002,15 @@ def materialize_publication_q4_authority_source_request_v1(
             output_dir, label="Q4 request producer output directory"
         )
         owned.output_relative = output_relative
+        if production_inputs is not None:
+            try:
+                reject_foreign_accepted_source_kinds_v1(
+                    custody,
+                    production_inputs.accepted_source_paths,
+                    label="Q4 request producer accepted source",
+                )
+            except PublicationQ4AuthoritySourceMaterialV1Error as error:
+                raise PublicationQ4AuthoritySourceRequestV1Error(str(error)) from error
         try:
             _ensure_owned_directory(
                 custody,

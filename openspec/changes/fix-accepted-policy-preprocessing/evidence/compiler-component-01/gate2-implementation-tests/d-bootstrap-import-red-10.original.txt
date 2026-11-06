@@ -1,0 +1,14 @@
+E
+======================================================================
+ERROR: test_native_project_import_failure_is_bounded_without_traceback (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_native_project_import_failure_is_bounded_without_traceback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 892, in test_native_project_import_failure_is_bounded_without_traceback
+    block=next(node for node in source.body if isinstance(node,ast.Try) and
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+StopIteration
+
+----------------------------------------------------------------------
+Ran 1 test in 0.022s
+
+FAILED (errors=1)

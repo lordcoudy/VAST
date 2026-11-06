@@ -1,0 +1,20 @@
+test_reviewed_12k_plan_history_remains_inside_source_budget (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_reviewed_12k_plan_history_remains_inside_source_budget) ... ERROR
+
+======================================================================
+ERROR: test_reviewed_12k_plan_history_remains_inside_source_budget (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_reviewed_12k_plan_history_remains_inside_source_budget)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 78, in test_reviewed_12k_plan_history_remains_inside_source_budget
+    self.assertEqual(self.quote(), 991232)
+                     ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 53, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 203, in resume_code_forms_quote_v1
+    raise ComponentRecipeError("resume forms bound")
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: resume forms bound
+
+----------------------------------------------------------------------
+Ran 1 test in 0.095s
+
+FAILED (errors=1)

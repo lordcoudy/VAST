@@ -1,0 +1,90 @@
+**Advisory BLOCK.** The five uncommitted planning drafts are not ready for planning approval. Their combined F2 debit is only the old directory, and that arithmetic does not close.
+
+HEAD before and after this read-only pass: `c75ad950ee542621a365725db627fdd03d2363e8`. The only tracked modifications are `proposal.md`, `design.md`, `tasks.md`, `specs/benchmark-launch-preparation/spec.md`, and `component-admission-plan.v8.md` section 7. No production or test file differs from that head. This is not formal commit approval, not physical permission, and not task 2.10 completion. The e162 BLOCK, the e162 contiguous-envelope CLEAR_WITH_NOTES, and the c67, 4e1e, and c75 CLEAR_WITH_NOTES reviews stay in force for those bytes. The running keeper was not touched.
+
+The DNS exception and the one fresh successor gate are unchanged by this arithmetic block. The historical comparison may accept only present `Dns`, `DnsOptions`, and `DnsSearch` keys, sealed `null` to fresh `null` or a typed empty list, with `NetworkMode` exactly `none`. The identity digest stays on the actual fresh selected inspect. At most one successor, at a new implemented-commit root, still needs planning review, planning CI, and delegated approval before code, then two implemented reviews, new CI, and delegated approval before any physical use.
+
+## Draft debit that fails
+
+`component-admission-plan.v8.md` lines 112–116 already put every retained form, report copy, Git copy, and rounding block inside the 8,388,608 B F2 aggregate. Section 7 instead subtracts only the old directory, 106,496 B, leaving a successor cap of 8,282,112 B, and says the entry liability 8,216,576 B then has 65,536 B left. The same directory-only debit is in the proposal, design, delta spec, and tasks.
+
+The entry liability is the quiet-entry total in `accepted_policy_fixture_compiler_recovery_v1.py:626-669`:
+
+| Component | Bytes |
+|---|---:|
+| Raw-original reserve, `RAW_LIMIT` | 6,291,456 |
+| Four control records at `RECORD_LIMIT` 262,144 | 1,048,576 |
+| Rounding for 42 absent files, 42 × 4,096 | 172,032 |
+| Metadata for those 42 files, 42 × 4,096 | 172,032 |
+| Directory charge, one 4,096 B block + 4,096 B metadata | 8,192 |
+| Successor outside reserve | 524,288 |
+| **Entry** | **8,216,576** |
+
+Spare against 8,388,608 B is 172,032 B. Old proof forms without the old helper Git blobs are already 106,496 + 83,200 + 24,576 + 12,288 = 226,560 B. Entry plus that sum is 8,443,136 B, which is 54,528 B over the aggregate. Adding the two old helper Git forms makes it worse. Current capture is 39,080 B and current setup is 45,589 B; their cluster quotes are 11 × 4,096 = 45,056 B and 13 × 4,096 = 53,248 B, together 98,304 B. Full old-proof upper bound: 226,560 + 98,304 = 324,864 B. Entry plus that bound is 8,541,440 B, 152,832 B over 8,388,608 B. The 65,536 B figure does not survive those forms.
+
+## Disposition: B, with one explicit old-proof cap
+
+Keep `RAW_LIMIT` at 6,291,456 B, `TAR_LIMIT` at 4,226,048 B, the thirteen member caps, and the 12 MiB wire ceiling (`recovery_v1.py:140` and `:183`). Do not take candidate A. c75 stopped before any archive GET, so there is no measured archive wire sample. Cutting persistence to 5.5 MiB would also drag `metadata_bytes > 2 * RAW_LIMIT` down to 11 MiB unless that check is split from the raw ceiling. A framing refusal would consume the only successor.
+
+Shrink only the success-path footer `f2.final-accounting.v1.json`. Today every control file shares `RECORD_LIMIT`. The footer written at `recovery_v1.py:723-724` is `schema_version`, the supplement descriptor, and `accounting`. On that snapshot the validator still reserves two control slots (`:865`): the footer about to be written and `f2.failure.v1.json`. Keep the originals index, the supplement, and the failure file at 262,144 B each. Set a private footer cap of 16,384 B. Savings are 262,144 − 16,384 = 245,760 B. Do this with a per-file cap inside `_account` and `_write_json`. Lowering `RECORD_LIMIT` itself would also shrink the failure and supplement reservations, which is not justified.
+
+The current writer stores the measure dict verbatim (`:620-621`, `:659`). A 16,384 B bound holds only after the footer schema is closed:
+
+- Keys exactly as `_account` writes them now, plus `schema_version` and the supplement descriptor.
+- `supplement.relative_path` exactly `f2.supplement.v1.json`.
+- `size_bytes` at most 262,144. SHA-256 is 64 hex characters.
+- `fragment_bytes` is 4,096. `ext4_used_bytes` and `c_free_bytes` are integers in `0 .. 2^64-1`.
+- Extra measure keys refuse.
+
+Under that schema, canonical JSON with 20-digit filesystem counters is 776 B. The cap is 16,384 B. The existing per-file 4,096 B rounding reserve and 4,096 B metadata reserve stay on top. `_write_json` still refuses before `open` when the encoding exceeds the cap. A partial write remains one present file counted by `st_blocks`, with the failure slot still reserved. The failure object stays out of this footer.
+
+Revised successor entry:
+
+8,216,576 − 245,760 = **7,970,816 B**.
+
+Old all-forms assignment, charged once inside the existing 6,291,456 B prior carry and subtracted separately from the 8 MiB aggregate:
+
+| Form | Bytes |
+|---|---:|
+| Old F2 directory | 106,496 |
+| Old non-shared AUX / Windows / copies | 83,200 |
+| Compact index, two forms | 24,576 |
+| Held diagnostic transcript, one form | 12,288 |
+| Old capture Git blob, 11 clusters | 45,056 |
+| Old setup Git blob, 13 clusters | 53,248 |
+| **Observed upper bound** | **324,864** |
+| Explicit cap, 384 KiB | 393,216 |
+| Spare inside that cap | 68,352 |
+
+That spare also covers `+256` or `+4,096` metadata on the two Git blobs. A third Git copy does not fit and must refuse. Successor subcap: 8,388,608 − 393,216 = **7,995,392 B**. Entry 7,970,816 B fits by **24,576 B**. That margin allows the fresh directory data allocation to rise from 4,096 B to 28,672 B before entry refuses. A 512 KiB old-proof cap does not fit this entry: 8,388,608 − 524,288 = 7,864,320, and 7,970,816 exceeds it by 114,496 B.
+
+Global envelope, old F2 not added a second time:
+
+| Line | Draft | Revised |
+|---|---:|---:|
+| Prior carry | 6,291,456 | 6,291,456 |
+| Successor F2 | 8,282,112 | 7,995,392 |
+| All other lines | unchanged | unchanged |
+| Total | 536,072,192 | **535,785,472** |
+| Seal 536,870,912 spare | 798,720 | **1,085,440** |
+
+The 74 MiB shared remainder stays 77,594,624 B: 72 MiB for six runtime extras plus 2 MiB planned daemon/journal. That split is not a growth guarantee. Entry, end, unknown, and excess stops stay fail-closed. The bridge lower bound remains `max(2,097,152, 5,369,856 + 524,288) = 5,894,144`, inside 6,291,456 by 397,312. It includes idle and unattributed C-free decline and does not reconstruct the missing closing meter or the 618,496 B partial charge.
+
+## Owned 2 MiB line still open
+
+The held transcript file is 6,651 B, SHA-256 `4677b02a792cf28f83cc59cf15c575b1358c6d9fd4b6ced00e33d9416e8d3db8`. It is the held outer tool text. The separate native stdout string was not retained. Its cluster form is 12,288 B. The drafts still omit it and quote owned retention as 2,057,216 + 24,576 = 2,081,792 B, with 15,360 B spare. Adding the transcript as a pure 12,288 B form gives 2,094,080 B, with 3,072 B under 2,097,152 B.
+
+That 3,072 B spare is real only when the transcript form carries no further metadata. The index line already prices 4,096 B metadata inside each 12,288 B half of 24,576 B. The same `+4,096` on the transcript makes the form 16,384 B and the owned total 2,098,176 B, which is 1,024 B over 2 MiB. Setup's `rounded()` adds 256 B and would make the transcript form 12,544 B, owned 2,094,336 B, spare 2,816 B. The documents must use the same per-file rule already inside the 2,057,216 B quote. The 2 MiB ceiling does not rise. A 1,024 B miss still fits the 6 MiB bridge, but it does not fit the owned ceiling.
+
+## Tests the revised plan has to name
+
+- Maximum canonical footer under the frozen schema is at most 16,384 B, and 16,385 B refuses before open.
+- Entry with footer cap 16,384 B and the other three controls at 262,144 B equals 7,970,816 B; one byte more refuses.
+- The pre-footer reservation is 16,384 + 262,144 plus two 4,096 B rounding blocks and two 4,096 B metadata blocks. The failure file remains reserved. A partial footer does not create a second footer or drop that failure slot.
+- Supplement, originals index, and `f2.failure.v1.json` still stop above 262,144 B.
+- Validator accounting uses `FOOTER_LIMIT + RECORD_LIMIT` where it now requires `2 * RECORD_LIMIT` (`recovery_v1.py:865-874`).
+- The rejected debit is a fixture: 8,216,576 + 226,560 exceeds 8,388,608. The accepted assignment is 324,864 ≤ 393,216 and 7,970,816 ≤ 7,995,392.
+- The recomputed seal total is 535,785,472 B. The prior 6,291,456 B appears once.
+- The transcript quote uses the same metadata rule as the 2,057,216 B inventory, and the owned sum stays ≤ 2,097,152 B.
+
+No implementation follows from this critique. The missing c75 closing meter stays UNAVAILABLE. Task 2.10 stays unchecked. Whole 1.5, genuine consumers, Q1, archive, and merge stay open.

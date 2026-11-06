@@ -1,0 +1,554 @@
+{
+  "schema_version": 1,
+  "scope": "closed_guardian_config_tdd_original_bytes_only",
+  "dependency_source_commit": "65c9fa91e2c396265183ec47cb090629ccdd174a",
+  "retainer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\Retain-GuardianConfigTdd.v1.ps1",
+    "size_bytes": 13256,
+    "sha256": "4cd497b9b854143178816002861baecc2907ce6f87f40b6d04cbd87e59870368",
+    "creation_time_utc_ticks": 639275047840570857,
+    "last_write_time_utc_ticks": 639275047840570857,
+    "attributes": 2080
+  },
+  "started_utc": "2026-10-13T16:13:38.4025760Z",
+  "finished_utc": "2026-10-13T16:13:39.3353370Z",
+  "destination_root": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals",
+  "retained_original_file_count": 17,
+  "retained_original_bytes": 233676,
+  "copy_method": "exclusive_byte_stream_no_normalization_no_hardlinks",
+  "destination_files_read_only": true,
+  "source_metadata_and_hashes_unchanged": true,
+  "original_red_exit_code": 1,
+  "original_green_exit_code": 0,
+  "complete_consumer_or_package_acceptance_asserted": false,
+  "arbitrary_descendant_quiescence_asserted": false,
+  "entries": [
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\command.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/command.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\command.v1.json",
+        "size_bytes": 1943,
+        "sha256": "370b1e1bb0b5549dca264c8c66f2a29814ad6b1b7bbb10b5bc92c9d3443905fb",
+        "creation_time_utc_ticks": 639275043342425073,
+        "last_write_time_utc_ticks": 639275043342436698,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\command.v1.json",
+        "size_bytes": 1943,
+        "sha256": "370b1e1bb0b5549dca264c8c66f2a29814ad6b1b7bbb10b5bc92c9d3443905fb",
+        "creation_time_utc_ticks": 639275043342425073,
+        "last_write_time_utc_ticks": 639275043342436698,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\command.v1.json",
+        "size_bytes": 1943,
+        "sha256": "370b1e1bb0b5549dca264c8c66f2a29814ad6b1b7bbb10b5bc92c9d3443905fb",
+        "creation_time_utc_ticks": 639275048184342819,
+        "last_write_time_utc_ticks": 639275048184352873,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\result.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/result.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\result.v1.json",
+        "size_bytes": 607,
+        "sha256": "b5c27f02fa4593c7c2c55b583ee3cb88f5a1d4af0fec1ce7a5bab3561d8b22ba",
+        "creation_time_utc_ticks": 639275043350116689,
+        "last_write_time_utc_ticks": 639275043350120005,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\result.v1.json",
+        "size_bytes": 607,
+        "sha256": "b5c27f02fa4593c7c2c55b583ee3cb88f5a1d4af0fec1ce7a5bab3561d8b22ba",
+        "creation_time_utc_ticks": 639275043350116689,
+        "last_write_time_utc_ticks": 639275043350120005,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\result.v1.json",
+        "size_bytes": 607,
+        "sha256": "b5c27f02fa4593c7c2c55b583ee3cb88f5a1d4af0fec1ce7a5bab3561d8b22ba",
+        "creation_time_utc_ticks": 639275048184710142,
+        "last_write_time_utc_ticks": 639275048184710142,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.after.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/source-hashes.after.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275043349835350,
+        "last_write_time_utc_ticks": 639275043349845378,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275043349835350,
+        "last_write_time_utc_ticks": 639275043349845378,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275048185011876,
+        "last_write_time_utc_ticks": 639275048185012622,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.before.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/source-hashes.before.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275043342491488,
+        "last_write_time_utc_ticks": 639275043342491488,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275043342491488,
+        "last_write_time_utc_ticks": 639275043342491488,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "531393134f224e5a327450fd7540144730dec4a105f234f397c5db935f83b4fd",
+        "creation_time_utc_ticks": 639275048185302447,
+        "last_write_time_utc_ticks": 639275048185302447,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stderr.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/stderr.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stderr.raw",
+        "size_bytes": 2576,
+        "sha256": "7fe1b9eb64cd0c479fe0c69326cd459c645a6da81c0c64b33c6efaa3bba74a79",
+        "creation_time_utc_ticks": 639275043342520836,
+        "last_write_time_utc_ticks": 639275043349120834,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stderr.raw",
+        "size_bytes": 2576,
+        "sha256": "7fe1b9eb64cd0c479fe0c69326cd459c645a6da81c0c64b33c6efaa3bba74a79",
+        "creation_time_utc_ticks": 639275043342520836,
+        "last_write_time_utc_ticks": 639275043349120834,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\stderr.raw",
+        "size_bytes": 2576,
+        "sha256": "7fe1b9eb64cd0c479fe0c69326cd459c645a6da81c0c64b33c6efaa3bba74a79",
+        "creation_time_utc_ticks": 639275048185593228,
+        "last_write_time_utc_ticks": 639275048185593228,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stdout.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/red/stdout.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stdout.raw",
+        "size_bytes": 284,
+        "sha256": "5d4f79647b0a5634cb771d701483a06f49b572514ad2f1e0d39404843fae2388",
+        "creation_time_utc_ticks": 639275043342506257,
+        "last_write_time_utc_ticks": 639275043348954964,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\red\\stdout.raw",
+        "size_bytes": 284,
+        "sha256": "5d4f79647b0a5634cb771d701483a06f49b572514ad2f1e0d39404843fae2388",
+        "creation_time_utc_ticks": 639275043342506257,
+        "last_write_time_utc_ticks": 639275043348954964,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\red\\stdout.raw",
+        "size_bytes": 284,
+        "sha256": "5d4f79647b0a5634cb771d701483a06f49b572514ad2f1e0d39404843fae2388",
+        "creation_time_utc_ticks": 639275048185943453,
+        "last_write_time_utc_ticks": 639275048185943453,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\command.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/command.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\command.v1.json",
+        "size_bytes": 1826,
+        "sha256": "b368b6ccbdee089e36e1a6556d6afdb5a4d7af4afb515b987302ab5998ff2582",
+        "creation_time_utc_ticks": 639275043844558965,
+        "last_write_time_utc_ticks": 639275043844569432,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\command.v1.json",
+        "size_bytes": 1826,
+        "sha256": "b368b6ccbdee089e36e1a6556d6afdb5a4d7af4afb515b987302ab5998ff2582",
+        "creation_time_utc_ticks": 639275043844558965,
+        "last_write_time_utc_ticks": 639275043844569432,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\command.v1.json",
+        "size_bytes": 1826,
+        "sha256": "b368b6ccbdee089e36e1a6556d6afdb5a4d7af4afb515b987302ab5998ff2582",
+        "creation_time_utc_ticks": 639275048186232102,
+        "last_write_time_utc_ticks": 639275048186251555,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\result.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/result.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\result.v1.json",
+        "size_bytes": 609,
+        "sha256": "d11b4ecef48666be26cdfcefb46999e01e27d3157b9bc87f98a4a18b6b7d9e28",
+        "creation_time_utc_ticks": 639275043898558678,
+        "last_write_time_utc_ticks": 639275043898665748,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\result.v1.json",
+        "size_bytes": 609,
+        "sha256": "d11b4ecef48666be26cdfcefb46999e01e27d3157b9bc87f98a4a18b6b7d9e28",
+        "creation_time_utc_ticks": 639275043898558678,
+        "last_write_time_utc_ticks": 639275043898665748,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\result.v1.json",
+        "size_bytes": 609,
+        "sha256": "d11b4ecef48666be26cdfcefb46999e01e27d3157b9bc87f98a4a18b6b7d9e28",
+        "creation_time_utc_ticks": 639275048186590950,
+        "last_write_time_utc_ticks": 639275048186590950,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.after.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/source-hashes.after.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275043898269962,
+        "last_write_time_utc_ticks": 639275043898279962,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275043898269962,
+        "last_write_time_utc_ticks": 639275043898279962,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\source-hashes.after.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275048186906515,
+        "last_write_time_utc_ticks": 639275048186906515,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.before.json",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/source-hashes.before.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275043844638336,
+        "last_write_time_utc_ticks": 639275043844648342,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275043844638336,
+        "last_write_time_utc_ticks": 639275043844648342,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\source-hashes.before.json",
+        "size_bytes": 1251,
+        "sha256": "4b77bf132dbfa09654dac550ed314d9e86cd985a965a46171ebe474e7be184df",
+        "creation_time_utc_ticks": 639275048187264189,
+        "last_write_time_utc_ticks": 639275048187264189,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stderr.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/stderr.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stderr.raw",
+        "size_bytes": 3651,
+        "sha256": "272e921c39fdee9ae6578808ccc6447e78ca1ff9874edfb06a08a84a17948452",
+        "creation_time_utc_ticks": 639275043844658372,
+        "last_write_time_utc_ticks": 639275043897549748,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stderr.raw",
+        "size_bytes": 3651,
+        "sha256": "272e921c39fdee9ae6578808ccc6447e78ca1ff9874edfb06a08a84a17948452",
+        "creation_time_utc_ticks": 639275043844658372,
+        "last_write_time_utc_ticks": 639275043897549748,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\stderr.raw",
+        "size_bytes": 3651,
+        "sha256": "272e921c39fdee9ae6578808ccc6447e78ca1ff9874edfb06a08a84a17948452",
+        "creation_time_utc_ticks": 639275048187591412,
+        "last_write_time_utc_ticks": 639275048187591412,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stdout.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/guardian-config-tdd-01/green/stdout.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stdout.raw",
+        "size_bytes": 288,
+        "sha256": "c32b1bb72b9823af028e3f6cd046941f63bf4d4e81db4665fd31d6f03ff576c7",
+        "creation_time_utc_ticks": 639275043844658372,
+        "last_write_time_utc_ticks": 639275043848088844,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-config-tdd-01\\green\\stdout.raw",
+        "size_bytes": 288,
+        "sha256": "c32b1bb72b9823af028e3f6cd046941f63bf4d4e81db4665fd31d6f03ff576c7",
+        "creation_time_utc_ticks": 639275043844658372,
+        "last_write_time_utc_ticks": 639275043848088844,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\guardian-config-tdd-01\\green\\stdout.raw",
+        "size_bytes": 288,
+        "sha256": "c32b1bb72b9823af028e3f6cd046941f63bf4d4e81db4665fd31d6f03ff576c7",
+        "creation_time_utc_ticks": 639275048187902213,
+        "last_write_time_utc_ticks": 639275048187902213,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\run_guardian_config_tdd_v1.py",
+      "source_linux_path": null,
+      "destination_relative": "native/run_guardian_config_tdd_v1.py",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\run_guardian_config_tdd_v1.py",
+        "size_bytes": 10721,
+        "sha256": "1acd91a2fbb35905b5779ac30c1fd8a296976362d7978427be6de66efb73ebb8",
+        "creation_time_utc_ticks": 639275039315789858,
+        "last_write_time_utc_ticks": 639275041771515837,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\run_guardian_config_tdd_v1.py",
+        "size_bytes": 10721,
+        "sha256": "1acd91a2fbb35905b5779ac30c1fd8a296976362d7978427be6de66efb73ebb8",
+        "creation_time_utc_ticks": 639275039315789858,
+        "last_write_time_utc_ticks": 639275041771515837,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\native\\run_guardian_config_tdd_v1.py",
+        "size_bytes": 10721,
+        "sha256": "1acd91a2fbb35905b5779ac30c1fd8a296976362d7978427be6de66efb73ebb8",
+        "creation_time_utc_ticks": 639275048188203092,
+        "last_write_time_utc_ticks": 639275048188203092,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_linux_path": "/var/tmp/vast-guardian-config-tdd-20261013a/red/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "destination_relative": "linux/var/tmp/vast-guardian-config-tdd-20261013a/red/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54326,
+        "sha256": "3b649aea69120fbf3968a55802ac6ed9695625bdfa2c9f729b058dc7b04283a1",
+        "creation_time_utc_ticks": 639275043342331879,
+        "last_write_time_utc_ticks": 639275043342331879,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54326,
+        "sha256": "3b649aea69120fbf3968a55802ac6ed9695625bdfa2c9f729b058dc7b04283a1",
+        "creation_time_utc_ticks": 639275043342331879,
+        "last_write_time_utc_ticks": 639275043342331879,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\linux\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54326,
+        "sha256": "3b649aea69120fbf3968a55802ac6ed9695625bdfa2c9f729b058dc7b04283a1",
+        "creation_time_utc_ticks": 639275048188572952,
+        "last_write_time_utc_ticks": 639275048188572952,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_linux_path": "/var/tmp/vast-guardian-config-tdd-20261013a/red/tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "destination_relative": "linux/var/tmp/vast-guardian-config-tdd-20261013a/red/tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275043342291878,
+        "last_write_time_utc_ticks": 639275043342291878,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275043342291878,
+        "last_write_time_utc_ticks": 639275043342291878,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\linux\\var\\tmp\\vast-guardian-config-tdd-20261013a\\red\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275048189408624,
+        "last_write_time_utc_ticks": 639275048189408624,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_linux_path": "/var/tmp/vast-guardian-config-tdd-20261013a/green/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "destination_relative": "linux/var/tmp/vast-guardian-config-tdd-20261013a/green/scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54793,
+        "sha256": "f7da3f9fc3ee46cc10cc7330f6c8a410ea7448c8b01793fe5e245cd5293ac586",
+        "creation_time_utc_ticks": 639275043844479495,
+        "last_write_time_utc_ticks": 639275043844479495,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54793,
+        "sha256": "f7da3f9fc3ee46cc10cc7330f6c8a410ea7448c8b01793fe5e245cd5293ac586",
+        "creation_time_utc_ticks": 639275043844479495,
+        "last_write_time_utc_ticks": 639275043844479495,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\linux\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\scripts\\publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 54793,
+        "sha256": "f7da3f9fc3ee46cc10cc7330f6c8a410ea7448c8b01793fe5e245cd5293ac586",
+        "creation_time_utc_ticks": 639275048190218536,
+        "last_write_time_utc_ticks": 639275048190228547,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_linux_path": "/var/tmp/vast-guardian-config-tdd-20261013a/green/tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "destination_relative": "linux/var/tmp/vast-guardian-config-tdd-20261013a/green/tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275043844439493,
+        "last_write_time_utc_ticks": 639275043844439493,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275043844439493,
+        "last_write_time_utc_ticks": 639275043844439493,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\guardian-config-tdd-01\\originals\\linux\\var\\tmp\\vast-guardian-config-tdd-20261013a\\green\\tests\\test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+        "size_bytes": 48524,
+        "sha256": "948b2848e7b6bda3dd07e6de795ab7171a0cbb5c0e9646656b9eddee962744ce",
+        "creation_time_utc_ticks": 639275048191025313,
+        "last_write_time_utc_ticks": 639275048191031618,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    }
+  ]
+}

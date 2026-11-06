@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "independent_readback_passed": true,
+  "reviewed_utc": "2026-10-11T22:30:49.1557393Z",
+  "checks": {
+    "original_rc_zero": true,
+    "preflight_assertion_true": true,
+    "exact_selected_root": true,
+    "exact_source_commit": true,
+    "raw_verifier_original_rc_zero": true,
+    "raw_verifier_proof_validated": true,
+    "raw_verifier_tracks12115": true,
+    "raw_verifier_actual_source_path": true,
+    "raw_verifier_bytes_verified": true,
+    "raw_verifier_stderr_empty": true,
+    "stdout_hash_matches_original": true,
+    "stderr_hash_matches_original": true,
+    "wrapper_exact_and_unchanged": true,
+    "fixed_controls08": true,
+    "two_intended_children_not_executed": true,
+    "minimum30_command": true,
+    "larger31_command": true
+  },
+  "selected_source_directory_creation": false,
+  "fixture_launch": false,
+  "negative_launch": false,
+  "measured_acceptance_asserted": false,
+  "original_stdout_sha256": "cb1b62de0a04780d612f93801332ec097cac32b184ea47e463ce07cb220dd5d7",
+  "original_stderr_sha256": "0d876a7e4a3a2ddc8c388c9375065b26f7b9cd0ca28845c5bc238db1fdfa50e5",
+  "nested_raw_verifier_stdout_bytes": 223,
+  "nested_raw_verifier_stdout_sha256": "81cc3d1123f9bae90ede012b998e894f2e06d0544a544d6619e7dc897463e4e0"
+}

@@ -1,0 +1,38 @@
+FE....E.............
+======================================================================
+ERROR: test_all_nineteen_fixed_requests_bind_raw_originals_and_exact_saved_supplement (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_all_nineteen_fixed_requests_bind_raw_originals_and_exact_saved_supplement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 219, in test_all_nineteen_fixed_requests_bind_raw_originals_and_exact_saved_supplement
+    result = recovery.recover_stopped_b1_v1(**arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 391, in recover_stopped_b1_v1
+    report, sealed = _json(originals["report"]), _http_json(originals["inspect"])
+                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 316, in _http_json
+    _fail("sealed_http")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 58, in _fail
+    raise compiler.FixtureCompilerError("f2_" + cause)
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_sealed_http
+
+======================================================================
+ERROR: test_failed_archive_keeps_prefix_and_failure_receipt_without_retry (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_failed_archive_keeps_prefix_and_failure_receipt_without_retry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 242, in test_failed_archive_keeps_prefix_and_failure_receipt_without_retry
+    self.assertFalse(found.exception.facts["complete"])
+                     ^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FixtureCompilerError' object has no attribute 'facts'
+
+======================================================================
+FAIL: test_actual_physical_growth_stops_before_next_archive (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_actual_physical_growth_stops_before_next_archive)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 271, in test_actual_physical_growth_stops_before_next_archive
+    self.assertTrue((arguments["output_dir"]/"f2.failure.v1.json").exists())
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.404s
+
+FAILED (failures=1, errors=2)

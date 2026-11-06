@@ -1,0 +1,17 @@
+E
+======================================================================
+ERROR: test_accepted_policy_fixture_compiler_gate2_p0_v1 (unittest.loader._FailedTest.test_accepted_policy_fixture_compiler_gate2_p0_v1)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_accepted_policy_fixture_compiler_gate2_p0_v1
+Traceback (most recent call last):
+  File "C:\Python314\Lib\unittest\loader.py", line 141, in loadTestsFromName
+    module = __import__(module_name)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 16, in <module>
+    from tests.fixtures import accepted_policy_fixture_compiler_gate2_p0_v1 as p0
+ImportError: cannot import name 'accepted_policy_fixture_compiler_gate2_p0_v1' from 'tests.fixtures' (unknown location)
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

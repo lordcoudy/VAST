@@ -1,0 +1,37 @@
+{
+  "actual_request_and_full_provider_result_snapshot": {
+    "path": "vast-gate2-pure-clock-json-readiness-20261017-01.original.json",
+    "representation": "Post-return JSON snapshot of exact argument object and complete provided MCP result; not raw JSON-RPC wire bytes",
+    "sha256": "202ab1503c90269562da3c97666746053a98db08afc64c71d6c21328ac6893c1",
+    "size_bytes": 615
+  },
+  "functions_executor_observation": {
+    "JSON_parse": "function",
+    "Proxy": "function",
+    "scope": "Builtin typeof observations only; no callable side-effect-free Proxy predicate exposed",
+    "structuredClone": "undefined"
+  },
+  "observed": {
+    "JSON_parse_context_source": "1",
+    "JSON_rawJSON": "function",
+    "existing_gate2_state": false,
+    "global_performance_now": "function",
+    "sample_finite": true
+  },
+  "physical_acceptance": false,
+  "scope": "ONE pure JavaScript capability call in existing actual NodeREPL; no imports/files/OS/physical program/setup/probes/API/g2 state mutation or kernel reset",
+  "source_approval": false,
+  "task_2_10_complete": false,
+  "transport_encoder_boundary": {
+    "Proxy_refusal_guaranteed": false,
+    "Python_numeric_spelling_identity_claimed": false,
+    "all_actual_JSON_fields_required": true,
+    "ambient_host_decode_allocation_bounded_by_12k": false,
+    "data": "Host-decoded MCP JSON and root-created plain argument objects",
+    "output_bound_applies_to": "Complete selected ASCII-escaped representation, measured before encoding",
+    "production_tool": "tools.mcp__node_repl__js",
+    "raw_wire_byte_preservation_claimed": false,
+    "reference": "https://github.com/modelcontextprotocol/modelcontextprotocol/blob/main/schema/2025-06-18/schema.ts",
+    "trusted_assumption": "The host bridge supplies ordinary decoded JSON values. The MCP schema establishes JSON wire data, not an independent proof of host bridge internals. No arbitrary JavaScript provider callback is admitted."
+  }
+}

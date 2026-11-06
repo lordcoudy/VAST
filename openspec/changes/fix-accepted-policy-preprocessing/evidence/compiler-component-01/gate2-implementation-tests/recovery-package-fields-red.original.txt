@@ -1,0 +1,18 @@
+E
+======================================================================
+ERROR: test_package_reader_labels_metadata_and_rejects_duplicates (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_package_reader_labels_metadata_and_rejects_duplicates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 174, in test_package_reader_labels_metadata_and_rejects_duplicates
+    self.assertEqual(recovery._packages(status.replace(b"Version: 11.4\n", b"Version: 11.4\nConffiles:\n /etc/controlled 000 obsolete\n")), result)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 231, in _packages
+    _fail("package_field")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 58, in _fail
+    raise compiler.FixtureCompilerError("f2_" + cause)
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_package_field
+
+----------------------------------------------------------------------
+Ran 1 test in 0.006s
+
+FAILED (errors=1)

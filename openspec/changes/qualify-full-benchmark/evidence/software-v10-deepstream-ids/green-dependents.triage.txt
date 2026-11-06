@@ -1,0 +1,20 @@
+Amendment 7, 6D.2 - triage of green-dependents.original.log (518 tests, errors=8, skipped=1).
+
+Scope: 46 test modules that import DeepStream checkpoint code, plus the gates
+test_operational_identifier_domain_v1 and test_runtime_image_python310_compat_v1.
+A broader first attempt (69 modules) was stopped after ~25 min at ~1 test/40 s
+(jbd2_log_wait_commit, host disk idle; part of that time a concurrent HEAD
+baseline run competed for IO). The narrowed set still contains the fsync-heavy
+test_backend_q4_two_phase_executor_v1 and finished in 1475 s. Hosted CI and the
+ext4 suite (6D.8) run the full suite.
+
+All 8 errors are FileNotFoundError for ignored inputs that exist only in the
+frozen root, not in this worktree (environment, not the change):
+  1  artifacts/deepstream_publication_v3/runtime_image_evidence.v1.json
+     (test_checkpoint_deepstream_runtime_image_evidence_v1)
+  2  artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json
+     (test_publication_runtime_frozen_identity_constants_v1; same class as the
+      2 errors recorded in 6C.2 for the previous tag)
+  5  models/openvino/public/intel/vehicle-license-plate-detection-barrier-0106/FP16/*.xml
+     (test_publication_policy_qualification_fragments_from_authority_v2)
+No failures; no error mentions DeepStream process ids or the request domain.

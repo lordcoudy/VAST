@@ -1,0 +1,24 @@
+command: canonical WSL Python3.12.3 controlled tracked capture unittest
+exit_code: 1
+..............E........F........
+======================================================================
+ERROR: test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 259, in test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status
+    self.assertEqual(status["pre_meter"],self.pre)
+                     ~~~~~~^^^^^^^^^^^^^
+KeyError: 'pre_meter'
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_pre_meter_payload_must_match_actual_native_stdout_hash (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_meter_payload_must_match_actual_native_stdout_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 268, in test_pre_meter_payload_must_match_actual_native_stdout_hash
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+AssertionError: CaptureRefusal not raised
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 32 tests in 0.127s
+System.Management.Automation.RemoteException
+FAILED (failures=1, errors=1)

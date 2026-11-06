@@ -1,0 +1,30 @@
+{
+  "executable": "wsl.exe",
+  "arguments": [
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--cd",
+    "/home/s-a-balashov/work/vast-guardian-lifetime-red-20261012-02",
+    "--exec",
+    "env",
+    "-u",
+    "PYTHONPATH",
+    "-u",
+    "PYTHONHOME",
+    "HOME=/home/s-a-balashov",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "-c",
+    "import importlib\nimport json\nfrom pathlib import Path\nimport sys\nimport unittest\n\nroot = Path('/home/s-a-balashov/work/vast-guardian-lifetime-red-20261012-02')\nif root.resolve(strict=True) != root or Path.cwd().resolve(strict=True) != root:\n    raise RuntimeError('Focused regression overlay root is not canonical')\nexpected = {\n    'tests.test_accepted_policy_guardian_lifecycle_fixture_v1': root / 'tests/test_accepted_policy_guardian_lifecycle_fixture_v1.py',\n    'tests.fixtures.accepted_policy_guardian_lifecycle_fixture_v1': root / 'tests/fixtures/accepted_policy_guardian_lifecycle_fixture_v1.py',\n    'checkpoint_gstreamer_analytics_sidecar': root / 'scripts/checkpoint_gstreamer_analytics_sidecar.py',\n}\nobserved = {}\nfor name, path in expected.items():\n    module = importlib.import_module(name)\n    loaded = Path(module.__file__).resolve(strict=True)\n    if loaded != path or path.resolve(strict=True) != path:\n        raise RuntimeError(f'Focused regression module origin drifted: {name}: {loaded}')\n    observed[name] = str(loaded)\nprint(json.dumps({'module_origin_guards_passed': True, 'loaded_paths': observed, 'test_execution_count_planned': 1}, sort_keys=True), flush=True)\nsuite = unittest.defaultTestLoader.loadTestsFromName('tests.test_accepted_policy_guardian_lifecycle_fixture_v1.AcceptedPolicyGuardianLifecycleFixtureTests.test_owner_lifetime_survives_fixture_clock_advance_and_explicit_close')\nif suite.countTestCases() != 1:\n    raise RuntimeError('Focused regression loader did not select exactly one test')\nresult = unittest.TextTestRunner(stream=sys.stderr, verbosity=2).run(suite)\nif result.testsRun != 1:\n    raise RuntimeError('Focused regression runner did not execute exactly one test')\nsys.exit(0 if result.wasSuccessful() else 1)"
+  ],
+  "started_utc": "2026-10-12T11:36:40.3909023Z",
+  "finished_utc": "2026-10-12T11:36:41.5258187Z",
+  "elapsed_seconds": 1.1348906,
+  "original_exit_code": 1,
+  "stdout_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\test-original.stdout.raw",
+  "stderr_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\test-original.stderr.raw",
+  "stdout_sha256": "afc6d3e9ee82cf53dcd27f9f7cd390af2d91c4a0cf70f81702c858002aafa0df",
+  "stderr_sha256": "380ee1c1438138911ba0ff3d694e6bff9a8d2ff8c829f22b8132858c65edcf3a"
+}

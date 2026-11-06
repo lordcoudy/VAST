@@ -1,0 +1,21 @@
+command: canonical WSL Python3.12.3 controlled C unittest
+exit_code: 1
+......................E.......
+======================================================================
+ERROR: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 515, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    completion = gate.complete_c_invocation_v1(stage, project_root=root, returned_result=result,
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 953, in complete_c_invocation_v1
+    budget(prospective=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 938, in budget
+    measurements.append(measure)
+    ^^^^^^^^^^^^
+NameError: name 'measurements' is not defined
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 30 tests in 0.398s
+System.Management.Automation.RemoteException
+FAILED (errors=1)

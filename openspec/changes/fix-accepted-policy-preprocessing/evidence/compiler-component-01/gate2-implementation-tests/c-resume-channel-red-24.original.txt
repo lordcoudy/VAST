@@ -1,0 +1,16 @@
+controlled actual _Run.process schema channel projection RED; no native process effects
+test_terminal_keeps_actual_process_channel_prefix_counts_and_complete_digests (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_terminal_keeps_actual_process_channel_prefix_counts_and_complete_digests) ... ERROR
+
+======================================================================
+ERROR: test_terminal_keeps_actual_process_channel_prefix_counts_and_complete_digests (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_terminal_keeps_actual_process_channel_prefix_counts_and_complete_digests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 714, in test_terminal_keeps_actual_process_channel_prefix_counts_and_complete_digests
+    self.assertEqual(known['/'+channel+'_bytes'],len(data))
+                     ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+KeyError: '/stdout_bytes'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.061s
+
+FAILED (errors=1)

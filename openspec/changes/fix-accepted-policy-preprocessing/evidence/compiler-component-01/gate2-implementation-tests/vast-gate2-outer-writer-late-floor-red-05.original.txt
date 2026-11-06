@@ -1,0 +1,25 @@
+test_late_floor_cannot_authorize_exclusive_open (w.WriterTests.test_late_floor_cannot_authorize_exclusive_open) ... FAIL
+test_late_floor_cannot_authorize_write_after_owned_open (w.WriterTests.test_late_floor_cannot_authorize_write_after_owned_open) ... FAIL
+
+======================================================================
+FAIL: test_late_floor_cannot_authorize_exclusive_open (w.WriterTests.test_late_floor_cannot_authorize_exclusive_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 389, in test_late_floor_cannot_authorize_exclusive_open
+    self.assertFalse(self.target.exists())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: True is not false
+
+======================================================================
+FAIL: test_late_floor_cannot_authorize_write_after_owned_open (w.WriterTests.test_late_floor_cannot_authorize_write_after_owned_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 403, in test_late_floor_cannot_authorize_write_after_owned_open
+    self.assertEqual(self.target.read_bytes(), b'')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{"call":{"codes":["fixed"],"tool":"contro[65 chars]"}]}' != b''
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.108s
+
+FAILED (failures=2)

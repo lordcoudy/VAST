@@ -1,0 +1,133 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 734, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 720, in main
+    result = build_publication_image_group(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 680, in build_publication_image_group
+    receipt_rows.append(_build_selected_image_v1(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 581, in _build_selected_image_v1
+    build_one(first_ref)
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 579, in build_one
+    command_runner(command, env=environment)
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_image_build_v1.py", line 392, in _run
+    raise ValueError(f"command failed ({completed.returncode}): {command[0]}: {detail}")
+ValueError: command failed (1): docker: #0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.deepstream
+#1 transferring dockerfile: 3.54kB done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#2 ...
+
+#3 [auth] nvidia/deepstream:pull token for nvcr.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#2 ...
+
+#4 [auth] nvidia/deepstream:pull token for nvcr.io
+#4 DONE 0.0s
+
+#2 [internal] load metadata for nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#2 DONE 2.0s
+
+#5 [internal] load .dockerignore
+#5 transferring context:
+#5 transferring context: 2B done
+#5 DONE 2.9s
+
+#6 [internal] load build context
+#6 DONE 0.0s
+
+#7 [auth] nvidia/deepstream:pull token for nvcr.io
+#7 DONE 0.0s
+
+#8 [native_builder  1/14] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 ...
+
+#9 [auth] nvidia/deepstream:pull token for nvcr.io
+#9 DONE 0.0s
+
+#8 [native_builder  1/14] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 resolve nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759 0.5s done
+#8 DONE 0.5s
+
+#6 [internal] load build context
+#6 transferring context: 379.94kB done
+#6 DONE 0.1s
+
+#8 [native_builder  1/14] FROM nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759
+#8 CACHED
+
+#10 [native_builder  2/14] RUN command -v c++ >/dev/null   && command -v pkg-config >/dev/null   && pkg-config --exists       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0
+#10 DONE 3.7s
+
+#11 [native_builder  3/14] WORKDIR /workspace/project
+#11 DONE 0.1s
+
+#12 [native_builder  4/14] COPY CMakeLists.txt /workspace/project/CMakeLists.txt
+#12 DONE 0.0s
+
+#13 [native_builder  5/14] COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+#13 DONE 0.0s
+
+#14 [native_builder  6/14] COPY deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp
+#14 DONE 3.5s
+
+#15 [native_builder  7/14] COPY deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp
+#15 DONE 0.2s
+
+#16 [native_builder  8/14] COPY deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp /workspace/project/deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp
+#16 DONE 0.1s
+
+#17 [native_builder  9/14] COPY deploy/native_gst_probe/checkpoint_native_policy_client.hpp /workspace/project/deploy/native_gst_probe/checkpoint_native_policy_client.hpp
+#17 DONE 0.0s
+
+#18 [native_builder 10/14] COPY deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp
+#18 DONE 0.0s
+
+#19 [native_builder 11/14] COPY deploy/native_gst_probe/checkpoint_runtime_emitter.hpp /workspace/project/deploy/native_gst_probe/checkpoint_runtime_emitter.hpp
+#19 DONE 0.0s
+
+#20 [native_builder 12/14] COPY deploy/native_gst_probe/checkpoint_source_coordinator.cpp /workspace/project/deploy/native_gst_probe/checkpoint_source_coordinator.cpp
+#20 DONE 0.0s
+
+#21 [native_builder 13/14] COPY deploy/native_gst_probe/vast_native_gst_probe.cpp /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp
+#21 DONE 0.0s
+
+#22 [native_builder 14/14] RUN install -d -m 0755 /opt/vast/image-root/usr/local/bin   && GST_CFLAGS="$(pkg-config --cflags       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && GST_LIBS="$(pkg-config --libs       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && chmod 0555 /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && find /opt/vast/image-root -exec touch -h -d "@1722470400" {} +
+#22 0.279 /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp:13:10: fatal error: checkpoint_study_reference.hpp: No such file or directory
+#22 0.279    13 | #include "checkpoint_study_reference.hpp"
+#22 0.279       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#22 0.279 compilation terminated.
+#22 ERROR: process "/bin/sh -c install -d -m 0755 /opt/vast/image-root/usr/local/bin   && GST_CFLAGS=\"$(pkg-config --cflags       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)\"   && GST_LIBS=\"$(pkg-config --libs       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)\"   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && chmod 0555 /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && find /opt/vast/image-root -exec touch -h -d \"@${SOURCE_DATE_EPOCH}\" {} +" did not complete successfully: exit code: 1
+------
+ > [native_builder 14/14] RUN install -d -m 0755 /opt/vast/image-root/usr/local/bin   && GST_CFLAGS="$(pkg-config --cflags       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && GST_LIBS="$(pkg-config --libs       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)"   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && chmod 0555 /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && find /opt/vast/image-root -exec touch -h -d "@1722470400" {} +:
+0.279 /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp:13:10: fatal error: checkpoint_study_reference.hpp: No such file or directory
+0.279    13 | #include "checkpoint_study_reference.hpp"
+0.279       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+0.279 compilation terminated.
+------
+Dockerfile.deepstream:29
+--------------------
+  28 |     
+  29 | >>> RUN install -d -m 0755 /opt/vast/image-root/usr/local/bin \
+  30 | >>>   && GST_CFLAGS="$(pkg-config --cflags \
+  31 | >>>       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  32 | >>>   && GST_LIBS="$(pkg-config --libs \
+  33 | >>>       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)" \
+  34 | >>>   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread \
+  35 | >>>       ${GST_CFLAGS} \
+  36 | >>>       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp \
+  37 | >>>       ${GST_LIBS} -pie \
+  38 | >>>       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe \
+  39 | >>>   && chmod 0555 /opt/vast/image-root/usr/local/bin/vast_native_gst_probe \
+  40 | >>>   && find /opt/vast/image-root -exec touch -h -d "@${SOURCE_DATE_EPOCH}" {} +
+  41 |     
+--------------------
+ERROR: failed to build: failed to solve: process "/bin/sh -c install -d -m 0755 /opt/vast/image-root/usr/local/bin   && GST_CFLAGS=\"$(pkg-config --cflags       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)\"   && GST_LIBS=\"$(pkg-config --libs       gstreamer-1.0 gstreamer-app-1.0 gstreamer-rtp-1.0 gstreamer-video-1.0)\"   && c++ -std=c++17 -O3 -DNDEBUG -fPIE -pthread       ${GST_CFLAGS}       /workspace/project/deploy/native_gst_probe/vast_native_gst_probe.cpp       ${GST_LIBS} -pie       -o /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && chmod 0555 /opt/vast/image-root/usr/local/bin/vast_native_gst_probe   && find /opt/vast/image-root -exec touch -h -d \"@${SOURCE_DATE_EPOCH}\" {} +" did not complete successfully: exit code: 1

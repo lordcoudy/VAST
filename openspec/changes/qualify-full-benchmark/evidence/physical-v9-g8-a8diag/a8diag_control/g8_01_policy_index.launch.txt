@@ -1,0 +1,32 @@
+started_utc=2026-10-09T14:59:42.768360510Z boot_id=c062ef70-8ac8-4dc2-a59a-14144e851c6e commit=ad9bda3d6eed425fae01ba1cd65a9907ba32df8a
+argv=/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python argv=-B argv=-E argv=-s argv=scripts/publication_qualification_promotion_v2.py argv=policy-index argv=--project-root argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a argv=--qualification-transaction-receipt argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_v2_qfb_20261008e/qualification_input_transaction.v2.receipt.json argv=--pilot-root argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e argv=--output-dir argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_index_v2_qfb_20261008e_a8diag argv=--execution-closure-receipt argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_execution_closure_v1_qfb_20261008e/qualification_execution_closure.v1.receipt.json argv=--deepstream-fragment argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_v2_qfb_20261008e/fragments/deepstream/qualification_fragment.json argv=--savant-fragment argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_v2_qfb_20261008e/fragments/savant/qualification_fragment.json argv=--openvino-gva-fragment argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_v2_qfb_20261008e/fragments/openvino_gva/qualification_fragment.json argv=--gstreamer-custom-fragment argv=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_v2_qfb_20261008e/fragments/gstreamer_custom/qualification_fragment.json 
+uid=1000 gid=1000 cwd=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
+--- python -VV
+Python 3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]
+--- sys.path (-B -E -s; the script directory is prepended at run time)
+["", "/usr/lib/python312.zip", "/usr/lib/python3.12", "/usr/lib/python3.12/lib-dynload", "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/lib/python3.12/site-packages"]
+--- env (values of secret-like names masked)
+DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+DISPLAY=:0
+HOME=/home/s-a-balashov
+HOSTTYPE=x86_64
+LANG=C.UTF-8
+LOGNAME=s-a-balashov
+NAME=s-a-balashov
+OLDPWD=/mnt/e/STUDY/VAST
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Program Files/PowerShell/7:/mnt/e/WORK/research_extsdk/trunk/CUDA/v11.6/bin:/mnt/e/WORK/research_extsdk/trunk/CUDA/v11.6/libnvvp:/mnt/c/ProgramData/scoop/shims:/mnt/c/Program Files (x86)/ISS/ISS-Auto SDK x64/bin:/mnt/c/Program Files/PostgreSQL/12/bin:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0/:/mnt/c/Windows/System32/OpenSSH/:/mnt/c/Program Files/TortoiseSVN/bin:/mnt/e/WORK/SDK/trunk/qt/5.15.11/msvc2017_64/bin:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/ProgramData/chocolatey/bin:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files (x86)/oh-my-posh/bin:/mnt/c/Program Files/LLVM/bin:/mnt/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit/:/mnt/c/Program Files (x86)/Windows Kits/8.1/Windows Performance Toolkit/:/mnt/c/tools/btop4win/:/mnt/c/Users/s-a-balashov/AppData/Local/anaconda3/Scripts:/mnt/e/SETUP/MISC/vcpkg:/mnt/c/Program Files/Microsoft Visual Studio/2022/Professional/MSBuild/Current/Bin:/mnt/e/PixelBoot/platform-tools:/mnt/c/Program Files/nodejs/:/mnt/c/Program Files/Midnight Commander:/mnt/c/Users/s-a-balashov/AppData/Local/Far Manager x64:/mnt/c/Program Files/UniGetUI/winget-cli_x64/:/mnt/c/Program Files/PowerShell/7/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA App/NvDLISR:/mnt/c/Program Files/doxygen/bin:/mnt/c/Program Files/Graphviz/bin:/Docker/host/bin:/mnt/c/Program Files/TortoiseGit/bin:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/CMake/bin:/mnt/c/Program Files/NVIDIA Corporation/Nsight Compute 2022.1.0/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA NvDLISR:/mnt/c/Program Files/PuTTY/:/mnt/c/Users/s-a-balashov/.grok/bin:/mnt/c/Python314/Scripts/:/mnt/c/Python314/:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Python/Launcher/:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/oh-my-posh/bin/:/mnt/c/Users/s-a-balashov/.local/bin:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Python/Python314/Scripts/:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Python/Python314/:/mnt/c/Program Files/Conan/conan:/mnt/c/Users/s-a-balashov/.cargo/bin:/mnt/c/Users/s-a-balashov/scoop/shims:/mnt/c/Users/s-a-balashov/AppData/Local/pnpm:/mnt/c/Users/s-a-balashov/AppData/Local/Microsoft/WindowsApps:/mnt/c/Program Files/JetBrains/CLion 2023.3.4/bin:/mnt/c/Program Files/nodejs/node_modules/npm/bin:/mnt/c/Users/s-a-balashov/AppData/Local/Microsoft/WinGet/Links:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Program Files (x86)/Dr. Memory/bin/:/mnt/c/Program Files/JetBrains/CLion 2025.1/bin:/mnt/c/Users/s-a-balashov/.dotnet/tools:/mnt/c/Users/s-a-balashov/AppData/Roaming/npm:/mnt/c/Users/s-a-balashov/.lmstudio/bin:/mnt/c/Users/s-a-balashov/AppData/Local/Python/bin:/mnt/c/Users/s-a-balashov/AppData/Local/Microsoft/WinGet/Packages/zarunbal.LogExpert_Microsoft.Winget.Source_8wekyb3d8bbwe:/mnt/c/Users/s-a-balashov/AppData/Local/PowerToys/DSCModules/:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Python/Python314:/mnt/c/Users/s-a-balashov/AppData/Local/Programs/Python/Python312:/mnt/c/Program Files/nodejs:/mnt/c/Python314:/mnt/c/Program Files/Git/mingw64/bin:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/
+PULSE_SERVER=unix:/mnt/wslg/PulseServer
+PWD=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
+SHELL=/bin/bash
+SHLVL=1
+TERM=xterm-256color
+TMPDIR=/var/tmp
+USER=s-a-balashov
+WAYLAND_DISPLAY=wayland-0
+WSL2_GUI_APPS_ENABLED=1
+WSLENV=
+WSL_DISTRO_NAME=Ubuntu
+WSL_INTEROP=/run/WSL/178775_interop
+XDG_RUNTIME_DIR=/run/user/1000/
+_=/usr/bin/env
+finished_utc=2026-10-09T17:20:35.696954990Z rc=0

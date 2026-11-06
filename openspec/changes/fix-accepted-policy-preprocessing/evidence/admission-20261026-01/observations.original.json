@@ -1,0 +1,111 @@
+{
+  "boot_id": "df4955d9-4762-42b4-a55b-0106ba3786f8",
+  "c_free_bytes": 239943577600,
+  "e_free_bytes": 258472050688,
+  "head": "35d28fe7b3eb2bab754e55de1639feb1680c1b9c",
+  "head_source": "Windows git rev-parse HEAD supplied and rechecked by enclosing caller",
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "observations": [
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "info",
+        "--format",
+        "{\"id\":{{json .ID}},\"server\":{{json .ServerVersion}},\"counts\":[{{.Containers}},{{.ContainersRunning}},{{.ContainersPaused}},{{.ContainersStopped}}],\"images\":{{.Images}},\"root\":{{json .DockerRootDir}}}"
+      ],
+      "elapsed_seconds": 1.6934316869999293,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"1e493309-3767-45fb-9078-05b838bdfd80\",\"server\":\"29.7.2\",\"counts\":[3,0,0,3],\"images\":0,\"root\":\"/var/lib/docker\"}\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "ps",
+        "-a",
+        "--no-trunc",
+        "--format",
+        "{{.ID}} {{.State}} {{.Names}}"
+      ],
+      "elapsed_seconds": 0.01591467499997634,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "90f8ebb69bd83cbb02067a831cc2ace5efe78fc6b568a665bd93333d7b4b6e87 exited vast-fixture-compiler-probe-b3-fff74a8b11e4ac20bb63b2a118956bba\n9b5c396109909a8a091a0fc6bb6529f887233df77ab314435ce85ab05e22fbc5 exited vast-fixture-compiler-probe-b2-e452bcbebfda05be79880c9cf43ba07f\n4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f exited vast-fixture-compiler-probe-b1-66f97415cf0d360619ca942bb7eedcc8\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/docker.sock",
+        "image",
+        "inspect",
+        "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+        "--format",
+        "{{.Id}}"
+      ],
+      "elapsed_seconds": 0.015770839999959207,
+      "returncode": 1,
+      "stderr": "Error response from daemon: No such image: nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759\n",
+      "stdout": "\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "info",
+        "--format",
+        "{\"id\":{{json .ID}},\"server\":{{json .ServerVersion}},\"counts\":[{{.Containers}},{{.ContainersRunning}},{{.ContainersPaused}},{{.ContainersStopped}}],\"images\":{{.Images}},\"root\":{{json .DockerRootDir}}}"
+      ],
+      "elapsed_seconds": 0.46305425900004593,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"aa8f3d33-e1dc-4ed2-ad06-488b46b332d0\",\"server\":\"29.8.2\",\"counts\":[0,0,0,0],\"images\":193,\"root\":\"/var/lib/docker\"}\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "system",
+        "df",
+        "--format",
+        "json"
+      ],
+      "elapsed_seconds": 2.694471146000069,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"Active\":\"0\",\"Reclaimable\":\"8.751GB (13%)\",\"Size\":\"65.03GB\",\"TotalCount\":\"193\",\"Type\":\"Images\"}\n{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Containers\"}\n{\"Active\":\"0\",\"Reclaimable\":\"0B\",\"Size\":\"0B\",\"TotalCount\":\"0\",\"Type\":\"Local Volumes\"}\n{\"Active\":\"0\",\"Reclaimable\":\"557.6MB\",\"Size\":\"26.17GB\",\"TotalCount\":\"433\",\"Type\":\"Build Cache\"}\n"
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "--host",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "image",
+        "inspect",
+        "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+        "--format",
+        "{\"id\":{{json .Id}},\"size\":{{.Size}},\"layers\":{{len .RootFS.Layers}}}"
+      ],
+      "elapsed_seconds": 0.05611326999996891,
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "{\"id\":\"sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759\",\"size\":29400323407,\"layers\":47}\n"
+    }
+  ],
+  "observed_utc": "2026-10-26T08:58:11.708475+00:00",
+  "scope": "Read-only metadata after reversible environment repair. No compiler/reader/probe/build/consumer execution admission; task1.5 remains HOLD.",
+  "source_sha256": {
+    "scripts/checkpoint_gstreamer_analytics_sidecar.py": "a164351230854c5206aff44d7a8df56e9aebaaa313e6f857efa86a216ebd318e",
+    "tests/fixtures/accepted_policy_fixture_compiler_v1.py": "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03",
+    "tests/fixtures/accepted_policy_original_custody_fixture_v1.py": "f1b37fa796714770443d79da89e70d4b5a017b279a9591791439f2e5d2b5fd28",
+    "tests/fixtures/accepted_policy_standalone_reader_fixture_v2.py": "7fc7e536f4366fcc575240d1b81232bc8b9c3851bd13868c5d9981d40496507f"
+  },
+  "ubuntu_virtual_available_bytes": 880667168768,
+  "uid": 1000
+}

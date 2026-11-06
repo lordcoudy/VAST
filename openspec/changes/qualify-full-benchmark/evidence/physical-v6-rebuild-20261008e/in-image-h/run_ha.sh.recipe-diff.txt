@@ -1,0 +1,23 @@
+2,3c2,3
+< # D(a) driver: run a_in_image_check.py inside the DeepStream and Savant runtime images.
+< # Executed in WSL as uid 1000. Scratch: /var/tmp/claude-inimage-diag-d (own, removed after).
+---
+> # H(a) driver (Amendment 7): a_in_image_check.py inside the rebuilt DeepStream runtime image.
+> # Executed in WSL as uid 1000. Scratch: /var/tmp/claude-inimage-diag-h (own, removed after).
+5,6c5,6
+< EV=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/openspec/changes/qualify-full-benchmark/evidence/physical-v4-rebuild-20261008d/in-image-d
+< S=/var/tmp/claude-inimage-diag-d
+---
+> EV=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/openspec/changes/qualify-full-benchmark/evidence/physical-v6-rebuild-20261008e/in-image-h
+> S=/var/tmp/claude-inimage-diag-h
+9,10c9
+<   [deepstream]=sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157
+<   [savant]=sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7
+---
+>   [deepstream]=sha256:3a9aa20a8efb722e89865e73aaa9d29ec6ce6ae4e806f485887a9a032bebb984
+14,15c13,14
+< for sys in deepstream savant; do
+<   cmd=(/usr/bin/docker run --rm --network none --name "claude-inimage-diag-a-$sys"
+---
+> for sys in deepstream; do
+>   cmd=(/usr/bin/docker run --rm --network none --name "claude-inimage-diag-ha-$sys"

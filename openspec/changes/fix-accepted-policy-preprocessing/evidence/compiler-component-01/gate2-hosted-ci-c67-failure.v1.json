@@ -1,0 +1,305 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_hosted_ci_c67_failure_v1",
+  "commit": "c67b25cd4e87499dc9575ed4e58c5159ac9abf18",
+  "run_id": 38922339662,
+  "run_url": "https://github.com/lordcoudy/VAST/actions/runs/38922339662",
+  "run_conclusion": "failure",
+  "cpu_job": {
+    "id": 117045142722,
+    "url": "https://github.com/lordcoudy/VAST/actions/runs/38922339662/job/117045142722",
+    "status": "completed",
+    "conclusion": "failure",
+    "started_at": "2026-10-16T15:14:47Z",
+    "completed_at": "2026-10-16T15:54:28Z",
+    "failed_step": {
+      "name": "Check source, build six CPU targets and execute test discovery",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 12,
+      "started_at": "2026-10-16T15:16:12Z",
+      "completed_at": "2026-10-16T15:54:23Z"
+    },
+    "artifact_upload_step": {
+      "name": "Preserve original CPU logs and explicit hardware gaps",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 13,
+      "started_at": "2026-10-16T15:54:23Z",
+      "completed_at": "2026-10-16T15:54:25Z"
+    }
+  },
+  "host_job": {
+    "id": 117045142336,
+    "reported_conclusion": "success",
+    "provenance": "Parent task supplied observed status; separate host-job receipt was not retrieved or copied by this bounded CPU diagnosis."
+  },
+  "copied_originals": [
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/run.original.json",
+      "size_bytes": 12094,
+      "sha256": "5aaed7543d50e944c917ec161e3c250cfd5449f0a21d108ddd56a33f724d18cc",
+      "original_temp_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\run.original.json"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/job.original.json",
+      "size_bytes": 4117,
+      "sha256": "ec85f5e28ea12be14768cf83a9b20b6933ebab9df4368e67a97435015eceda97",
+      "original_temp_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\job.original.json"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/annotations.original.json",
+      "size_bytes": 297,
+      "sha256": "f9440bd41014e8a094b359de58d543b3f67f2599f90f1540db262e276f1559c7",
+      "original_temp_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\annotations.original.json"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/artifacts.original.json",
+      "size_bytes": 1535,
+      "sha256": "6e904ed83ef3d57b424a2afa7143519f13111fe602cb581fe69b2f0631fb13ca",
+      "original_temp_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\artifacts.original.json"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/hosted-ci-c67b-38922339662-01/cpu-artifact12056863185.original.zip",
+      "size_bytes": 3040372,
+      "sha256": "5287934f939350cac17e06fc2cdca7a745c57522bc7ce48fd3f4105469bd820d",
+      "original_temp_path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\cpu-artifact12056863185.original.zip"
+    }
+  ],
+  "artifact": {
+    "id": 12056863185,
+    "name": "vast-cpu-checks-c67b25cd4e87499dc9575ed4e58c5159ac9abf18",
+    "size_in_bytes": 3040372,
+    "api_digest": "sha256:5287934f939350cac17e06fc2cdca7a745c57522bc7ce48fd3f4105469bd820d",
+    "download_sha256": "5287934f939350cac17e06fc2cdca7a745c57522bc7ce48fd3f4105469bd820d",
+    "digest_matches_api": true,
+    "expired_at_receipt": false,
+    "selected_member_identities": [
+      {
+        "artifact_id": 12056863185,
+        "member": "host-facts.original.json",
+        "size_bytes": 1274,
+        "sha256": "4c22d667a5060d0859de847950adcab3da14a0de47a3e5ed9ef2b06631768552"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "report.json",
+        "size_bytes": 2342157,
+        "sha256": "1c58fc53567c2a85747674d81f0c46728187a4ad7e8bee08ba8d267aad47b055"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "unittest-child.report.json",
+        "size_bytes": 2257582,
+        "sha256": "11ab942ec50e0777af2e0f6ebb9424894cefe042e882934cf61427aef1301f59"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "unittest.original.log",
+        "size_bytes": 2615409,
+        "sha256": "7550026e453fb1feedde94873ebbe8096a47c3e88647fc055b6722239b13bae4"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "external-test-observer/terminal.v1.json",
+        "size_bytes": 1520,
+        "sha256": "d23f6bf346832e84d462bd4e6b4c309097fb89cef8ae860638793893b6593497"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "native-build.json",
+        "size_bytes": 428,
+        "sha256": "df1f6b2353c7330e5374e739d064b0f5ccf3114d6c259cc52c500a2c9b10f01b"
+      },
+      {
+        "artifact_id": 12056863185,
+        "member": "native-configure.json",
+        "size_bytes": 493,
+        "sha256": "a82c1198cc3d6538089c035ca98327f49013c4c5e64f72bbf7ad5c3b4b1d8b43"
+      }
+    ]
+  },
+  "build": {
+    "raw_checkout_bytes_match_commit": true,
+    "six_targets": [
+      "vast_native_gst_probe",
+      "vast_checkpoint_source",
+      "gstadaptivescheduler",
+      "gstvastanalyticsterminal",
+      "gstvastanalyticsqueue",
+      "gstvastcheckpointprefixqueue"
+    ],
+    "configure_returncode": 0,
+    "configure_timed_out": false,
+    "build_returncode": 0,
+    "build_timed_out": false
+  },
+  "unittest": {
+    "tests_run": 3874,
+    "errors": 15,
+    "failures": 0,
+    "skips": 88,
+    "successful": false,
+    "primary_identity_refusal_count": 7,
+    "secondary_absent_facts_count": 8,
+    "error_details": [
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_child_raw_original_tamper_refuses_independently_of_reported_bytes",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 512, in test_child_raw_original_tamper_refuses_independently_of_reported_bytes\n    self.assertIn('d_child_capture_binding', caught.exception.facts['causes'])\n                                             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_clock_regression_after_child_preserves_status_and_cannot_accept",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 560, in test_clock_regression_after_child_preserves_status_and_cannot_accept\n    self.assertEqual(caught.exception.facts['child']['returncode'], 0)\n                     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_controlled_complete_outer_flow_and_self_persistence_boundary",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 353, in test_controlled_complete_outer_flow_and_self_persistence_boundary\n    result = self.run_d()\n             ^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_external_c_completion_authorities_are_frozen_for_both_binding_checks",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 378, in test_external_c_completion_authorities_are_frozen_for_both_binding_checks\n    result = self.run_d(completion_authorities=authorities, binding=binding, child_runner=child)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_final_charge_keeps_the_reserved_later_git_index_form",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 565, in test_final_charge_keeps_the_reserved_later_git_index_form\n    result = self.run_d()\n             ^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_idle_c6_gap_is_not_charged_but_actual_d_interval_growth_is",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 548, in test_idle_c6_gap_is_not_charged_but_actual_d_interval_growth_is\n    result = self.run_d(observer=observer)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_missing_external_c_completion_refusal_cannot_create_d_or_launch_child",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 391, in test_missing_external_c_completion_refusal_cannot_create_d_or_launch_child\n    self.run_d(binding=missing)\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 613, in test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation\n    result = self.run_d(observer=observer)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_post_kernel_drift_is_failure_with_retained_receipt",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 441, in test_post_kernel_drift_is_failure_with_retained_receipt\n    self.assertFalse(caught.exception.facts['evaluation']['passed'])\n                     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_postreceipt_meter_growth_is_charged_and_can_refuse",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 528, in test_postreceipt_meter_growth_is_charged_and_can_refuse\n    self.assertIn('d_global_allocation', result['causes'])\n                                         ~~~~~~^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_postrun_copied_elf_drift_refuses",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 502, in test_postrun_copied_elf_drift_refuses\n    self.assertIn('d_copy_post_drift', caught.exception.facts['causes'])\n                                       ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_postrun_packet_code_and_elf_drift_keep_original_child_outcome",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 479, in test_postrun_packet_code_and_elf_drift_keep_original_child_outcome\n    self.assertIn('d_packet_post_drift', caught.exception.facts['causes'])\n                                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_postrun_reviewed_code_validation_failure_preserves_receipt",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 490, in test_postrun_reviewed_code_validation_failure_preserves_receipt\n    self.assertIn('packet_file_binding', caught.exception.facts['causes'])\n                                         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_receipt_fsync_and_close_failures_keep_child_and_both_causes",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 461, in test_receipt_fsync_and_close_failures_keep_child_and_both_causes\n    self.assertEqual(result['child']['returncode'], 0)\n                     ~~~~~~^^^^^^^^^\nTypeError: 'NoneType' object is not subscriptable\n",
+        "classification": "secondary_assertion_on_absent_refusal_facts"
+      },
+      {
+        "test_id": "test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_repeat_preserves_original_and_never_executes_again",
+        "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 415, in test_repeat_preserves_original_and_never_executes_again\n    self.run_d()\n  File \"/home/runner/work/VAST/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py\", line 343, in run_d\n    return stage.run_d_v1(project_root=self.root,\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/VAST/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py\", line 610, in run_d_v1\n    raise StageDRefusal('d_host_identity')\ntests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_host_identity\n",
+        "classification": "primary_identity_refusal"
+      }
+    ]
+  },
+  "observed_runner_identity": {
+    "host_uid": 1001,
+    "host_gid": 1001,
+    "suite_child_uid": 1001,
+    "suite_child_gid": 1001,
+    "python": "3.12.3 (main, Sep 26 2024, 18:18:55) [GCC 13.2.0]",
+    "kernel_release": "6.17.0-1022-azure"
+  },
+  "observer": {
+    "returncode": 1,
+    "successful": false,
+    "failure": "original suite child did not exit zero",
+    "ready": true,
+    "pipe_eof": {
+      "control": true,
+      "trace": true
+    },
+    "forced_sigterm": false,
+    "forced_sigkill": false,
+    "pidfd_acquisition_failed": false,
+    "responses_started": 37,
+    "responses_completed": 37,
+    "descendant_quiescence": "not established by original-child status"
+  },
+  "diagnosis": {
+    "verified_primary_cause": "Controlled D OuterTests use actual ambient hosted-runner identity1001 while the production host guard requires each of UID/eUID/GID/eGID to equal1000. The controlled test helper mocks binding/observer/child/clock but not those identity getters.",
+    "secondary_errors": "Tests expecting post-child refusal facts instead receive the earlier d_host_identity exception with absent facts; their subsequent indexing raises NoneType errors. These secondary tracebacks are preserved verbatim, not rewritten as primary traces.",
+    "source_guard": {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "required_identity": 1000,
+      "getters": [
+        "os.getuid",
+        "os.geteuid",
+        "os.getgid",
+        "os.getegid"
+      ],
+      "c67_guard_raise_line": 610,
+      "comparison_commit": "4e1ecf793280e8af04403ed478a5b742d5b88071",
+      "comparison_guard_raise_line": 672,
+      "strict_guard_unchanged": true
+    },
+    "test_only_correction": "Model the selected1000 identity in the controlled fixture, and separately retain negative tests showing each non1000 ambient getter refuses before allocation/dispatch. Do not weaken the production identity guard or change checks/skips/gates.",
+    "comparison_run_assessment": "4e1 retains the unmocked helper and same guard, so it is likely affected. No4e1 run result or availability is asserted by this record.",
+    "different_from_earlier_e162": "This c67 artifact contains an actual completed suite exit1 with recorded test errors, not the earlier e162 worker communication loss."
+  },
+  "temporary_log_originals": [
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\cpu-job.logs.original.txt",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\cpu-job.logs.original.txt.stderr.original.txt",
+      "size_bytes": 99,
+      "sha256": "8b6407b2fdbca54bf3d53fb93e79a3560dbe59567fa5044cfee4bed1b5b6e467"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\cpu-job.logs.original-02.txt",
+      "size_bytes": 153528,
+      "sha256": "97043e2849b7822482e7da9f67fe1ac0ecb5b5c20d884eccd77fa9d22b4f2b90"
+    },
+    {
+      "path": "C:\\Users\\s-a-balashov\\AppData\\Local\\Temp\\vast-ci-c67b-38922339662-cpu117045142722-01\\cpu-job.logs.original-02.stderr.txt",
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "retrieval": {
+    "initial_job_log_attempt": "GitHub CLI refused terminal escape sequences locally: retained0-byte stdout and99-byte diagnostic; this was not a workflow failure or a claim that logs were unavailable.",
+    "successful_job_log_attempt": "Same original job log retrieved read-only with gh api --allow-escape-sequences;153528bytes. No workflow rerun or restart occurred.",
+    "child_environment": "Only retrieval child processes removed HTTPS_PROXY/HTTP_PROXY and lowercase equivalents. Credentials were not printed.",
+    "repo_member_copies": "No individual ZIP-member bytes were duplicated into the repository; their original bytes remain inside the copied ZIP.",
+    "temp_preservation": "All earlier Temp originals, selected extracts, initial CLI refusal and successful job logs remain retained."
+  },
+  "limitations": [
+    "Evidence retrieval and source comparison only; no local tests, Docker, F2/P0/C/D physical execution, worker restart, workflow rerun/cancel, source edit, check/skip/gate change or approval.",
+    "Actual observer return1/control+traceEOF and no forced signals do not establish descendant quiescence; its explicit original caveat remains retained.",
+    "Host-job success is parent-reported context, not independently authenticated by the copied CPU-only receipts."
+  ],
+  "physical_execution": false,
+  "physical_approval": false,
+  "task_2_10_complete": false
+}

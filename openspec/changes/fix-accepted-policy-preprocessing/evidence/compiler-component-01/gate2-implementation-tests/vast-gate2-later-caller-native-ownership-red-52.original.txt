@@ -1,0 +1,26 @@
+test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) ... 
+  test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) (close_fault=False) ... ERROR
+  test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) (close_fault=True) ... ERROR
+
+======================================================================
+ERROR: test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) (close_fault=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1488, in test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot
+    self.assertEqual(facts['pid'],4294967295)
+                     ~~~~~^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+======================================================================
+ERROR: test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) (close_fault=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1488, in test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot
+    self.assertEqual(facts['pid'],4294967295)
+                     ~~~~~^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+
+----------------------------------------------------------------------
+Ran 1 test in 0.236s
+
+FAILED (errors=2)

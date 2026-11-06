@@ -1,0 +1,13 @@
+command: canonical WSL Python3.12.3 controlled tracked capture unittest
+exit_code: 0
+................/usr/lib/python3.12/unittest/mock.py:2188: ResourceWarning: unclosed file <_io.FileIO name='/tmp/tmpyumqrpb0/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.driver.stdout.original' mode='xb' closefd=True>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/usr/lib/python3.12/unittest/mock.py:2188: ResourceWarning: unclosed file <_io.FileIO name='/tmp/tmpyumqrpb0/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.driver.stderr.original' mode='xb' closefd=True>
+  def __init__(self, name, parent):
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............
+----------------------------------------------------------------------
+Ran 29 tests in 0.115s
+System.Management.Automation.RemoteException
+OK

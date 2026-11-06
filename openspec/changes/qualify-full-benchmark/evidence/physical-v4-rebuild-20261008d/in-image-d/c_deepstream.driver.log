@@ -1,0 +1,11 @@
+{
+ "system": "deepstream",
+ "returncode": 2,
+ "duration_s": 4.568,
+ "stderr_bytes": 1799,
+ "stderr_sha256": "476427f6ea27165bd86994335c5b01ef9fee7fcd794bbb16ebf035e04cc48669",
+ "substitutions": []
+}
+argv_matches_attempt2_engine02: None
+deepstream publication runtime blocked: checkpoint worker exited before the common start barrier: deepstream-stream-0-branch-foreign_object=2; stderr_tails={"deepstream-stream-0-branch-foreign_object":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0"}; final_stderr_tails={"deepstream-stream-0-branch-damage":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-0-branch-foreign_object":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-0-branch-plate_number":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-1-branch-damage":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-1-branch-plate_number":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-1-branch-vehicle_type":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","deepstream-stream-2-branch-plate_number":"deepstream sdk runtime blocked: DeepStream callback factory failed: [Errno 111] Connection refused\n[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0","stream-2-source-coordinator":"[checkpoint-source][fatal]"}
+

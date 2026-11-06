@@ -1,0 +1,18 @@
+...........E
+======================================================================
+ERROR: test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 134, in test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer
+    modules = m.load_verified_v1(sources,descriptors,Path('/controlled'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 179, in load_verified_v1
+    need(type(raw) is bytes and 0 < len(raw) <= cap
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 54, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: source_binding
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.052s
+
+FAILED (errors=1)

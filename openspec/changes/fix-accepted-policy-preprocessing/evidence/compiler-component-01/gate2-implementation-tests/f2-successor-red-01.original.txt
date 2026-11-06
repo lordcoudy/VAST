@@ -1,0 +1,451 @@
+........E...FFFFFFFFFE....FFFFFFFF..FFFFFFFFFFFFFFFFFF.........E............
+======================================================================
+ERROR: test_c75_dns_validator_rereads_actual_raw_digest_without_socket_or_mutation (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_c75_dns_validator_rereads_actual_raw_digest_without_socket_or_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 689, in recover_stopped_b1_v1
+    facts["identity"]["before"] = _identity(*first, sealed)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 547, in _identity
+    _fail("source_drift")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 60, in _fail
+    raise compiler.FixtureCompilerError("f2_" + cause)
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_source_drift
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 603, in test_c75_dns_validator_rereads_actual_raw_digest_without_socket_or_mutation
+    root, value = self.validator_fixture(initial_inspect=raw, final_inspect=raw)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 408, in validator_fixture
+    result = recovery.recover_stopped_b1_v1(**arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 755, in recover_stopped_b1_v1
+    raise failure from error
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_source_drift
+
+======================================================================
+ERROR: test_exact_c75_chunked_dns_reply_and_actual_digest_complete_the_sequence (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_exact_c75_chunked_dns_reply_and_actual_digest_complete_the_sequence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 689, in recover_stopped_b1_v1
+    facts["identity"]["before"] = _identity(*first, sealed)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 547, in _identity
+    _fail("source_drift")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 60, in _fail
+    raise compiler.FixtureCompilerError("f2_" + cause)
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_source_drift
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 558, in test_exact_c75_chunked_dns_reply_and_actual_digest_complete_the_sequence
+    result = recovery.recover_stopped_b1_v1(**arguments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py", line 755, in recover_stopped_b1_v1
+    raise failure from error
+tests.fixtures.accepted_policy_fixture_compiler_v1.FixtureCompilerError: f2_source_drift
+
+======================================================================
+ERROR: test_per_file_entry_geometry_and_full_partial_footer_failure_liability (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_per_file_entry_geometry_and_full_partial_footer_failure_liability)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 665, in test_per_file_entry_geometry_and_full_partial_footer_failure_liability
+    account = stopped.exception.facts["accounting"]
+              ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'FixtureCompilerError' object has no attribute 'facts'
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='Dns', mode='missing_both')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='Dns', mode='sealed_list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='Dns', mode='network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsOptions', mode='missing_both')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsOptions', mode='sealed_list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsOptions', mode='network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsSearch', mode='missing_both')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsSearch', mode='sealed_list')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network) (key='DnsSearch', mode='network')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 583, in test_dns_compatibility_requires_present_sealed_null_typed_empty_and_none_network
+    with self.subTest(key=key, mode=mode), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys) (number=6)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 655, in test_footer_validator_rejects_closed_schema_noncanonical_and_duplicate_keys
+    with self.subTest(number=number), self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_fresh_dns_representation_drift_refuses_after_nineteen_requests (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_fresh_dns_representation_drift_refuses_after_nineteen_requests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 596, in test_fresh_dns_representation_drift_refuses_after_nineteen_requests
+    self.assertIn("f2_final_identity", caught.exception.causes)
+AssertionError: 'f2_final_identity' not found in ['f2_source_drift']
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': True, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1.0, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}, 'extra': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096.0}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': True}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=5)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': -1, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=7)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096, 'extra': 0}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=8)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096.0}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=9)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': True}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=10)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': -1, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=12)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096, 'extra': 0}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=13)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': '../f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=14)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': True, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=15)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262145, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=16)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=17)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff', 'extra': 0}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=18)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': 18446744073709551615, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'extra': 0}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+======================================================================
+FAIL: test_malformed_footer_refuses_before_encoding_and_open (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_malformed_footer_refuses_before_encoding_and_open) (number=19)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 639, in test_malformed_footer_refuses_before_encoding_and_open
+    encoded.assert_not_called(); opened.assert_not_called()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 905, in assert_not_called
+    raise AssertionError(msg)
+AssertionError: Expected 'dumps' to not have been called. Called 1 times.
+Calls: [call({'schema_version': 1, 'supplement': {'relative_path': 'f2.supplement.v1.json', 'size_bytes': 262144, 'sha256': 'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'}, 'accounting': {'retained_elsewhere_upper_bytes': 18446744073709551615, 'raw_originals_bytes': 18446744073709551615, 'retained_allocated_bytes': 18446744073709551615, 'physical_charge_bytes': 18446744073709551615, 'retained_data_allocated_bytes': 18446744073709551615, 'retained_metadata_upper_bytes': 18446744073709551615, 'reserved_control_bytes': True, 'reserved_raw_bytes': 18446744073709551615, 'reserved_rounding_bytes': 18446744073709551615, 'reserved_metadata_bytes': 18446744073709551615, 'retained_elsewhere_lower_bytes': 18446744073709551615, 'baseline': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}, 'last': {'c_free_bytes': 18446744073709551615, 'ext4_used_bytes': 18446744073709551615, 'fragment_bytes': 4096}}}, ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False),
+ call().encode('ascii'),
+ call().encode().__len__()].
+
+----------------------------------------------------------------------
+Ran 45 tests in 5.108s
+
+FAILED (failures=35, errors=3)

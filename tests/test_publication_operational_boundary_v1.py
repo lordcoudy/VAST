@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import itertools
 import json
 import os
 import socket
@@ -18,6 +19,7 @@ import time
 import unittest
 from pathlib import Path
 from typing import Any
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -62,7 +64,9 @@ from publication_policy_projection_v1 import (
     reconstruct_original_decision_v1,
 )
 from publication_operational_request_domain_v1 import payload_with_sha256_v1, seal_guardian_event_v1
-from publication_guardian_operational_recorder_v1 import DEFAULT_BUDGETS
+from publication_guardian_operational_recorder_v1 import DEFAULT_BUDGETS, GuardianOperationalRecorder
+import non_decreasing_wall_clock_v1 as wall_clock
+from non_decreasing_wall_clock_v1 import NonDecreasingWallClock
 from publication_operational_request_reconciliation_v1 import reconcile_operational_request_domain_v1
 from publication_operational_request_reconciliation_v1 import KEY, MAX_SCRATCH_FILES, _Scratch
 from test_checkpoint_gstreamer_analytics_sidecar import (
@@ -155,6 +159,9 @@ class _BoundaryBridge(_Bridge):
             "detector": terminal_detector_identity(capability),
             "backend": analytics_backend_identity(capability),
         }
+
+
+WALL_BASE_NS = 1_790_000_000_000_000_000
 
 
 class _BoundaryFixture:
@@ -513,6 +520,82 @@ class PublicationOperationalBoundaryTests(unittest.TestCase):
                 self.assertEqual(workload["measurement_request_count"], 4)
                 self.assertEqual(workload["excluded_request_count"], 8)
                 self.assertEqual(workload["requests_by_worker"], counters["requests_by_worker"])
+            finally:
+                fixture.stop()
+
+    def test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back(self) -> None:
+        reads = itertools.count()
+
+        def raw_ns() -> int:
+            # Every second raw CLOCK_REALTIME read is 2 ms before the previous
+            # one, so each guardian terminal reads the host clock behind its begin.
+            index = next(reads)
+            return WALL_BASE_NS + (index // 2) * 10_000_000 - (index % 2) * 2_000_000
+
+        # Replace every binding of the raw host clock: the shared process
+        # wrapper's source and a recorder default still bound to time.time_ns.
+        defaults = GuardianOperationalRecorder.__init__.__kwdefaults__
+        host_default = {"clock_ns": raw_ns} if defaults["clock_ns"] is time.time_ns else {}
+        with tempfile.TemporaryDirectory(prefix="vast-boundary-") as temporary, \
+                mock.patch.object(wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)), \
+                mock.patch.dict(defaults, host_default):
+            fixture = _BoundaryFixture(Path(temporary))
+            try:
+                fixture.start()
+                for frame in (1, 2, 3):
+                    for branch in ANALYTICS_BRANCHES:
+                        fixture.complete(frame, branch)
+                fixture.finish()
+                workload = fixture.cold_workload()
+                self.assertEqual(workload["request_count"], 12)
+                group = json.loads(Path(fixture.service.operational_group["path"]).read_bytes())
+                journal = next(row for row in group["journals"] if row["route"] == "damage:cpu")
+                stamps = [json.loads(line)["at_ns"] for line in Path(journal["path"]).read_bytes().splitlines()[1:]]
+                self.assertEqual(len(stamps), 6)
+                self.assertTrue(all(left < right for left, right in zip(stamps, stamps[1:])), stamps)
+                self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
+            finally:
+                fixture.stop()
+
+    def test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it(self) -> None:
+        reads = itertools.count()
+
+        def raw_ns() -> int:
+            index = next(reads)
+            return WALL_BASE_NS + (index // 2) * 10_000_000 - (index % 2) * 2_000_000
+
+        with tempfile.TemporaryDirectory(prefix="vast-boundary-") as temporary, \
+                mock.patch.object(wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)):
+            fixture = _BoundaryFixture(Path(temporary))
+            try:
+                fixture.start()
+                for branch in ANALYTICS_BRANCHES:
+                    fixture.complete(2, branch)
+                fixture.finish()
+                group = json.loads(Path(fixture.service.operational_group["path"]).read_bytes())
+                self.assertEqual(group["max_clamp_ns"], 2_000_001)
+                self.assertEqual(fixture.cold_workload()["request_count"], 4)
+
+                def resealed(mutate) -> dict[str, Any]:
+                    tampered = {key: item for key, item in copy.deepcopy(group).items() if key != "sha256"}
+                    mutate(tampered)
+                    directory = Path(tempfile.mkdtemp(prefix="clamp-", dir=fixture.root))
+                    return _write_json(directory / "companion.json", payload_with_sha256_v1(tampered))
+
+                # A historical v1 group predates the field and stays readable.
+                historical = resealed(lambda value: value.pop("max_clamp_ns"))
+                self.assertEqual(fixture.cold_workload(companion=historical)["request_count"], 4)
+                for label, mutate in (
+                    ("negative", lambda value: value.update(max_clamp_ns=-1)),
+                    ("beyond bound", lambda value: value.update(max_clamp_ns=10_000_002)),
+                    ("boolean", lambda value: value.update(max_clamp_ns=True)),
+                    ("float", lambda value: value.update(max_clamp_ns=1.0)),
+                    ("text", lambda value: value.update(max_clamp_ns="1")),
+                    ("null", lambda value: value.update(max_clamp_ns=None)),
+                ):
+                    with self.subTest(label=label):
+                        with self.assertRaisesRegex(ValueError, "guardian operational companion schema drifted"):
+                            fixture.cold_workload(companion=resealed(mutate))
             finally:
                 fixture.stop()
 
