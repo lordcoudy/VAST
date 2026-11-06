@@ -10,6 +10,13 @@ containment guard:
     accepted_policy_containment_guard_v1.py --phase b1-restore --record R1 -- \
         python3 accepted_policy_b1_restore_v1.py --record R2
 
+A later attempt after a consumed one may reuse the retained archive instead of
+saving again (``--reuse-archive-sha256 HEX --reuse-archive-size BYTES``): only the
+save is skipped; the archive is opened read-only, must be the only entry in the
+archive directory, must match the recorded size and sha256, and is re-verified in
+full. Read-only snapshots of containerd's active ingests and leases are recorded
+in preflight and again immediately before the import.
+
 Exit codes: 0 restored and verified; 3 refused or failed (see the record);
 4 the record could not be written (it is emitted on stderr).
 """
@@ -454,6 +461,7 @@ class Restore:
     runner: Callable[..., Completed] = run_bounded
     clock: Callable[[], float] = time.monotonic
     record: dict = field(default_factory=dict)
+    reuse: "tuple[str, int] | None" = None  # (sha256, size) recorded by the consumed earlier attempt
 
     def _stage(self, name: str, **facts: Any) -> None:
         self.record.setdefault("stages", []).append({"stage": name, "at": round(self.clock() - self._start, 3), **facts})
@@ -492,6 +500,15 @@ class Restore:
     def _ctr(self, *args: str) -> list:
         p = self.pins
         return [p.ctr, "--address", p.containerd_address, "--namespace", p.namespace, *args]
+
+    def _remnants(self, key: str) -> None:
+        """Read-only record of containerd's active ingests and leases (left as they are)."""
+        snapshot: dict = {}
+        for name, args in (("ingests", ("content", "active")), ("leases", ("leases", "ls"))):
+            lines = self._ok(self._ctr(*args), "containerd_unreachable").splitlines()
+            snapshot[name] = lines[:64]
+            snapshot[name + "_truncated"] = len(lines) > 64
+        self.record[key] = snapshot
 
     # stage 1: identities, no writes
     def preflight(self) -> None:
@@ -545,6 +562,7 @@ class Restore:
             raise B1Refusal("native_reference_present")
         self.record["native_references_before"] = sorted(refs)
         self.record["native_containers_before"] = self._native_containers()
+        self._remnants("remnants_preflight")
         self._stage("preflight", desktop_engine=p.desktop_engine_id, native_engine=p.native_engine_id)
 
     # stage 2: archive directory and pre-write-bounded save
@@ -584,10 +602,50 @@ class Restore:
         self._stage("saved", bytes=done.written)
         return fd
 
+    # stage 2 (reuse): the retained archive of a consumed attempt, read-only
+    def open_retained(self) -> int:
+        p = self.pins
+        expected_sha, expected_size = self.reuse
+        if Path(p.archive_dir).is_symlink():
+            raise B1Refusal("archive_dir_symlink")
+        try:
+            dir_fd = os.open(p.archive_dir, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        except OSError as exc:
+            raise B1Refusal("reuse_archive_dir_unusable", error=type(exc).__name__) from exc
+        try:
+            st = os.fstat(dir_fd)
+            if p.require_root and (st.st_uid != 0 or st.st_mode & 0o022):
+                raise B1Refusal("archive_dir_ownership")
+            entries = sorted(os.listdir(dir_fd))
+            if entries != [p.archive_name]:
+                raise B1Refusal("reuse_archive_dir_contents", entries=entries[:16])
+            try:  # O_NONBLOCK: a FIFO or device planted under the name cannot block the open
+                fd = os.open(p.archive_name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=dir_fd)
+            except OSError as exc:
+                raise B1Refusal("reuse_archive_unreadable", error=type(exc).__name__) from exc
+        finally:
+            os.close(dir_fd)
+        st = os.fstat(fd)
+        try:
+            if not stat_mod.S_ISREG(st.st_mode):
+                raise B1Refusal("reuse_archive_not_regular")
+            if st.st_nlink != 1 or st.st_mode & 0o022 or (p.require_root and st.st_uid != 0):
+                raise B1Refusal("reuse_archive_ownership", uid=st.st_uid, mode=oct(st.st_mode & 0o7777),
+                                links=st.st_nlink)
+            if st.st_size != expected_size:
+                raise B1Refusal("reuse_archive_size", size=st.st_size, expected=expected_size)
+        except B1Refusal:
+            os.close(fd)
+            raise
+        self._stage("archive_reused", path=os.path.join(p.archive_dir, p.archive_name), expected_sha256=expected_sha)
+        return fd
+
     # stage 3: complete membership, then pin the file identity for the import
     def verify(self, fd: int) -> tuple:
         facts = verify_archive(fd, self.pins, self._deadline, self.clock)
         self.record["archive"] = facts
+        if self.reuse is not None and (facts["sha256"], facts["size"]) != self.reuse:
+            raise B1Refusal("reuse_archive_sha256", observed=facts["sha256"], expected=self.reuse[0])
         st = os.fstat(fd)
         self._stage("verified", **{k: facts[k] for k in ("size", "sha256", "members", "blobs")})
         return st.st_dev, st.st_ino, st.st_size, st.st_mtime_ns
@@ -605,6 +663,7 @@ class Restore:
     def import_archive(self, identity: tuple) -> None:
         p = self.pins
         path = os.path.join(p.archive_dir, p.archive_name)
+        self._remnants("remnants_before_import")
         if self._archive_identity() != identity:
             raise B1Refusal("archive_changed_before_import")
         self.record["import_started"] = True
@@ -659,12 +718,13 @@ class Restore:
         self._start = self.clock()
         self._deadline = self._start + self.pins.deadline_seconds
         self.record.update(schema="vast.pr9.b1-restore.v1", provider=self.pins.provider, outcome=None,
+                           mode="reuse" if self.reuse is not None else "save",
                            retained=("the archive and this record are retained; the helper never prunes, removes, "
                                      "overwrites or retries (containerd may release a failed import's unreferenced "
                                      "content when ctr's lease ends)"))
         try:
             self.preflight()
-            fd = self.save()
+            fd = self.open_retained() if self.reuse is not None else self.save()
             try:
                 identity = self.verify(fd)
             finally:
@@ -709,7 +769,16 @@ def main(argv: Sequence[str] | None = None, *, pins: Pins = PRODUCTION,
          desktop_api_get: Callable[[str, float], "tuple[int, Any]"] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--record", required=True, type=Path)
+    parser.add_argument("--reuse-archive-sha256")
+    parser.add_argument("--reuse-archive-size", type=int)
     args = parser.parse_args(argv)
+    if (args.reuse_archive_sha256 is None) != (args.reuse_archive_size is None):
+        parser.error("--reuse-archive-sha256 and --reuse-archive-size go together")
+    if args.reuse_archive_sha256 is not None and not re.fullmatch("[0-9a-f]{64}", args.reuse_archive_sha256):
+        parser.error("--reuse-archive-sha256 must be 64 lowercase hex characters")
+    if args.reuse_archive_size is not None and not 0 < args.reuse_archive_size <= pins.archive_ceiling:
+        parser.error("--reuse-archive-size must be positive and within the archive ceiling")
+    reuse = None if args.reuse_archive_sha256 is None else (args.reuse_archive_sha256, args.reuse_archive_size)
     if args.record.exists() or args.record.is_symlink():
         parser.error("record path already exists")
     if not args.record.parent.is_dir():
@@ -726,7 +795,7 @@ def main(argv: Sequence[str] | None = None, *, pins: Pins = PRODUCTION,
     previous = {s: signal.signal(s, _interrupt) for s in signals}
     late: list = []
     try:
-        restore = Restore(pins, api_get, desktop_api_get)
+        restore = Restore(pins, api_get, desktop_api_get, reuse=reuse)
         try:
             try:
                 restore.run()

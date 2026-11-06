@@ -210,6 +210,10 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(g.MAX_GAP_SECONDS, 2.0)
         self.assertLess(g.MAX_INTERVAL_SECONDS, g.MAX_GAP_SECONDS)
         self.assertEqual(g.STOP_BUDGET_SECONDS, 10.0)
+        # other guard work delays a freshness decision or the stop by at most 1.0 s (design jitter bound)
+        self.assertLessEqual(g.REGISTER_SECONDS + g.CLI_REAP_SECONDS + 0.1, 1.0)
+        self.assertLessEqual(g.LABEL_DISCOVERY_SECONDS + g.CLI_REAP_SECONDS + 0.1, 1.0)
+        self.assertLessEqual(g.CID_SCAN_SECONDS, 1.0)
 
     def test_interval_must_leave_headroom_under_two_seconds(self):
         for bad in (0, -1, 1.01, 1.5, 2.0, 5):
@@ -331,88 +335,413 @@ class ConfigurationTests(unittest.TestCase):
         self.assertEqual(self.with_popen(missing, lambda: g.docker_runner(HOST, ["info"], 1)), (127, ""))
 
 
-class SamplingTests(unittest.TestCase):
-    def guard(self, sampler, **kw):
-        return g.ContainmentGuard("p", volumes(), interval=0.4, sampler=sampler, **kw)
+class StubReader:
+    """A reader with a fixed state, for deterministic freshness decisions."""
+
+    def __init__(self, volume, latest=None, failure=None, below=None):
+        self.volume, self._state = volume, (latest, failure, below, 1, 0.0)
+
+    def state(self):
+        return self._state
+
+
+class FreshnessDecisionTests(unittest.TestCase):
+    """The decision rule itself, on a fixed clock."""
+
+    def decide(self, c=None, e=None, now=100.0, launched=True):
+        guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler(), clock=lambda: now)
+        cv, ev = volumes()
+        guard._readers = [StubReader(cv, **(c or {})), StubReader(ev, **(e or {}))]
+        result = g.GuardResult("p", "")
+        return guard._evaluate(result, launched), result
+
+    def fresh(self, age):
+        return {"latest": (100.0 - age, 100.0 - age / 2, PLENTY)}
 
     def test_threshold_boundary(self):
-        at = self.guard(Sampler({"/vol/c": [g.C_BREACH_BELOW], "/vol/e": [g.E_BREACH_BELOW]}))
-        self.assertIsNone(at.sample()[1])
-        self.assertEqual(self.guard(Sampler({"/vol/c": [LOW_C]})).sample()[1]["volume"], "C:")
-        self.assertEqual(self.guard(Sampler({"/vol/e": [g.E_BREACH_BELOW - 1]})).sample()[1]["volume"], "E:")
+        self.assertIsNone(self.decide({"latest": (99.9, 99.9, g.C_BREACH_BELOW)},
+                                      {"latest": (99.9, 99.9, g.E_BREACH_BELOW)})[0])
+        breach, _ = self.decide({**self.fresh(0.1), "below": (LOW_C, 99.2)}, self.fresh(0.1))
+        self.assertEqual((breach["volume"], breach["kind"], breach["free_bytes"]), ("C:", "below-threshold", LOW_C))
+        self.assertAlmostEqual(breach["decision_lateness_seconds"], 0.8)  # noticed 0.8 s after the read completed
 
-    def test_unknown_samples_are_breaches(self):
+    def test_failed_read_breaches_at_once_even_when_fresh(self):
+        breach, _ = self.decide(self.fresh(0.1), {**self.fresh(0.1), "failure": ("read failed: OSError", 99.95)})
+        self.assertEqual(breach, {"volume": "E:", "kind": "failed-read", "reason": "read failed: OSError",
+                                  "decision_lateness_seconds": 0.05})
+
+    def test_failure_or_below_on_either_volume_outranks_the_other_being_stale(self):
+        stale = {"latest": (97.0, 97.5, PLENTY)}
+        self.assertEqual(self.decide(stale, {**self.fresh(0.1), "below": (1, 99.9)})[0]["kind"], "below-threshold")
+        self.assertEqual(self.decide(stale, {**self.fresh(0.1), "failure": ("x", 99.9)})[0]["kind"], "failed-read")
+
+    def test_exit_decision_and_breach_come_from_one_snapshot(self):
+        guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler(), clock=lambda: 100.0)
+        cv, ev = volumes()
+        # both volumes have reads that started after the exit at 99.0, and C:'s is below the line
+        guard._readers = [StubReader(cv, latest=(99.5, 99.9, LOW_C), below=(LOW_C, 99.9)),
+                          StubReader(ev, latest=(99.5, 99.9, PLENTY))]
+        breach, observed = guard._decide(g.GuardResult("p", ""), 99.0)
+        self.assertEqual((breach["kind"], observed), ("below-threshold", False))
+        guard._readers[0] = StubReader(cv, latest=(99.5, 99.9, PLENTY))
+        self.assertEqual(guard._decide(g.GuardResult("p", ""), 99.0), (None, True))
+        self.assertEqual(guard._decide(g.GuardResult("p", ""), 99.6), (None, False))  # not yet after the exit
+
+    def test_launch_refusal_names_the_worst_volume_and_lists_every_stale_one(self):
+        times = iter([100.0] + [103.0] * 10)  # the give-up has passed at the first decision
+        guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler(), clock=lambda: next(times))
+        cv, ev = volumes()
+        # C: has a read just over one interval old; E: has never answered
+        guard._readers = [StubReader(cv, latest=(102.4, 102.5, PLENTY)), StubReader(ev)]
+        breach = guard._launch_ready(g.GuardResult("p", ""))
+        self.assertEqual((breach["volume"], breach["not_fresh"]), ("E:", ["E:", "C:"]))
+        self.assertEqual(breach["decision_lateness_seconds"], 1.0)
+
+    def test_greatest_staleness_covers_every_volume(self):
+        breach, result = self.decide({"latest": (97.9, 98.0, PLENTY)}, {"latest": (95.0, 95.1, PLENTY)})
+        self.assertEqual(breach["volume"], "C:")  # the first stale volume decides
+        self.assertAlmostEqual(result.max_staleness_seconds, 5.0)
+
+    def test_recent_start_is_fresh_even_after_an_older_deadline(self):
+        # an earlier valid read's deadline has passed, but the latest valid read started 1.9 s ago
+        self.assertIsNone(self.decide(self.fresh(1.9), self.fresh(0.2))[0])
+
+    def test_start_older_than_two_seconds_breaches_with_its_lateness(self):
+        breach, result = self.decide({"latest": (97.9, 99.95, PLENTY)}, self.fresh(0.2))
+        self.assertEqual((breach["volume"], breach["kind"]), ("C:", "stale"))
+        self.assertEqual(breach["staleness_seconds"], 2.1)
+        self.assertEqual(breach["decision_lateness_seconds"], 0.1)
+        self.assertAlmostEqual(result.max_staleness_seconds, 2.1, places=6)
+
+    def test_no_valid_read_is_stale_after_launch_but_pending_before_it(self):
+        self.assertEqual(self.decide(None, self.fresh(0.1))[0]["kind"], "stale")
+        self.assertIsNone(self.decide(None, self.fresh(0.1), launched=False)[0])
+
+    def test_unknown_values_are_failed_reads(self):
         cases = {"error": OSError("drvfs"), "none": None, "float": 1e15, "bool": True,
                  "negative": -1, "string": "123"}
         for name, value in cases.items():
-            with self.subTest(name=name):
-                sample, breach = self.guard(Sampler({"/vol/e": [value]})).sample()
-                self.assertEqual((breach["kind"], breach["volume"], sample["E:"]), ("unknown", "E:", None))
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as tmp:
+                marker = Path(tmp, "ran")
+                result = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=Sampler({"/vol/e": [value]})).run(
+                    py(f"open({str(marker)!r},'w').write('x')"))
+                self.assertEqual((result.breach["kind"], result.breach["volume"]), ("failed-read", "E:"))
+                self.assertFalse(marker.exists())  # refused before launch
 
-    def test_hung_sample_is_a_breach_within_shared_budget(self):
-        gate = threading.Event()
+
+class Gate:
+    """Sampler value that blocks until released (a hung drvfs statfs)."""
+
+    def __init__(self):
+        self.event = threading.Event()
+
+    def __call__(self):
+        self.event.wait(30)
+        return PLENTY
+
+
+class FreshnessRunTests(unittest.TestCase):
+    """Readers and decisions with real child processes."""
+
+    def test_slow_reads_inside_the_window_are_tolerated(self):
+        # B1 run 01: reads slower than the old 0.5 s budget during heavy I/O, still answering
+        def slow():
+            time.sleep(0.7)
+            return PLENTY
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ready = Path(tmp, "ready")
+            sampler = Sampler(ready=ready, after_ready={"/vol/c": slow, "/vol/e": slow})
+            result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(
+                py(f"import time; open({str(ready)!r},'w').write('1'); time.sleep(3.5)"))
+        self.assertFalse(result.breached, result.breach)
+        self.assertEqual(result.exit_code, 0)
+        self.assertGreaterEqual(result.longest_read_seconds["C:"], 0.65)
+        self.assertLessEqual(result.max_staleness_seconds, g.MAX_GAP_SECONDS)
+
+    def test_hung_read_breaches_at_its_deadline_and_never_extends_freshness(self):
+        gate = Gate()
         try:
-            guard = g.ContainmentGuard("p", volumes(), interval=1.0,
-                                       sampler=Sampler({"/vol/c": [lambda: gate.wait(5) and PLENTY],
-                                                        "/vol/e": [lambda: gate.wait(5) and PLENTY]}))
+            with tempfile.TemporaryDirectory() as tmp:
+                ready = Path(tmp, "ready")
+                sampler = Sampler(ready=ready, after_ready={"/vol/c": gate})
+                start = time.monotonic()
+                result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(ready_sleeper(ready))
+                elapsed = time.monotonic() - start
+            self.assertEqual((result.breach["volume"], result.breach["kind"]), ("C:", "stale"))
+            self.assertGreaterEqual(result.breach["staleness_seconds"], g.MAX_GAP_SECONDS)  # rounded to ms
+            self.assertLess(result.breach["decision_lateness_seconds"], 0.3)
+            self.assertLess(elapsed, 2.0 + 3.0 + g.STOP_BUDGET_SECONDS)
+            self.assertFalse(gate.event.is_set())  # decided while the read was still in flight
+        finally:
+            gate.event.set()
+
+    def test_a_declared_breach_is_never_undone(self):
+        gate = Gate()
+        with tempfile.TemporaryDirectory() as tmp:
+            ready = Path(tmp, "ready")
+            sampler = Sampler(ready=ready, after_ready={"/vol/c": gate})
+            guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler)
+            original = guard.stop_owned
+
+            def stop_then_release(*a, **k):
+                gate.event.set()  # the hung read answers with plenty, during the stop
+                time.sleep(0.3)
+                return original(*a, **k)
+
+            guard.stop_owned = stop_then_release
+            result = guard.run(ready_sleeper(ready))
+        self.assertTrue(result.breached)
+        self.assertEqual(result.breach["kind"], "stale")
+        self.assertEqual(result.exit_code, 3)
+
+    def test_stalled_volume_does_not_mask_the_other_volume(self):
+        for kind, e_value in (("below-threshold", g.E_BREACH_BELOW - 1), ("failed-read", OSError("gone"))):
+            gate = Gate()
+            try:
+                with self.subTest(kind=kind), tempfile.TemporaryDirectory() as tmp:
+                    ready = Path(tmp, "ready")
+                    sampler = Sampler(ready=ready, after_ready={"/vol/c": gate, "/vol/e": e_value})
+                    result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(ready_sleeper(ready))
+                    self.assertEqual((result.breach["volume"], result.breach["kind"]), ("E:", kind))
+            finally:
+                gate.event.set()
+
+    def test_freshness_counts_from_the_read_start_not_its_completion(self):
+        gate, starts = Gate(), []
+
+        def slow_then_hung():
+            starts.append(time.monotonic())
+            if len(starts) == 1:
+                time.sleep(1.5)  # valid, but answered 1.5 s after it started
+                return PLENTY
+            return gate()
+
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                ready = Path(tmp, "ready")
+                guard = g.ContainmentGuard("p", volumes(), interval=0.2,
+                                           sampler=Sampler(ready=ready, after_ready={"/vol/c": slow_then_hung}))
+                decided = []
+                original = guard.stop_owned
+                guard.stop_owned = lambda *a, **k: (decided.append(time.monotonic()), original(*a, **k))[1]
+                result = guard.run(ready_sleeper(ready))
+            self.assertEqual(result.breach["kind"], "stale")
+            # deadline = that read's start + 2 s; counting from its completion would give start + 3.5 s
+            self.assertLess(decided[0] - starts[0], 2.6)
+        finally:
+            gate.event.set()
+
+    def test_readers_end_with_the_run(self):
+        guard = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=Sampler())
+        result = guard.run(py("pass"))
+        self.assertEqual(result.exit_code, 0)
+        for reader in guard._readers:
+            reader.thread.join(2)
+            self.assertFalse(reader.thread.is_alive())
+
+    def test_reads_start_at_most_once_per_interval_and_queued_requests_follow(self):
+        starts = []
+
+        def slow():
+            starts.append(time.monotonic())
+            time.sleep(0.9)  # longer than the interval: ticks fall while it is in flight
+            return PLENTY
+
+        with tempfile.TemporaryDirectory() as tmp:
+            ready = Path(tmp, "ready")
+            sampler = Sampler(ready=ready, after_ready={"/vol/c": slow})
+            result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(
+                py(f"import time; open({str(ready)!r},'w').write('1'); time.sleep(4)"))
+        self.assertFalse(result.breached, result.breach)  # sustained 0.9 s reads stay fresh
+        gaps = [b - a for a, b in zip(starts, starts[1:])]
+        self.assertTrue(gaps)
+        self.assertGreaterEqual(min(gaps), 0.5 - 0.02)  # never two starts within one interval
+        self.assertLess(max(gaps), 0.9 + 0.5)  # a request made mid-read is served right after it
+
+    def test_slow_reads_stay_fresh_while_registration_is_wedged_every_tick(self):
+        class WedgedInspect(FakeDocker):
+            def __call__(self, host, args, timeout):
+                if args[:2] == ["container", "inspect"]:
+                    time.sleep(timeout + 0.4)  # never answers inside its budget: the CID stays new
+                    return 124, ""
+                return super().__call__(host, args, timeout)
+
+        def slow():
+            time.sleep(0.9)
+            return PLENTY
+
+        with tempfile.TemporaryDirectory() as tmp:
+            cid_dir, ready = Path(tmp, "cids"), Path(tmp, "ready")
+            cid_dir.mkdir()
+            sampler = Sampler(ready=ready, after_ready={"/vol/c": slow, "/vol/e": slow})
+            guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler,
+                                       docker=WedgedInspect(containers={CID_A: container("a")}),
+                                       owner_token=TOKEN, daemon=g.OwnedDaemon(HOST, g.DESKTOP_ENGINE_ID, cid_dir))
+            result = guard.run(cid_child(cid_dir, {"a.cid": CID_A.encode()}, ready, then="time.sleep(5)"))
+        self.assertFalse(result.breached, result.breach)  # reads never waited on the wedged guard loop
+        self.assertLessEqual(result.max_staleness_seconds, g.MAX_GAP_SECONDS)
+
+    def test_breach_landing_around_the_launch_decision_is_caught_at_once(self):
+        def slow_once():
+            time.sleep(0.55)
+            return PLENTY
+
+        # E: answers slowly while C:'s next read (requested meanwhile) comes back below the line
+        sampler = Sampler({"/vol/c": [PLENTY, LOW_C], "/vol/e": [slow_once]})
+        result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(py("import time; time.sleep(5)"))
+        self.assertEqual((result.breach["volume"], result.breach["kind"]), ("C:", "below-threshold"))
+        self.assertLess(result.breach["decision_lateness_seconds"], 0.3)  # not after a registration step
+
+    def test_each_tick_decides_before_any_other_guard_work(self):
+        class ScriptedReader:
+            """Valid before launch; below the line from launch on."""
+
+            def __init__(self, volume, guard):
+                self.volume, self.guard = volume, guard
+
+            def state(self):
+                now = time.monotonic()
+                below = (LOW_C, now) if self.guard.launched and self.volume.name == "C:" else None
+                return (now, now, PLENTY), None, below, 1, 0.0
+
+            def request(self):
+                pass
+
+            def stop(self):
+                pass
+
+        guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler())
+        guard._start_readers = lambda: setattr(guard, "_readers", [ScriptedReader(v, guard) for v in guard.volumes])
+        registrations = []
+        guard.register_containers = lambda deadline: registrations.append(deadline)
+        result = guard.run(py("import time; time.sleep(5)"))
+        self.assertEqual((result.breach["volume"], result.breach["kind"]), ("C:", "below-threshold"))
+        self.assertEqual(registrations, [])  # the breach was decided before registration could run
+
+    def test_label_discovery_is_bounded_to_one_second(self):
+        gate = threading.Event()
+
+        def hung(host, args, timeout):
+            gate.wait(30)
+            return 0, ""
+
+        guard = g.ContainmentGuard("p", volumes(), sampler=Sampler(), docker=hung, owner_token=TOKEN,
+                                   daemon=g.OwnedDaemon(HOST, g.DESKTOP_ENGINE_ID, Path(".")))
+        try:
             start = time.monotonic()
-            sample, breach = guard.sample()
-            elapsed = time.monotonic() - start
-            self.assertGreater(elapsed, 0.4)
-            self.assertLess(elapsed, 1.6)  # one shared 0.5 s budget; a per-volume 2 x interval would take 2.0 s
-            self.assertEqual(breach, {"volume": "C:", "kind": "unknown", "reason": "sample timed out"})
-            self.assertEqual(sample, {"C:": None, "E:": None})
+            failures: list = []
+            self.assertEqual(guard._label_discovered(time.monotonic() + g.LABEL_DISCOVERY_SECONDS, failures), set())
+            self.assertLessEqual(time.monotonic() - start, 1.0 + 0.05)
+            self.assertEqual(failures[0]["what"], "label-discovery")
         finally:
             gate.set()
 
-    def test_hung_sampler_saturation_is_unknown_without_new_threads(self):
-        gate = threading.Event()
-        try:
-            guard = self.guard(Sampler(default=lambda: gate.wait(5) and PLENTY))
-            for _ in range(g.MAX_HUNG_SAMPLERS // 2):
-                guard.sample()
-            count = lambda: sum(t.name == "guard-sample" for t in threading.enumerate())
-            before = count()
-            _, breach = guard.sample()
-            self.assertEqual(breach["reason"], "sampler threads saturated by hung samples")
-            self.assertLessEqual(count(), before)  # no new sampler thread was started
-        finally:
-            gate.set()
+    def test_one_read_in_flight_per_volume(self):
+        gate, calls = Gate(), []
 
-    def test_sampler_threads_are_daemon(self):
-        gate = threading.Event()
+        def counted():
+            calls.append(time.monotonic())
+            return gate()
+
         try:
-            self.guard(Sampler({"/vol/c": [lambda: gate.wait(5) and PLENTY]})).sample()
-            hung = [t for t in threading.enumerate() if t.name == "guard-sample"]
-            self.assertTrue(hung)
-            self.assertTrue(all(t.daemon for t in hung))
+            with tempfile.TemporaryDirectory() as tmp:
+                ready = Path(tmp, "ready")
+                sampler = Sampler(ready=ready, after_ready={"/vol/c": counted})
+                result = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=sampler).run(ready_sleeper(ready))
+            self.assertEqual(result.breach["kind"], "stale")
+            self.assertEqual(len(calls), 1)  # ~10 ticks passed, but no second read started while one hung
+            readers = [t for t in threading.enumerate() if t.name == "guard-read-C"]
+            self.assertTrue(readers and all(t.daemon for t in readers))
         finally:
-            gate.set()
+            gate.event.set()
+
+    def test_launch_needs_a_fresh_valid_read_on_every_volume(self):
+        gate = Gate()
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                marker = Path(tmp, "ran")
+                start = time.monotonic()
+                result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler({"/vol/e": [gate]})).run(
+                    py(f"open({str(marker)!r},'w').write('x')"))
+                elapsed = time.monotonic() - start
+                self.assertFalse(marker.exists())
+            self.assertEqual({k: result.breach[k] for k in ("volume", "kind", "reason")},
+                             {"volume": "E:", "kind": "stale", "reason": "no fresh valid read before launch"})
+            self.assertLess(result.breach["decision_lateness_seconds"], 0.3)
+            self.assertIsNone(result.child_returncode)
+            self.assertLess(elapsed, g.LAUNCH_WAIT_SECONDS + 0.5)
+        finally:
+            gate.event.set()
+
+    def test_exact_thresholds_pass_on_real_readers(self):
+        values = {"/vol/c": g.C_BREACH_BELOW, "/vol/e": g.E_BREACH_BELOW}
+        result = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=lambda path: values[path]).run(
+            py("import time; time.sleep(0.6)"))
+        self.assertEqual((result.breached, result.exit_code), (False, 0))
+        values["/vol/c"] = g.C_BREACH_BELOW - 1
+        result = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=lambda path: values[path]).run(py("pass"))
+        self.assertEqual((result.breach["volume"], result.breach["kind"]), ("C:", "below-threshold"))
+
+    def test_volume_whose_reads_always_outlast_the_interval_cannot_launch(self):
+        def slow():
+            time.sleep(0.8)  # every read starts more than one 0.5 s interval before it answers
+            return PLENTY
+
+        with tempfile.TemporaryDirectory() as tmp:
+            marker = Path(tmp, "ran")
+            result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=Sampler({"/vol/c": [slow] * 10})).run(
+                py(f"open({str(marker)!r},'w').write('x')"))
+            self.assertFalse(marker.exists())
+        self.assertEqual((result.breach["volume"], result.breach["reason"]), ("C:", "no fresh valid read before launch"))
+
+    def test_launch_waits_for_a_read_started_within_one_interval(self):
+        def slow_once():
+            time.sleep(0.8)  # started 0.8 s before it answered: too old for a 0.5 s interval
+            return PLENTY
+
+        sampler = Sampler({"/vol/c": [slow_once]})
+        result = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler).run(py("pass"))
+        self.assertEqual((result.breached, result.exit_code), (False, 0))
+        self.assertGreaterEqual(result.reads["C:"], 2)  # a second, fresh read was taken before launch
+
+    def test_slow_registration_cannot_delay_a_freshness_decision_by_more_than_a_second(self):
+        class SlowInspect(FakeDocker):
+            def __call__(self, host, args, timeout):
+                if args[:2] == ["container", "inspect"]:
+                    time.sleep(min(5.0, max(timeout, 0.0)) + 5.0)  # a wedged daemon ignoring its timeout
+                return super().__call__(host, args, timeout)
+
+        gate = Gate()
+        try:
+            with tempfile.TemporaryDirectory() as tmp:
+                cid_dir, ready = Path(tmp, "cids"), Path(tmp, "ready")
+                cid_dir.mkdir()
+                docker = SlowInspect(containers={CID_A: container("a")})
+                sampler = Sampler(ready=ready, after_ready={"/vol/c": gate})
+                guard = g.ContainmentGuard("p", volumes(), interval=0.5, sampler=sampler, docker=docker,
+                                           owner_token=TOKEN, daemon=g.OwnedDaemon(HOST, g.DESKTOP_ENGINE_ID, cid_dir))
+                result = guard.run(cid_child(cid_dir, {"a.cid": CID_A.encode()}, ready))
+            self.assertEqual(result.breach["kind"], "stale")
+            self.assertLessEqual(result.breach["decision_lateness_seconds"], 1.0)
+        finally:
+            gate.event.set()
 
 
 class RunTests(unittest.TestCase):
-    def test_no_breach_passes_child_status_and_keeps_gap_under_two_seconds(self):
+    def test_no_breach_passes_child_status_and_keeps_volumes_fresh(self):
         guard = g.ContainmentGuard("p", volumes(), interval=1.0, sampler=Sampler())
         start = time.monotonic()
         result = guard.run(py("import time,sys; time.sleep(2.5); sys.exit(7)"))
         elapsed = time.monotonic() - start
         self.assertFalse(result.breached)
         self.assertEqual((result.child_returncode, result.exit_code), (7, 1))
-        self.assertLessEqual(result.max_gap_seconds, g.MAX_GAP_SECONDS)
-        self.assertGreaterEqual(result.samples, int(elapsed / 1.5))
+        self.assertLessEqual(result.max_staleness_seconds, g.MAX_GAP_SECONDS)
+        self.assertGreaterEqual(min(result.reads.values()), int(elapsed))
+        self.assertEqual(result.samples, sum(result.reads.values()))
         self.assertEqual(result.stop, {})
 
-    def test_slow_successful_samples_do_not_stretch_the_cadence(self):
-        def slow():
-            time.sleep(0.15)
-            return PLENTY
-
-        guard = g.ContainmentGuard("p", volumes(), interval=0.4, sampler=Sampler(default=slow))
-        result = guard.run(py("import time; time.sleep(2)"))
-        self.assertFalse(result.breached)
-        self.assertLessEqual(result.max_gap_seconds, g.MAX_GAP_SECONDS)
-
-    def test_observed_gap_over_two_seconds_is_a_breach(self):
+    def test_guard_descheduled_past_the_window_is_a_stale_breach(self):
         class JumpClock:
             """Jumps 3 s once, after the child is ready (e.g. guard descheduled)."""
 
@@ -429,59 +758,10 @@ class RunTests(unittest.TestCase):
             guard = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=Sampler(), clock=JumpClock(ready))
             result = guard.run(ready_sleeper(ready))
             self.assertTrue(result.breached)
-            self.assertEqual(result.breach["kind"], "sampling-gap")
-            self.assertGreater(result.breach["gap_seconds"], 2.0)
+            self.assertEqual(result.breach["kind"], "stale")
+            self.assertGreater(result.breach["staleness_seconds"], 2.0)
             self.assertEqual(result.stop["cause"], "breach")
             self.assertEqual(result.exit_code, 3)
-
-    def test_gap_is_measured_from_the_pre_launch_sample(self):
-        class SlowFirstSample:
-            def __init__(self):
-                self.offset = 0.0
-
-            def __call__(self):
-                return time.monotonic() + self.offset
-
-        clock = SlowFirstSample()
-
-        class StallAfterFirstSample(g.ContainmentGuard):
-            calls = 0
-
-            def sample(self):
-                out = super().sample()
-                StallAfterFirstSample.calls += 1
-                if StallAfterFirstSample.calls == 1:
-                    clock.offset = 3.0  # the guard stalls right after the pre-launch sample
-                return out
-
-        result = StallAfterFirstSample("p", volumes(), interval=0.2, sampler=Sampler(), clock=clock).run(
-            py("import time; time.sleep(30)"))
-        self.assertEqual(result.breach["kind"], "sampling-gap")
-        self.assertEqual(result.samples, 2)
-
-    def test_late_sample_completion_is_caught_at_that_sample(self):
-        class Clock:
-            offset = 0.0
-
-            def __call__(self):
-                return time.monotonic() + self.offset
-
-        clock = Clock()
-
-        class StallInsideThirdSample(g.ContainmentGuard):
-            calls = 0
-
-            def sample(self):
-                out = super().sample()
-                StallInsideThirdSample.calls += 1
-                if StallInsideThirdSample.calls == 3:
-                    clock.offset += 2.5  # this sample's result arrived late
-                return out
-
-        result = StallInsideThirdSample("p", volumes(), interval=0.2, sampler=Sampler(), clock=clock).run(
-            py("import time; time.sleep(30)"))
-        self.assertEqual(result.breach["kind"], "sampling-gap")
-        self.assertEqual(result.samples, 3)  # not one sample later
 
     def test_signal_during_spawn_still_stops_and_records(self):
         original = g.subprocess.Popen
@@ -571,7 +851,7 @@ class RunTests(unittest.TestCase):
             sampler = Sampler(ready=ready, after_ready={"/vol/e": OSError("gone")})
             result = g.ContainmentGuard("p", volumes(), interval=0.2, sampler=sampler).run(
                 ready_sleeper(ready, "signal.signal(signal.SIGTERM, signal.SIG_IGN)"))
-            self.assertEqual(result.breach["kind"], "unknown")
+            self.assertEqual(result.breach["kind"], "failed-read")
             self.assertEqual(result.stop["client_signals"], ["SIGTERM", "SIGKILL"])
             self.assertEqual(result.child_returncode, -9)
 
@@ -1545,6 +1825,9 @@ class CliTests(unittest.TestCase):
             data = json.loads(record.read_text())
             self.assertEqual((data["schema"], data["exit_code"], data["breached"]),
                              ("vast.pr9.containment-guard.v1", 0, False))
+            self.assertEqual(set(data["reads"]), {"C:", "E:"})
+            self.assertEqual(set(data["longest_read_seconds"]), {"C:", "E:"})
+            self.assertLessEqual(data["max_staleness_seconds"], g.MAX_GAP_SECONDS)
             before = record.read_bytes()
             with CaptureFd2() as err, self.assertRaises(g.RecordWriteFailed):
                 g._write_record(record, data)  # an existing record is never overwritten

@@ -17,6 +17,7 @@ from pathlib import Path
 import re
 import signal
 import socketserver
+import stat
 import subprocess
 import sys
 import tarfile
@@ -82,6 +83,10 @@ if args[:2] != ["--namespace", state["namespace"]]:
 args = args[2:]
 if args == ["images", "ls", "-q"]:
     print("\n".join(state["refs"]))
+elif args == ["content", "active"]:
+    print(state.get("ingests", "REF\tSIZE\tAGE"))
+elif args == ["leases", "ls"]:
+    print(state.get("leases", "ID CREATED AT LABELS"))
 elif args[:2] == ["images", "import"]:
     import tarfile
     with tarfile.open(args[-1]) as tar:
@@ -245,11 +250,11 @@ class Fixture:
             return 200, {"Id": self.pins.provider_id, "Manifests": self.api_state["desktop_manifests"]}
         raise AssertionError(path)
 
-    def run(self):
+    def run(self, reuse=None):
         old = os.environ.get("B1_FAKE_STATE")
         os.environ["B1_FAKE_STATE"] = str(self.state_path)
         try:
-            return b1.Restore(self.pins, self.api_get, self.desktop_api_get).run()
+            return b1.Restore(self.pins, self.api_get, self.desktop_api_get, reuse=reuse).run()
         finally:
             if old is None:
                 os.environ.pop("B1_FAKE_STATE", None)
@@ -649,6 +654,184 @@ class RestoreTests(unittest.TestCase):
         self.assertEqual(f.imports(), [])
 
 
+class ReuseTests(unittest.TestCase):
+    """A later attempt reusing the retained archive of a consumed one."""
+
+    def fixture(self, archive_bytes=None, **kw):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        f = Fixture(Path(tmp.name), None, **kw)
+        Path(f.pins.archive_dir).mkdir(mode=0o700)
+        data = f.archive.read_bytes() if archive_bytes is None else archive_bytes
+        f.target.write_bytes(data)
+        f.retained = (hashlib.sha256(data).hexdigest(), len(data))
+        return f
+
+    def test_reuse_skips_only_the_save_and_restores(self):
+        f = self.fixture()
+        f.state.update(ingests="REF\tSIZE\tAGE\ntar-blobs/sha256/" + "0" * 64 + "\t339.7MB\t1 day",
+                       leases="ID CREATED AT LABELS\n124685930-FsqA 2026-11-05 gc.expire=2026-11-06")
+        f.save()
+        before = f.target.read_bytes()
+        record = f.run(reuse=f.retained)
+        self.assertEqual(record["outcome"], "restored", record)
+        self.assertEqual(record["mode"], "reuse")
+        self.assertEqual(f.saves(), [])  # Desktop was not asked to save again
+        self.assertEqual(len(f.imports()), 1)
+        self.assertEqual(f.target.read_bytes(), before)  # read-only: untouched
+        self.assertEqual(record["archive"]["sha256"], f.retained[0])
+        self.assertEqual([st["stage"] for st in record["stages"]],
+                         ["preflight", "archive_reused", "verified", "imported", "native_verified"])
+        for key in ("remnants_preflight", "remnants_before_import"):
+            self.assertEqual(record[key]["leases"][1], "124685930-FsqA 2026-11-05 gc.expire=2026-11-06")
+            self.assertIn("339.7MB", record[key]["ingests"][1])
+
+    def test_recorded_sha256_must_match_after_full_verification(self):
+        f = self.fixture()
+        record = f.run(reuse=("f" * 64, f.retained[1]))
+        self.assertEqual(record["cause"], "reuse_archive_sha256")
+        self.assertEqual(record["facts"]["observed"], f.retained[0])
+        self.assertEqual(f.imports(), [])
+
+    def test_recorded_size_must_match_before_anything_is_read(self):
+        f = self.fixture()
+        record = f.run(reuse=(f.retained[0], f.retained[1] + 1))
+        self.assertEqual(record["cause"], "reuse_archive_size")
+        self.assertNotIn("archive", record)
+        self.assertEqual(f.imports(), [])
+
+    def test_matching_sha256_never_replaces_membership_verification(self):
+        img = build_image()
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        bad = Path(tmp.name, "bad.tar")
+        write_archive(bad, img, extra=[("repositories", b"{}")])
+        f = self.fixture(archive_bytes=bad.read_bytes())
+        record = f.run(reuse=f.retained)  # the caller's sha256 is right for these bytes
+        self.assertEqual(record["cause"], "archive_unexpected_member")
+        self.assertEqual(f.imports(), [])
+
+    def test_archive_directory_must_hold_exactly_the_archive(self):
+        f = self.fixture()
+        Path(f.pins.archive_dir, "stray").write_bytes(b"x")
+        self.assertEqual(f.run(reuse=f.retained)["cause"], "reuse_archive_dir_contents")
+        g_ = self.fixture()
+        g_.target.unlink()
+        self.assertEqual(g_.run(reuse=g_.retained)["cause"], "reuse_archive_dir_contents")
+        for fx in (f, g_):
+            self.assertEqual(fx.imports(), [])
+
+    def test_symlinked_archive_or_missing_directory_is_refused(self):
+        f = self.fixture()
+        f.target.unlink()
+        os.symlink(f.archive, f.target)
+        self.assertEqual(f.run(reuse=f.retained)["cause"], "reuse_archive_unreadable")
+        g_ = self.fixture()
+        g_.target.unlink()
+        os.rmdir(g_.pins.archive_dir)
+        self.assertEqual(g_.run(reuse=g_.retained)["cause"], "reuse_archive_dir_unusable")
+        for fx in (f, g_):
+            self.assertEqual(fx.imports(), [])
+
+    def test_reused_directory_must_be_root_owned_real_and_not_group_writable(self):
+        f = self.fixture(require_root=True)
+        original = b1.os.geteuid
+        b1.os.geteuid = lambda: 0
+        self.addCleanup(setattr, b1.os, "geteuid", original)
+        os.chmod(f.pins.archive_dir, 0o777)
+        self.assertEqual(f.run(reuse=f.retained)["cause"], "archive_dir_ownership")
+        g_ = self.fixture()
+        real = Path(g_.tmp, "real-b1")
+        os.rename(g_.pins.archive_dir, real)
+        os.symlink(real, g_.pins.archive_dir)
+        self.assertEqual(g_.run(reuse=g_.retained)["cause"], "archive_dir_symlink")
+        for fx in (f, g_):
+            self.assertEqual(fx.imports(), [])
+
+    def test_planted_fifo_cannot_block_and_is_refused(self):
+        f = self.fixture()
+        f.target.unlink()
+        os.mkfifo(f.target)
+        result: dict = {}
+        worker = threading.Thread(target=lambda: result.update(f.run(reuse=f.retained)), daemon=True)
+        worker.start()
+        worker.join(20)
+        self.assertFalse(worker.is_alive())
+        self.assertEqual(result["cause"], "reuse_archive_not_regular")
+        self.assertEqual(f.imports(), [])
+
+    def test_reused_file_must_be_single_linked_and_not_group_writable(self):
+        f = self.fixture()
+        os.link(f.target, Path(f.tmp, "second-name"))
+        self.assertEqual(f.run(reuse=f.retained)["cause"], "reuse_archive_ownership")
+        g_ = self.fixture()
+        os.chmod(g_.target, 0o666)
+        self.assertEqual(g_.run(reuse=g_.retained)["cause"], "reuse_archive_ownership")
+        for fx in (f, g_):
+            self.assertEqual(fx.imports(), [])
+
+    def test_owner_uid_is_checked_for_the_directory_and_the_file(self):
+        real_fstat = b1.os.fstat
+        original_euid = b1.os.geteuid
+        b1.os.geteuid = lambda: 0
+        self.addCleanup(setattr, b1.os, "geteuid", original_euid)
+        for target in ("dir", "file"):
+            with self.subTest(target=target):
+                f = self.fixture(require_root=True)
+                os.chmod(f.pins.archive_dir, 0o700)
+
+                def fake_fstat(fd, target=target):
+                    st = real_fstat(fd)
+                    is_dir = stat.S_ISDIR(st.st_mode)
+                    if (target == "dir") == is_dir:
+                        fields = list(st)
+                        fields[4] = 1000  # st_uid: not root, while the mode stays acceptable
+                        return os.stat_result(fields)
+                    fields = list(st)
+                    fields[4] = 0
+                    return os.stat_result(fields)
+
+                b1.os.fstat = fake_fstat
+                try:
+                    record = f.run(reuse=f.retained)
+                finally:
+                    b1.os.fstat = real_fstat
+                self.assertEqual(record["cause"], "archive_dir_ownership" if target == "dir" else "reuse_archive_ownership")
+                self.assertEqual(f.imports(), [])
+
+    def test_long_remnant_listings_are_marked_truncated(self):
+        f = self.fixture()
+        f.state["leases"] = "ID CREATED AT LABELS\n" + "\n".join(f"lease-{i}" for i in range(100))
+        f.save()
+        record = f.run(reuse=f.retained)
+        self.assertEqual(len(record["remnants_preflight"]["leases"]), 64)
+        self.assertTrue(record["remnants_preflight"]["leases_truncated"])
+        self.assertFalse(record["remnants_preflight"]["ingests_truncated"])
+
+    def test_reuse_keeps_the_preflight_refusals(self):
+        f = self.fixture()
+        f.api_state["image_present"] = True
+        record = f.run(reuse=f.retained)
+        self.assertEqual(record["cause"], "native_image_present")
+        self.assertEqual(f.imports(), [])
+
+    def test_reuse_keeps_the_post_import_contract(self):
+        f = self.fixture()
+        f.api_state["image"]["Size"] += 1
+        record = f.run(reuse=f.retained)
+        self.assertEqual(record["cause"], "post_import_drift")
+        self.assertIn("unknown", record["native_state"])
+
+    def test_save_mode_also_records_remnants(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        f = Fixture(Path(tmp.name), None)
+        record = f.run()
+        self.assertEqual((record["outcome"], record["mode"]), ("restored", "save"))
+        self.assertIn("remnants_preflight", record)
+        self.assertIn("remnants_before_import", record)
+
+
 class RunnerTests(unittest.TestCase):
     def test_capture_is_bounded_and_overflow_reported(self):
         done = b1.run_bounded([sys.executable, "-c", "import sys; sys.stdout.write('x' * (3 * 1024 * 1024))"],
@@ -747,14 +930,14 @@ sys.exit(b1.main(sys.argv[1:], pins=f.pins, api_get=f.api_get, desktop_api_get=f
 
 
 class CliTests(unittest.TestCase):
-    def driver(self, f: Fixture, record: Path) -> subprocess.Popen:
+    def driver(self, f: Fixture, record: Path, extra=()) -> subprocess.Popen:
         pins_file, api_file, driver = f.tmp / "pins.json", f.tmp / "api.json", f.tmp / "driver.py"
         pins_file.write_text(json.dumps(dataclasses.asdict(f.pins)))
         api_file.write_text(json.dumps(f.api_state))
         driver.write_text(DRIVER.format(scripts=str(ROOT / "scripts"), tests=str(ROOT / "tests"),
                                         state=str(f.state_path), api=str(api_file), pins=str(pins_file)))
         env = dict(os.environ, B1_FAKE_STATE=str(f.state_path))
-        return subprocess.Popen([sys.executable, str(driver), "--record", str(record)], env=env)
+        return subprocess.Popen([sys.executable, str(driver), "--record", str(record), *extra], env=env)
 
     def test_main_writes_the_record_once_and_returns_zero(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -764,6 +947,27 @@ class CliTests(unittest.TestCase):
             self.assertEqual(json.loads(record.read_text())["outcome"], "restored")
             self.assertEqual(self.driver(f, record).wait(60), 2)  # an existing record is refused, not overwritten
             self.assertEqual(json.loads(record.read_text())["outcome"], "restored")
+
+    def test_reuse_arguments_are_validated_and_passed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            f = Fixture(Path(tmp))
+            record = Path(tmp, "b1.json")
+            for extra in (["--reuse-archive-sha256", "a" * 64], ["--reuse-archive-size", "10"],
+                          ["--reuse-archive-sha256", "A" * 64, "--reuse-archive-size", "10"],
+                          ["--reuse-archive-sha256", "a" * 64, "--reuse-archive-size", "0"],
+                          ["--reuse-archive-sha256", "a" * 64,
+                           "--reuse-archive-size", str(f.pins.archive_ceiling + 1)]):
+                with self.subTest(extra=extra):
+                    self.assertEqual(self.driver(f, record, extra).wait(60), 2)
+                    self.assertFalse(record.exists())
+            Path(f.pins.archive_dir).mkdir(mode=0o700)
+            data = f.archive.read_bytes()
+            f.target.write_bytes(data)
+            extra = ["--reuse-archive-sha256", hashlib.sha256(data).hexdigest(), "--reuse-archive-size", str(len(data))]
+            self.assertEqual(self.driver(f, record, extra).wait(60), 0)
+            written = json.loads(record.read_text())
+            self.assertEqual((written["outcome"], written["mode"]), ("restored", "reuse"))
+            self.assertEqual(f.saves(), [])
 
     def test_refusal_returns_three_with_the_cause_recorded(self):
         with tempfile.TemporaryDirectory() as tmp:

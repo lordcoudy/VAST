@@ -1,11 +1,16 @@
 """C:/E: containment guard for the PR9 split-engine route (design 2026-11-04).
 
 The guard is containment, not admission. It runs one phase's owned client
-process and samples C: and E: free bytes on a fixed cadence: consecutive sample
-starts are at most ``interval`` apart, a sample that does not finish within the
-shared half-interval budget is unknown, and an observed gap over two seconds is
-itself a breach. On a breach, an unknown sample, an interruption or owned work
-outliving the client, it stops only that phase's owned work:
+process and keeps every volume (C: and E:) *fresh*: each volume has one reader
+with at most one free-space read in flight, a new read starts at most once per
+``interval``, and a read's observation time is its start. A failed read or a
+valid read below the line breaches at once on either volume; a volume whose
+latest valid read started more than two seconds ago breaches (checked on every
+completion, on every tick and at each deadline); an in-flight read never extends
+freshness and a declared breach is never undone. The phase launches only once
+every volume has a valid read that started no more than one interval ago. On a
+breach, an interruption or owned work outliving the client, it stops only that
+phase's owned work:
 
 * the client's process group (SIGTERM, then SIGKILL after the containers);
 * containers whose Docker-written full CID files the phase placed in the
@@ -45,18 +50,21 @@ C_BREACH_BELOW = C_FLOOR_BYTES + C_RESERVE_BYTES  # 94,489,280,512
 E_FLOOR_BYTES = 12 * GIB
 E_RESERVE_BYTES = 10 * GIB
 E_BREACH_BELOW = E_FLOOR_BYTES + E_RESERVE_BYTES  # 23,622,320,128
-MAX_GAP_SECONDS = 2.0  # design: sample at least every 2 s
-MAX_INTERVAL_SECONDS = 1.0  # sample starts <= 1.0 s apart and completions <= 1.5 s apart
+MAX_GAP_SECONDS = 2.0  # design: a volume is fresh while its latest valid read started <= 2 s ago
+MAX_INTERVAL_SECONDS = 1.0  # read starts at most once per interval (<= 1.0 s)
+LAUNCH_WAIT_SECONDS = 2.0  # a fresh valid read on every volume must arrive this soon, or nothing launches
+REGISTER_SECONDS = 0.3  # registration per tick; with the 0.6 s docker reap allowance <= 0.9 s, so a
+#                         freshness decision waits <= 1.0 s behind other guard work
+POLL_SECONDS = 0.05  # wake-up granularity between ticks (deadlines, leader exit)
 STOP_BUDGET_SECONDS = 10.0
 CLI_REAP_SECONDS = 0.5
 CID_SCAN_SECONDS = 0.4  # registration scan on the sample loop
 STALLS_TO_BREACH = 2  # consecutive stalled registration scans
 CID_STOP_SCAN_SECONDS = 1.0  # uncapped stop-path scan
-LABEL_DISCOVERY_SECONDS = 1.5  # owner-label listing, after known CIDs are contained
+LABEL_DISCOVERY_SECONDS = 0.4  # owner-label listing: with the reap allowance it delays the stop <= 1.0 s
 DOCKER_OUTPUT_LIMIT = 1 << 20  # one inspect chunk of INSPECT_CHUNK CIDs fits well within it
 SECOND_PASS_RESERVE_SECONDS = 3.0
 CLIENT_TERM_GRACE_SECONDS = 2.0
-MAX_HUNG_SAMPLERS = 8
 OWNER_LABEL = "vast.pr9.containment-guard.owner"
 LAUNCH_LABEL = "vast.pr9.containment-guard.launch"
 DESKTOP_ENGINE_ID = "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0"
@@ -194,7 +202,9 @@ class GuardResult:
     breach: dict | None = None
     child_returncode: int | None = None
     samples: int = 0
-    max_gap_seconds: float = 0.0
+    max_staleness_seconds: float = 0.0
+    reads: dict = field(default_factory=dict)
+    longest_read_seconds: dict = field(default_factory=dict)
     last_sample: dict = field(default_factory=dict)
     stop: dict = field(default_factory=dict)
     containers: dict = field(default_factory=dict)
@@ -214,13 +224,77 @@ class GuardResult:
             "breach": self.breach,
             "child_returncode": self.child_returncode,
             "samples": self.samples,
-            "max_gap_seconds": round(self.max_gap_seconds, 3),
+            "reads": self.reads,
+            "longest_read_seconds": {k: round(v, 3) for k, v in self.longest_read_seconds.items()},
+            "max_staleness_seconds": round(self.max_staleness_seconds, 3),
             "last_sample": self.last_sample,
             "stop": self.stop,
             "containers": self.containers,
             "exit_code": self.exit_code,
             "retained": "partial state retained; no prune, deletion, retry or floor change",
         }
+
+
+class _VolumeReader:
+    """One volume's free-space reader. It reads continuously from creation until
+    stopped: at most one read is in flight, and each read starts at
+    max(previous completion, previous start + interval), so reads start at most once
+    per interval and never wait on the guard loop. A hung read leaves the volume
+    stale."""
+
+    def __init__(self, volume: Volume, sampler: Sampler, clock: Callable[[], float], wake: threading.Event,
+                 interval: float) -> None:
+        self.volume, self.sampler, self.clock, self.wake, self.interval = volume, sampler, clock, wake, interval
+        self.lock = threading.Lock()
+        self.latest: tuple[float, float, int] | None = None  # (start, done, value) of the latest valid read
+        self.failure: tuple[str, float] | None = None  # (reason, completed at) of the first failed read, sticky
+        self.below: tuple[int, float] | None = None  # (value, completed at) of the first read below the line
+        self.reads = 0
+        self.longest = 0.0
+        self.last_start: float | None = None
+        self.in_flight_since: float | None = None
+        self._stopped = threading.Event()
+        self.thread = threading.Thread(target=self._loop, name=f"guard-read-{volume.name[0]}", daemon=True)
+        self.thread.start()
+
+    def stop(self) -> None:
+        self._stopped.set()
+
+    def _loop(self) -> None:
+        while not self._stopped.is_set():
+            with self.lock:
+                last = self.last_start
+            if last is not None:  # never two starts within one interval
+                spacing = last + self.interval - self.clock()
+                if spacing > 0 and self._stopped.wait(spacing):
+                    return
+            with self.lock:
+                start = self.clock()
+                self.last_start = start
+                self.in_flight_since = start
+            try:
+                value, error = self.sampler(self.volume.path), None
+            except BaseException as exc:  # noqa: BLE001 - any failure is a failed read
+                value, error = None, type(exc).__name__
+            done = self.clock()
+            with self.lock:
+                self.in_flight_since = None
+                self.reads += 1
+                self.longest = max(self.longest, done - start)
+                if error is not None:
+                    self.failure = self.failure or (f"read failed: {error}", done)
+                elif type(value) is not int or value < 0:
+                    self.failure = self.failure or ("read not a non-negative integer", done)
+                else:
+                    if self.latest is None or start >= self.latest[0]:
+                        self.latest = (start, done, value)
+                    if value < self.volume.breach_below and self.below is None:
+                        self.below = (value, done)
+            self.wake.set()
+
+    def state(self) -> tuple:
+        with self.lock:
+            return self.latest, self.failure, self.below, self.reads, self.longest
 
 
 def default_volumes(c_path: str = "/mnt/c", e_path: str = "/mnt/e") -> tuple[Volume, Volume]:
@@ -265,64 +339,97 @@ class ContainmentGuard:
         self._scan_timeouts = 0
         self._seen: dict[str, str] = {}  # every CID ever parsed, written by scan workers
         self._seen_lock = threading.Lock()
-        self._hung = 0
-        self._hung_lock = threading.Lock()
         self._identities: dict[str, dict] = {}
+        self._wake = threading.Event()
+        self._readers: list[_VolumeReader] = []
 
     # --- sampling -------------------------------------------------------
-    def _start_sampler(self, path: str) -> tuple[threading.Event, dict]:
-        done, box = threading.Event(), {}
+    def _start_readers(self) -> None:
+        self._readers = [_VolumeReader(v, self.sampler, self.clock, self._wake, self.interval) for v in self.volumes]
 
-        def work() -> None:
-            try:
-                box["value"] = self.sampler(path)
-            except BaseException as exc:  # noqa: BLE001 - any failure is unknown
-                box["error"] = type(exc).__name__
-            finally:
-                done.set()
-                with self._hung_lock:
-                    if box.get("abandoned"):
-                        self._hung -= 1
+    def _stop_readers(self) -> None:
+        for reader in self._readers:
+            reader.stop()
 
-        threading.Thread(target=work, name="guard-sample", daemon=True).start()
-        return done, box
+    def _snapshot(self) -> list:
+        return [(r.volume, r.state()) for r in self._readers]
 
-    def sample(self) -> tuple[dict, dict | None]:
-        """Sample every volume once within one shared half-interval budget.
+    def _evaluate(self, result: GuardResult, launched: bool = True, states: list | None = None) -> dict | None:
+        """The breach decision on one snapshot: failed or below-line reads on either
+        volume first, then staleness (latest valid read started more than 2 s ago).
+        Every failure, below-line and staleness decision records how late it is:
+        since the deciding read completed, or since the staleness deadline passed."""
+        now = self.clock()
+        states = self._snapshot() if states is None else states
+        result.samples = sum(st[3] for _, st in states)
+        staleness: dict = {}
+        for volume, (latest, _, _, reads, longest) in states:
+            result.reads[volume.name] = reads
+            result.longest_read_seconds[volume.name] = longest
+            result.last_sample[volume.name] = latest[2] if latest else None
+            if latest is not None:
+                staleness[volume.name] = now - latest[0]
+                if launched:
+                    result.max_staleness_seconds = max(result.max_staleness_seconds, staleness[volume.name])
+        for volume, (_, failure, below, _, _) in states:
+            if failure is not None:
+                return {"volume": volume.name, "kind": "failed-read", "reason": failure[0],
+                        "decision_lateness_seconds": round(now - failure[1], 3)}
+            if below is not None:
+                return {"volume": volume.name, "kind": "below-threshold", "free_bytes": below[0],
+                        "breach_below": volume.breach_below, "decision_lateness_seconds": round(now - below[1], 3)}
+        for volume, (latest, _, _, _, _) in states:
+            if latest is None:
+                if launched:
+                    return {"volume": volume.name, "kind": "stale", "reason": "no valid read"}
+                continue
+            if staleness[volume.name] > MAX_GAP_SECONDS:
+                return {"volume": volume.name, "kind": "stale",
+                        "reason": "no valid read started within 2 s",
+                        "staleness_seconds": round(staleness[volume.name], 3),
+                        "decision_lateness_seconds": round(staleness[volume.name] - MAX_GAP_SECONDS, 3)}
+        return None
 
-        A raised error, a timeout, a non-integer or a negative value is an
-        unknown sample and therefore a breach.
-        """
-        deadline = self.clock() + self.interval / 2
-        with self._hung_lock:
-            saturated = self._hung >= MAX_HUNG_SAMPLERS
-        started = {} if saturated else {v.name: self._start_sampler(v.path) for v in self.volumes}
-        sample: dict = {}
-        breach: dict | None = None
-        for v in self.volumes:
-            value, why = None, "sampler threads saturated by hung samples"
-            if v.name in started:
-                done, box = started[v.name]
-                if not done.wait(timeout=max(0.0, deadline - self.clock())):
-                    with self._hung_lock:
-                        if not done.is_set():
-                            box["abandoned"] = True
-                            self._hung += 1
-                    value, why = None, "sample timed out"
-                elif "error" in box:
-                    value, why = None, f"sample failed: {box['error']}"
-                else:
-                    value, why = box.get("value"), None
-                    if type(value) is not int or value < 0:
-                        value, why = None, "sample not a non-negative integer"
-            sample[v.name] = value
-            if breach is None:
-                if value is None:
-                    breach = {"volume": v.name, "kind": "unknown", "reason": why}
-                elif value < v.breach_below:
-                    breach = {"volume": v.name, "kind": "below-threshold",
-                              "free_bytes": value, "breach_below": v.breach_below}
-        return sample, breach
+    @staticmethod
+    def _observed_since(moment: float, states: list) -> bool:
+        """In this snapshot, every volume has a valid read that started at or after ``moment``."""
+        return all(st[0] is not None and st[0][0] >= moment for _, st in states)
+
+    def _decide(self, result: GuardResult, exit_at: float | None) -> tuple[dict | None, bool]:
+        """One snapshot for both answers: the breach decision, and whether the
+        client's exit is observed on every volume. A read published after the
+        snapshot is in neither answer, so it is judged on the next decision."""
+        states = self._snapshot()
+        breach = self._evaluate(result, states=states)
+        return breach, breach is None and exit_at is not None and self._observed_since(exit_at, states)
+
+    def _next_deadline(self) -> float:
+        deadlines = [st[0][0] + MAX_GAP_SECONDS for _, st in self._snapshot() if st[0] is not None]
+        return min(deadlines) if deadlines else self.clock()
+
+    def _launch_ready(self, result: GuardResult) -> dict | None:
+        """Before launch: wait (at most LAUNCH_WAIT_SECONDS) until every volume has a
+        valid read above its line that started no more than one interval ago. The
+        breach check and the readiness check use the same snapshot."""
+        give_up = self.clock() + LAUNCH_WAIT_SECONDS
+        while True:
+            states = self._snapshot()
+            now = self.clock()
+            breach = self._evaluate(result, launched=False, states=states)
+            if breach is not None:
+                return breach
+            fresh = [st[0] is not None and now - st[0][0] <= self.interval for _, st in states]
+            if all(fresh):
+                return None
+            if now >= give_up:
+                # name the worst volume: one with no valid read at all, else the oldest read
+                missing = sorted(((v.name, st[0]) for (v, st), ok in zip(states, fresh) if not ok),
+                                 key=lambda item: (item[1] is not None, item[1][0] if item[1] else 0.0))
+                return {"volume": missing[0][0], "kind": "stale", "reason": "no fresh valid read before launch",
+                        "not_fresh": [name for name, _ in missing],
+                        "decision_lateness_seconds": round(now - give_up, 3)}
+            self._wake.wait(max(0.0, min(give_up, now + POLL_SECONDS) - now))
+            self._wake.clear()
 
     # --- owned containers -----------------------------------------------
     def _cid_files(self, failures: list | None, limit: int | None = _MAX_CID_FILES) -> list[tuple[str, str]]:
@@ -632,10 +739,6 @@ class ContainmentGuard:
         except ChildProcessError:
             return True
 
-    def _wait_leader(self, child: subprocess.Popen, until: float) -> None:
-        while self.clock() < until and not self._leader_exited(child):
-            time.sleep(min(0.02, max(0.0, until - self.clock())))
-
     @staticmethod
     def _group_members(pgid: int, proc: str = "/proc") -> list[int]:
         """Live (non-zombie) processes whose process group is pgid."""
@@ -735,11 +838,14 @@ class ContainmentGuard:
                 raise GuardError(f"CID directory unusable: {type(exc).__name__}") from exc
         self.preflight()
         result = GuardResult(self.phase, self.owner_token)
-        last_start = self.clock()  # the pre-launch sample is the first observation
-        sample, breach = self.sample()
-        last_done = self.clock()
-        result.samples, result.last_sample = 1, sample
+        self._start_readers()
+        try:
+            breach = self._launch_ready(result)
+        except BaseException:
+            self._stop_readers()
+            raise
         if breach is not None:
+            self._stop_readers()
             result.breached, result.breach = True, breach
             if self.hold_signals_after_run:
                 _SIGNALS["defer"] = True
@@ -759,6 +865,7 @@ class ContainmentGuard:
             child = subprocess.Popen(list(command), env=child_env, start_new_session=True, stdin=subprocess.DEVNULL)
         except BaseException:
             _SIGNALS["defer"] = False
+            self._stop_readers()
             raise
         self.launched = True
         try:
@@ -766,36 +873,40 @@ class ContainmentGuard:
             if len(_SIGNALS["deferred"]) > signals_before:
                 _SIGNALS["raised"] = True
                 raise GuardInterrupted(_SIGNALS["deferred"][-1])
+            exit_at: float | None = None  # when the client was first seen to have exited
             while True:
-                next_start = last_start + self.interval
-                self.register_containers(next_start - self.interval / 2)
-                self._wait_leader(child, next_start)
-                exited = self._leader_exited(child)
-                start = self.clock()
-                gap = start - last_start
-                last_start = start
-                result.max_gap_seconds = max(result.max_gap_seconds, gap)
-                sample, breach = self.sample()
-                done = self.clock()
-                done_gap = done - last_done
-                last_done = done
-                result.samples += 1
-                result.last_sample = sample
-                result.max_gap_seconds = max(result.max_gap_seconds, done_gap)
-                if breach is None and max(gap, done_gap) > MAX_GAP_SECONDS:
-                    breach = {"volume": None, "kind": "sampling-gap", "gap_seconds": round(max(gap, done_gap), 3)}
+                tick = self.clock()
+                if exit_at is None and self._leader_exited(child):
+                    exit_at = self.clock()  # taken after the exit was seen
+                breach, observed = self._decide(result, exit_at)  # first, before any other guard work
+                if observed:
+                    break  # the client's last writes are observed on every volume: client-exit checks
+                if breach is None:
+                    # each bounded step is followed by a freshness decision (<= 1.0 s apart)
+                    self.register_containers(tick + min(REGISTER_SECONDS, self.interval / 2))
+                    breach = self._evaluate(result)
                 if breach is None and self.cid_overflow():
                     breach = {"volume": None, "kind": "cid-overflow", "limit": _MAX_CID_FILES}
                 if breach is None and self._scan_timeouts >= STALLS_TO_BREACH:
                     breach = {"volume": None, "kind": "cid-scan-stalled",
                               "reason": "CID directory scan did not finish in time"}
+                if breach is None:
+                    next_tick = tick + self.interval
+                    while True:  # until the next tick: decide on every completion and at each deadline
+                        if exit_at is None and self._leader_exited(child):
+                            exit_at = self.clock()
+                        breach, observed = self._decide(result, exit_at)
+                        now = self.clock()
+                        if breach is not None or observed or now >= next_tick:
+                            break
+                        self._wake.wait(max(0.0, min(next_tick, self._next_deadline(), now + POLL_SECONDS) - now))
+                        self._wake.clear()
                 if breach is not None:
                     result.breached, result.breach = True, breach
                     self.stop_owned(child, result, "breach")
                     break
-                if exited:
-                    self._after_client_exit(child, result)
-                    break
+            if not result.breached:
+                self._after_client_exit(child, result)
         except BaseException as exc:  # noqa: BLE001 - recorded, never lost
             if not result.stop:
                 result.breached = True
@@ -805,6 +916,7 @@ class ContainmentGuard:
             else:
                 result.stop.setdefault("failures", []).append(
                     {"what": "guard", "reason": f"{type(exc).__name__} after stop"})
+        self._stop_readers()
         if self.hold_signals_after_run:
             _SIGNALS["defer"] = True  # main records later signals until the record is written
         # Reap the leader only now that the guard is done with its group.

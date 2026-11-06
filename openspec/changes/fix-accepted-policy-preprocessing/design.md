@@ -2024,8 +2024,12 @@ limit can recreate the disk and so lose protected images.
      - **Accepted liveness risk:**
        - If no valid read starts and completes within 2 s, the phase still
          breaches.
-       - With an interval of I, a read started after the last valid one has about
-         2 − I s to complete: 1.5 s at `--interval 0.5`, 1.0 s at 1.0.
+       - With an interval of I, one isolated slow read has about 2 − I s to complete
+         (1.5 s at `--interval 0.5`, 1.0 s at 1.0).
+       - When reads are slow one after another, the next read starts as soon as
+         the spacing allows. Each read must still finish within about 1.0 s, at any
+         interval up to 1.0 s, because staleness reaches about max(I, D) + D for a
+         read duration D.
        - For B1 attempt 02, a breach would consume the attempt. The record therefore
          keeps read counts, the longest read and the greatest staleness observed.
    - **Breach:**
