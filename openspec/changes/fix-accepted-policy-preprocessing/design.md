@@ -1912,8 +1912,9 @@ diagnostics volume stays required.
       post-import contract, not by containerd.
   - **Remnants of the earlier attempt** (run 01: ingest `tar-blobs/sha256/0874059c…`,
     339.7 MB, and the ctr lease that expires 2026-11-06T13:17:22Z):
-    - they are recorded by a read-only snapshot of active ingests and leases in
-      preflight, and left to containerd, not removed;
+    - they are recorded by read-only snapshots of active ingests and leases, taken
+      in preflight and again immediately before the import, and left to containerd,
+      not removed;
     - resuming that ingest is acceptable, because containerd verifies each blob's
       digest when it commits;
     - an ingest conflict or failure is a refusal, and it consumes the attempt.
@@ -1921,7 +1922,7 @@ diagnostics volume stays required.
     a fresh sample against the remaining peak, with the retained archive and the
     remnant ingest counted as retained failed state.
   - Each attempt is a single invocation, needs its own reviewed approval, and runs
-    with `--interval 1.0` under the guard.
+    with `--interval 0.5` under the guard.
 - Desktop is only read, and nothing is deleted. The archive is retained through
   archive/merge, and any later removal needs its own decision.
 
@@ -1984,9 +1985,9 @@ limit can recreate the disk and so lose protected images.
        - At most one free-space read is in flight per volume.
        - A new read starts at most once per interval (1.0 s or less), and never
          while that volume's previous read is still in flight.
-       - A read's observation time is its **start** time. Free space only falls
-         under the phase's writes, and the value cannot describe an earlier moment
-         than the start.
+       - A read's observation time is its **start** time. A value read at or after
+         the start already includes every write made before the read. Counting
+         exposure from the start therefore overstates it, whatever other writers do.
      - **Breach at once, on either volume:**
        - a failed read (it raised an error, or returned something other than a
          non-negative integer);
@@ -2000,21 +2001,33 @@ limit can recreate the disk and so lose protected images.
          the breach decision is taken. Once the breach is declared, nothing resets
          it.
      - **Before launch:** the phase starts only after every volume has a valid read
-       above its line. If that read does not come within 2 s of the reader starting,
-       the phase is refused before launch.
+       above its line that started no more than one interval ago, so at least one
+       interval of freshness remains at launch. If such a read does not come within
+       2 s of the reader starting, the phase is refused before launch.
      - **What this replaces:** the earlier fixed per-sample budget (interval/2) and
        the hung-read thread bound. Now at most one read per volume can be hung, and a
        hung read simply lets that volume go stale.
      - **Exposure:** at most 2 s passes from the last valid observation to the breach
        decision, plus scheduling jitter, plus the 10 s stop. So the 48GiB argument
        below is unchanged: 12 s at 3,300 MB/s is about 39.6GB.
+     - **Jitter bound:**
+       - The reserve leaves about 11.9GB of margin, which is about 3.6 s at
+         3,300 MB/s.
+       - The guard's other timed work (CID scans, container registration, label
+         discovery) must not delay a freshness evaluation, or the stop, by more than
+         1.0 s.
+       - The record keeps how late each breach decision was relative to its
+         deadline.
      - **Why the amendment:** B1 run 01 (`evidence/b1-restore-01/`). There, a drvfs
        statfs on `/mnt/c` and `/mnt/e` exceeded the old 0.5 s budget during import
        I/O on C:, while C: had about 262GB free.
-     - **Accepted liveness risk:** if a volume's reads stall for more than 2 s, the
-       phase still breaches. For B1 attempt 02 that would consume the attempt. The
-       record therefore keeps read counts, the longest read and the greatest
-       staleness observed.
+     - **Accepted liveness risk:**
+       - If no valid read starts and completes within 2 s, the phase still
+         breaches.
+       - With an interval of I, a read started after the last valid one has about
+         2 − I s to complete: 1.5 s at `--interval 0.5`, 1.0 s at 1.0.
+       - For B1 attempt 02, a breach would consume the attempt. The record therefore
+         keeps read counts, the longest read and the greatest staleness observed.
    - **Breach:**
      - C: below 42,949,672,960 B plus a 48GiB reserve.
      - E: below its 12GiB floor (12,884,901,888 B; "E:12GiB floor" at line 94) plus

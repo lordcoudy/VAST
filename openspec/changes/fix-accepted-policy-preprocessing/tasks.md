@@ -884,17 +884,28 @@ second B1 attempt (substep 3):
     volume;
   - staleness beyond 2 s breaches, checked when a read completes and at each
     volume's deadline;
-  - the phase launches only once every volume has a valid read;
-  - the record keeps read counts, the longest read and the greatest staleness.
+  - the phase launches only once every volume has a valid read above its line that
+    started no more than one interval ago, and is refused if none arrives within
+    2 s;
+  - the record keeps read counts, the longest read, the greatest staleness and how
+    late each breach decision was;
+  - tests cover:
+    - a read still in flight past the deadline breaches;
+    - a late completion whose start is under 2 s old, before the deadline fires,
+      may extend freshness;
+    - a completion whose start is already over 2 s old breaches in that turn;
+    - nothing un-breaches;
+    - slow CID or label work cannot delay a freshness decision by more than 1.0 s.
 - **3a. B1 helper:** add a reuse mode that skips only the save:
   - open the archive read-only; the archive directory must hold exactly that one
     file;
   - full re-verification, plus the sha256 and size recorded by run 01;
   - keep preflight, the identity pin, the import command and the post-import
     contract;
-  - take a read-only snapshot of active ingests and leases before the import.
+  - take read-only snapshots of active ingests and leases in preflight and
+    immediately before the import.
 - **3b. Attempt 02:** a fresh re-admission that counts the retained archive and the
-  run-01 ingest; one invocation with `--interval 1.0` under the guard, after its own
+  run-01 ingest; one invocation with `--interval 0.5` under the guard, after its own
   approval.
 
 2a and 3a each get RED/GREEN tests, independent review, CI and a recorded approval
