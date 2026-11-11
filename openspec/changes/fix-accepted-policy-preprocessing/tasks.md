@@ -914,20 +914,32 @@ checked states are unchanged.
 
 ## Whole-PR review fixes, 2026-11-11
 
-These come from the whole-PR review of `460a5096`, after the human chose "Amend design
-for all". The rules are in design.md ("Whole-PR review fixes, 2026-11-11").
-- **R1:** make change-directory lookup in tests and fixtures work after archive.
-  Retire the D22–D27 development tests into
-  `evidence/retired-development-tests-20261111/` as byte-exact copies. Update the CI
-  skip inventory. Prove it with a simulated archive.
-- **R2:** transaction v2 records the interval-emitter descriptors at commit, and the
-  resource index binds to them.
-- **R3:** no code change. Recorded as unreachable in the current flow.
-- **R4:** the gate-2 setup, capture and resume Windows runners kill and wait for their
-  own child on failure, and record the result.
-- **R5:** concurrent sidecar container retirement. Already implemented; it is
-  published with the rest.
+These come from the whole-PR review of `460a5096`. The human chose "Amend design for
+all". The rules are in design.md, "Whole-PR review fixes, 2026-11-11".
 
-Before archive (6.1), each item gets RED/GREEN tests, two independent reviews, CI and a
-recorded approval. These items sit within existing rows 1.5 and 6.1, so all 46 task
-rows and 24 checked states are unchanged.
+- **R1.** Archive-safe change-directory resolution.
+  - Use the existing helper rule. Exported code resolves inline, and recorded path
+    strings keep the active form.
+  - Retire the D22–D27 development tests and the D26 JSON as byte-exact `.retired`
+    copies, together with the pre-edit bytes of the component and resume fixtures,
+    into `evidence/retired-development-tests-20261111/`. Add a README checked by a
+    test.
+  - Keep `gate2_c` and the compiler executor byte-exact, with their checks.
+  - Keep the 32,768-byte cap.
+  - CI skip inventory goes from 102 to 95.
+  - Acceptance is a simulated archive with sibling archives present, the same exit
+    codes and markers, hash checks, and a clean `openspec validate --strict`.
+- **R2.** Transaction v2 records `resource_interval_emitters` with the collector.
+  The receipt validator and the exact-field readers accept the field, and the
+  resource index binds to it.
+- **R3.** Setup PACKET binds to the descriptors from the same run's F2.
+- **R4.** The gate-2 setup, capture and resume Windows runners copy their output
+  first. Then they kill their own child and wait for it, with a bound and with
+  `TimeoutExpired` caught. They record the kill as diagnostic facts only.
+- **R5.** Concurrent sidecar container retirement, already implemented. A proof that
+  does not finish is cancelled after its in-flight command. It is published with
+  the rest.
+
+Each item gets RED/GREEN tests, independent Claude-subagent review, CI and a recorded
+approval before archive (6.1). These are substeps of existing rows 1.5 and 6.1, so all
+46 task rows and 24 checked states stay unchanged.

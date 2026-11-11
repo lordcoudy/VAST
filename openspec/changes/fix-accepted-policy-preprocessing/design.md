@@ -2070,120 +2070,225 @@ limit can recreate the disk and so lose protected images.
 ## Whole-PR review fixes, 2026-11-11
 
 A whole-PR review of PR #9 at head `460a5096` found five problems. Four of them
-conflict with earlier decisions, so the human chose to amend the design for all
-of them ("Amend design for all"). Each item below says what changes and which
+collide with earlier decisions. The human chose to amend the design for all of
+them ("Amend design for all"). Each item says what changes, and quotes the
 earlier text it supersedes. Nothing here touches the 227 protected images, the
-floors, the retained failures or the evidence of the parked D27/Native57 route.
+floors, retained failures, or the evidence of the parked D27/Native57 route.
 
-**R1. Tests must survive `archive`.**
-- **Problem:** about 20 test modules and 4 fixtures read evidence through the
-  literal path `openspec/changes/fix-accepted-policy-preprocessing/evidence/...`.
-  Archiving moves that directory to
-  `openspec/changes/archive/<date>-fix-accepted-policy-preprocessing/`. In a
-  simulated archive, the test run aborted at import, so CI would go red on the
-  very commit that must be green to merge.
-- **Rule:** any code that reads this change's files from the *current* tree finds
-  the change directory through one helper. The helper accepts the active
-  directory, or exactly one dated archive directory, and refuses anything else.
-  It extends `tests/fixtures/accepted_policy_change_paths_v1.py`.
-- **Not changed:** a path naming a file inside a specific reviewed commit's tree
-  keeps the active path. One example is `git ls-tree <commit> -- <path>` in the
-  gate-2 setup and capture operators. That path is data about the commit, not a
-  read from the current tree.
-- **Retired development tests:** the D22–D27 codec and geometry development tests
-  pin one another, and two operator fixtures, byte for byte. As long as they run,
-  no file in that group can change. They are retired from test discovery:
-  - the D22–D26 sections of
-    `tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py`, from
-    `d22_sha` to the end of the file;
-  - the D22–D26 sections of
-    `tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py`, from
-    `_D22_BROTLI_DATA_PROGRAM` to the end of the file;
-  - the whole D27 pair, `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_v1.py`
-    and `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_caller_v1.py`;
-  - `tests/fixtures/gate2/d26-geometry-retained-v1.json`.
+### R1. Tests and fixtures survive `archive`
 
-  Byte-exact copies of these four test files as they are at `460a5096`, and of
-  the retained JSON, move to `evidence/retired-development-tests-20261111/`. A
-  README there lists their sizes and sha256.
+**Problem.** Archiving moves this change from
+`openspec/changes/fix-accepted-policy-preprocessing/` to
+`openspec/changes/archive/YYYY-MM-DD-fix-accepted-policy-preprocessing/`. About 20
+test modules and four fixtures read evidence through the active path. A simulated
+archive made the full run abort at import, so CI would go red on the commit that
+must be green to merge.
 
-  The operator tests in the same modules stay in discovery unchanged, apart from
-  path resolution: `ResumeRootCaller`, `InertControlTransportTests`,
-  `ResumeNodeCaller`, `ResumeBoundaries`, `WriterTests`, `CommonFragmentTests`,
-  `HeldWriterTests` and `LaterStageCallerTests`.
+**Resolver rule.** Code that reads this change's files from the *current* tree
+finds the change directory with the rule already in
+`tests/fixtures/accepted_policy_change_paths_v1.py`:
+- Use the active directory `openspec/changes/fix-accepted-policy-preprocessing`,
+  or the single archive named `YYYY-MM-DD-fix-accepted-policy-preprocessing`
+  whose date is a real calendar date.
+- Refuse zero candidates, more than one, or the active directory and an archive
+  together.
+- Refuse a resolved path that is not the real directory (no aliasing).
+- Ignore archives of other changes.
 
-  The seven declared D27 skips leave `.ci/integration-test-selection.v1.json`, and
-  its counts and digests are updated.
-- **Superseded:** the byte and AST preservation obligations above, *for current
-  files only*. These are the obligations in the D26 and D27 `source_rows` and
-  `fixtures` sections: "all275" and "all300" current methods, and the four fixed
-  fixture pins.
-  - The historical admission records keep their values, and the retired copies
-    keep the exact bytes those records describe.
-  - `tests/fixtures/accepted_policy_fixture_compiler_component_v1.py` and
-    `tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py` may then
-    change for path resolution and for R4. Their new hashes go in the
-    implementation record.
-  - `accepted_policy_fixture_compiler_v1.py` and
-    `accepted_policy_fixture_compiler_gate2_c_v1.py` stay byte-exact.
-- **Acceptance:** in a scratch copy with the change directory moved to a dated
-  archive, every module that passed before still passes, and no module newly
-  fails.
+The helper gains a `change_directory_v1(root)` that returns this directory.
+`consumer_evidence_directory_v1` keeps its behaviour.
 
-**R2. The resource index binds v2 emitters to the code that ran.**
-- **Problem:** for `authority_binding_v2`, Amendment 8 took the interval-emitter
-  evidence from the host sources at index time, then compared those files with
-  themselves. An emitter edited after the pilots would still be certified.
-- **Rule:** when qualification transaction v2 commits, it records one source
-  descriptor (path, size, sha256) for each system's interval emitter, from the
-  same `AUTHORITY_V2_INTERVAL_EMITTERS` map, next to `hardware_resource_collector`.
-  The resource index requires each current emitter descriptor to equal the
-  recorded one. It refuses a missing or different value before writing anything.
-  The map moves to `publication_policy_qualification_transaction_validation_v2.py`,
-  so the writer and the index share one copy.
-- **Superseded:** Amendment 8's "static set of host sources" now means only the
-  value recorded at commit, never a comparison of the index's files with
-  themselves. The resource index refuses a v2 transaction that lacks the new
-  field. No such transaction exists on the host yet.
+**Code that runs from its own bytes.** Some code runs from its own source rather
+than through imports: it is exported by gate-2 setup, run with `exec`, or run as
+inline WSL program text. That code applies the same rule inline, or takes the
+resolved directory from its caller. It never imports the helper.
 
-**R3. F2 recovery: no change.**
-- **Finding:** the review found that a recovery failing after its footer leaves a
-  directory that looks like a success.
-- **Why no change:** in the current flow nothing can build on that directory.
-  Setup runs F2 and then PACKET in one run; a failed F2 phase stops the run; and
-  F2 requires a fresh output directory.
-- **Condition for later operators:** any later operator that reads F2 output from
-  disk, without the success descriptor from the same run, needs its own review.
+**Paths that keep the active form.** A path string that is *recorded* or
+*compared* as data keeps the active form. Only the file open is resolved.
+Examples:
+- `git ls-tree <commit> -- <path>`, and the tree set it binds in gate-2 setup and
+  capture;
+- the `@v8` source identity in the component fixture;
+- `source_slots` in the resume fixture.
 
-**R4. Gate-2 Windows runners stop the process they started.**
-- **Problem:** on a timeout, overflow or read error, three runners mark the
-  closure unknown and return without stopping their own `wsl.exe` or `git.exe`
-  child: setup (`fixed_process`), capture (the `drain` callers) and resume. That
-  child may keep writing after the failure is recorded.
-- **Rule:** in those failure branches, the runner calls `kill()` on the
-  `subprocess.Popen` handle it still holds, then `wait(timeout=1)`, and records
-  the kill and its result in the failure facts.
-  - The process is the runner's own unreaped child, so this is owned containment,
-    not guessed cleanup.
-  - Killing `wsl.exe` is not assumed to stop work inside Linux.
-  - An unknown closure still stops continuation, and nothing passes because of
-    the kill.
-- **Superseded:** for these three Windows-side runners only, plan v8's "stops
-  continuation without guessed cleanup" and the "no forced termination" test
-  expectations. The rules for Linux-side and container cleanup are unchanged.
+A machine-absolute host path in operator program text (for example in
+`WRITER_BODY` of the resume caller tests) follows the same split.
 
-**R5. Sidecar container retirement runs concurrently.**
-- **Status:** already implemented, before this amendment, as a defect fix within
-  the approved owned-retirement rules.
-- **What changes:** each owned container's retirement proof is unchanged, but the
-  proofs now run in parallel threads inside the one cleanup budget, with one
-  shared grace second.
-- **Failure handling:** a proof that does not finish leaves its custody untouched
-  and counts as a cleanup failure.
+**Retired development tests.** The D22–D27 codec and geometry development tests
+pin each other and two operator fixtures byte for byte. While they run, no file
+in that group can change. They are removed from test discovery:
+- in `tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py`, everything
+  from `d22_sha` to the end of the file, keeping its `if __name__ == "__main__"`
+  guard;
+- in `tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py`,
+  everything from `_D22_BROTLI_DATA_PROGRAM` to the end of the file, keeping its
+  guard;
+- the whole D27 pair, `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_v1.py`
+  and `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_caller_v1.py`;
+- `tests/fixtures/gate2/d26-geometry-retained-v1.json`.
 
-**Order.**
+The operator test classes stay in discovery: `ResumeRootCaller`,
+`InertControlTransportTests`, `ResumeNodeCaller`, `ResumeBoundaries`,
+`WriterTests`, `CommonFragmentTests`, `HeldWriterTests` and
+`LaterStageCallerTests`. They differ from `460a5096` only in the lines R1 and R4
+change, and the implementation record shows that diff.
+
+**Retired copies.** Byte-exact copies of the following, taken from `460a5096`, go
+to `evidence/retired-development-tests-20261111/`:
+- the four test files;
+- the D26 retained JSON;
+- the pre-edit bytes of the two fixtures R1 lets change, so the historical
+  admission records still describe files that exist;
+  - `accepted_policy_fixture_compiler_component_v1.py`: 32732 B, `329fb13f…`;
+  - `accepted_policy_fixture_compiler_gate2_resume_v1.py`: 32739 B, `5fd7d2d6…`.
+
+Each copy gets a `.retired` suffix, so neither discovery nor import can pick it
+up. A README lists every copy's original path, size and sha256, and a test
+checks the copies against that list.
+
+**Fixtures that may change**, for path resolution and R4:
+- `accepted_policy_fixture_compiler_component_v1.py`;
+- `accepted_policy_fixture_compiler_gate2_resume_v1.py`;
+- `accepted_policy_fixture_compiler_gate2_setup_v1.py`;
+- `accepted_policy_fixture_compiler_gate2_capture_v1.py`.
+
+**Fixtures that stay byte-exact**:
+- `accepted_policy_fixture_compiler_v1.py` (103925 B, `1e40d478…`, still checked
+  by the admission test);
+- `accepted_policy_fixture_compiler_gate2_c_v1.py` (130783 B, `5a6c4b08…`). Its
+  only checker was in the retired tests, so a kept test now checks it.
+
+**Size cap.** `gate2_c` keeps its 32,768-byte cap on the component and resume
+fixtures. Room for the edits is made by tightening code inside those two files.
+If an edit cannot fit, it stops and is reported. Neither the cap nor `gate2_c`
+changes.
+
+**Superseded, for current files only:**
+- the D26 and D27 `source_rows` and `fixtures` preservation clauses above: "all275"
+  and "all300" current methods, and the four fixed fixture pins;
+- the whole-file pins for
+  - the resume test module (521029 B, `bdfaca98…`),
+  - the resume caller test module (520323 B, `3742a391…`),
+  - the D26 retained JSON (102199 B, `408379cb…`),
+
+  wherever design.md, proposal.md and tasks.md state them;
+- the matching spec clauses (Decision22 "all225 existing method ASTs SHALL remain
+  byte-identical", Decision26 "ALL275 old methods … SHALL remain", Decision27
+  "preserve the entire ac77 old TEST pair/all300methods/D26 retained fixture
+  byte-exact"). The spec delta now scopes them to the retired copies.
+
+The historical records keep their values. Admissions bound to the old fixture
+hashes do not carry over: any later gate-2 (2.10) step, or a D27/Native57
+resumption, re-admits against the current hashes.
+
+**CI inventory.** The seven `test_accepted_policy_fixture_compiler_gate2_dictionary_caller_v1.*`
+rows leave `.ci/integration-test-selection.v1.json`, so the declared skips go from
+102 to 95. The frozen 88 are unchanged. `tests/test_ci_test_selection_v1.py` gets
+its new count and digests.
+
+**Acceptance.** In a scratch copy of the whole tree, sibling archives of other
+changes included:
+- With the change directory moved to a dated archive, every test module has the
+  same exit code it had before the move, and the same success markers on its
+  last line (for example `resume_D_geometry`).
+- The retired copies match their README.
+- `gate2_c` and the compiler executor still match their hashes.
+- `openspec validate --strict` stays clean.
+
+### R2. The resource index binds v2 emitter sources to the transaction
+
+**Problem.** For `authority_binding_v2`, Amendment 8 built the interval-emitter
+descriptors from the host sources at index time and compared them with the same
+files. An emitter edited after the pilots would still be certified.
+
+**Rule.**
+- **What is recorded:** qualification transaction v2 records
+  `resource_interval_emitters`, one `{path, size_bytes, sha256}` descriptor per
+  system from `AUTHORITY_V2_INTERVAL_EMITTERS`.
+- **When:** in the same preflight step that records `hardware_resource_collector`
+  (`_load_authorities`), and inside the same self-hashed receipt.
+- **Who re-checks it:** the transaction receipt validator re-checks the field.
+  The exact-field readers that list receipt or runtime-input fields accept it:
+  the guardian preprocessing contract, the pilot executor and the execution
+  closure.
+- **What the index does:** the resource index takes the expected value from the
+  transaction it already binds through the execution closure (the same path the
+  collector uses). It requires each current emitter descriptor to equal the
+  recorded one, and refuses a missing or different value before writing
+  anything.
+- **One map:** `AUTHORITY_V2_INTERVAL_EMITTERS` moves to
+  `publication_policy_qualification_transaction_validation_v2.py`, so the writer
+  and the index share one copy.
+
+**What this binds.** For the native systems, it binds the emitter *source file*,
+`checkpoint_resource_interval_emitter.hpp`. The compiled plugin is covered by the
+image pins, not by this field.
+
+**Superseded.** Amendment 8's emitter evidence is the value recorded in the
+transaction, never an index-time comparison of a file with itself. The index's
+own `full_resource_validator` and `interval_validator` descriptors stay
+current-tree on purpose: they describe the validator code the index runs. A v2
+transaction without the new field is refused by the resource index. None exists
+on the host yet.
+
+### R3. Setup PACKET binds to the same-run F2 result
+
+**Problem.** If F2 recovery fails after writing its supplement and footer, with
+its deadline already used up, it leaves no failure file. Setup's PACKET phase
+then trusts the on-disk files through `validate_supplement_v1`. In the current
+flow a failed F2 phase stops the run before PACKET, and F2 needs a fresh output
+directory, so nothing builds on that directory today.
+
+**Rule (hardening).** The setup driver passes PACKET the `supplement_descriptor`
+and `final_accounting_descriptor` that the F2 phase of the same run returned.
+PACKET refuses if the on-disk files differ from them. No other reader changes.
+
+### R4. Gate-2 Windows runners stop the process they started
+
+**Problem.** On a timeout, overflow or read error, three runners mark the closure
+unknown and return while their own `wsl.exe` or `git.exe` child is still running:
+- setup, `fixed_process`, including the late-spawn branch;
+- capture, the `drain` callers;
+- resume, its process runner.
+
+**Rule.** In those failure branches, in this order:
+1. Copy the captured output prefix and the failure facts first.
+2. Then call `kill()` on the `subprocess.Popen` handle the runner still holds.
+3. Then call `wait()`, bounded by the smaller of 1 s and the time left before the
+   runner's completion reserve, and catch `TimeoutExpired`.
+4. Record the kill and its outcome as separate diagnostic facts. The original
+   refusal and its cause are unchanged.
+
+The kill fact is never an accepted cause and never proof that output has stopped
+changing. Killing `wsl.exe` does not stop work inside Linux, so the record says
+the Linux side is not known to be stopped. The unknown closure still stops
+continuation.
+
+**Superseded**, for these three Windows-side runners only: the words "without
+guessed cleanup" in plan v8's "stops continuation without guessed cleanup", and
+the "no forced termination" test expectations. Stopping continuation stays.
+Linux-side and container cleanup rules are unchanged.
+
+### R5. Sidecar container retirement runs concurrently
+
+**Status.** Implemented locally before this amendment, as a defect fix under the
+approved owned-retirement rules. It is not yet published, and it is published
+with the other items after this approval.
+
+**What changes.** Each owned container's retirement proof is unchanged. The
+proofs run in parallel threads inside the one cleanup budget, with one shared
+grace second.
+
+**When a proof does not finish within the grace second:**
+- the cleanup reports a failure;
+- the parent never touches that container's custody;
+- the parent marks the proof cancelled. The proof then issues no further Docker
+  command after the one in flight. It cannot be interrupted mid-command.
+
+### Order
+
 1. This amendment is reviewed and approved first.
-2. R1, R2, R4 and R5 are then implemented with RED/GREEN tests and a mutation run
-   on the new logic.
-3. Each gets two independent reviews, required CI and a recorded approval.
-4. All of this happens before archive (6.1).
+2. Then R1–R5 are implemented with RED/GREEN tests and a mutation run on new logic.
+3. Each gets independent review (separate Claude subagents), required CI and a
+   recorded approval.
+4. All of this comes before archive (6.1).
