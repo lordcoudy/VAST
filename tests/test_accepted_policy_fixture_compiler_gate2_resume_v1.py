@@ -1902,7 +1902,7 @@ class ResumeBoundaries(unittest.TestCase):
     def test_the_kill_wait_is_clamped_by_the_deadline(self):
         m=subject()
         end=2_000_000_001
-        for after_kill,expected in ((end-300_000_000,0.3),(end+1,0)):
+        for after_kill,expected in ((end-300_000_000,0.3),(end+10**9,0)):
             with self.subTest(expected=expected):
                 clock=[1];calls=[]
                 class Input:
@@ -1917,7 +1917,7 @@ class ResumeBoundaries(unittest.TestCase):
                 with patch.object(m.time,'monotonic_ns',side_effect=lambda:clock[0]),patch.object(m.time,'sleep'),\
                      patch.object(m.subprocess,'Popen',return_value=p):
                     with self.assertRaises(m.ResumeRefusal):m._Run(1).process(['controlled'],b'',end,100)
-                self.assertEqual(len(calls),1);self.assertAlmostEqual(calls[0],expected)
+                self.assertEqual(len(calls),1);self.assertAlmostEqual(calls[0],expected);self.assertGreaterEqual(calls[0],0)
 
     def test_clean_child_is_never_killed(self):
         m=subject()

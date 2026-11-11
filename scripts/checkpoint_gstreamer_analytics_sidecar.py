@@ -4383,6 +4383,7 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                 if retirer is not None and retirer.ident is None:  # never started: custody untouched
                     retirements[key] = ["container_retirement_not_started"]
                 elif retirer is not None:  # judged now, so a proof that finished late still counts
+                    unfinished.add(key)  # also a retirer whose start was interrupted before it had an ident
                     retirer.join(max(0.0, join_until - time.monotonic()))
                     if not retirer.is_alive() and retirements.get(key) is not None:
                         unfinished.discard(key)

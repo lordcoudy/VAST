@@ -142,7 +142,10 @@ def _open_v1(repo_root, relative):
  root, active = Path(repo_root), "openspec/changes/fix-accepted-policy-preprocessing"
  if not relative.startswith(active + "/"):
   return root / relative
- found = [root / active] if (root / active).is_symlink() or (root / active).exists() else []  # a dangling link is an alias
+ try:
+  (root / active).lstat(); found = [root / active]  # a dangling link is an alias, not absent
+ except FileNotFoundError:
+  found = []
  for item in (root / "openspec/changes/archive").glob("*-fix-accepted-policy-preprocessing"):
   if item.name[11:] != "fix-accepted-policy-preprocessing":
    continue  # another change's archive
