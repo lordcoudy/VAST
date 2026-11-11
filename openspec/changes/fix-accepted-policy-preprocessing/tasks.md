@@ -932,10 +932,11 @@ all". The rules are in design.md, "Whole-PR review fixes, 2026-11-11".
 - **R2.** Transaction v2 records `resource_interval_emitters` with the collector.
   The receipt validator and the exact-field readers accept the field, and the
   resource index binds to it.
-- **R3.** Setup PACKET binds to the descriptors from the same run's F2.
-- **R4.** The gate-2 setup, capture and resume Windows runners copy their output
-  first. Then they kill their own child and wait for it, with a bound and with
-  `TimeoutExpired` caught. They record the kill as diagnostic facts only.
+- **R3.** Withdrawn (implementation finding below).
+- **R4.** The gate-2 resume Windows runner (setup and capture: withdrawn, see
+  below) copies its output first. Then it kills its own child and waits for it,
+  with a bound and with `TimeoutExpired` caught. It records the kill as diagnostic
+  facts only.
 - **R5.** Concurrent sidecar container retirement, already implemented. Cancelling a
   proof that does not finish, after its in-flight command, is new work with its own
   tests. It is published with
@@ -952,6 +953,7 @@ byte-exact `gate2_c` pin setup (`807263a7…`) and capture (`58f33fb1…`), so e
 either file would block the 2.10 gate-2 resumption. Both stay byte-exact.
 - R3 is withdrawn.
 - R4 covers the resume runner only.
-- R1 leaves both files unedited; their tests repoint path constants.
+- R1 leaves both files unedited; their tests point path constants, or their own
+  path mapping, at the resolved directory.
 
 Task rows and checked states are unchanged.

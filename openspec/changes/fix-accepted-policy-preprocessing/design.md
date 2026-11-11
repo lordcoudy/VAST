@@ -2338,14 +2338,22 @@ unchanged.
   keep their current behaviour: an unknown closure stops continuation, with no
   kill. This is recorded as a known limitation. Before any later setup or capture
   run, the operator must check for a leftover `wsl.exe` or `git.exe` child of the
-  earlier run and stop it. A rerun already needs a fresh output directory.
+  earlier run and stop it. Because killing `wsl.exe` does not stop work inside
+  Linux, the operator must also confirm that no Linux-side process of that run is
+  still running under its root, F2 or AUX paths in the Ubuntu distro. If either
+  cannot be confirmed, the closure stays unknown and the run does not continue. A
+  rerun already needs a fresh output directory.
 - **R1, for these two files:** neither file is edited. Like `gate2_c`, they keep
   the active path, and a real run after archive refuses. Tests that exercise them
-  point the module path constants at the resolved directory with `patch.object`.
+  point the module path constants, or the test's own path mapping, at the resolved
+  directory.
 
 **Superseded.**
 - In R1, "Fixtures that may change": setup and capture move to "Fixtures that stay
   byte-exact". Only the component and resume fixtures may change.
+- In R1, "Code that runs from its own bytes": setup's exported code is unchanged.
+  The inline rule applies only to the component and resume fixtures.
+- In "Order", step 2: R3 is not implemented, and R4 covers the resume runner only.
 - In R3: the whole rule.
 - In R4: "three runners" and the setup and capture entries become the resume
   runner only. The "no forced termination" expectations stay in the setup and
