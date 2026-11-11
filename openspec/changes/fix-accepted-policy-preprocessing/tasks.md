@@ -945,3 +945,13 @@ Each item gets RED/GREEN tests, independent Claude-subagent review, CI and a rec
 approval before archive (6.1). These are substeps of existing rows 1.5 and 6.1, so all
 46 task rows and 24 checked states stay unchanged. The spec delta gains one
 scenario, the archive scenario, so the counts are 24/46 and 11/88.
+
+Implementation finding, 2026-11-11 (design.md, "Implementation finding, 2026-11-11:
+setup and capture stay byte-exact"). The P0-465 resume retention index and the
+byte-exact `gate2_c` pin setup (`807263a7…`) and capture (`58f33fb1…`), so editing
+either file would block the 2.10 gate-2 resumption. Both stay byte-exact.
+- R3 is withdrawn.
+- R4 covers the resume runner only.
+- R1 leaves both files unedited; their tests repoint path constants.
+
+Task rows and checked states are unchanged.

@@ -2302,6 +2302,60 @@ grace second.
 - the parent marks the proof cancelled. The proof then issues no further Docker
   command after the one in flight. It cannot be interrupted mid-command.
 
+### Implementation finding, 2026-11-11: setup and capture stay byte-exact
+
+**Finding.** Implementation found a constraint that the review-fix amendment
+missed. The P0-465 resume retention index,
+`evidence/compiler-component-01/gate2-p0-465-retention.v1.json`, binds two
+current versions:
+- slot 11, `accepted_policy_fixture_compiler_gate2_setup_v1.py`: 48892 B,
+  `807263a7…`, git blob `7cc70e05…`;
+- slot 12, `accepted_policy_fixture_compiler_gate2_capture_v1.py`: 45056 B,
+  `58f33fb1…`, git blob `469a45ef…`.
+
+The byte-exact `gate2_c` checks this index in `validate_resume_retention_index_v1`
+(lines 969–972). For these two outside-helper slots, the current binding must be
+the producer465 version, and the index may hold no version other than the
+producer465 and c75 ones. The component fixture's `resume_code_forms_quote_v1`
+then compares the current files with those bindings.
+
+So any edit to setup or capture makes the gate-2 resumption refuse. That
+resumption is the route task 2.10 still needs in this change, and it cannot be
+re-admitted without changing `gate2_c`. A controlled test confirmed it:
+`ResumeBoundaries.test_actual_main_verified_closure_p0_api_write_order_and_single_terminal`
+refused with "resume descriptor identity" once setup and capture were edited, and
+passed again once they were restored.
+
+**Decision.** Setup and capture stay byte-exact, the same as `gate2_c` and the
+compiler executor. This narrows R1, R3 and R4 as follows. R2 and R5 are
+unchanged.
+
+- **R3 is withdrawn.** It was a hardening. As R3 itself says, nothing builds on
+  a failed F2 directory today: a failed F2 phase stops the run before PACKET, and
+  F2 needs a fresh output directory. That remaining risk is recorded here and not
+  fixed.
+- **R4 applies to the resume runner only.** The setup and capture Windows runners
+  keep their current behaviour: an unknown closure stops continuation, with no
+  kill. This is recorded as a known limitation. Before any later setup or capture
+  run, the operator must check for a leftover `wsl.exe` or `git.exe` child of the
+  earlier run and stop it. A rerun already needs a fresh output directory.
+- **R1, for these two files:** neither file is edited. Like `gate2_c`, they keep
+  the active path, and a real run after archive refuses. Tests that exercise them
+  point the module path constants at the resolved directory with `patch.object`.
+
+**Superseded.**
+- In R1, "Fixtures that may change": setup and capture move to "Fixtures that stay
+  byte-exact". Only the component and resume fixtures may change.
+- In R3: the whole rule.
+- In R4: "three runners" and the setup and capture entries become the resume
+  runner only. The "no forced termination" expectations stay in the setup and
+  capture tests.
+- The matching spec delta sentence is amended.
+
+**Evidence of this finding:** the retention index rows quoted above, `gate2_c`
+lines 941–980, and the controlled test result. The withdrawn R3 and R4 edits are
+not published.
+
 ### Order
 
 1. This amendment is reviewed and approved first.
