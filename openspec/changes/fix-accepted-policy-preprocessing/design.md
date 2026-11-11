@@ -2112,17 +2112,27 @@ Examples:
 - `source_slots` in the resume fixture.
 
 A machine-absolute host path in operator program text (for example in
-`WRITER_BODY` of the resume caller tests) follows the same split.
+`WRITER_BODY` of the resume caller tests) follows the same split. Reads through a
+path constant count too, such as in `test_accepted_policy_fixture_compiler_gate2_retention_v1.py`
+and `test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py`.
+
+**Byte-exact and commit-bound operators.** `gate2_c` stays byte-exact and opens and
+compares the active path itself (`resume_packet_v1`). The setup and resume operators
+bind active paths through `git ls-tree <commit>`. Run for real after archive, these
+operators keep the active path and refuse. A gate-2 or D27 resumption after archive
+needs a new change. Tests that exercise them point the module's path constants at
+the resolved directory, so they work after archive without changing the operators'
+own rules.
 
 **Retired development tests.** The D22–D27 codec and geometry development tests
 pin each other and two operator fixtures byte for byte. While they run, no file
 in that group can change. They are removed from test discovery:
 - in `tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py`, everything
-  from `d22_sha` to the end of the file, keeping its `if __name__ == "__main__"`
-  guard;
+  from `d22_sha` to the end of the file, re-appending its `if __name__ == "__main__"`
+  guard, which sits inside the cut;
 - in `tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py`,
-  everything from `_D22_BROTLI_DATA_PROGRAM` to the end of the file, keeping its
-  guard;
+  everything from `_D22_BROTLI_DATA_PROGRAM` to the end of the file, re-appending
+  its guard;
 - the whole D27 pair, `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_v1.py`
   and `tests/test_accepted_policy_fixture_compiler_gate2_dictionary_caller_v1.py`;
 - `tests/fixtures/gate2/d26-geometry-retained-v1.json`.
@@ -2158,10 +2168,12 @@ checks the copies against that list.
 - `accepted_policy_fixture_compiler_gate2_c_v1.py` (130783 B, `5a6c4b08…`). Its
   only checker was in the retired tests, so a kept test now checks it.
 
-**Size cap.** `gate2_c` keeps its 32,768-byte cap on the component and resume
-fixtures. Room for the edits is made by tightening code inside those two files.
-If an edit cannot fit, it stops and is reported. Neither the cap nor `gate2_c`
-changes.
+**Size cap.** The 32,768-byte caps stay unchanged wherever they are enforced: in the
+component fixture (slot 1), in `gate2_c` for the resume operator, and in the resume
+operator itself. Room for the edits is made inside those two fixtures.
+Whitespace-only compaction, such as shorter indents, is allowed. For every function
+that R1 and R4 do not change, the evidence is equality of `ast.dump`. If an edit
+cannot fit, it stops and is reported. Neither a cap nor `gate2_c` changes.
 
 **Superseded, for current files only:**
 - the D26 and D27 `source_rows` and `fixtures` preservation clauses above: "all275"
@@ -2252,10 +2264,13 @@ unknown and return while their own `wsl.exe` or `git.exe` child is still running
 - resume, its process runner.
 
 **Rule.** In those failure branches, in this order:
-1. Copy the captured output prefix and the failure facts first.
+1. Copy the captured output prefix and the failure facts first. Setup and resume
+   already guard their reader updates with a lock. Capture's `drain` adds one lock
+   around each reader's update, and the copy is taken under it.
 2. Then call `kill()` on the `subprocess.Popen` handle the runner still holds.
-3. Then call `wait()`, bounded by the smaller of 1 s and the time left before the
-   runner's completion reserve, and catch `TimeoutExpired`.
+3. Then call `wait(max(0, min(1 s, deadline − now)))`, where `deadline` is that
+   runner's own `DEADLINE`, `until` or `end`, and catch `TimeoutExpired`. The
+   late-spawn branch has no output to copy, so it only kills and waits.
 4. Record the kill and its outcome as separate diagnostic facts. The original
    refusal and its cause are unchanged.
 
@@ -2271,9 +2286,11 @@ Linux-side and container cleanup rules are unchanged.
 
 ### R5. Sidecar container retirement runs concurrently
 
-**Status.** Implemented locally before this amendment, as a defect fix under the
-approved owned-retirement rules. It is not yet published, and it is published
-with the other items after this approval.
+**Status.** The concurrent proofs, the shared grace second and the custody rules
+were implemented locally before this amendment, as a defect fix under the
+approved owned-retirement rules. They are not yet published, and they ship with
+the other items after this approval. The cancellation below is new work, with its
+own RED/GREEN tests.
 
 **What changes.** Each owned container's retirement proof is unchanged. The
 proofs run in parallel threads inside the one cleanup budget, with one shared

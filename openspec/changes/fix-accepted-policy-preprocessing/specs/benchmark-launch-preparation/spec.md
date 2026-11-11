@@ -343,15 +343,16 @@ The new route SHALL retain every complete actual selected/observed wire and orig
 
 Failed/unfit/incomplete D27 geometry SHALL consume that admission and stop dependents without replay/profile negotiation/fallback/cap change/projected fit. Complete/all-true geometry alone MAY permit BOTH genuine restricted routes; later missing gates SHALL preserve that geometry unchanged and HOLD readiness. A negative regression/portable CI pass SHALL NOT establish fit or whole acceptance. Full conformance/TWO final independent exact-source reviews including COMPLETED configured Grok/NEW final-pushed implementation CI/delegated approval and separate inclusive accounting/physical admission SHALL remain mandatory. All old task/completion/unknown/image/retention/archive/merge boundaries SHALL survive.
 
-The D22–D27 development tests were retired on 2026-11-11, after a whole-PR review. Every requirement above that a D22–D27 test file, method, AST or the D26 retained fixture SHALL remain byte-identical, byte-exact or present now applies to the byte-exact `.retired` copies in `evidence/retired-development-tests-20261111/`, not to files in test discovery. Each copy is listed with its size and sha256 in a README there, and a test SHALL check every copy against that README.
+The D22–D27 development tests were retired on 2026-11-11, after a whole-PR review. Every clause of this requirement and its scenarios that a D22–D27 test file, method, AST or the D26 retained fixture SHALL remain byte-identical, byte-exact or present now applies to the byte-exact `.retired` copies in `evidence/retired-development-tests-20261111/`, not to files in test discovery. Each copy is listed with its size and sha256 in a README there, and a test SHALL check every copy against that README.
 
-The operator fixtures `accepted_policy_fixture_compiler_component_v1.py`, `accepted_policy_fixture_compiler_gate2_resume_v1.py`, `accepted_policy_fixture_compiler_gate2_setup_v1.py` and `accepted_policy_fixture_compiler_gate2_capture_v1.py` MAY change only for archive-safe path resolution and for owned-runner cleanup. `accepted_policy_fixture_compiler_v1.py` and `accepted_policy_fixture_compiler_gate2_c_v1.py` SHALL stay byte-exact, and the 32,768-byte cap that `gate2_c` applies to the component and resume fixtures SHALL hold.
+The operator fixtures `accepted_policy_fixture_compiler_component_v1.py`, `accepted_policy_fixture_compiler_gate2_resume_v1.py`, `accepted_policy_fixture_compiler_gate2_setup_v1.py` and `accepted_policy_fixture_compiler_gate2_capture_v1.py` MAY change only for archive-safe path resolution and for owned-runner cleanup. `accepted_policy_fixture_compiler_v1.py` and `accepted_policy_fixture_compiler_gate2_c_v1.py` SHALL stay byte-exact, and the 32,768-byte caps SHALL stay unchanged wherever they are enforced: in the component fixture, in `gate2_c` for the resume operator, and in the resume operator itself.
 
 Admissions bound to the old fixture hashes SHALL NOT carry over to the changed fixtures.
 
 #### Scenario: The change is archived before merge
 - **WHEN** this change's directory moves to `openspec/changes/archive/YYYY-MM-DD-fix-accepted-policy-preprocessing/`
-- **THEN** every test and fixture that reads this change's files from the current tree resolves the active directory, or exactly one dated archive of this change, and refuses anything else
+- **THEN** every test, and every fixture as exercised by tests, that reads this change's files from the current tree resolves the active directory, or exactly one dated archive of this change, and refuses anything else
+- **AND** the byte-exact and commit-bound gate-2 operators keep the active path, so after archive a real gate-2 or D27 resumption needs a new change
 - **AND** every test module keeps the exit code and success markers it had before the move
 
 #### Scenario: A fresh artificial engine is prepared successfully

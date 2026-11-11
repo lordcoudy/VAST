@@ -936,10 +936,12 @@ all". The rules are in design.md, "Whole-PR review fixes, 2026-11-11".
 - **R4.** The gate-2 setup, capture and resume Windows runners copy their output
   first. Then they kill their own child and wait for it, with a bound and with
   `TimeoutExpired` caught. They record the kill as diagnostic facts only.
-- **R5.** Concurrent sidecar container retirement, already implemented. A proof that
-  does not finish is cancelled after its in-flight command. It is published with
+- **R5.** Concurrent sidecar container retirement, already implemented. Cancelling a
+  proof that does not finish, after its in-flight command, is new work with its own
+  tests. It is published with
   the rest.
 
 Each item gets RED/GREEN tests, independent Claude-subagent review, CI and a recorded
 approval before archive (6.1). These are substeps of existing rows 1.5 and 6.1, so all
-46 task rows and 24 checked states stay unchanged.
+46 task rows and 24 checked states stay unchanged. The spec delta gains one
+scenario, the archive scenario, so the counts are 24/46 and 11/88.
