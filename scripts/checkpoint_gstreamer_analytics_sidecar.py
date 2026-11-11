@@ -3879,6 +3879,7 @@ class _OwnedDockerContainer:
         self._cid_identity: tuple[int, ...] | None = None
         self._cid: str | None = None
         self._closed = False
+        self.cancelled = False  # set by cleanup when this proof outlives its budget
 
     def launch_options(self) -> list[str]:
         options = ["--name", self.name, "--log-driver", "none", "--cidfile", str(self.cid_path)]
@@ -3933,6 +3934,7 @@ class _OwnedDockerContainer:
                 os.close(descriptor)
 
     def _run(self, command: Sequence[str], deadline: float) -> subprocess.CompletedProcess[str]:
+        _require(not self.cancelled, "owned Docker retirement proof was cancelled")
         remaining = deadline - time.monotonic()
         _require(remaining > 0, "Docker cleanup deadline exhausted")
         limit = 5.0 if command[1] in {"stop", "kill"} else 2.0
@@ -4338,6 +4340,30 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
             pass
         except BaseException as error:
             wait_errors[key].append(f"worker_wait:{error}")
+    # Each owned-container proof makes several bounded Docker calls; done one worker
+    # after another they can outrun the one cleanup budget, so they run concurrently.
+    retirements: dict[tuple[str, str], list[str] | None] = {}
+
+    def retire_owned(key: tuple[str, str], owned: _OwnedDockerContainer) -> None:
+        try:
+            retirements[key] = owned.retire(deadline)
+        except BaseException as error:
+            retirements[key] = [f"container_retirement:{error}"]
+
+    retirers = {key: threading.Thread(target=retire_owned, args=(key, handle._owned_container), daemon=True)
+                for key, handle in handles.items()
+                if type(handle) is DockerWorkerHandle and handle._retirement_errors is None
+                and handle._owned_container is not None}
+    retirements.update({key: None for key in retirers})  # slots made here; each thread fills only its own
+    join_until = deadline + 1.0  # one shared grace second, not one per worker
+    try:
+        for retirer in retirers.values():
+            retirer.start()
+        for retirer in retirers.values():
+            retirer.join(max(0.0, join_until - time.monotonic()))
+    except BaseException as error:  # an interrupt here must not skip client and custody cleanup
+        errors.append(f"worker_cleanup:container_retirers:{_failure_text(error)}")
+    unfinished: set[tuple[str, str]] = set()
     containment_deadline: float | None = None
     for key, handle in handles.items():
         local = wait_errors[key]
@@ -4352,14 +4378,24 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                 local.append(f"worker_nonzero:{initial_status}")
             if docker:
                 handle._cleanup_deadline = deadline
+                retirer = retirers.get(key)
+                if retirer is not None and retirer.ident is None:  # never started: custody untouched
+                    retirements[key] = ["container_retirement_not_started"]
+                elif retirer is not None:  # judged now, so a proof that finished late still counts
+                    unfinished.add(key)  # until proven done, even if this join is interrupted
+                    retirer.join(max(0.0, join_until - time.monotonic()))
+                    if not retirer.is_alive() and retirements.get(key) is not None:
+                        unfinished.discard(key)
                 if handle._owned_container is None:
                     local.append("original_container_ownership_unavailable")
+                elif key in unfinished:  # its retirer still holds the custody: touch nothing
+                    local.append("container_retirement_unfinished")
                 else:
                     try:
                         handle._container_id = handle._owned_container.cid()
                     except BaseException as error:
                         local.append(f"container_cid:{error}")
-                    local.extend(handle._owned_container.retire(deadline))
+                    local.extend(retirements[key])
             if handle.poll() is None:
                 local.append("client_required_terminate")
                 try:
@@ -4414,7 +4450,9 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                 except BaseException as error:
                     local.append(f"capture_close:{error}")
                 try:
-                    if handle._owned_container is not None:
+                    if handle._owned_container is not None and key in unfinished:
+                        handle._owned_container.cancelled = True  # no Docker command after the one in flight
+                    elif handle._owned_container is not None:
                         handle._owned_container.close()
                 except BaseException as error:
                     local.append(f"container_custody_close:{error}")

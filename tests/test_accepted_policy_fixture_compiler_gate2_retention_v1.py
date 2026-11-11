@@ -10,6 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
 
 
 class FixedLimitsTests(unittest.TestCase):
@@ -38,7 +39,7 @@ class FixedLimitsTests(unittest.TestCase):
 
     def test_index_hash_canonical_and_link_guards_are_real(self):
         root = Path(__file__).resolve().parents[1]
-        raw = (root / component.RETENTION_INDEX_REL_V1).read_bytes()
+        raw = current_path_v1(root, component.RETENTION_INDEX_REL_V1).read_bytes()
         with tempfile.TemporaryDirectory() as temporary:
             repo = Path(temporary).resolve()
             path = repo / component.RETENTION_INDEX_REL_V1
@@ -65,7 +66,7 @@ class NativeRetentionTests(unittest.TestCase):
         self.old = self.repo.parent / "old"
         self.temp = self.repo.parent / "temp"
         self.temp.mkdir()
-        original = Path(__file__).resolve().parents[1] / component.RETENTION_INDEX_REL_V1
+        original = current_path_v1(Path(__file__).resolve().parents[1], component.RETENTION_INDEX_REL_V1)
         self.index = json.loads(original.read_bytes())
         self.raws = {}
         for number, row in enumerate(self.index["src"]):

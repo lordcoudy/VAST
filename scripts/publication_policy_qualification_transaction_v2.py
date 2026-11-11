@@ -31,6 +31,7 @@ from publication_policy_qualification_transaction_validation_v2 import (
     CANDIDATE_RECEIPT_FILENAME,
     CELL_COUNT,
     FRAGMENTS_DIRNAME,
+    AUTHORITY_V2_INTERVAL_EMITTERS,
     HARDWARE_RESOURCE_COLLECTOR_PATH,
     INDEX_FILENAME,
     MAPPING_FILENAME,
@@ -297,6 +298,13 @@ def _load_authorities(
         "hardware_resource_collector": file_descriptor(
             root, hardware_collector_path
         ),
+        "resource_interval_emitters": {
+            system: file_descriptor(
+                root,
+                _physical_file(root, path, label=f"{system} resource interval emitter"),
+            )
+            for system, path in AUTHORITY_V2_INTERVAL_EMITTERS.items()
+        },
         "image_identity_patch": file_descriptor(root, patch_path),
         "accepted_model_parity_manifest": file_descriptor(root, manifest_path),
         "accepted_model_parity_assessment": file_descriptor(root, assessment_path),
@@ -501,6 +509,7 @@ def _receipt_value(
         "hardware_resource_collector": authorities[
             "hardware_resource_collector"
         ],
+        "resource_interval_emitters": authorities["resource_interval_emitters"],
         "image_identity_patch": authorities["image_identity_patch"],
         "image_identity_patch_sha256": patch["patch_sha256"],
         "accepted_model_parity_manifest": authorities[

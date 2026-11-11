@@ -9,7 +9,8 @@ import unittest
 from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
-DIRECTORY = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01"
+from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1  # noqa: E402
+DIRECTORY = consumer_evidence_directory_v1(ROOT)
 sys.path.insert(0, str(ROOT / "scripts"))
 sys.path.insert(0, str(DIRECTORY))
 DRIVER = DIRECTORY / "build_per_cell_minimum_refusal_v1.py"

@@ -8,6 +8,7 @@ import unittest
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT))
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
 
@@ -80,7 +81,7 @@ class SealedWriterTests(unittest.TestCase):
                 component.component_seed_v1(**{**good, field: value})
 
     def test_real_provider_seed_fits_the_sealed_cap(self):
-        observed = json.loads((ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/"
+        observed = json.loads((change_directory_v1(ROOT) / "evidence/"
                                "compiler-component-01/observations-01/provider-image.v1_55.original.json").read_bytes())
         keys = sorted(entry.split("=", 1)[0] for entry in observed["Config"]["Env"])
         seed = component.component_seed_v1(review=self.review(), bindings={"host_sha256": "1" * 64,

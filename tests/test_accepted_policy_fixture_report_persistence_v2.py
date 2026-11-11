@@ -9,8 +9,9 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
-sys.path.insert(0, str(ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01"))
+sys.path.insert(0, str(consumer_evidence_directory_v1(ROOT)))
 import build_production_fixture_v2 as positive
 import build_per_cell_minimum_refusal_v1 as negative
 from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as admission

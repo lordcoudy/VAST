@@ -10,6 +10,8 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
+from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
@@ -216,7 +218,7 @@ class ResumeInfoTests(unittest.TestCase):
     def native_shaped_info(self):
         from tests.fixtures import accepted_policy_fixture_compiler_gate2_d_v1 as d
         from tests.test_accepted_policy_fixture_compiler_transport_v1 import FakeSocket, reply
-        info = json.loads((ROOT / 'openspec/changes/fix-accepted-policy-preprocessing/evidence/'
+        info = json.loads((change_directory_v1(ROOT) / 'evidence/'
                            'compiler-component-01/observations-01/engine-info.v1_55.original.json').read_bytes())
         info.update(Containers=3, ContainersRunning=0, ContainersPaused=0, ContainersStopped=3)
         with tempfile.TemporaryDirectory() as tmp:
@@ -795,7 +797,7 @@ class ResumePacketTests(unittest.TestCase):
                 (self.repo/relative).write_bytes(raw)
                 if relative==gate.RESUME_OPERATOR_V1:context['operator']=self.blob(raw)
                 else:self.code[relative]=self.blob(raw)
-            plan_raw=(ROOT/(component.RETENTION_INDEX_REL_V1.rsplit('/',1)[0]+'/component-admission-plan.v8.md')).read_bytes()
+            plan_raw=current_path_v1(ROOT,component.RETENTION_INDEX_REL_V1.rsplit('/',1)[0]+'/component-admission-plan.v8.md').read_bytes()
             self.plan.write_bytes(plan_raw)
             context['consumer_plan']=self.blob(plan_raw)
             context['prior_retention']['git_observation']['component']=self.code[gate.CODE_PATHS[1]]

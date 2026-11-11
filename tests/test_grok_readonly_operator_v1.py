@@ -10,8 +10,9 @@ import sys
 import unittest
 
 ROOT=Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 SOURCE=ROOT/"scripts/prepare_grok_review_volume_v1.ps1"
-HERE=ROOT/"openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01"
+HERE=change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01"
 
 def operator():
     path=HERE/"grok_bounded_model_invocation_v1.proposed.ps1"
@@ -367,7 +368,7 @@ class MetadataConsoleBoundaryTest(unittest.TestCase):
 class GrokReadonlyCallerTest(unittest.TestCase):
     def load_caller(self, *, native=False):
         import importlib.util
-        path = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
+        path = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
         self.assertTrue(path.is_file(), "fixed read-only caller is absent")
         spec = importlib.util.spec_from_file_location("pr9_readonly_caller_control", path)
         module = importlib.util.module_from_spec(spec)
@@ -836,7 +837,7 @@ _QUARANTINED_READERS=[None,None]
     def test_real_directory_custody_denies_delete_access_with_a_working_baseline(self):
         import ctypes
         module = self.load_caller(native=True)
-        directory = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01"
+        directory = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01"
         observer = module.RuntimeCustody()
         def delete_access_probe():
             handle = observer.create(str(directory), 0x10080, 7, None, 3, 0x02200000, None)
@@ -884,7 +885,7 @@ _QUARANTINED_READERS=[None,None]
 
     def test_operator_finalizer_keeps_original_and_distinct_close_failure(self):
         import types
-        path=ROOT/"openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_invocation_v1.proposed.ps1"
+        path=change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_invocation_v1.proposed.ps1"
         self.assertTrue(path.is_file(),"fixed enclosing owner absent")
         raw=path.read_text().split("$Pr9ReadonlyController = @'\n",1)[1].split("\n'@",1)[0]
         ns={"__name__":"pr9_operator_control"}

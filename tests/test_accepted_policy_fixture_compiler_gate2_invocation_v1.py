@@ -14,6 +14,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as c
+from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
 
 COMMIT = "a" * 40
 SHA = "b" * 64
@@ -350,7 +351,7 @@ class InvocationTests(unittest.TestCase):
         results=[]
         for compressed in (False,True):
             m=subject();repo=Path(__file__).resolve().parents[1]
-            current={name:m.source_descriptor_v1((repo/name).read_bytes()) for name in m.SOURCE_PATHS}
+            current={name:m.source_descriptor_v1(current_path_v1(repo,name).read_bytes()) for name in m.SOURCE_PATHS}
             payload={'current':current,'global_deadline_ns':0,'phase_deadline_ns':0,'context':{'boot_id':'unused'}}
             packed=base64.b85encode(zlib.compress(m.NATIVE_BOOTSTRAP.encode('ascii'),9))
             program="import base64,zlib;exec(zlib.decompress(base64.b85decode('"+packed.decode('ascii')+"')))" if compressed else m.NATIVE_BOOTSTRAP

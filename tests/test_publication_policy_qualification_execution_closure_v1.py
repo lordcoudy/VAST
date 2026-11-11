@@ -19,6 +19,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
+from publication_policy_qualification_transaction_validation_v2 import AUTHORITY_V2_INTERVAL_EMITTERS  # noqa: E402
 
 import publication_policy_qualification_execution_closure_v1 as target  # noqa: E402
 import publication_policy_qualification_execution_code_closure_v1 as code_closure_target  # noqa: E402
@@ -264,6 +265,12 @@ class Fixture:
         self.hardware_resource_collector.write_bytes(
             b"# qualification collector fixture\n"
         )
+        # R2: the transaction records the interval-emitter sources next to the collector.
+        for _relative in AUTHORITY_V2_INTERVAL_EMITTERS.values():
+            _emitter = self.root / _relative
+            _emitter.parent.mkdir(parents=True, exist_ok=True)
+            if not _emitter.exists():
+                _emitter.write_bytes(b"# interval emitter fixture\n")
         for module in code_closure_target.SEED_MODULES:
             source = root / "scripts" / f"{module}.py"
             if not source.exists():
@@ -345,6 +352,10 @@ class Fixture:
             "hardware_resource_collector": descriptor(
                 self.root, self.hardware_resource_collector
             ),
+            "resource_interval_emitters": {
+                system: descriptor(self.root, self.root / relative)
+                for system, relative in AUTHORITY_V2_INTERVAL_EMITTERS.items()
+            },
             "fragments": fragment_descriptors,
         }
         transaction = {
@@ -1148,6 +1159,36 @@ class PublicationPolicyQualificationExecutionClosureV1Tests(unittest.TestCase):
                 target._RETIRED_SOCKET_NODE_COUNT,
             )
             self.assertEqual(loaded["receipt_descriptor"], descriptor(fixture.root, receipt_path))
+
+    def test_transaction_interval_emitters_bind_exact_paths_and_bytes(self) -> None:
+        # R2: the closure carries the transaction's emitter descriptors for the resource index.
+        with tempfile.TemporaryDirectory() as tmp:
+            fixture = Fixture(Path(tmp))
+            original = json.loads(fixture.transaction.read_text(encoding="ascii"))
+            loaded = target._validate_transaction(fixture.root, fixture.transaction)
+            self.assertEqual(loaded["resource_interval_emitters"], original["resource_interval_emitters"])
+
+            def reseal(change):
+                value = copy.deepcopy(original)
+                change(value)
+                unsigned = {key: item for key, item in value.items() if key != "receipt_sha256"}
+                value["receipt_sha256"] = semantic_sha(unsigned)
+                write_json(fixture.transaction, value)
+
+            other = fixture.root / AUTHORITY_V2_INTERVAL_EMITTERS["deepstream"]
+            cases = (
+                ("missing", lambda value: value.pop("resource_interval_emitters"), "fields drifted"),
+                ("system set", lambda value: value["resource_interval_emitters"].pop("savant"), "emitter set drifted"),
+                ("path", lambda value: value["resource_interval_emitters"].__setitem__(
+                    "savant", descriptor(fixture.root, other)), "savant interval emitter path drifted"),
+                ("bytes", lambda value: value["resource_interval_emitters"]["savant"].__setitem__(
+                    "sha256", "0" * 64), "savant interval emitter descriptor drifted"),
+            )
+            for name, change, message in cases:
+                with self.subTest(case=name):
+                    reseal(change)
+                    with self.assertRaisesRegex(target.QualificationExecutionClosureV1Error, message):
+                        target._validate_transaction(fixture.root, fixture.transaction)
 
     def test_wrong_runtime_socket_fails_before_output(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

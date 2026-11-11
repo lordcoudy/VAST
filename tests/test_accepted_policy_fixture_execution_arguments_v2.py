@@ -9,8 +9,9 @@ import unittest
 from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
-DRIVER = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py"
+DRIVER = consumer_evidence_directory_v1(ROOT) / "build_production_fixture_v2.py"
 spec = importlib.util.spec_from_file_location("_fixture_execution_arguments_v2_control", DRIVER)
 builder = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(builder)

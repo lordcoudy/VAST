@@ -42,7 +42,10 @@ from checkpoint_gstreamer_analytics_bridge import (  # noqa: E402
     native_probe_policy_systems,
 )
 from checkpoint_gstreamer_analytics_sidecar import (  # noqa: E402
+    DockerWorkerHandle,
     DockerWorkerProcessFactory,
+    _OwnedDockerContainer,
+    _retire_worker_handles,
     GStreamerAnalyticsSidecar,
     GStreamerAnalyticsProductionService,
     ProductionLifecycleEvidenceSink,
@@ -3250,6 +3253,187 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                 run_command[run_command.index("--max-requests") + 1],
                 "600",
             )
+
+
+class ConcurrentContainerRetirementTests(unittest.TestCase):
+    """Owned-container proofs run concurrently inside the one cleanup budget."""
+
+    class Process:
+        pid = 4242
+
+        @staticmethod
+        def poll() -> int:
+            return 0
+
+        @staticmethod
+        def wait(timeout: float | None = None) -> int:
+            return 0
+
+    class Owned:
+        def __init__(self, delay: float, result: list[str], log: list[tuple[str, float]]) -> None:
+            self.delay, self.result, self.log, self.closed = delay, result, log, False
+            self.cancelled = False
+
+        def retire(self, deadline: float) -> list[str]:
+            self.log.append(("start", time.monotonic()))
+            time.sleep(self.delay)  # e.g. four Docker CLI calls proving absence
+            return list(self.result)
+
+        @staticmethod
+        def cid() -> str:
+            return "a" * 64
+
+        def close(self) -> None:
+            self.closed = True
+
+    def handles(self, count: int, delay: float, result: list[str]) -> tuple[dict, list]:
+        log: list[tuple[str, float]] = []
+        handles = {}
+        for index in range(count):
+            handle = object.__new__(DockerWorkerHandle)
+            handle._process = self.Process()
+            handle._stdout_capture = handle._stderr_capture = None
+            handle._retirement_errors = None
+            handle._cleanup_deadline = None
+            handle._container_id = None
+            handle._owned_container = self.Owned(delay, result, log)
+            handles[(f"branch{index}", "gpu")] = handle
+        return handles, log
+
+    def test_eight_slow_proofs_fit_one_budget_that_serial_proofs_would_blow(self) -> None:
+        handles, log = self.handles(8, 0.6, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 3.0)  # serial would need 4.8 s
+        self.assertEqual(errors, [])
+        self.assertLess(time.monotonic() - start, 3.0)
+        self.assertLess(max(at for _, at in log) - min(at for _, at in log), 0.5)  # started together
+        for handle in handles.values():
+            self.assertEqual(handle._retirement_errors, [])
+            self.assertEqual(handle._container_id, "a" * 64)
+            self.assertTrue(handle._owned_container.closed)
+
+    def test_each_proof_error_stays_with_its_own_worker(self) -> None:
+        handles, _ = self.handles(2, 0.0, ["container_retirement_unproved"])
+        errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertEqual(sorted(errors), ["worker_cleanup:branch0/gpu:container_retirement_unproved",
+                                          "worker_cleanup:branch1/gpu:container_retirement_unproved"])
+
+    def test_several_hung_proofs_share_one_grace_second(self) -> None:
+        handles, _ = self.handles(4, 5.0, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 0.3)
+        self.assertLess(time.monotonic() - start, 2.0)  # 0.3 s budget + 1 s grace, not + 1 s per worker
+        self.assertEqual(sum("container_retirement_unfinished" in item for item in errors), 4)
+
+    def test_an_interrupt_while_joining_still_runs_client_and_custody_cleanup(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        real_join = threading.Thread.join
+        calls = []
+
+        def interrupted_join(thread, timeout=None):
+            calls.append(thread)
+            if len(calls) == 1:
+                raise KeyboardInterrupt
+            return real_join(thread, timeout)
+
+        with mock.patch.object(threading.Thread, "join", interrupted_join):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertTrue(any(item.startswith("worker_cleanup:container_retirers:") for item in errors))
+        for handle in handles.values():
+            self.assertIsNotNone(handle._retirement_errors)  # every handle still went through cleanup
+
+    def test_a_proof_finishing_after_the_shared_join_still_counts_and_is_closed(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        first, second = handles.values()
+        second._owned_container.delay = 1.8  # outlives the shared join (deadline + 1 s), done before its turn
+        real_finish = []
+
+        class SlowCapture:
+            def finish(self, deadline):  # the first handle's own cleanup takes a moment
+                time.sleep(1.2)
+                real_finish.append(True)
+                return True
+
+            def close(self):
+                return True
+
+        first._stdout_capture = SlowCapture()
+        with mock.patch("checkpoint_gstreamer_analytics_sidecar._BoundedPipeCapture", SlowCapture):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertTrue(real_finish)
+        self.assertNotIn("worker_cleanup:branch1/gpu:container_retirement_unfinished", errors)
+        self.assertTrue(second._owned_container.closed)
+        self.assertEqual(second._container_id, "a" * 64)
+
+    def test_an_interrupt_during_a_handle_rejoin_leaves_its_custody_untouched(self) -> None:
+        handles, _ = self.handles(1, 1.5, [])
+        (handle,) = handles.values()
+        real_join = threading.Thread.join
+        calls = []
+
+        def join(thread, timeout=None):
+            calls.append(thread)
+            if len(calls) == 2:  # the per-handle re-join, while the proof is still running
+                raise KeyboardInterrupt
+            return real_join(thread, timeout if len(calls) != 1 else 0.0)
+
+        with mock.patch.object(threading.Thread, "join", join):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertTrue(any(item.startswith("worker_cleanup:branch0/gpu:retirement:") for item in errors))
+        self.assertFalse(handle._owned_container.closed)  # never closed under a live retirer
+        self.assertIsNone(handle._container_id)
+
+    def test_an_unstarted_retirer_does_not_skip_client_cleanup(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        real_start = threading.Thread.start
+        calls = []
+
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:
+                raise KeyboardInterrupt
+            return real_start(thread)
+
+        with mock.patch.object(threading.Thread, "start", start):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertIn("worker_cleanup:branch1/gpu:container_retirement_not_started", errors)
+        for item in handles.values():
+            self.assertTrue(item._owned_container.closed)
+
+    def test_a_proof_that_outlives_the_budget_is_unfinished_and_its_custody_untouched(self) -> None:
+        handles, _ = self.handles(1, 3.0, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 0.3)
+        self.assertLess(time.monotonic() - start, 2.5)  # waits the budget plus one second, not the proof
+        self.assertIn("worker_cleanup:branch0/gpu:container_retirement_unfinished", errors)
+        self.assertIn("worker_cleanup_deadline_exhausted", errors)
+        (handle,) = handles.values()
+        self.assertFalse(handle._owned_container.closed)
+        self.assertIsNone(handle._container_id)
+        self.assertTrue(handle._owned_container.cancelled)  # it may finish its in-flight call, then stops
+
+    def test_finished_proofs_are_not_cancelled(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        for handle in handles.values():
+            self.assertFalse(handle._owned_container.cancelled)
+
+    def test_a_cancelled_proof_issues_no_further_docker_command(self) -> None:
+        calls: list[list[str]] = []
+
+        def runner(command, **kwargs):
+            calls.append(list(command))
+            return subprocess.CompletedProcess(command, 0, stdout="daemon" + chr(10), stderr="")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            owned = _OwnedDockerContainer(name="w", image_id="sha256:" + "1" * 64, lifecycle_id="a" * 32,
+                                          role="gpu", receipt_dir=Path(tmp), daemon_id="daemon", runner=runner)
+            owned._same_daemon(time.monotonic() + 5.0)
+            self.assertEqual(len(calls), 1)
+            owned.cancelled = True
+            with self.assertRaisesRegex(Exception, "cancelled"):
+                owned._same_daemon(time.monotonic() + 5.0)
+            self.assertEqual(len(calls), 1)
 
 
 if __name__ == "__main__":

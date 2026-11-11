@@ -12,6 +12,7 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
@@ -53,7 +54,7 @@ def stat_header(name, size, **changed):
 
 def c75_inspect_reply():
     """Exact observed reply, derived in memory; no second raw fixture/copy."""
-    path = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/b1-01/outputs/RPC10.reply.original"
+    path = change_directory_v1(ROOT) / "evidence/compiler-component-01/b1-01/outputs/RPC10.reply.original"
     raw = path.read_bytes()
     assert hashlib.sha256(raw).hexdigest() == recovery.B1_ORIGINAL_SHA256["inspect"]
     for old, new in ((b'"Dns":null', b'"Dns":[]'), (b'"DnsOptions":null', b'"DnsOptions":[]'),
@@ -235,7 +236,7 @@ class RecoveryTests(unittest.TestCase):
         self.assertEqual(path.read_bytes(), old)
 
     def full_fixture(self, *, initial_inspect=None, final_inspect=None):
-        old = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/b1-01/outputs"
+        old = change_directory_v1(ROOT) / "evidence/compiler-component-01/b1-01/outputs"
         identities = [(old/name).read_bytes() for name in ("RPC01.reply.original", "RPC02.reply.original", "RPC10.reply.original")]
         archives = []
         for path, size, cap, elf in recovery.MEMBERS:

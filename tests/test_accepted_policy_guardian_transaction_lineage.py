@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 import publication_guardian_accepted_policy_preprocessing_contract_v1 as target
 import publication_policy_qualification as stock
+from publication_policy_qualification_transaction_validation_v2 import AUTHORITY_V2_INTERVAL_EMITTERS
 from test_publication_guardian_accepted_policy_preprocessing_contract_v1 import (
     descriptor, semantic, write_json,
 )
@@ -30,6 +31,11 @@ class TransactionBoundaryFixture:
         self.authority_path = root / "authority.json"
         write_json(self.authority_path, {"artificial_fixture": "physical descriptor only"})
         authority = descriptor(root, self.authority_path)
+        emitters = {}
+        for system, relative in AUTHORITY_V2_INTERVAL_EMITTERS.items():
+            (root / relative).parent.mkdir(parents=True, exist_ok=True)
+            (root / relative).write_bytes(b"# interval emitter fixture\n")
+            emitters[system] = descriptor(root, root / relative)
         self.transaction_path = root / "transaction.json"
         self.transaction = {
             "schema_version": 2,
@@ -42,6 +48,7 @@ class TransactionBoundaryFixture:
             "systems": list(target.SYSTEMS),
             "cell_count": 32,
             "hardware_resource_collector": authority,
+            "resource_interval_emitters": emitters,
             "image_identity_patch": authority,
             "accepted_model_parity_manifest": authority,
             "accepted_model_parity_assessment": authority,

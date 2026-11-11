@@ -11,6 +11,7 @@ import unittest
 from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
@@ -103,7 +104,7 @@ class RunnerTests(unittest.TestCase):
             (fixtures / name).write_bytes((ROOT / "tests/fixtures" / name).read_bytes())
         self.p0 = self.root / "p0.json"
         self.p0.write_bytes(COMMITTED)
-        observed = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/observations-01"
+        observed = change_directory_v1(ROOT) / "evidence/compiler-component-01/observations-01"
         self.info = json.loads((observed / "engine-info.v1_55.original.json").read_bytes())
         self.image = json.loads((observed / "provider-image-manifests.v1_55.original.json").read_bytes())
         self.version = {"Version": "29.7.2", "ApiVersion": "1.55", "MinAPIVersion": "1.40"}

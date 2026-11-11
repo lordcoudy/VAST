@@ -19,6 +19,7 @@ import full_resource_qualification as qualification
 import publication_policy_qualification as policy_qualification
 import publication_policy_qualification_fragments_from_authority_v2 as authority_fragments
 import publication_policy_qualification_index_v2 as policy_index
+import publication_policy_qualification_transaction_validation_v2 as transaction_validation
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
     PublicationPhysicalIoV1Error,
@@ -80,12 +81,7 @@ _EMITTER_SOURCE_BY_ROLE = {
 # resource-v2 evidence is the static set of host sources, as in the legacy GVA producer.
 AUTHORITY_BINDING_V2_KIND = authority_fragments.BINDING_KIND
 HARDWARE_RESOURCE_COLLECTOR_PATH = "scripts/collect_metrics.py"
-AUTHORITY_V2_INTERVAL_EMITTERS = {
-    "deepstream": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
-    "savant": "scripts/checkpoint_savant_resource_runtime_v3.py",
-    "openvino_gva": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
-    "gstreamer_custom": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
-}
+AUTHORITY_V2_INTERVAL_EMITTERS = transaction_validation.AUTHORITY_V2_INTERVAL_EMITTERS
 
 FragmentValidator = Callable[[str, Path, Path], dict[str, Any]]
 ExecutionClosureLoader = Callable[..., dict[str, Any]]
@@ -486,6 +482,7 @@ def _validated_execution_closure_descriptor(
     loader: ExecutionClosureLoader,
     expected_fragment_descriptors: Mapping[str, Mapping[str, Any]],
     expected_hardware_resource_collector: Mapping[str, Any] | None = None,
+    expected_resource_interval_emitters: Mapping[str, Mapping[str, Any]] | None = None,
 ) -> dict[str, Any]:
     try:
         descriptor = policy_index._descriptor(
@@ -557,6 +554,12 @@ def _validated_execution_closure_descriptor(
     ) != dict(expected_hardware_resource_collector):
         raise FullResourceQualificationIndexV1Error(
             "hardware resource collector differs from the qualification transaction"
+        )
+    if expected_resource_interval_emitters is not None and transaction.get(
+        "resource_interval_emitters"
+    ) != {system: dict(value) for system, value in expected_resource_interval_emitters.items()}:
+        raise FullResourceQualificationIndexV1Error(
+            "resource interval emitters differ from the qualification transaction"
         )
     return descriptor
 
@@ -718,6 +721,17 @@ def build_full_resource_qualification_index_v1(
                     root / HARDWARE_RESOURCE_COLLECTOR_PATH,
                     "hardware resource collector",
                 )
+                if AUTHORITY_BINDING_V2_KIND in observed_kinds
+                else None
+            ),
+            # The transaction records the emitter sources the pilots ran (R2).
+            expected_resource_interval_emitters=(
+                {
+                    system: policy_index._descriptor(
+                        root, root / path, f"{system} native interval emitter"
+                    )
+                    for system, path in AUTHORITY_V2_INTERVAL_EMITTERS.items()
+                }
                 if AUTHORITY_BINDING_V2_KIND in observed_kinds
                 else None
             ),

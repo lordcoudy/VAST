@@ -136,6 +136,10 @@ class TransactionV2Outputs:
             "artifact_kind": transaction_v2.TRANSACTION_KIND,
             "status": "qualification_inputs_materialized_nonaccepted",
             "hardware_resource_collector": _descriptor(self.root, self.root / "scripts/collect_metrics.py"),
+            "resource_interval_emitters": {
+                system: _descriptor(self.root, self.root / relative)
+                for system, relative in transaction_v2.AUTHORITY_V2_INTERVAL_EMITTERS.items()
+            },
             "image_identity_patch": _descriptor(self.root, self.authority.patch_path),
             "accepted_model_parity_manifest": _descriptor(self.root, self.authority.accepted_manifest),
             "accepted_model_parity_assessment": _descriptor(self.root, self.authority.accepted_assessment),
@@ -172,6 +176,7 @@ class TransactionV2Outputs:
                 "receipt_sha256": receipt["receipt_sha256"],
                 "fragments": copy.deepcopy(receipt["fragments"]),
                 "hardware_resource_collector": copy.deepcopy(receipt["hardware_resource_collector"]),
+                "resource_interval_emitters": copy.deepcopy(receipt["resource_interval_emitters"]),
             },
             "pilot_execution": {
                 "pilot_root": {
@@ -409,6 +414,31 @@ class TransactionPreconditionTests(_Base):
                 resource_index.FullResourceQualificationIndexV1Error, "hardware resource collector"
             ):
                 _run(self.outputs.resource_index_args(self.resource_path, closure=forged))
+        self.assertFalse(self.resource_path.exists())
+
+    def test_resource_index_binds_the_interval_emitters_to_the_transaction(self) -> None:
+        closure = json.loads(self.outputs.closure.read_bytes())
+        closure["qualification_input_transaction"]["resource_interval_emitters"]["savant"]["sha256"] = "0" * 64
+        forged = _write(
+            self.root / "artifacts/emitter_closure/qualification_execution_closure.v1.receipt.json",
+            _canonical(closure),
+        )
+        with self.outputs.substitutions():
+            with self.assertRaisesRegex(
+                resource_index.FullResourceQualificationIndexV1Error, "resource interval emitters"
+            ):
+                _run(self.outputs.resource_index_args(self.resource_path, closure=forged))
+        self.assertFalse(self.resource_path.exists())
+
+    def test_resource_index_refuses_an_emitter_edited_after_the_transaction(self) -> None:
+        emitter = self.root / transaction_v2.AUTHORITY_V2_INTERVAL_EMITTERS["deepstream"]
+        emitter.write_bytes(emitter.read_bytes() + b"\n# edited after the pilots\n")
+        with self.outputs.substitutions():
+            with self.assertRaisesRegex(
+                (resource_index.FullResourceQualificationIndexV1Error, promotion.PromotionV2Error),
+                "resource[ _]interval[ _]emitters",
+            ):
+                _run(self.outputs.resource_index_args(self.resource_path))
         self.assertFalse(self.resource_path.exists())
 
     def test_index_commands_require_pilots_and_closure(self) -> None:

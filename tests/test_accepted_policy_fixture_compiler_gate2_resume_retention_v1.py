@@ -10,6 +10,7 @@ import unittest
 from unittest.mock import patch
 
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
 
 
 REPO = Path(__file__).resolve().parents[1]
@@ -28,13 +29,13 @@ class ResumeSourceFormsTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name).resolve()
-        self.index = json.loads((REPO / INDEX).read_bytes())
+        self.index = json.loads(current_path_v1(REPO, INDEX).read_bytes())
         old_index = self.root / component.RETENTION_INDEX_REL_V1
         old_index.parent.mkdir(parents=True, exist_ok=True)
-        old_index.write_bytes((REPO / component.RETENTION_INDEX_REL_V1).read_bytes())
+        old_index.write_bytes(current_path_v1(REPO, component.RETENTION_INDEX_REL_V1).read_bytes())
         self.sources = {}
         for slot, relative in enumerate(self.index["source_slots"]):
-            raw = ((REPO / relative).read_bytes() if slot != 13 else b"controlled resume operator\n")
+            raw = (current_path_v1(REPO, relative).read_bytes() if slot != 13 else b"controlled resume operator\n")
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(raw)

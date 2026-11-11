@@ -30,6 +30,13 @@ REFRESH_ONLY_BLOCKERS = (
 SYSTEMS = ("deepstream", "savant", "openvino_gva", "gstreamer_custom")
 CELL_COUNT = 32
 HARDWARE_RESOURCE_COLLECTOR_PATH = "scripts/collect_metrics.py"
+# Interval-emitter sources the authority-binding-v2 runtimes use, one per system.
+AUTHORITY_V2_INTERVAL_EMITTERS = {
+    "deepstream": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
+    "savant": "scripts/checkpoint_savant_resource_runtime_v3.py",
+    "openvino_gva": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+    "gstreamer_custom": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+}
 # DrvFS without metadata projects chmod(0444) as 0555.  Both modes deny all
 # writes; byte, descriptor, and inode identity are still checked independently.
 _IMMUTABLE_OUTPUT_MODES = frozenset({0o444, 0o555})
@@ -321,6 +328,18 @@ def _validate_committed_receipt(
             _descriptor_matches(root, value.get(field), label=field),
             f"transaction receipt descriptor drifted: {field}",
         )
+    emitters = value.get("resource_interval_emitters")
+    _require(
+        type(emitters) is dict
+        and set(emitters) == set(SYSTEMS)
+        and all(
+            type(emitters[system]) is dict
+            and emitters[system].get("path") == AUTHORITY_V2_INTERVAL_EMITTERS[system]
+            and _descriptor_matches(root, emitters[system], label=f"{system} interval emitter")
+            for system in SYSTEMS
+        ),
+        "transaction receipt descriptor drifted: resource_interval_emitters",
+    )
 
     artifact_descriptors: list[tuple[str, Any]] = []
     fragments = value.get("fragments")

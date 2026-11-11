@@ -14,8 +14,9 @@ import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT / "scripts"))
-sys.path.insert(0, str(ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01"))
+sys.path.insert(0, str(consumer_evidence_directory_v1(ROOT)))
 import build_production_fixture_v2 as positive
 import build_per_cell_minimum_refusal_v1 as negative
 import tests.test_accepted_policy_fixture_producer_failures_v2 as legacy
@@ -665,7 +666,7 @@ class FailureFrameTests(unittest.TestCase):
             "kill_grace_ns": 5_000_000_000, "final_ns": 5_000_000_000}
         program = '''import sys
 from pathlib import Path
-root=Path(sys.argv[1]);sys.path.insert(0,str(root));sys.path.insert(0,str(root/"scripts"));sys.path.insert(0,str(root/"openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01"))
+root=Path(sys.argv[1]);sys.path.insert(0,str(root));sys.path.insert(0,str(root/"scripts"));from tests.fixtures.accepted_policy_change_paths_v1 import consumer_evidence_directory_v1;sys.path.insert(0,str(consumer_evidence_directory_v1(root)))
 import build_production_fixture_v2 as p
 import build_per_cell_minimum_refusal_v1 as n
 recipe,mode=sys.argv[2:]

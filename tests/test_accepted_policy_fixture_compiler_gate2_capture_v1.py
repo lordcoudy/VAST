@@ -12,6 +12,7 @@ import sys
 import types
 import unittest
 from unittest.mock import patch
+from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
 
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_capture_v1 as capture
 from tests.fixtures import accepted_policy_fixture_compiler_gate2_setup_v1 as setup
@@ -226,7 +227,7 @@ class ReviewedSourceTests(unittest.TestCase):
         from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
         repo=Path(__file__).resolve().parents[1]
         paths=("tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",component.RETENTION_INDEX_REL_V1)
-        current={name:(repo/name).read_bytes() for name in paths}
+        current={name:current_path_v1(repo,name).read_bytes() for name in paths}
         blobs={name:hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest() for name,raw in current.items()}
         calls=[]
         bindings=component.retained_source_bindings_v1(repo)
@@ -239,10 +240,15 @@ class ReviewedSourceTests(unittest.TestCase):
             for name,blob in blobs.items():
                 if args==["cat-file","blob",blob]: return current[name]
             raise RuntimeError("controlled missing old Git object")
-        with patch.object(capture,"REPO",repo),patch.object(capture,"git_v1",side_effect=git),\
-                patch.object(capture,"check",return_value=None):
-            with self.assertRaisesRegex(RuntimeError,"missing old Git"):
-                capture.authenticate_retention_v1(COMMIT)
+        # R1: capture stays byte-exact and opens active paths, so it reads a mirror at those paths.
+        with tempfile.TemporaryDirectory() as raw:
+            mirror=Path(raw).resolve()
+            for name,data in current.items():
+                (mirror/name).parent.mkdir(parents=True,exist_ok=True); (mirror/name).write_bytes(data)
+            with patch.object(capture,"REPO",mirror),patch.object(capture,"git_v1",side_effect=git),\
+                    patch.object(capture,"check",return_value=None):
+                with self.assertRaisesRegex(RuntimeError,"missing old Git"):
+                    capture.authenticate_retention_v1(COMMIT)
         self.assertEqual(calls[-1],["cat-file","blob",bindings["sources"][0]["git_blob"]])
 
     def test_failed_git_native_preserves_pid_status_eof_and_exact_prefixes_in_exception(self):

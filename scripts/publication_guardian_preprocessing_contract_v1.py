@@ -61,6 +61,7 @@ _TRANSACTION_FIELDS = {
     "systems",
     "cell_count",
     "hardware_resource_collector",
+    "resource_interval_emitters",
     "image_identity_patch",
     "image_identity_patch_sha256",
     "accepted_model_parity_manifest",

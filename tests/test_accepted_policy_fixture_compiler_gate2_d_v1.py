@@ -15,6 +15,7 @@ from contextlib import nullcontext
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / 'scripts'))
 
@@ -719,7 +720,7 @@ class OuterTests(unittest.TestCase):
 
     def native_shaped_controls(self, *, gpu_empty, refusal, wide=False):
         from tests.test_accepted_policy_fixture_compiler_transport_v1 import FakeSocket, reply
-        info = json.loads((ROOT / 'openspec/changes/fix-accepted-policy-preprocessing/evidence/'
+        info = json.loads((change_directory_v1(ROOT) / 'evidence/'
                            'compiler-component-01/observations-01/engine-info.v1_55.original.json').read_bytes())
         info.update(Containers=9, ContainersRunning=0, ContainersPaused=0,ContainersStopped=9)
         native_now=1746145610106100 if wide else 1000000000
@@ -1173,7 +1174,7 @@ class NativeEntryTests(unittest.TestCase):
 
 class InfoTests(unittest.TestCase):
     def test_fresh_code_closure_needs_no_unexported_probe_module(self):
-        original = json.loads((ROOT / 'openspec/changes/fix-accepted-policy-preprocessing/evidence/'
+        original = json.loads((change_directory_v1(ROOT) / 'evidence/'
                                'compiler-component-01/observations-01/engine-info.v1_55.original.json').read_bytes())
         original.update(Containers=9, ContainersRunning=0, ContainersPaused=0)
         cids = ['%064x' % n for n in range(1, 10)]
@@ -1195,7 +1196,7 @@ class InfoTests(unittest.TestCase):
         self.assertEqual(measured['ext4_used_bytes'], 30000000 * 4096)
 
     def test_fresh_engine_counts_and_every_identity_pin(self):
-        original = json.loads((ROOT / 'openspec/changes/fix-accepted-policy-preprocessing/evidence/'
+        original = json.loads((change_directory_v1(ROOT) / 'evidence/'
                                'compiler-component-01/observations-01/engine-info.v1_55.original.json').read_bytes())
         original.update(Containers=9, ContainersRunning=0, ContainersPaused=0)
         cids = ['%064x' % n for n in range(1, 10)]

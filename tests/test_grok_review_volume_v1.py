@@ -9,6 +9,7 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 SOURCE = ROOT / "scripts" / "prepare_grok_review_volume_v1.ps1"
 PWSH = shutil.which("pwsh")
 
@@ -280,7 +281,7 @@ class GrokReviewVolumeTest(unittest.TestCase):
 
 
     def metadata_case(self, case: str) -> dict:
-        guard = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_volume_guard_v1.proposed.ps1"
+        guard = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_volume_guard_v1.proposed.ps1"
         self.assertTrue(guard.is_file())
         return self.run_case(". '" + str(guard).replace("'", "''") + "'\n" + case)
 
@@ -349,7 +350,7 @@ class GrokReviewVolumeTest(unittest.TestCase):
 
     @unittest.skipUnless(sys.platform == "win32", "owned read-handle close fault requires Windows")
     def test_metadata_read_result_survives_an_owned_handle_close_failure(self):
-        guard = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_volume_guard_v1.proposed.ps1"
+        guard = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_volume_guard_v1.proposed.ps1"
         literal = str(guard).replace("'", "''")
         result = self.metadata_case(
             "Initialize-Pr9GrokVolumeMetadataNative;"
@@ -429,7 +430,7 @@ class GrokReviewVolumeTest(unittest.TestCase):
 class GrokReadonlyWorkerContractTest(unittest.TestCase):
     def load_worker(self):
         import importlib.util
-        path = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_capture_v1.proposed.py"
+        path = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_capture_v1.proposed.py"
         self.assertTrue(path.is_file(), "bounded read-only worker transport is absent")
         spec = importlib.util.spec_from_file_location("pr9_readonly_worker_control", path)
         module = importlib.util.module_from_spec(spec)
@@ -456,7 +457,7 @@ class GrokReadonlyWorkerContractTest(unittest.TestCase):
         self.assertEqual(payload.count("\nnamespace ="), 1)
         prefix = payload.split("\nnamespace =", 1)[0]
         self.assertNotIn("exec(", prefix)
-        source = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
+        source = change_directory_v1(ROOT) / "evidence/grok-runtime-boundary-20261028-01/grok_bounded_model_driver_v1.proposed.py"
         self.assertLessEqual(source.stat().st_size, 65536)
         original = source.read_bytes()
         code = compile(prefix, "controlled-source-authentication-prefix", "exec")
@@ -540,7 +541,7 @@ class GrokReadonlyWorkerContractTest(unittest.TestCase):
     def test_transient_job_accounting_after_root_exit_waits_for_retirement(self):
         import os
         module = self.load_worker()
-        owner = ROOT / "openspec/changes/fix-accepted-policy-preprocessing/evidence/blocker-implementation-20261026-01/grok_reviewed_job_definitions_v1.proposed.py"
+        owner = change_directory_v1(ROOT) / "evidence/blocker-implementation-20261026-01/grok_reviewed_job_definitions_v1.proposed.py"
         with owner.open("rb") as stream:
             job_type = module.load_reviewed_job_definitions(stream.read(7982))
         observations = []

@@ -26,7 +26,7 @@ FRAGMENT_LEAF = "publication_policy_qualification_fragment_validation_v2"
 
 # Source bodies frozen from approved pre-extraction commit 299c9c0eefb83fe3031096b0e96527236678a4d2.
 PREDICATE_LOCKS = {
-    TRANSACTION_LEAF: (18, "848cfb033614e531c9133e2a847064de7881feeeda4d3ae0169b8c7265dbdb4e"),
+    TRANSACTION_LEAF: (18, "da40d58abae233bbda7522750a165cffbe0e6f3c14058dd645b2774c6ca605ce"),
     FRAGMENT_LEAF: (40, "dba29d7fd618f83a92e6b1b7742d8a84f13600a7539d106a6e5aa3b6a7cf46ea"),
 }
 HOST_MODULES = {
@@ -150,6 +150,7 @@ class QualificationValidationLeafV2Tests(unittest.TestCase):
                         "accepted_model_parity_receipt",
                     )
                 },
+                "resource_interval_emitters": {},
                 "fragments": {system: dict(descriptor) for system in leaf.SYSTEMS},
                 "candidate": {field: dict(descriptor) for field in ("index", "manifest", "receipt")},
                 "bootstrap": {
@@ -158,6 +159,10 @@ class QualificationValidationLeafV2Tests(unittest.TestCase):
                     "receipt": dict(descriptor),
                 },
             }
+            for system, relative in leaf.AUTHORITY_V2_INTERVAL_EMITTERS.items():
+                (root / relative).parent.mkdir(parents=True, exist_ok=True)
+                (root / relative).write_bytes(b"# interval emitter fixture\n")
+                receipt["resource_interval_emitters"][system] = leaf.file_descriptor(root, root / relative)
             receipt_path = root / leaf.TRANSACTION_RECEIPT_FILENAME
 
             def save() -> None:
@@ -173,6 +178,14 @@ class QualificationValidationLeafV2Tests(unittest.TestCase):
             ):
                 leaf.cold_validate_committed_transaction_v2(root=root, receipt_path=receipt_path)
             payload.write_bytes(b"{}\n")
+            emitter = root / leaf.AUTHORITY_V2_INTERVAL_EMITTERS["deepstream"]
+            emitter.write_bytes(b"# edited after the pilots\n")
+            with self.assertRaisesRegex(
+                leaf.QualificationTransactionV2Error,
+                "^transaction receipt descriptor drifted: resource_interval_emitters$",
+            ):
+                leaf.cold_validate_committed_transaction_v2(root=root, receipt_path=receipt_path)
+            emitter.write_bytes(b"# interval emitter fixture\n")
             del receipt["fragments"]["savant"]
             save()
             with self.assertRaisesRegex(
