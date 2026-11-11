@@ -911,3 +911,23 @@ second B1 attempt (substep 3):
 2a and 3a each get RED/GREEN tests, independent review, CI and a recorded approval
 before 3b. These are substeps within existing row 1.5, so all 46 task rows and 24
 checked states are unchanged.
+
+## Whole-PR review fixes, 2026-11-11
+
+These come from the whole-PR review of `460a5096`, after the human chose "Amend design
+for all". The rules are in design.md ("Whole-PR review fixes, 2026-11-11").
+- **R1:** make change-directory lookup in tests and fixtures work after archive.
+  Retire the D22–D27 development tests into
+  `evidence/retired-development-tests-20261111/` as byte-exact copies. Update the CI
+  skip inventory. Prove it with a simulated archive.
+- **R2:** transaction v2 records the interval-emitter descriptors at commit, and the
+  resource index binds to them.
+- **R3:** no code change. Recorded as unreachable in the current flow.
+- **R4:** the gate-2 setup, capture and resume Windows runners kill and wait for their
+  own child on failure, and record the result.
+- **R5:** concurrent sidecar container retirement. Already implemented; it is
+  published with the rest.
+
+Before archive (6.1), each item gets RED/GREEN tests, two independent reviews, CI and a
+recorded approval. These items sit within existing rows 1.5 and 6.1, so all 46 task
+rows and 24 checked states are unchanged.
