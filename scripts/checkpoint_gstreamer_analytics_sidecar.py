@@ -4363,7 +4363,8 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
             retirer.join(max(0.0, join_until - time.monotonic()))
     except BaseException as error:  # an interrupt here must not skip client and custody cleanup
         errors.append(f"worker_cleanup:container_retirers:{_failure_text(error)}")
-    unfinished: set[tuple[str, str]] = set()
+    # A started proof holds its custody until proven done, even if judging it is interrupted.
+    unfinished = {key for key, retirer in retirers.items() if retirer.ident is not None}
     containment_deadline: float | None = None
     for key, handle in handles.items():
         local = wait_errors[key]
@@ -4382,7 +4383,6 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                 if retirer is not None and retirer.ident is None:  # never started: custody untouched
                     retirements[key] = ["container_retirement_not_started"]
                 elif retirer is not None:  # judged now, so a proof that finished late still counts
-                    unfinished.add(key)  # until proven done, even if this join is interrupted
                     retirer.join(max(0.0, join_until - time.monotonic()))
                     if not retirer.is_alive() and retirements.get(key) is not None:
                         unfinished.discard(key)
@@ -4390,6 +4390,7 @@ def _retire_worker_handles(handles: Mapping[tuple[str, str], Any], *, deadline: 
                     local.append("original_container_ownership_unavailable")
                 elif key in unfinished:  # its retirer still holds the custody: touch nothing
                     local.append("container_retirement_unfinished")
+                    handle._owned_container.cancelled = True  # stop now, not after client cleanup
                 else:
                     try:
                         handle._container_id = handle._owned_container.cid()

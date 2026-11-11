@@ -3412,6 +3412,48 @@ class ConcurrentContainerRetirementTests(unittest.TestCase):
         self.assertIsNone(handle._container_id)
         self.assertTrue(handle._owned_container.cancelled)  # it may finish its in-flight call, then stops
 
+    def test_a_failed_judgment_leaves_a_running_proof_untouched(self) -> None:
+        handles, _ = self.handles(1, 1.8, [])
+        (handle,) = handles.values()
+        calls = []
+
+        class Process(self.Process):
+            @staticmethod
+            def poll() -> int:
+                calls.append(True)
+                if len(calls) == 2:  # the per-handle judgment, before it records the proof as unfinished
+                    raise RuntimeError("poll failed")
+                return 0
+
+        handle._process = Process()
+        errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertIn("worker_cleanup:branch0/gpu:retirement:poll failed", errors)
+        self.assertFalse(handle._owned_container.closed)  # never closed under a live retirer
+        self.assertTrue(handle._owned_container.cancelled)
+
+    def test_an_unfinished_proof_is_cancelled_before_client_cleanup(self) -> None:
+        handles, _ = self.handles(1, 3.0, [])
+        (handle,) = handles.values()
+        seen = []
+        owned = handle._owned_container
+
+        class Process(self.Process):
+            @staticmethod
+            def poll() -> None:
+                return None
+
+            @staticmethod
+            def terminate() -> None:
+                seen.append(owned.cancelled)
+
+            @staticmethod
+            def kill() -> None:
+                return None
+
+        handle._process = Process()
+        _retire_worker_handles(handles, deadline=time.monotonic() + 0.3)
+        self.assertEqual(seen, [True])
+
     def test_finished_proofs_are_not_cancelled(self) -> None:
         handles, _ = self.handles(2, 0.0, [])
         _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)

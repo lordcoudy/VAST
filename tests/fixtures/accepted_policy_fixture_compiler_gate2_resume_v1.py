@@ -243,7 +243,7 @@ def verify_retained_v1(repo_root,*,index):
   body,_,blocks=_actual_read(path,size)
   need(len(body)==size and sha(body)==digest,'old_capture_identity')
   cap += max(blocks,((size+4095)//4096)*4096)+4096
- path=Path(repo_root)/EVIDENCE/'gate2-successor-465a.outer-tool.original.json'
+ path=sys.modules[MODULES[1][0]]._open_v1(repo_root,EVIDENCE+'gate2-successor-465a.outer-tool.original.json')
  body,_,blocks=_actual_read(path,3609)
  need(len(body)==3609 and sha(body)=='7fc5ef24fb7d226b33a88cab6a57643ef8c86eb774f99cb6e655bb3c69663079','old_outer_identity')
  cap += max(blocks,4096)+4096+8192

@@ -124,6 +124,7 @@ class ChangeDirectoryV1Tests(unittest.TestCase):
         yield "archive", ("archive/2026-11-11-" + CHANGE,), True
         yield "archive with siblings", ("archive/2026-11-11-" + CHANGE, "archive/2026-10-05-fix-decoder-preflight",
                                         "archive/2026-11-12-other-" + CHANGE + "-x"), True
+        yield "another change's archive ending in this name", (CHANGE, "archive/2027-01-05-revisit-" + CHANGE), True
         yield "missing", (), False
         yield "active and archive", (CHANGE, "archive/2026-11-11-" + CHANGE), False
         yield "two archives", ("archive/2026-11-11-" + CHANGE, "archive/2026-11-12-" + CHANGE), False
@@ -170,6 +171,18 @@ class ChangeDirectoryV1Tests(unittest.TestCase):
             (real / "evidence/compiler-component-01").mkdir(parents=True)
             (root / "openspec/changes/archive").mkdir(parents=True)
             (root / ("openspec/changes/archive/2026-11-11-" + CHANGE)).symlink_to(real, target_is_directory=True)
+            with self.assertRaises(ValueError):
+                change_directory_v1(root)
+            with self.assertRaises(component.ComponentRecipeError):
+                component._open_v1(root, self.RELATIVE)
+
+    def test_a_dangling_active_link_is_refused_not_skipped(self):
+        from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1
+        from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw).resolve()
+            self.build(root, ("archive/2026-11-11-" + CHANGE,))
+            (root / "openspec/changes" / CHANGE).symlink_to(root / "gone", target_is_directory=True)
             with self.assertRaises(ValueError):
                 change_directory_v1(root)
             with self.assertRaises(component.ComponentRecipeError):

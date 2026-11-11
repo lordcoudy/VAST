@@ -5,6 +5,7 @@ import importlib
 import json
 import os
 import tempfile
+import threading
 from types import SimpleNamespace
 from pathlib import Path
 import unittest
@@ -1874,6 +1875,50 @@ class ResumeBoundaries(unittest.TestCase):
         self.assertEqual(facts['kill'],{'kill_called':True,'linux_side_known_stopped':False,'wait_timed_out':True})
         self.assertTrue(facts['unknown_closure']);self.assertEqual(facts['causes'],['controlled_poll_failed'])
 
+    def test_unknown_closure_copies_the_facts_before_the_kill(self):
+        m=subject()
+        killed,drained=threading.Event(),threading.Event()
+        class Late:
+            def __init__(self):self.reads=0
+            def read(self,n):
+                self.reads+=1
+                if self.reads==1:killed.wait(5);return b'late'
+                drained.set();return b''
+            def close(self):pass
+        class Input:
+            def write(self,raw):return len(raw)
+            def flush(self):pass
+            def close(self):pass
+        def kill():killed.set();drained.wait(5)  # a kill before the copy would let these bytes in
+        def poll():raise OSError('controlled_poll_failed')
+        p=SimpleNamespace(pid=535,stdin=Input(),stdout=Late(),stderr=io.BytesIO(),poll=poll,kill=kill,
+            wait=lambda timeout:0)
+        with patch.object(m.time,'monotonic_ns',return_value=1),patch.object(m.subprocess,'Popen',return_value=p):
+            with self.assertRaises(m.ResumeRefusal) as caught:m._Run(1).process(['controlled'],b'',2_000_000_001,100)
+        facts=caught.exception.facts
+        self.assertTrue(drained.is_set());self.assertEqual(facts['stdout_bytes'],0);self.assertFalse(facts['stdout_eof'])
+        self.assertEqual(facts['kill']['wait_returncode'],0)
+
+    def test_the_kill_wait_is_clamped_by_the_deadline(self):
+        m=subject()
+        end=2_000_000_001
+        for after_kill,expected in ((end-300_000_000,0.3),(end+1,0)):
+            with self.subTest(expected=expected):
+                clock=[1];calls=[]
+                class Input:
+                    def write(self,raw):return len(raw)
+                    def flush(self):pass
+                    def close(self):pass
+                def poll():raise OSError('controlled_poll_failed')
+                def kill(after=after_kill):clock[0]=after
+                def wait(timeout):calls.append(timeout);return 0
+                p=SimpleNamespace(pid=536,stdin=Input(),stdout=io.BytesIO(b''),stderr=io.BytesIO(),poll=poll,
+                    kill=kill,wait=wait)
+                with patch.object(m.time,'monotonic_ns',side_effect=lambda:clock[0]),patch.object(m.time,'sleep'),\
+                     patch.object(m.subprocess,'Popen',return_value=p):
+                    with self.assertRaises(m.ResumeRefusal):m._Run(1).process(['controlled'],b'',end,100)
+                self.assertEqual(len(calls),1);self.assertAlmostEqual(calls[0],expected)
+
     def test_clean_child_is_never_killed(self):
         m=subject()
         class Input:
@@ -2545,8 +2590,10 @@ class ResumeBoundaries(unittest.TestCase):
             self.assertEqual(caught.exception.facts['written_bytes'],12)
             self.assertFalse(caught.exception.facts['close_completed'])
 
-    def retained_world(self, directory, inflated=False):
+    def retained_world(self, directory, inflated=False, change='fix-accepted-policy-preprocessing'):
         m,index,originals=self.inventory()
+        (Path(directory)/'openspec/changes'/change).mkdir(parents=True)
+        outer=[]
         owner=Path(directory)/'owner';owner.mkdir()
         roots={'code':owner,'f2':Path(str(owner)+'.f2'),'aux':Path(str(owner)+'.operator-originals')}
         for path in roots.values():path.mkdir(exist_ok=True)
@@ -2585,8 +2632,9 @@ class ResumeBoundaries(unittest.TestCase):
             if str(path).endswith('held-tool-return.original.json'):return heldraw,None,12288
             if '.driver.stdout.original' in str(path):return b'',None,0
             if '.driver.stderr.original' in str(path):return b'x'*6392,None,16384 if inflated else 8192
-            if path.name=='gate2-successor-465a.outer-tool.original.json':return b'y'*3609,None,4096
+            if path.name=='gate2-successor-465a.outer-tool.original.json':outer.append(path);return b'y'*3609,None,4096
             raw,s=m.read_fixed_v1(path,cap);return raw,s,s.st_blocks*512
+        read.outer=outer
         return m,index,owner,heldraw,digest,read
 
     def test_retained_70_nodes_include_both_old_outer_forms_and_refuse_capture_inflation(self):
@@ -2601,6 +2649,17 @@ class ResumeBoundaries(unittest.TestCase):
                         result=m.verify_retained_v1(Path(directory),index=index)
                         self.assertEqual(result['node_count'],70)
                         self.assertEqual(result['windows_capture_quote_bytes'],32768)
+
+    def test_retained_outer_form_is_read_from_the_archived_change(self):
+        change='archive/2026-11-11-fix-accepted-policy-preprocessing'
+        with tempfile.TemporaryDirectory() as directory:
+            directory=str(Path(directory).resolve())
+            m,index,owner,held,digest,read=self.retained_world(directory,change=change)
+            with patch.object(m,'OWNER',owner),patch.object(m,'DIAGNOSTIC_SHA',hashlib.sha256(held).hexdigest()),\
+                 patch.object(m,'sha',side_effect=digest),patch.object(m,'_actual_read',side_effect=read):
+                self.assertEqual(m.verify_retained_v1(Path(directory),index=index)['node_count'],70)
+            self.assertEqual(read.outer,[Path(directory)/'openspec/changes'/change/
+                'evidence/compiler-component-01/gate2-successor-465a.outer-tool.original.json'])
     def inventory(self):
         m=subject()
         root=Path(__file__).resolve().parents[1]

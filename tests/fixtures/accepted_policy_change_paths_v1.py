@@ -1,5 +1,6 @@
 """Resolve only this repair's active or supported dated archive evidence."""
 from datetime import date
+import os
 from pathlib import Path
 import re
 
@@ -14,8 +15,10 @@ def change_directory_v1(project_root: Path) -> Path:
         raise ValueError("fixture repository root is not canonical")
     changes = root / "openspec/changes"
     active = changes / CHANGE
-    candidates = [active] if active.exists() else []
+    candidates = [active] if os.path.lexists(active) else []
     for archived in (changes / "archive").glob("*-" + CHANGE):
+        if archived.name[11:] != CHANGE:
+            continue  # another change's archive
         match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})-" + re.escape(CHANGE), archived.name)
         if match is None:
             raise ValueError("fixture archive name is unsupported")
