@@ -2371,3 +2371,155 @@ not published.
 3. Each gets independent review (separate Claude subagents), required CI and a
    recorded approval.
 4. All of this comes before archive (6.1).
+
+## Fresh direct gate 2 for task 2.10, 2026-11-12
+
+The human chose "Draft fresh gate 2" after the read-only finding in PR #9 comment
+6817565603. The physical plan is
+`evidence/compiler-component-01/component-admission-plan.v9.md`. This section gives
+the reasons and the code changes.
+
+### Why the old routes end
+- **465 resume:** its operator (`authenticate_v1`) refuses every Git version of a
+  source slot since c75 that is not in the retention index. At `24cc8e9d` there
+  were none. At `460a5096` there is one: compiler_v1 blob `583d6b0b` from
+  `d78b7b18`. The R1 commits add more component and resume versions. Indexing them
+  would exceed the fixed 1,032,192 B SOURCE cap, and `gate2_c` refuses unfunded
+  versions. So the resume can't run without cap growth, which earlier decisions
+  forbid.
+- **Node caller:** the design bound a trusted caller that keeps at most six
+  same-session tool frames. Its only implementation was the Codex Node isolate,
+  with `WRITER_BODY` and `CD_FACTORY_SOURCE`. D25 and D26 were consumed incomplete,
+  D27 is parked, and Codex is no longer in the loop.
+- **Setup/capture:** consumed twice (c75, 465). They are pinned to the c75
+  retention, so a further run would fail its own history checks too.
+- **Legacy packet path in `gate2_c`:** a fresh packet fails it three ways. It
+  needs the c75 prior retention. Its code-forms quote charges every file that
+  differs from c75, about 696 KiB against the 512 KiB `CURRENT_CODE_FORMS_V1` cap.
+  And it requires the F2 review commit to equal the current one.
+
+### What is retired, and what stays
+- **Retired for 2.10, not deleted:**
+  - the 465 resume operator, its retention-index accounting (22 versions, SOURCE
+    cap, Git-history check) and its caller;
+  - the Node caller and the D17–D27 transport work;
+  - setup and capture.
+
+  Their files, tests, evidence and consumed admissions stay as they are. D27/Native57
+  is superseded for 2.10 and stays parked. Setup, capture and the compiler executor
+  stay byte-exact.
+
+- **Superseded, by name:**
+  - V8:305's "no … third setup": V9 admits this one fresh packet operation.
+  - tasks.md's requirement after 6230407759 for "a separately reviewed same-change
+    admission amendment" with "a fresh inclusive all-forms ledger": this amendment is
+    that admission. V9 section 5 is the ledger. It keeps the retired SOURCE and
+    diagnostic rows in the carried debit, and counts the Temp, `.retired` and evidence
+    copies as external terms.
+- **Kept unchanged:**
+  - the compiler executor, publisher and seccomp profile;
+  - the P0 collector and its argv, deadline and caps;
+  - the component seed/admission schema and the recovery verifier;
+  - the C and D predicates (V8 section 4), D and D child;
+  - `EXPECTED`, `B_CIDS`, `MOUNTS_SHA256`;
+  - the 512 MiB seal and every per-stage cap;
+  - the floors and the guard.
+
+### Code changes (implementation, after this amendment is approved)
+1. **`gate2_c`: one `fresh_context` branch.** It follows the pattern of
+   `resume_context`, and both contexts together refuse.
+   - **Supersedes:** "Neither a cap nor `gate2_c` changes" in "Whole-PR review
+     fixes" R1, and the byte-exact `gate2_c` pin in
+     `tests/test_accepted_policy_retired_development_tests_v1.py`. The pin moves to
+     the new reviewed bytes. The pre-edit bytes (130,783 B, `5a6c4b08…`) are kept
+     as a byte-exact `.retired` copy listed in that directory's README. The README
+     row count goes from 7 to 8, and the README notes the new copy's source commit.
+     Any retired-route test that needs the old bytes reads that copy.
+   - **What the branch does:**
+     - `_verify_code` on the exported manifest;
+     - a new `_authenticate_fresh_v1`: the authority record's SHA256 equals the
+       review's evidence hash, and the record has exactly the commit, the approval,
+       the context hash and the context;
+     - the context has exactly the key set in V9 section 2. The manifest is bound by
+       size and SHA256, and `/info` by descriptors plus an identity projection;
+     - the manifest copy is checked against the context. Every code, plan and
+       operator descriptor must equal its manifest row (V9 section 2).
+   - **F2:** the branch calls the existing `_authenticate_evidence` with the 465
+     producer commit and producer plan hash, exactly as the resume branch does. The
+     producer plan literal moves into a named constant with unchanged bytes.
+   - **Paths:** evidence paths must be the B component root, the 465 `.f2` files
+     and the fresh `b2_index`.
+   - **Charge:** `initial_charged_bytes` must equal 31,944,704 plus the measured
+     host-noise excess, recomputed from the context (V9 section 5). No gap term is
+     charged.
+   - **Packet cap:** a new `FRESH_PACKET_LIMIT_V1` of 32,768 B.
+   - **Operator binding:** the context binds the operator with exactly `path`,
+     `size_bytes`, `sha256` and `git_blob`. The operator is not added to
+     `CODE_PATHS`. The context is at most 8,192 B, with the exact key set in V9
+     section 2.
+   - **Recorded paths:** the `physical_plan` path is the exported V9 copy, in its
+     active change-directory form. The `p0` path is `<root>/p0/p0-completion.v1.json`.
+   - **Code-forms quote:** the export size, inside the unchanged 640 KiB
+     code+packet cap.
+   - **Validation:** `validate_packet_v1` passes `fresh_context` through. The C1
+     boot check that today runs only for resume packets also runs for fresh ones.
+   - **Unchanged:** the resume-root lookup in `parse_native_invocation_v1`. The
+     465 `r1/` does not exist, and the fresh operator refuses if it appears.
+2. **New operator** `tests/fixtures/accepted_policy_fixture_compiler_gate2_fresh_v1.py`
+   (Windows Python, V9 section 3).
+   - It has no Git, no retention index, no Node and no network I/O.
+   - It doubles as the Linux phase program: a fixed `BOOT` string checks and runs
+     its bytes with `native_entry_v1(phase, x)`, the resume pattern. PRE and EXPORT
+     use only its own code and the standard library. PACKET imports only from the
+     verified export.
+   - It owns one 150 s deadline and bounded originals, and emits one stdout
+     document of at most 2,048 B.
+   - Every child it starts is stopped with a bounded kill and wait (the R4 rule),
+     and its facts are copied first.
+   - Code authority comes from a manifest of the reviewed commit's GitHub tree.
+     Claude writes it after CI passes, and its hash is recorded in the approval. The
+     operator checks it against blob ids computed from the bytes.
+   - It loads every module it uses on Windows, P0 included, from bytes it read
+     once and verified against the manifest.
+   - The forms are measured as allocated bytes before the packet is written, and
+     any host-noise excess is charged into the packet (V9 section 5).
+
+### Required evidence before approval of the implementation
+- **RED/GREEN tests** for the fresh branch:
+  - both contexts given;
+  - each manifest field changed;
+  - extra or missing code;
+  - the F2 commit or plan changed;
+  - each evidence path moved;
+  - the initial charge off by one in either direction;
+  - the packet over 32,768 B, and an operator or context descriptor changed;
+  - packet drift on revalidation;
+  - the boot check;
+  - and a fresh packet passing `validate_packet_v1` and C1 binding in a controlled
+    world.
+- **Operator tests:**
+  - root or sibling already exists, or `r1/` present;
+  - manifest mismatch;
+  - PRE `/info` counts other than 3/0/0/3;
+  - each phase failing, late, or with unknown status;
+  - the stdout bound;
+  - the kill-then-wait rule;
+  - an allocation over its cap, and noise exactly at the allowance and one byte
+    over, both before PACKET and at POST;
+  - the C1-liability bound before PACKET;
+  - each manifest equality (code, plan, operator) broken in turn;
+  - the guard/interop nesting no-effect run of V9 section 6.
+- **Also required:** a mutation run on the new logic, two independent Claude
+  subagent reviews of the exact commit, required CI, and a recorded delegated
+  agent approval. That approval admits exactly one packet operation.
+
+### Physical limits carried into whole 1.5
+- The B writable layers are lost. C and D only list and plain-inspect the B
+  containers, so their checks still work. Recovery's `?size=1` identity check
+  cannot pass any more, so F2 is historical, not fresh.
+- The guard does not own compiler containers. During the packet operation its stop
+  reaches only the interop process (V9 section 6).
+- The 465 historical closing meter stays unavailable, and C6 stays synthetic only.
+
+The task rows and checked states are unchanged (24/46). The spec gains two
+scenarios, so the counts are 11 requirements and 90 scenarios.

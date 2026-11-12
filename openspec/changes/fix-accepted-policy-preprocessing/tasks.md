@@ -957,3 +957,33 @@ either file would block the 2.10 gate-2 resumption. Both stay byte-exact.
   path mapping, at the resolved directory.
 
 Task rows and checked states are unchanged.
+
+## Fresh direct gate 2 within task 2.10, 2026-11-12
+
+The human chose "Draft fresh gate 2". Plan: `evidence/compiler-component-01/component-admission-plan.v9.md`;
+reasons and code changes: design.md, "Fresh direct gate 2 for task 2.10, 2026-11-12".
+The 465 resume, the Node caller (D17–D27) and setup/capture are retired for 2.10 and
+kept as they are. Earlier 2.10 substeps that depend on them are superseded, not
+reopened. These are substeps of existing row 2.10. All 46 task rows and 24 checked
+states are unchanged; the spec counts become 11/90.
+
+1. **Amendment:** independent Claude-subagent review of this exact planning commit,
+   required CI, recorded delegated agent approval.
+2. **Implementation:**
+   - the `gate2_c` `fresh_context` branch;
+   - the new fresh operator;
+   - the deliberate `gate2_c` pin move, with the pre-edit bytes kept as a `.retired`
+     copy;
+   - the V9 section 6 nesting no-effect run;
+   - RED/GREEN tests and a mutation run;
+   - two independent reviews, CI and a recorded approval that admits one packet
+     operation.
+3. **Re-admission:** a fresh C:/E: sample against the remaining chain peak, recorded
+   in PR #9.
+4. **Packet:** start the uid-1000 keepalive, then one guarded packet operation. Retain its originals in
+   `evidence/compiler-component-01/gate2-fresh-01/`. Then an independent review of
+   the packet and P0, and an approval naming the packet hash.
+5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
+   deviation; no stage is rerun. A disposition needs review, CI and approval.
+6. **Completion:** an independent review of the raw evidence and charged forms. Then
+   check 2.10, and carry the remnants into whole 1.5.
