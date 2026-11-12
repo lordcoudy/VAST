@@ -3458,20 +3458,20 @@ class ConcurrentContainerRetirementTests(unittest.TestCase):
         import _thread
         handles, _ = self.handles(2, 0.0, [])
         first, second = handles.values()
-        second._owned_container.delay = 3.0
+        second._owned_container.delay = 4.0  # still running when judged after the 1.5 s capture
         real_start = threading.Thread.start
         calls = []
 
         def start(thread):
             calls.append(thread)
             if len(calls) == 2:  # interrupted before the thread had an ident; it starts a moment later
-                _thread.start_new_thread(lambda: (time.sleep(0.3), real_start(thread)), ())
+                _thread.start_new_thread(lambda: (time.sleep(0.2), real_start(thread)), ())
                 raise KeyboardInterrupt
             return real_start(thread)
 
         class SlowCapture:
             def finish(self, deadline):  # the first handle's own cleanup outlasts the late start
-                time.sleep(0.6)
+                time.sleep(1.5)
                 return True
 
             def close(self):
