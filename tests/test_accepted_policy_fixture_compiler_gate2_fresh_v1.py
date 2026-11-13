@@ -319,7 +319,8 @@ class FreshOperatorTests(unittest.TestCase):
         info, _, _, reply = gate_tests.ResumeInfoTests.native_shaped_info(self)
         prefix = str(self.base / "vast-fixture-compiler-gate2-")
         with patch.object(fresh, "ROOT_PREFIX", prefix), patch.object(fresh, "RESUME_R1", str(self.base / "r1")), \
-             patch.object(fresh, "_boot", return_value="b" * 36):
+             patch.object(fresh, "_boot", return_value="b" * 36), \
+             patch.object(fresh, "_measure", return_value={"c_free_bytes": 1, "ext4_used_bytes": 1}):  # hosted CI has no /mnt/c
             with patch.object(fresh, "_info", return_value=(reply, info)):
                 value = fresh.native_pre_v1({"commit": COMMIT}, time.monotonic_ns() + fresh.NS)
             self.assertEqual((value["counts"], base64.b64decode(value["reply_b64"])), ([3, 0, 0, 3], reply))
