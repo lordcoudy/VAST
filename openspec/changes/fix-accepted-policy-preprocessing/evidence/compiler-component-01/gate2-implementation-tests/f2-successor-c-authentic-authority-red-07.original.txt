@@ -1,0 +1,19 @@
+test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers) ... ERROR
+
+======================================================================
+ERROR: test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 411, in test_prior_authority_requires_completed_bound_receipt_and_unchanged_helpers
+    returned = gate._authenticate_prior_retention_v1(root, review, code, "controlled-boot", descriptor, prior)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 542, in _authenticate_prior_retention_v1
+    _require(type(desc) is dict and set(desc) == {"size_bytes", "sha256", "git_blob"} and
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 116, in _require
+    raise Gate2Refusal(cause)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1.Gate2Refusal: operator_helper_descriptor
+
+----------------------------------------------------------------------
+Ran 1 test in 0.010s
+
+FAILED (errors=1)

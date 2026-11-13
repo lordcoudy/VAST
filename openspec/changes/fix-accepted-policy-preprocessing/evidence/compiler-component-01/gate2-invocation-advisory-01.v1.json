@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/gate2_v8_review",
+  "verdict": "ADVISORY CLEAR",
+  "head_before_and_after": "c67b25cd4e87499dc9575ed4e58c5159ac9abf18",
+  "physical_execution": false,
+  "formal_commit_approval": false,
+  "reviewed_sources": [
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "size_bytes": 98603,
+      "sha256": "79b55f9d1ae2aa2a1e3ff0f0dc01e3523512d16658007cd4ab62ed53a6c25382"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 48660,
+      "sha256": "31c3a7c92ad96cc2357ebb091b666c52faa1f3a214109419f2489d89e10d1bbb"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 63561,
+      "sha256": "a7f98b09fe06072daf28d0ebd231f2c79a70189d5bdc0923fdb6011bcf2d9825"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py",
+      "size_bytes": 11953,
+      "sha256": "a96c6a0d7d1743b44d34e42a26b0260e024277c89ef59d7b6d746ab8b00267a4"
+    }
+  ],
+  "preserved_blocks": [
+    {
+      "source": "C",
+      "sha256": "b67d88099bc52234b50dee559b1a88e5ed8aefa0da5f937c798ede7cd09e34dd",
+      "findings": "Nested actual refusal facts lost; bootstrap/path/import exceptions outside bounded boundary."
+    },
+    {
+      "source": "D",
+      "sha256": "dc25692687e0e5e311f4c114d8c15460e8572443eff3d6c44bab6ade5d64e545",
+      "findings": "Late C import outside boundary; fresh receipt after reserve denial; missing postreceipt usage could finalize."
+    },
+    {
+      "source": "D",
+      "sha256": "2fba881da5a946750f6fffefac787d11bd768431cdc411df9674e19ac0ab05c6",
+      "findings": "Native floor/allocation OSError could become generic nonbudget error and permit fresh receipt."
+    }
+  ],
+  "disposition": "All findings resolved at reviewed bytes; controlled RED/GREEN retained. No tests/native actions by reviewer. Exact new-commit reviews/CI/PR delegated approval remain required."
+}

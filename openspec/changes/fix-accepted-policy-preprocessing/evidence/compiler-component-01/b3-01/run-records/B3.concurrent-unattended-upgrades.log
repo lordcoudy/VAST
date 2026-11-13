@@ -1,0 +1,12 @@
+2026-10-15 06:16:15,708 INFO Allowed origins are: o=Ubuntu,a=noble, o=Ubuntu,a=noble-security, o=UbuntuESMApps,a=noble-apps-security, o=UbuntuESM,a=noble-infra-security
+2026-10-15 06:16:15,708 INFO Initial blacklist: 
+2026-10-15 06:16:15,708 INFO Initial whitelist (not strict): 
+2026-10-16 13:04:03,432 INFO Checking if system is running on battery is skipped. Please install powermgmt-base package to check power status and skip installing updates when the system is running on battery.
+2026-10-16 13:04:03,437 WARNING Could not figure out development release: Distribution data outdated. Please check for an update for distro-info-data. See /usr/share/doc/distro-info-data/README.Debian for details.
+2026-10-16 13:04:03,437 INFO Starting unattended upgrades script
+2026-10-16 13:04:03,437 INFO Allowed origins are: o=Ubuntu,a=noble, o=Ubuntu,a=noble-security, o=UbuntuESMApps,a=noble-apps-security, o=UbuntuESM,a=noble-infra-security
+2026-10-16 13:04:03,437 INFO Initial blacklist: 
+2026-10-16 13:04:03,437 INFO Initial whitelist (not strict): 
+2026-10-16 13:04:06,832 INFO Packages that will be upgraded: curl libcurl3t64-gnutls libcurl4t64 libnss-systemd libpam-systemd libsystemd-shared libsystemd0 libudev-dev libudev1 openssh-client openssh-server openssh-sftp-server python3-jwt python3-urllib3 systemd systemd-dev systemd-resolved systemd-sysv udev
+2026-10-16 13:04:06,832 INFO Writing dpkg log to /var/log/unattended-upgrades/unattended-upgrades-dpkg.log
+2026-10-16 13:04:16,446 INFO All upgrades installed

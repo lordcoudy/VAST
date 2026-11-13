@@ -1,0 +1,360 @@
+{
+ "mode": "policy",
+ "inject_expected_streams_6": false,
+ "cells": {
+  "deepstream/cpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/cpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/cpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/cpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/gpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "deepstream/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/deepstream/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/cpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/cpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/cpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/cpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/gpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "savant/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/savant/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/cpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/cpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/cpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/cpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/gpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "openvino_gva/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/openvino_gva/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/cpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/cpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/cpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/cpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/cpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/gpu/h264/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h264/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h265/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  },
+  "gstreamer_custom/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: pilot sidecar revalidation failed: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set",
+    "ContractError: /mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/publication_policy_qualification_pilot_v2_qfb_20261008e/gstreamer_custom/gpu/h265/shared_video_dag/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:788"
+   ]
+  }
+ },
+ "accepted": 0,
+ "refused": 32
+}

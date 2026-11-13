@@ -1,0 +1,21 @@
+test_acceptance_summary_serializes_unavailable_metrics_as_json_null (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_branch_promotion_requires_protocol_v3_native_outcomes (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_checkpoint_aggregate_backend_is_exact_and_fail_closed_per_native_system (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_frame_intervals_are_derived_from_direct_parent_and_join_timestamps (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_frame_intervals_reject_inferred_policy_and_resource_labels (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_independent_mixed_and_all_prefix_reduce_only_completed_stages (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_ingress_promotion_rejects_censoring_and_non_native_terminal_provenance (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_policy_promotion_rejects_duplicate_missing_and_drifted_cohort (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_policy_promotion_uses_only_accepted_measurement_frames (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_resource_producer_matches_physical_intervals_and_excludes_warmup_drain (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_resource_producer_refuses_existing_target_and_precedes_publication (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_resource_producer_rejects_missing_duplicate_invalid_and_extra_intervals (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_native_resource_producer_uses_direct_reason_with_projected_topology_events (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_prefix_reduction_rejects_fabricated_or_missing_stages_and_forged_lineage (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_publication_requires_preexisting_native_policy_and_resource_sidecars (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+test_shared_all_prefix_has_decode_only_and_partial_prefix_fails (test_checkpoint_publication_runtime.CheckpointPublicationRuntimeTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.030s
+
+OK

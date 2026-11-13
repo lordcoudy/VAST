@@ -18,6 +18,7 @@ if str(SCRIPTS) not in sys.path:
 
 import full_publication_identity_artifacts as target  # noqa: E402
 import publication_physical_io_v1 as physical_io  # noqa: E402
+import publication_policy_contract as policy_contract  # noqa: E402
 
 
 SYSTEMS = target.SYSTEMS
@@ -54,7 +55,7 @@ class Fixture:
         self.output = root / "accepted"
         self.output.mkdir(parents=True, exist_ok=True)
         self.dataset_sha = hashlib.sha256(b"datasets").hexdigest()
-        self.policy_contract_sha = hashlib.sha256(b"policy-contract").hexdigest()
+        self.policy_contract_sha = policy_contract.policy_contract_identity()["sha256"]
         self.parity_identity = hashlib.sha256(b"parity-content").hexdigest()
         self.execution_identity = hashlib.sha256(b"execution-content").hexdigest()
         self._write_all()
@@ -147,12 +148,26 @@ class Fixture:
                 resources = {}
                 for resource in RESOURCES:
                     stem = f"{system}-{branch}-{resource}"
+                    runtime_identity = {
+                        "runtime_backend": f"backend-{system}-{resource}",
+                        "device_api": "CPU" if resource == "cpu" else "NVIDIA_CUDA",
+                        "gpu_id": None if resource == "cpu" else 0,
+                        "worker_image_digest": "sha256:" + hashlib.sha256((stem + "-image").encode()).hexdigest(),
+                        "implementation_version": f"version-{stem}",
+                        "terminal_detector": f"detector-{branch}",
+                        "terminal_backend": (
+                            "analytics-execution:openvino_cpu;runtime=OpenVINO;native_api=CompiledModel;device=CPU:fixture-cpu"
+                            if resource == "cpu"
+                            else "analytics-execution:tensorrt_cuda;runtime=TensorRT;native_api=enqueueV3;device=NVIDIA_CUDA:GPU-fixture"
+                        ),
+                    }
                     resources[resource] = {
                         "status": "implemented_and_native_evidence_bound",
                         "implementation_id": f"implementation-{stem}",
                         "implementation_sha256": hashlib.sha256((stem + "-impl").encode()).hexdigest(),
                         "runtime_binding": f"runtime-binding-{stem}",
-                        "runtime_identity": {"runtime_backend": f"backend-{system}", "device_api": f"device-api-{resource}", "worker_image_digest": "sha256:" + hashlib.sha256((stem + "-image").encode()).hexdigest(), "implementation_version": f"version-{stem}"},
+                        "runtime_identity": runtime_identity,
+                        **runtime_identity,
                         "native_evidence": {"status": "accepted_native_runtime_emitter", "telemetry_source": "native", "emitter_id": f"emitter-{stem}", "emitter_sha256": hashlib.sha256((stem + "-emitter").encode()).hexdigest(), "implementation_id_field": "implementation_id", "resource_field": "selected_resource"},
                     }
                 branches[branch] = resources
@@ -160,7 +175,34 @@ class Fixture:
         capability = {"schema_version": 1, "artifact_kind": "vast_publication_policy_capability_manifest", "policy_scope": "analytics_only", "policy_contract_sha256": self.policy_contract_sha, "systems": systems}
         capability_path = self.output / "checkpoint_policy_capability_manifest.json"
         write_json(capability_path, capability)
-        calibration = {"schema_version": 1, "artifact_kind": "vast_publication_policy_calibration_mapping", "policy_contract_sha256": self.policy_contract_sha, "aggregation_rule": "median_of_balanced_native_codec_topology_cells_v1", "minimum_samples_per_branch_cell": 30, "calibrations": {system: {"system": system} for system in SYSTEMS}}
+        calibration = {
+            "schema_version": 1,
+            "artifact_kind": "vast_publication_policy_calibration_mapping",
+            "policy_contract_sha256": self.policy_contract_sha,
+            "aggregation_rule": "median_of_balanced_native_codec_topology_cells_v1",
+            "minimum_samples_per_branch_cell": 30,
+            "calibrations": {
+                system: {
+                    "schema_version": 1,
+                    "artifact_kind": "vast_publication_policy_calibration",
+                    "system": system,
+                    "policy_contract_sha256": self.policy_contract_sha,
+                    "costs": {
+                        branch: {
+                            resource: {
+                                "implementation_id": systems[system]["branches"][branch][resource]["implementation_id"],
+                                "service_ms": 1.0,
+                                "transfer_ms": 0.0,
+                                "samples": 120,
+                            }
+                            for resource in RESOURCES
+                        }
+                        for branch in BRANCHES
+                    },
+                }
+                for system in SYSTEMS
+            },
+        }
         calibration_path = self.output / "checkpoint_policy_calibration_mapping.json"
         write_json(calibration_path, calibration)
         receipt = {
@@ -268,14 +310,16 @@ class Fixture:
         self.manifest_path = self.root / "configs/full_publication_identity_artifacts.json"
         write_json(self.manifest_path, manifest)
 
-    def load(self) -> dict[str, object]:
+    def load(self, *, production_policy: bool = False) -> dict[str, object]:
         return target.load_full_publication_identity_artifacts(
             project_root=self.root,
             manifest_path=self.manifest_path,
             parity_loader=self.parity_loader,
             parity_acceptance_loader=self.parity_acceptance_loader,
             execution_loader=self.execution_loader,
-            policy_capability_assessor=self.policy_assessor,
+            policy_capability_assessor=(
+                target._default_policy_assessor if production_policy else self.policy_assessor
+            ),
         )
 
 

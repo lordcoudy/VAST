@@ -1,0 +1,23 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+........F.........F....
+======================================================================
+FAIL: test_evaluator_accepts_actual_transport_peer_and_epoch_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_evaluator_accepts_actual_transport_peer_and_epoch_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 183, in test_evaluator_accepts_actual_transport_peer_and_epoch_facts
+    self.assertTrue(gate.evaluate_c_v1("C1", owner, seen)["passed"])
+AssertionError: False is not true
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 504, in test_fixed_runner_keeps_outer_facts_and_refuses_any_repeat
+    with self.assertRaises(gate.Gate2Refusal):
+AssertionError: Gate2Refusal not raised
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 23 tests in 0.584s
+System.Management.Automation.RemoteException
+FAILED (failures=2)

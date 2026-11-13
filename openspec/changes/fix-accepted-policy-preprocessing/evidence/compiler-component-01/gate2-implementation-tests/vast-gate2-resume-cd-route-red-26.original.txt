@@ -1,0 +1,18 @@
+E
+======================================================================
+ERROR: test_closed_c_d_route_authenticates_fixed_packet_before_dependency_execution (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_closed_c_d_route_authenticates_fixed_packet_before_dependency_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 43, in test_closed_c_d_route_authenticates_fixed_packet_before_dependency_execution
+    with self.assertRaises(SystemExit) as done:m.native_entry_v1('D',{})
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 457, in native_entry_v1
+    need(phase in ('PRE','PACKET','FINAL') and os.name=='posix','native_entry')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 45, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: native_entry
+
+----------------------------------------------------------------------
+Ran 1 test in 0.051s
+
+FAILED (errors=1)

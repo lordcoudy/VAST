@@ -1,0 +1,58 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/analytics_execution_protocol.py", line 186, in receive_packet
+    payload, ancillary, flags, _ = sock.recvmsg(
+                                   ^^^^^^^^^^^^^
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3247, in _publication_guardian_control_request
+    response, descriptors = receive_packet(endpoint, expected_fds=0)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/analytics_execution_protocol.py", line 191, in receive_packet
+    raise ProtocolError(f"failed to receive analytics execution datagram: {error}") from error
+analytics_execution_protocol.ProtocolError: failed to receive analytics execution datagram: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_qualification_pilot_acceptance_v1.py", line 829, in _validate_guardian_service_authority
+    checked = assertion(
+              ^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3190, in assert_publication_sidecar_service_authority_v1
+    observed = query_publication_sidecar_guardian_v1(authority)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3265, in query_publication_sidecar_guardian_v1
+    response = _publication_guardian_control_request(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3250, in _publication_guardian_control_request
+    raise SidecarError(
+checkpoint_gstreamer_analytics_sidecar.SidecarError: analytics production guardian control request failed: failed to receive analytics execution datagram: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 189, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 167, in main
+    consumers = complete_fixture_production_consumers_v2(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 141, in complete_fixture_production_consumers_v2
+    chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 86, in materialize_fixture_completed_execution_v2
+    finalized = finalize_fixture_qualification_cells_v2(prepared=prepared, native=native, guardian_authority_path=authority_path)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 333, in finalize_fixture_qualification_cells_v2
+    acceptance = finalize_checkpoint_qualification_pilot_acceptance_v1(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_qualification_pilot_acceptance_v1.py", line 1699, in finalize_checkpoint_qualification_pilot_acceptance_v1
+    second_operational = _operational_material(
+                         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_qualification_pilot_acceptance_v1.py", line 1140, in _operational_material
+    service = _validate_guardian_service_authority(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-06c828ce798d3454f1d4b8a992aed7133882b5a1/scripts/checkpoint_qualification_pilot_acceptance_v1.py", line 855, in _validate_guardian_service_authority
+    raise QualificationPilotAcceptanceV1Error(
+checkpoint_qualification_pilot_acceptance_v1.QualificationPilotAcceptanceV1Error: guardian service authority validation failed: analytics production guardian control request failed: failed to receive analytics execution datagram: timed out

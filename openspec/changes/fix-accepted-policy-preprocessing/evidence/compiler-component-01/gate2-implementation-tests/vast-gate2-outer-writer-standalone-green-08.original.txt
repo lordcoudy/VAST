@@ -1,0 +1,30 @@
+test_ack_delay_consumes_ready_mapping_without_allocation (w.WriterTests.test_ack_delay_consumes_ready_mapping_without_allocation) ... ok
+test_ack_hash_refuses_before_any_target_allocation (w.WriterTests.test_ack_hash_refuses_before_any_target_allocation) ... ok
+test_actual_literal_ready_ack_same_fd_success (w.WriterTests.test_actual_literal_ready_ack_same_fd_success) ... ok
+test_actual_terminal_delay_is_external_and_cannot_reemit (w.WriterTests.test_actual_terminal_delay_is_external_and_cannot_reemit) ... ok
+test_bad_ack_types_bounds_duplicates_and_trailing_input_never_open (w.WriterTests.test_bad_ack_types_bounds_duplicates_and_trailing_input_never_open) ... ok
+test_carrier_roundtrip_and_real_writer_execution (w.WriterTests.test_carrier_roundtrip_and_real_writer_execution) ... ok
+test_clock_regression_refuses_before_source_open (w.WriterTests.test_clock_regression_refuses_before_source_open) ... ok
+test_creator_fd_reread_mismatch_refuses_without_rewrite (w.WriterTests.test_creator_fd_reread_mismatch_refuses_without_rewrite) ... ok
+test_existing_selected_original_is_not_overwritten (w.WriterTests.test_existing_selected_original_is_not_overwritten) ... ok
+test_expired_mapping_has_no_new_terminal_document_after_ready (w.WriterTests.test_expired_mapping_has_no_new_terminal_document_after_ready) ... ok
+test_floor_denial_has_no_new_terminal_document_or_target (w.WriterTests.test_floor_denial_has_no_new_terminal_document_or_target) ... ok
+test_historical_qualified_source_mutation_refuses_before_exec_or_target (w.WriterTests.test_historical_qualified_source_mutation_refuses_before_exec_or_target) ... ok
+test_historical_source_read_and_close_keep_primary_and_secondary (w.WriterTests.test_historical_source_read_and_close_keep_primary_and_secondary) ... ok
+test_late_floor_cannot_authorize_exclusive_open (w.WriterTests.test_late_floor_cannot_authorize_exclusive_open) ... ok
+test_late_floor_cannot_authorize_write_after_owned_open (w.WriterTests.test_late_floor_cannot_authorize_write_after_owned_open) ... ok
+test_late_fsync_and_close_do_not_start_terminal_write (w.WriterTests.test_late_fsync_and_close_do_not_start_terminal_write) ... ok
+test_late_lseek_has_no_subsequent_read (w.WriterTests.test_late_lseek_has_no_subsequent_read) ... ok
+test_legal_source_short_reads_complete (w.WriterTests.test_legal_source_short_reads_complete) ... ok
+test_maximum_raw_extent_and_inclusive_two_forms_quote (w.WriterTests.test_maximum_raw_extent_and_inclusive_two_forms_quote) ... ok
+test_missing_ack_and_unknown_clock_have_no_failure_persistence (w.WriterTests.test_missing_ack_and_unknown_clock_have_no_failure_persistence) ... ok
+test_nt_failure_negative_allocation_and_wrong_length_refuse (w.WriterTests.test_nt_failure_negative_allocation_and_wrong_length_refuse) ... ok
+test_positive_short_os_writes_finish_on_same_exclusive_fd (w.WriterTests.test_positive_short_os_writes_finish_on_same_exclusive_fd) ... ok
+test_target_fsync_and_close_keep_first_and_known_extent (w.WriterTests.test_target_fsync_and_close_keep_first_and_known_extent) ... ok
+test_terminal_short_write_is_single_attempt_no_fallback (w.WriterTests.test_terminal_short_write_is_single_attempt_no_fallback) ... ok
+test_unreturned_write_extent_stays_unknown_and_prefix_preserved (w.WriterTests.test_unreturned_write_extent_stays_unknown_and_prefix_preserved) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 0.317s
+
+OK

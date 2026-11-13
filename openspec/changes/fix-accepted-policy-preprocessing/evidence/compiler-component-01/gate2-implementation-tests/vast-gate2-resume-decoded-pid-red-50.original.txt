@@ -1,0 +1,33 @@
+EFF
+======================================================================
+ERROR: test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts) (value={})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 104, in test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts
+    with self.assertRaises(m.ResumeRefusal) as caught:m.phase_v1(run,'FINAL',{})
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 501, in phase_v1
+    run.events[-1]['native_pid']=result['native_pid']
+                                 ~~~~~~^^^^^^^^^^^^^^
+KeyError: 'native_pid'
+
+======================================================================
+FAIL: test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts) (value={'native_pid': True})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 104, in test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts
+    with self.assertRaises(m.ResumeRefusal) as caught:m.phase_v1(run,'FINAL',{})
+AssertionError: ResumeRefusal not raised
+
+======================================================================
+FAIL: test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts) (value={'native_pid': 0})
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 104, in test_decoded_native_missing_or_boolean_pid_keeps_completed_process_facts
+    with self.assertRaises(m.ResumeRefusal) as caught:m.phase_v1(run,'FINAL',{})
+AssertionError: ResumeRefusal not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.029s
+
+FAILED (failures=2, errors=1)

@@ -1,0 +1,808 @@
+=== Task 2.1 RED: shared clock module tests before the module exists
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_non_decreasing_wall_clock_v1
+2026-10-06T17:53:47Z
+# base commit 36c395bebf73ec4881caa30d5bb14c0b6a438ce9 with 1 uncommitted path(s) (tests/test_non_decreasing_wall_clock_v1.py)
+test_non_decreasing_wall_clock_v1 (unittest.loader._FailedTest.test_non_decreasing_wall_clock_v1) ... ERROR
+
+======================================================================
+ERROR: test_non_decreasing_wall_clock_v1 (unittest.loader._FailedTest.test_non_decreasing_wall_clock_v1)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_non_decreasing_wall_clock_v1
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_non_decreasing_wall_clock_v1.py", line 13, in <module>
+    import non_decreasing_wall_clock_v1 as wall_clock  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'non_decreasing_wall_clock_v1'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)
+
+=== Task 2.3 RED: DeepStream SDK runtime, DeepStream protocol bridge and Savant runtime on a raw 2 ms CLOCK_REALTIME step back (current raw time.time_ns code)
+# base commit f524f6e9dc0066129c3b239e9163010b1cde9158; uncommitted:  M tests/test_checkpoint_deepstream_protocol_bridge.py  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock
+2026-10-06T18:01:57Z
+test_host_clock_step_back_beyond_ten_milliseconds_fails_closed (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_host_clock_step_back_beyond_ten_milliseconds_fails_closed) ... FAIL
+test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock) ... FAIL
+test_nvdec_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_nvdec_interval_survives_two_millisecond_host_clock_step_back) ... FAIL
+test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back) ... FAIL
+test_default_clock_keeps_decision_after_admission_across_host_clock_step_back (tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back) ... ERROR
+test_shared_fanout_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back) ... ERROR
+test_savant_wall_milliseconds_use_the_shared_process_clock (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock) ... FAIL
+
+======================================================================
+ERROR: test_default_clock_keeps_decision_after_admission_across_host_clock_step_back (tests.test_checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeContractTests.test_default_clock_keeps_decision_after_admission_across_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_protocol_bridge.py", line 510, in test_default_clock_keeps_decision_after_admission_across_host_clock_step_back
+    result = bridge.execute_branch(
+             ^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_protocol_bridge.py", line 1012, in execute_branch
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_protocol_bridge.py", line 197, in _require
+    raise DeepStreamProtocolBridgeError(message)
+checkpoint_deepstream_protocol_bridge.DeepStreamProtocolBridgeError: DeepStream policy decision precedes admission
+
+======================================================================
+ERROR: test_shared_fanout_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_shared_fanout_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 603, in test_shared_fanout_survives_two_millisecond_host_clock_step_back
+    runtime.observe_queue_buffer(SimpleNamespace(pts=100, get_size=lambda: 8192),
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_savant_sdk_runtime_v3.py", line 548, in observe_queue_buffer
+    self.resource_recorder.record_fanout(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_resource_runtime_v3.py", line 475, in record_fanout
+    canonical_end_timestamp_ns = self.canonical_fanout_interval_end_ns(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/checkpoint_deepstream_resource_runtime_v3.py", line 194, in canonical_fanout_interval_end_ns
+    raise ValueError("DeepStream serialized fanout topology timestamp moved backwards")
+ValueError: DeepStream serialized fanout topology timestamp moved backwards
+
+======================================================================
+FAIL: test_host_clock_step_back_beyond_ten_milliseconds_fails_closed (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_host_clock_step_back_beyond_ten_milliseconds_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1069, in test_host_clock_step_back_beyond_ten_milliseconds_fails_closed
+    with self.assertRaises(ClockStepError):
+AssertionError: ClockStepError not raised
+
+======================================================================
+FAIL: test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1056, in test_lifecycle_and_callback_wall_stamps_use_the_shared_process_clock
+    self.assertEqual(
+AssertionError: Lists differ: [1790000000000, 1789999999998] != [1790000000000, 1790000000000]
+
+First differing element 1:
+1789999999998
+1790000000000
+
+- [1790000000000, 1789999999998]
++ [1790000000000, 1790000000000]
+
+======================================================================
+FAIL: test_nvdec_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_nvdec_interval_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1005, in test_nvdec_interval_survives_two_millisecond_host_clock_step_back
+    self.assertEqual(pipeline._on_mux_buffer(None, info), "probe-ok", pipeline.errors)
+AssertionError: 'probe-drop' != 'probe-ok'
+- probe-drop
+?       -- ^
++ probe-ok
+?        ^
+ : [ValueError('DeepStream resource end timestamp must follow start timestamp')]
+
+======================================================================
+FAIL: test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1043, in test_shared_fanout_interval_survives_two_millisecond_host_clock_step_back
+    self.assertEqual(pipeline._on_new_sample(sink, "damage"), "flow-ok", pipeline.errors)
+AssertionError: 'flow-error' != 'flow-ok'
+- flow-error
++ flow-ok
+ : [ValueError('DeepStream physical fanout interval must have positive width')]
+
+======================================================================
+FAIL: test_savant_wall_milliseconds_use_the_shared_process_clock (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_savant_wall_milliseconds_use_the_shared_process_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 615, in test_savant_wall_milliseconds_use_the_shared_process_clock
+    self.assertEqual([savant_sdk_runtime_v3._now_ms(), savant_sdk_runtime_v3._now_ms()],
+AssertionError: Lists differ: [1790000000000, 1789999999998] != [1790000000000, 1790000000000]
+
+First differing element 1:
+1789999999998
+1790000000000
+
+- [1790000000000, 1789999999998]
++ [1790000000000, 1790000000000]
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.112s
+
+FAILED (failures=5, errors=2)
+
+=== Task 2.4 RED: guardian recorder default clock (production sidecar construction) with a raw CLOCK_REALTIME stepping back 2 ms between each begin and terminal; complete cold reconciliation (publication_operational_request_reconciliation_v1:451, unchanged) rejects the journal. The raw source is injected both into the shared process wrapper and into any recorder default still bound to time.time_ns (current code).
+# base commit f524f6e9dc0066129c3b239e9163010b1cde9158; uncommitted:  M scripts/checkpoint_deepstream_protocol_bridge.py  M scripts/checkpoint_deepstream_sdk_runtime.py  M scripts/checkpoint_savant_sdk_runtime_v3.py  M tests/test_checkpoint_deepstream_protocol_bridge.py  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_deepstream_service_clock.py  M tests/test_checkpoint_savant_native_identity_integration_v3.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back
+2026-10-06T22:14:40Z
+test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back) ... ERROR
+
+======================================================================
+ERROR: test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 549, in test_default_guardian_clock_keeps_terminal_after_begin_across_host_clock_step_back
+    workload = fixture.cold_workload()
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 457, in cold_workload
+    return reconcile_operational_request_domain_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 451, in reconcile_operational_request_domain_v1
+    _require(began is not None and event["at_ns"] >= began and
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 44, in _require
+    raise ValueError(message)
+ValueError: guardian operational request lacks exactly one successful full terminal
+
+----------------------------------------------------------------------
+Ran 1 test in 0.281s
+
+FAILED (errors=1)
+
+=== Task 2.7 RED: existing image source-closure/allowlist tests after the runtimes import the shared clock but before it is added to the four runtime image Dockerfiles and runtime-source-allowlist.txt files (deploy/ changes stashed)
+# base commit 287c9edcd0f2dc2a11a465093fb6c1bbeee711cc; uncommitted:  M tests/test_publication_policy_qualification_execution_code_closure_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_deepstream_runtime_source_closure_v3 tests.test_checkpoint_savant_runtime_source_closure_v3 tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3 tests.test_checkpoint_openvino_gva_runtime_source_closure_v3 tests.test_publication_runtime_source_closure_guardian_v1 tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3
+2026-10-06T22:19:33Z
+test_dependency_closure_rejects_extraneous_symlinked_wheel (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_dependency_closure_rejects_extraneous_symlinked_wheel) ... ok
+test_docker_copy_and_isolated_build_context_match_validated_sets (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets) ... ERROR
+test_missing_extraneous_and_unrelated_module_drift_fail_as_expected (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_missing_extraneous_and_unrelated_module_drift_fail_as_expected) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_constant_dynamic_local_import_is_in_the_reachable_set (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_constant_dynamic_local_import_is_in_the_reachable_set) ... ok
+test_docker_copy_and_ab_build_use_only_validated_allowlist (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist) ... ERROR
+test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image) ... ERROR
+test_missing_and_extraneous_transitive_imports_fail_closed (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_missing_and_extraneous_transitive_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure) ... ERROR
+test_runtime_consumes_the_native_foundation_drop_queue (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue) ... ERROR
+test_docker_copy_and_build_hash_use_only_the_validated_allowlist (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_docker_copy_and_build_hash_use_only_the_validated_allowlist) ... ok
+test_missing_and_extraneous_python_imports_fail_closed (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_missing_and_extraneous_python_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_reachable_runtime_closure (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure) ... ERROR
+test_missing_and_extraneous_imports_fail_closed (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_missing_and_extraneous_imports_fail_closed) ... ok
+test_production_allowlist_is_exact_transitive_closure (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure) ... ERROR
+test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) ... 
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva') ... ERROR
+  test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom') ... ERROR
+test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) ... 
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva') ... FAIL
+  test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom') ... FAIL
+test_assessment_recomputes_and_rejects_stale_runtime_source_closure (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure) ... ERROR
+test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound) ... ERROR
+test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed) ... ERROR
+test_phase_one_materializes_exact_physical_binding_fragment (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment) ... ERROR
+
+======================================================================
+ERROR: test_docker_copy_and_isolated_build_context_match_validated_sets (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_docker_copy_and_isolated_build_context_match_validated_sets)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 120, in test_docker_copy_and_isolated_build_context_match_validated_sets
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_deepstream_runtime_source_closure_v3.DeepStreamRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_runtime_source_closure_v3.py", line 33, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 397, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_docker_copy_and_ab_build_use_only_validated_allowlist (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_docker_copy_and_ab_build_use_only_validated_allowlist)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 167, in test_docker_copy_and_ab_build_use_only_validated_allowlist
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 47, in test_frozen_cpu_manifest_is_hash_bound_into_the_runtime_image
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_multi_entry_runtime_closure (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_multi_entry_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 66, in test_production_allowlist_is_exact_multi_entry_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_runtime_consumes_the_native_foundation_drop_queue (tests.test_checkpoint_savant_runtime_source_closure_v3.SavantRuntimeSourceClosureV3Tests.test_runtime_consumes_the_native_foundation_drop_queue)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_runtime_source_closure_v3.py", line 42, in test_runtime_consumes_the_native_foundation_drop_queue
+    self.assertEqual(_validator_module().validate_runtime_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 374, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_reachable_runtime_closure (tests.test_checkpoint_gstreamer_custom_runtime_source_closure_v3.GStreamerCustomRuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_reachable_runtime_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py", line 43, in test_production_allowlist_is_exact_reachable_runtime_closure
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_production_allowlist_is_exact_transitive_closure (tests.test_checkpoint_openvino_gva_runtime_source_closure_v3.OpenVINOGVARuntimeSourceClosureV3Tests.test_production_allowlist_is_exact_transitive_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py", line 28, in test_production_allowlist_is_exact_transitive_closure
+    result = _module().validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 181, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 200, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py", line 56, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 52, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 192, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/savant/publication/validate_runtime_source_closure_v3.py", line 48, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 104, in validate_python_source_closure
+    _require(not missing, "missing reachable Python source: " + ", ".join(missing))
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py", line 26, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_all_runtime_validators_accept_the_same_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_accept_the_same_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 81, in test_all_runtime_validators_accept_the_same_guardian_closure
+    self.assertEqual(_validate_python(module, declared), declared)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 57, in _validate_python
+    return module.validate_python_source_closure(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_assessment_recomputes_and_rejects_stale_runtime_source_closure (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_assessment_recomputes_and_rejects_stale_runtime_source_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_materialization_is_idempotent_and_collision_or_fragment_drift_fails_closed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+ERROR: test_phase_one_materializes_exact_physical_binding_fragment (tests.test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 114, in setUp
+    target.GSTREAMER_RUNTIME_SOURCE_SHA256 = current_runtime_source_sha256()
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py", line 64, in current_runtime_source_sha256
+    result = module.validate_runtime_source_closure(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 235, in validate_runtime_source_closure
+    python_sources = validate_python_source_closure(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 131, in validate_python_source_closure
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py", line 31, in _require
+    raise ValueError(message)
+ValueError: missing reachable Python source: scripts/non_decreasing_wall_clock_v1.py
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='deepstream')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='savant')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='openvino_gva')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+======================================================================
+FAIL: test_all_runtime_validators_reject_the_same_missing_guardian_closure (tests.test_publication_runtime_source_closure_guardian_v1.PublicationRuntimeSourceClosureGuardianV1Tests.test_all_runtime_validators_reject_the_same_missing_guardian_closure) (system='gstreamer_custom')
+----------------------------------------------------------------------
+ValueError: missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_runtime_source_closure_guardian_v1.py", line 103, in test_all_runtime_validators_reject_the_same_missing_guardian_closure
+    with self.assertRaisesRegex(ValueError, f"^{re.escape(expected)}$"):
+AssertionError: "^missing\ reachable\ Python\ source:\ scripts/checkpoint_deepstream_qualification_fragment_v1\.py,\ scripts/checkpoint_qualification_pilot_acceptance_v1\.py,\ scripts/publication_guardian_accepted_policy_preprocessing_contract_v1\.py,\ scripts/publication_guardian_preprocessing_contract_v1\.py,\ scripts/publication_guardian_runtime_expectations_v1\.py,\ scripts/publication_policy_qualification\.py,\ scripts/publication_policy_qualification_execution_closure_v1\.py$" does not match "missing reachable Python source: scripts/checkpoint_deepstream_qualification_fragment_v1.py, scripts/checkpoint_qualification_pilot_acceptance_v1.py, scripts/non_decreasing_wall_clock_v1.py, scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py, scripts/publication_guardian_preprocessing_contract_v1.py, scripts/publication_guardian_runtime_expectations_v1.py, scripts/publication_policy_qualification.py, scripts/publication_policy_qualification_execution_closure_v1.py"
+
+----------------------------------------------------------------------
+Ran 21 tests in 26.101s
+
+FAILED (failures=4, errors=16)
+
+=== Task 2.5 RED (a): static gate on a temporary copy with injected violations (recorder default rebound to time.time_ns; Dockerfile.openvino without the clock header COPY). Tree files are not modified.
+# base commit 00653b5e3ce5739f752c756cbc610bd412cee1e4; uncommitted: tests/test_legacy_wall_clock_static_gate_v1.py
+$ wsl.exe -e /bin/bash openspec/changes/qualify-full-benchmark/evidence/software-v1-clock/gate_red_injection.sh
+2026-10-06T22:23:04Z
+# temporary copy: /tmp/vast-gate-red.pCNx4K
+168c168
+<                  clock_ns: Callable[[], int] = wall_time_ns) -> None:
+---
+>                  clock_ns: Callable[[], int] = time.time_ns) -> None:
+26d25
+< COPY deploy/native_gst_probe/checkpoint_admission_transport.hpp /workspace/project/deploy/native_gst_probe/checkpoint_admission_transport.hpp
+test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock) ... FAIL
+test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header) ... FAIL
+test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header) ... ok
+
+======================================================================
+FAIL: test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/vast-gate-red.pCNx4K/tests/test_legacy_wall_clock_static_gate_v1.py", line 125, in test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock
+    self.assertEqual(violations, [])
+AssertionError: Lists differ: ['scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns'
+
+- ['scripts/publication_guardian_operational_recorder_v1.py:168: time.time_ns']
++ []
+
+======================================================================
+FAIL: test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/vast-gate-red.pCNx4K/tests/test_legacy_wall_clock_static_gate_v1.py", line 130, in test_every_native_probe_dockerfile_copies_the_wall_clock_header
+    self.assertEqual(missing, [])
+AssertionError: Lists differ: ['deploy/native_gst_probe/Dockerfile.openvino'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'deploy/native_gst_probe/Dockerfile.openvino'
+
+- ['deploy/native_gst_probe/Dockerfile.openvino']
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.059s
+
+FAILED (failures=2)
+
+=== Task 2.5 RED (b): the same gate on the covered runtime files and deploy Dockerfiles exported from the pre-change commit 36c395be (git show into a temporary directory)
+$ cd /mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_legacy_wall_clock_static_gate_v1
+2026-10-06T22:23:06Z
+test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock) ... FAIL
+test_every_native_probe_dockerfile_copies_the_wall_clock_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_every_native_probe_dockerfile_copies_the_wall_clock_header) ... ok
+test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header) ... FAIL
+
+======================================================================
+FAIL: test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base/tests/test_legacy_wall_clock_static_gate_v1.py", line 125, in test_covered_runtimes_stamp_wall_time_only_through_the_shared_clock
+    self.assertEqual(violations, [])
+AssertionError: Lists differ: ['scripts/checkpoint_deepstream_sdk_runtim[1418 chars]_v1'] != []
+
+First list contains 19 additional elements.
+First extra element 0:
+'scripts/checkpoint_deepstream_sdk_runtime.py:512: time.time_ns'
+
+Diff is 1551 characters long. Set self.maxDiff to None to see it.
+
+======================================================================
+FAIL: test_gate_reports_injected_direct_clock_and_missing_header (tests.test_legacy_wall_clock_static_gate_v1.LegacyWallClockStaticGateV1Tests.test_gate_reports_injected_direct_clock_and_missing_header)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/vast-gate-base/tests/test_legacy_wall_clock_static_gate_v1.py", line 143, in test_gate_reports_injected_direct_clock_and_missing_header
+    self.assertEqual(len(violations), 2, violations)
+AssertionError: 10 != 2 : ['scripts/checkpoint_deepstream_sdk_runtime.py:512: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:921: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1236: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1294: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1302: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1431: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1463: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1973: from time import time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py:1976: time.time_ns', 'scripts/checkpoint_deepstream_sdk_runtime.py: does not import wall_time_ns from non_decreasing_wall_clock_v1']
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.139s
+
+FAILED (failures=2)
+
+=== Task 2.6 RED (guardian): the persisted guardian operational group does not retain the process max_clamp_ns, and cold reconciliation does not bound it
+# base commit 5246d2a1d2d04f9b1e38d845e86ac653dee6ba4b; uncommitted:  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+2026-10-06T22:24:15Z
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ERROR
+
+======================================================================
+ERROR: test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 576, in test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+    self.assertEqual(group["max_clamp_ns"], 2_000_001)
+                     ~~~~~^^^^^^^^^^^^^^^^
+KeyError: 'max_clamp_ns'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.375s
+
+FAILED (errors=1)
+
+=== Task 2.6 follow-up RED: a historical v1 guardian group without max_clamp_ns must still reconcile; invalid present values stay rejected (current reader requires the field)
+# base commit 28f0cfb95893ac0eccd768259164029febfb1942; uncommitted:  M tests/test_publication_operational_boundary_v1.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+2026-10-06T22:29:25Z
+test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it) ... ERROR
+
+======================================================================
+ERROR: test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it (tests.test_publication_operational_boundary_v1.PublicationOperationalBoundaryTests.test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 587, in test_guardian_group_retains_process_max_clamp_and_cold_closure_bounds_it
+    self.assertEqual(fixture.cold_workload(companion=historical)["request_count"], 4)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_publication_operational_boundary_v1.py", line 457, in cold_workload
+    return reconcile_operational_request_domain_v1(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 392, in reconcile_operational_request_domain_v1
+    _require(set(companion) == {"schema_version", "artifact_kind", "lifecycle_id",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/scripts/publication_operational_request_reconciliation_v1.py", line 45, in _require
+    raise ValueError(message)
+ValueError: guardian operational companion schema drifted
+
+----------------------------------------------------------------------
+Ran 1 test in 0.379s
+
+FAILED (errors=1)
+
+=== Task 2.6 amendment RED: native probe/source and Python DeepStream/Savant SDK runtime processes must emit one wall-clock clamp line on every controlled exit (normal, handled error, ClockStepError, fatal exception)
+# base commit a6407710a22e5c2724dbaba4d85abf6c1b410e18; uncommitted:  M tests/cpp/checkpoint_native_shutdown_test.cpp  M tests/cpp/checkpoint_source_lifecycle_test.cpp  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit
+2026-10-06T23:10:11Z
+test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch) ... FAIL
+test_native_abort_precedes_gstreamer_null (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null) ... FAIL
+test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) ... 
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step') ... FAIL
+test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) ... 
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked') ... FAIL
+  test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step') ... FAIL
+
+======================================================================
+FAIL: test_source_original_drain_and_stop_latch (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_source_original_drain_and_stop_latch)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 74, in test_source_original_drain_and_stop_latch
+    self._compile_and_run("checkpoint_source_lifecycle_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 50, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp: In function ‘bool {anonymous}::wall_clock_line_on_every_controlled_exit()’:
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:399:11: error: ‘WallClockExitLine’ is not a member of ‘vast’
+  399 |   { vast::WallClockExitLine line(normal, "unit-test", wall); }
+      |           ^~~~~~~~~~~~~~~~~
+/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/cpp/checkpoint_source_lifecycle_test.cpp:400:15: error: ‘WallClockExitLine’ is not a member of ‘vast’
+  400 |   try { vast::WallClockExitLine line(unwound, "unit-test", wall); throw std::runtime_error("unit"); }
+      |               ^~~~~~~~~~~~~~~~~
+
+
+======================================================================
+FAIL: test_native_abort_precedes_gstreamer_null (tests.test_checkpoint_analytics_execution_client_cpp.CheckpointAnalyticsExecutionClientCppTest.test_native_abort_precedes_gstreamer_null)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 86, in test_native_abort_precedes_gstreamer_null
+    self._compile_and_run("checkpoint_native_shutdown_test.cpp",
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_analytics_execution_client_cpp.py", line 58, in _compile_and_run
+    self.assertEqual(
+AssertionError: 1 != 0 : [native-probe][checkpoint] checkpoint I/O owner aborted
+[native-probe][checkpoint] checkpoint I/O owner aborted
+[native-probe][cleanup] native study journal final close failed
+native exception exit lost its wall-clock line: [native-probe][fatal] unknown argument: --vast-unknown-test-argument
+
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_deepstream_sdk_runtime.DeepStreamHostWallClockStepTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_deepstream_sdk_runtime.py", line 1093, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[deepstream-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='normal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='blocked')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+======================================================================
+FAIL: test_main_writes_one_wall_clock_line_on_every_controlled_exit (tests.test_checkpoint_savant_sdk_runtime_v3.SavantQueueDropTests.test_main_writes_one_wall_clock_line_on_every_controlled_exit) (label='clock step')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_checkpoint_savant_sdk_runtime_v3.py", line 641, in test_main_writes_one_wall_clock_line_on_every_controlled_exit
+    self.assertEqual([value for value in lines if "[wall-clock]" in value], [line])
+AssertionError: Lists differ: [] != ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001'
+
+- []
++ ['[savant-sdk-runtime][wall-clock] max_clamp_ns=2000001']
+
+----------------------------------------------------------------------
+Ran 4 tests in 8.491s
+
+FAILED (failures=8)
+
+=== Task 2.6 amendment pin RED: configs/experiments.yaml fanout_binding_sha256 still binds the previous vast_native_gst_probe.cpp bytes
+# base commit a6407710a22e5c2724dbaba4d85abf6c1b410e18; uncommitted:  M deploy/native_gst_probe/checkpoint_admission_transport.hpp  M deploy/native_gst_probe/checkpoint_source_coordinator.cpp  M deploy/native_gst_probe/vast_native_gst_probe.cpp  M scripts/checkpoint_deepstream_sdk_runtime.py  M scripts/checkpoint_savant_sdk_runtime_v3.py  M scripts/non_decreasing_wall_clock_v1.py  M tests/cpp/checkpoint_native_shutdown_test.cpp  M tests/cpp/checkpoint_source_lifecycle_test.cpp  M tests/test_checkpoint_deepstream_sdk_runtime.py  M tests/test_checkpoint_savant_sdk_runtime_v3.py 
+$ cd /mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST && /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound
+2026-10-06T23:17:45Z
+test_resource_interval_extension_is_verified_but_not_publication_bound (tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound) ... FAIL
+
+======================================================================
+FAIL: test_resource_interval_extension_is_verified_but_not_publication_bound (tests.test_scenario_planning.ScenarioPlanningTests.test_resource_interval_extension_is_verified_but_not_publication_bound)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qfb-clock/VAST/tests/test_scenario_planning.py", line 669, in test_resource_interval_extension_is_verified_but_not_publication_bound
+    self.assertEqual(
+AssertionError: 'blocked_resource_interval_contract_invalid' != 'ready_validator_and_native_interval_sourc[40 chars]ound'
+- blocked_resource_interval_contract_invalid
++ ready_validator_and_native_interval_sources_not_target_verified_not_publication_bound
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.033s
+
+FAILED (failures=1)
+

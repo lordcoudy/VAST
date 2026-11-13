@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/scripts/publication_policy_qualification.py", line 759, in _default_pilot_validator
+    sidecars = validate_required_sidecars(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/scripts/benchmark_contract.py", line 6665, in validate_required_sidecars
+    raise ContractError(
+benchmark_contract.ContractError: /home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/artifacts/accepted_policy_repair_20261011a/consumer-fixture-16-minimum30/pilots/deepstream/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 189, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 167, in main
+    consumers = complete_fixture_production_consumers_v2(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/tests/fixtures/accepted_policy_consumer_fixture_v2.py", line 170, in complete_fixture_production_consumers_v2
+    stock_equality = [assert_genuine_f5_stock_samples_v1(pilot, f5_context) for pilot in (cpu_positive, gpu_positive)]
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/tests/test_accepted_policy_f5_real_refusals.py", line 202, in assert_genuine_f5_stock_samples_v1
+    reviewed_stock = stock._default_pilot_validator(pilot, context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/scripts/publication_policy_qualification.py", line 788, in _default_pilot_validator
+    raise QualificationError(f"pilot sidecar revalidation failed: {exc}") from exc
+publication_policy_qualification.QualificationError: pilot sidecar revalidation failed: /home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-d725413ef086f3550dcafd6bc8233982f35cab14/artifacts/accepted_policy_repair_20261011a/consumer-fixture-16-minimum30/pilots/deepstream/cpu/h264/independent_processes/reset_evidence.csv: reset validation requires topology kind, stream count, and branch set

@@ -1,0 +1,114 @@
+..................FE..........FFFF....F.
+======================================================================
+ERROR: test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 327, in test_complete_real_orchestration_preserves_exact_prefix_and_nonaccepting_status
+    returned=capture.run_capture_v1(COMMIT,APPROVAL)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 546, in run_capture_v1
+    require(summary.get("outside_preexisting_quote")==sum(header[k] for k in (
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 54, in require
+    raise CaptureRefusal(cause)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_capture_v1.CaptureRefusal: driver_outside_source_and_capture_quote
+
+======================================================================
+FAIL: test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 383, in test_combined_large_failure_prefixes_fit_admitted_all_forms_and_start_no_status_or_meter
+    self.assertEqual(self.context["capture_all_forms_reserved_bytes"],65536)
+AssertionError: 32768 != 65536
+
+======================================================================
+FAIL: test_status_close_after_original_deadline_cannot_return_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_close_after_original_deadline_cannot_return_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 497, in test_status_close_after_original_deadline_cannot_return_success
+    facts=self.status_fault("late-close")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 474, in status_fault
+    self.assertEqual(self.phases,["pre-meter","driver","post-meter"])
+AssertionError: Lists differ: ['pre-meter', 'driver'] != ['pre-meter', 'driver', 'post-meter']
+
+Second list contains 1 additional elements.
+First extra element 2:
+'post-meter'
+
+- ['pre-meter', 'driver']
++ ['pre-meter', 'driver', 'post-meter']
+?                       ++++++++++++++
+
+
+======================================================================
+FAIL: test_status_close_failure_keeps_fsync_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_close_failure_keeps_fsync_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 492, in test_status_close_failure_keeps_fsync_and_no_success
+    facts=self.status_fault("close")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 474, in status_fault
+    self.assertEqual(self.phases,["pre-meter","driver","post-meter"])
+AssertionError: Lists differ: ['pre-meter', 'driver'] != ['pre-meter', 'driver', 'post-meter']
+
+Second list contains 1 additional elements.
+First extra element 2:
+'post-meter'
+
+- ['pre-meter', 'driver']
++ ['pre-meter', 'driver', 'post-meter']
+?                       ++++++++++++++
+
+
+======================================================================
+FAIL: test_status_fsync_failure_keeps_close_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_fsync_failure_keeps_close_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 487, in test_status_fsync_failure_keeps_close_and_no_success
+    facts=self.status_fault("fsync")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 474, in status_fault
+    self.assertEqual(self.phases,["pre-meter","driver","post-meter"])
+AssertionError: Lists differ: ['pre-meter', 'driver'] != ['pre-meter', 'driver', 'post-meter']
+
+Second list contains 1 additional elements.
+First extra element 2:
+'post-meter'
+
+- ['pre-meter', 'driver']
++ ['pre-meter', 'driver', 'post-meter']
+?                       ++++++++++++++
+
+
+======================================================================
+FAIL: test_status_short_write_keeps_confirmed_prefix_and_no_success (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_status_short_write_keeps_confirmed_prefix_and_no_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in test_status_short_write_keeps_confirmed_prefix_and_no_success
+    facts=self.status_fault("short")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 474, in status_fault
+    self.assertEqual(self.phases,["pre-meter","driver","post-meter"])
+AssertionError: Lists differ: ['pre-meter', 'driver'] != ['pre-meter', 'driver', 'post-meter']
+
+Second list contains 1 additional elements.
+First extra element 2:
+'post-meter'
+
+- ['pre-meter', 'driver']
++ ['pre-meter', 'driver', 'post-meter']
+?                       ++++++++++++++
+
+
+======================================================================
+FAIL: test_large_failed_git_diagnostics_keep_bounded_exact_prefix_and_full_known_counts_hash (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.ReviewedSourceTests.test_large_failed_git_diagnostics_keep_bounded_exact_prefix_and_full_known_counts_hash)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 205, in test_large_failed_git_diagnostics_keep_bounded_exact_prefix_and_full_known_counts_hash
+    self.assertEqual(base64.b64decode(facts["retained_prefixes_base64"]["stdout"]),raw[:4096])
+AssertionError: b'AAA[4088 chars]AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA[61395 chars]AAAA' != b'AAA[4088 chars]AAAAA'
+
+----------------------------------------------------------------------
+Ran 40 tests in 0.157s
+
+FAILED (failures=6, errors=1)

@@ -1,0 +1,27 @@
+F
+======================================================================
+FAIL: test_native_failure_producer_through_process_preserves_ordered_causes (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_native_failure_producer_through_process_preserves_ordered_causes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in test_native_failure_producer_through_process_preserves_ordered_causes
+    self.assertEqual(value['causes'][:4],['process_refused','resume_pre_transport','request_write_failed','socket_close_failed'])
+AssertionError: Lists differ: ['process_refused'] != ['process_refused', 'resume_pre_transport', 'request_write_[26 chars]led']
+
+Second list contains 3 additional elements.
+First extra element 1:
+'resume_pre_transport'
+
+- ['process_refused']
+?                   ^
+
++ ['process_refused',
+?                   ^
+
++  'resume_pre_transport',
++  'request_write_failed',
++  'socket_close_failed']
+
+----------------------------------------------------------------------
+Ran 1 test in 0.073s
+
+FAILED (failures=1)

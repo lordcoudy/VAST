@@ -1,0 +1,28 @@
+{
+  "reviewed_helper_sha256": "89eff34e1ff8222a4417187daf490a65b1b0293bde9cb37654995b039590ca2f",
+  "source_read_only": true,
+  "reviewed_plan_sha256": "dcad9b5c4c766673370b64c13ef0e843d52ae12169f80901cc6859d9f987409e",
+  "campaign_authority": false,
+  "started_utc": "2026-10-11T23:24:52.3503262+00:00",
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/retain_consumer08_originals.py",
+    "apply",
+    "--plan",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/consumer08-originals.retention-plan.v1.json",
+    "--reviewed-plan-sha256",
+    "dcad9b5c4c766673370b64c13ef0e843d52ae12169f80901cc6859d9f987409e"
+  ],
+  "live_raw12115_gate_executed": false
+}

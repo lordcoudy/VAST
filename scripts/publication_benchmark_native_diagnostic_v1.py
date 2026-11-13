@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run one original forced native diagnostic through the stock runtime spine."""
+"""Run one held original (native diagnostic/precheck or Savant) through the stock runtime spine."""
 from __future__ import annotations
 
 import argparse
@@ -55,6 +55,14 @@ def _stop_collector(collector):
         raise error
 
 
+def _stock_runtime_v1(system):
+    """Held prechecks/Savant use the unchanged stock runner of their system."""
+    if system == "gstreamer_custom":
+        return run_checkpoint_gstreamer_publication_runtime_v3
+    return {name: runner for name, runner in pilot.NATIVE_RUNTIME_REGISTRY.items()
+            if name != "gstreamer_custom"}[system]
+
+
 def _descriptor(custody, root, path, maximum):
     value, _ = custody.read_descriptor(path, label="original diagnostic physical output",
         maximum=maximum, capture=False)
@@ -101,7 +109,7 @@ def execute_native_diagnostic_operation_v1(*, project_root, capture_plan_path, o
                 with capture_original_engine_processes_v1(project_root=root, output_dir=process_dir,
                         operation_id=operation_id, original_operation_descriptor=held["original_operation_descriptor"],
                         native_context_descriptor=held["native_context_descriptor"], container_image=held["container_image"]) as capture:
-                    outcome = run_checkpoint_gstreamer_publication_runtime_v3(held["request"])
+                    outcome = _stock_runtime_v1(cell.system)(held["request"])
                     _require(type(outcome) is NativePublicationOutcomeV3 and outcome.exit_code == 0
                         and outcome.blockers == (), "original native diagnostic returned non-success")
             except BaseException as error:

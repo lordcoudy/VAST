@@ -1,0 +1,448 @@
+head=(worktree codex/qualify-full-benchmark bb6436ef, uncommitted 6E.1 tests on top)
+python=3.12.3 platform=Linux 6.6.87.2-microsoft-standard-WSL2 cwd=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests PYTHONPATH=/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST TMPDIR=unset
+command=python -B -m unittest -v test_publication_qualification_promotion_v2 test_full_resource_qualification_authority_v2 test_full_qualification_runbook_errexit_v1
+test_publication_qualification_promotion_v2 (unittest.loader._FailedTest.test_publication_qualification_promotion_v2) ... ERROR
+test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) ... 
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='deepstream', resource='cpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='deepstream', resource='gpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='savant', resource='cpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='savant', resource='gpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='openvino_gva', resource='cpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='openvino_gva', resource='gpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='gstreamer_custom', resource='cpu') ... ERROR
+  test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='gstreamer_custom', resource='gpu') ... ERROR
+test_drifted_authority_v2_bindings_are_refused (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_drifted_authority_v2_bindings_are_refused) ... ok
+test_foreign_study_and_component_kinds_are_refused (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_foreign_study_and_component_kinds_are_refused) ... ok
+test_amendment8_files_are_outside_every_image_allowlist (test_full_resource_qualification_authority_v2.HostOnlyBoundaryTests.test_amendment8_files_are_outside_every_image_allowlist) ... ok
+test_amendment8_files_are_outside_execution_code_closure (test_full_resource_qualification_authority_v2.HostOnlyBoundaryTests.test_amendment8_files_are_outside_execution_code_closure) ... FAIL
+test_postprocess_stages_of_topology_v2_are_accepted (test_full_resource_qualification_authority_v2.ResourcePilotTopologyV2Tests.test_postprocess_stages_of_topology_v2_are_accepted) ... FAIL
+test_topology_without_postprocess_is_refused_under_v2 (test_full_resource_qualification_authority_v2.ResourcePilotTopologyV2Tests.test_topology_without_postprocess_is_refused_under_v2) ... FAIL
+test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) ... 
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_detach') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_00_preflight') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_01_host_check') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_02_transaction') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_03_preprocessing') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_04_code_closure') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_05_capture_plan') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_06_guardian_start') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_07_guardian_ready') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_08_runtime_inputs') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_09_owner_execute') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_10_guardian_stop') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_11_guardian_terminal') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_12_owner_bind') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_13_execution_closure') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_14_indices') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_15_promotion') ... FAIL
+  test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_16_host_after') ... FAIL
+test_plain_invocation_passes_the_probe_and_a_helper_refusal_fails_the_step (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_plain_invocation_passes_the_probe_and_a_helper_refusal_fails_the_step) ... ok
+test_probe_is_a_plain_assignment_with_explicit_exit (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_probe_is_a_plain_assignment_with_explicit_exit) ... FAIL
+test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) ... 
+  test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='and') ... FAIL
+  test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='or') ... FAIL
+  test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='if') ... FAIL
+
+======================================================================
+ERROR: test_publication_qualification_promotion_v2 (unittest.loader._FailedTest.test_publication_qualification_promotion_v2)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_publication_qualification_promotion_v2
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_publication_qualification_promotion_v2.py", line 42, in <module>
+    import publication_qualification_promotion_v2 as promotion  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ModuleNotFoundError: No module named 'publication_qualification_promotion_v2'
+
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='deepstream', resource='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: deepstream/cpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='deepstream', resource='gpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: deepstream/gpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='savant', resource='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: savant/cpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='savant', resource='gpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: savant/gpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='openvino_gva', resource='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: openvino_gva/cpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='openvino_gva', resource='gpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: openvino_gva/gpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='gstreamer_custom', resource='cpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: gstreamer_custom/cpu binding material fields drifted
+
+======================================================================
+ERROR: test_authority_v2_binding_projects_static_resource_v2_evidence (test_full_resource_qualification_authority_v2.AuthorityBindingV2ResourceIndexTests.test_authority_v2_binding_projects_static_resource_v2_evidence) (system='gstreamer_custom', resource='gpu')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 128, in test_authority_v2_binding_projects_static_resource_v2_evidence
+    value = self.read(system, resource, row)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 118, in read
+    return target._read_binding(
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/full_resource_qualification_index_v1.py", line 181, in _read_binding
+    raise FullResourceQualificationIndexV1Error(
+full_resource_qualification_index_v1.FullResourceQualificationIndexV1Error: gstreamer_custom/gpu binding material fields drifted
+
+======================================================================
+FAIL: test_amendment8_files_are_outside_execution_code_closure (test_full_resource_qualification_authority_v2.HostOnlyBoundaryTests.test_amendment8_files_are_outside_execution_code_closure)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 265, in test_amendment8_files_are_outside_execution_code_closure
+    self.assertTrue((ROOT / relative).is_file(), relative)
+AssertionError: False is not true : scripts/publication_qualification_promotion_v2.py
+
+======================================================================
+FAIL: test_postprocess_stages_of_topology_v2_are_accepted (test_full_resource_qualification_authority_v2.ResourcePilotTopologyV2Tests.test_postprocess_stages_of_topology_v2_are_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 252, in test_postprocess_stages_of_topology_v2_are_accepted
+    self.assertIn("sidecar stage reached", self._revalidate(rows))
+AssertionError: 'sidecar stage reached' not found in "pilot resource-v2 sidecar revalidation failed: /tmp/tmp3_d_bskr/pilots/deepstream/cpu/h264/shared_video_dag/topology_events.csv: execution plate_number:complete has parents ['plate_number:postprocess'], expected ['plate_number:analytics']"
+
+======================================================================
+FAIL: test_topology_without_postprocess_is_refused_under_v2 (test_full_resource_qualification_authority_v2.ResourcePilotTopologyV2Tests.test_topology_without_postprocess_is_refused_under_v2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_resource_qualification_authority_v2.py", line 256, in test_topology_without_postprocess_is_refused_under_v2
+    self.assertNotIn("sidecar stage reached", refusal)
+AssertionError: 'sidecar stage reached' unexpectedly found in 'pilot resource-v2 sidecar revalidation failed: topology accepted; sidecar stage reached'
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_detach')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_00_preflight')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_01_host_check')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_02_transaction')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_03_preprocessing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_04_code_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_05_capture_plan')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_06_guardian_start')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_07_guardian_ready')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_08_runtime_inputs')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_09_owner_execute')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_10_guardian_stop')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_11_guardian_terminal')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_12_owner_bind')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_13_execution_closure')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_14_indices')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_15_promotion')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_every_step_function_starts_with_the_errexit_probe (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_every_step_function_starts_with_the_errexit_probe) (step='q1_16_host_after')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 97, in test_every_step_function_starts_with_the_errexit_probe
+    self.assertEqual(first.strip(), "q1__require_errexit")
+AssertionError: 'set -euo pipefail' != 'q1__require_errexit'
+- set -euo pipefail
++ q1__require_errexit
+
+
+======================================================================
+FAIL: test_probe_is_a_plain_assignment_with_explicit_exit (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_probe_is_a_plain_assignment_with_explicit_exit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 102, in test_probe_is_a_plain_assignment_with_explicit_exit
+    self.assertIsNotNone(body)
+AssertionError: unexpectedly None
+
+======================================================================
+FAIL: test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='and')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 85, in test_step_refuses_before_any_write_where_errexit_is_ignored
+    self.assertIn("rc=64", completed.stdout, completed.stderr)
+AssertionError: 'rc=64' not found in 'rc=0\n' : Q1 REFUSED: already exists: /tmp/runbook-errexit-oinp2cwb/ctrl/q1_14_policy_index.stdout.log
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+Q1 REFUSED: missing receipt: /tmp/runbook-errexit-oinp2cwb/root/artifacts/policy-index/index.json
+sha256sum: /tmp/runbook-errexit-oinp2cwb/root/artifacts/policy-index/index.json: No such file or directory
+sha256sum: /tmp/runbook-errexit-oinp2cwb/root/artifacts/resource-index.json: No such file or directory
+
+
+======================================================================
+FAIL: test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='or')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 85, in test_step_refuses_before_any_write_where_errexit_is_ignored
+    self.assertIn("rc=64", completed.stdout, completed.stderr)
+AssertionError: 'rc=64' not found in '' : Q1 REFUSED: already exists: /tmp/runbook-errexit-tg2_3w63/ctrl/q1_14_policy_index.stdout.log
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+Q1 REFUSED: missing receipt: /tmp/runbook-errexit-tg2_3w63/root/artifacts/policy-index/index.json
+sha256sum: /tmp/runbook-errexit-tg2_3w63/root/artifacts/policy-index/index.json: No such file or directory
+sha256sum: /tmp/runbook-errexit-tg2_3w63/root/artifacts/resource-index.json: No such file or directory
+
+
+======================================================================
+FAIL: test_step_refuses_before_any_write_where_errexit_is_ignored (test_full_qualification_runbook_errexit_v1.RunbookErrexitProbeTests.test_step_refuses_before_any_write_where_errexit_is_ignored) (context='if')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_full_qualification_runbook_errexit_v1.py", line 85, in test_step_refuses_before_any_write_where_errexit_is_ignored
+    self.assertIn("rc=64", completed.stdout, completed.stderr)
+AssertionError: 'rc=64' not found in 'rc=0\n' : Q1 REFUSED: already exists: /tmp/runbook-errexit-ylsbgkvl/ctrl/q1_14_policy_index.stdout.log
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+Q1 REFUSED: missing receipt: /tmp/runbook-errexit-ylsbgkvl/root/artifacts/policy-index/index.json
+sha256sum: /tmp/runbook-errexit-ylsbgkvl/root/artifacts/policy-index/index.json: No such file or directory
+sha256sum: /tmp/runbook-errexit-ylsbgkvl/root/artifacts/resource-index.json: No such file or directory
+
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.259s
+
+FAILED (failures=25, errors=9)
+exit=1

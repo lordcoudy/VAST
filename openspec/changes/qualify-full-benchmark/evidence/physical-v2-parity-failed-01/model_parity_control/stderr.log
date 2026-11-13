@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 789, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 763, in main
+    result = materialize_and_promote_model_parity_v4(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer_v4.py", line 714, in materialize_and_promote_model_parity_v4
+    collection = materializer_v3._collect_production_evidence(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 2946, in _collect_production_evidence
+    with socket_namespace.lifecycle(), NativeEndpointRunner(
+                                       ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 1550, in __init__
+    self._launch_and_accept_workers()
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_model_parity_materializer.py", line 1783, in _launch_and_accept_workers
+    expected_peer_pid = handle.expected_peer_pid(remaining)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 3936, in expected_peer_pid
+    raise SidecarError(
+checkpoint_gstreamer_analytics_sidecar.SidecarError: analytics worker container vast-gst-analytics-0bbc890d1a565bb0-plate-number-cpu exited during startup: stdout_tail="";stderr_tail="Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?\n"

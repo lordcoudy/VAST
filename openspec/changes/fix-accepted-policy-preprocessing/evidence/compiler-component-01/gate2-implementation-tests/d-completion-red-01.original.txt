@@ -1,0 +1,116 @@
+EEEEEEEEEE
+======================================================================
+ERROR: test_external_c_completion_authorities_are_frozen_for_both_binding_checks (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_external_c_completion_authorities_are_frozen_for_both_binding_checks)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 378, in test_external_c_completion_authorities_are_frozen_for_both_binding_checks
+    result = self.run_d(completion_authorities=authorities, binding=binding, child_runner=child)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_missing_external_c_completion_refusal_cannot_create_d_or_launch_child (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_missing_external_c_completion_refusal_cannot_create_d_or_launch_child)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 391, in test_missing_external_c_completion_refusal_cannot_create_d_or_launch_child
+    self.run_d(binding=missing)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value='None')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value='[]')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'unexpected': {'path': '/fixed', 'size_bytes': 1024, 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'C1': {'path': '/fixed', 'size_bytes': 1024, 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'C1': {'path': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'C1': {'path': '/fixed', 'size_bytes': True, 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'C1': {'path': '/fixed', 'size_bytes': 8193, 'sha256': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+======================================================================
+ERROR: test_completion_authority_input_is_prebounded_before_binding_or_d_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_completion_authority_input_is_prebounded_before_binding_or_d_allocation) (value="{'C1': {'path': '/fixed', 'size_bytes': 1024, 'sha256': 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 403, in test_completion_authority_input_is_prebounded_before_binding_or_d_allocation
+    self.run_d(completion_authorities=value)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 343, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: run_d_v1() got an unexpected keyword argument 'completion_authorities'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.023s
+
+FAILED (errors=10)

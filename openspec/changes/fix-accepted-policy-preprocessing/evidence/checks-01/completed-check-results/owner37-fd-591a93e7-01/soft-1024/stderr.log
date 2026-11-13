@@ -1,0 +1,84 @@
+test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators) ... ERROR
+
+======================================================================
+ERROR: test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 874, in _read_descriptor_posix
+    descriptors, names = self._open_parent_posix(
+                         ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 442, in _open_parent_posix
+    child_fd = os.open(
+               ^^^^^^^^
+OSError: [Errno 24] Too many open files: 'independent_processes.operational'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_capture_plan_v1.py", line 128, in _custody
+    yield custody, pins
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_capture_plan_v1.py", line 411, in held_operational_capture_plan_v1
+    yield {"index": index, "operation_manifest": manifest, "source_plan_inventory": inventory,
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_execution_closure_v1.py", line 2219, in _reconcile_operational_capture_binding_v1
+    process_summary = original_process_validator_v1(project_root=root, receipt_path=output["process_receipt"]["path"],
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1211, in _execute_mock_call
+    return self._mock_wraps(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_process_custody_v1.py", line 773, in original_process_validator_v1
+    transfers = validate_original_native_transfer_chain_v1(custody=custody, inputs=inputs, first_transfer=receipt["native_transfer"],
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_process_custody_v1.py", line 329, in validate_original_native_transfer_chain_v1
+    observed, _ = custody.read_descriptor(final_domain, label="final original native transfer output", maximum=64 * 1024 * 1024, capture=False)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 608, in read_descriptor
+    descriptor, payload, _identity = self.read_descriptor_identity(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 626, in read_descriptor_identity
+    return self._read_descriptor_posix(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_physical_io_v1.py", line 936, in _read_descriptor_posix
+    raise PublicationPhysicalIoV1Error(
+publication_physical_io_v1.PublicationPhysicalIoV1Error: final original native transfer output physical read failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_execution_closure_v1.py", line 2274, in reconcile_operational_capture_binding_v1
+    return _reconcile_operational_capture_binding_v1(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_execution_closure_v1.py", line 2155, in _reconcile_operational_capture_binding_v1
+    with held_operational_capture_plan_v1(project_root=root,
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_capture_plan_v1.py", line 368, in held_operational_capture_plan_v1
+    with _custody(project_root) as (custody, pins):
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_operational_capture_plan_v1.py", line 132, in _custody
+    raise ValueError("operational capture plan custody failed: " + str(error)) from error
+ValueError: operational capture plan custody failed: final original native transfer output physical read failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/tests/test_publication_qualification_operational_owner_v1.py", line 429, in test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators
+    result, mapped, processes, containers = fixture.reconcile(self.binding)
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/tests/test_publication_qualification_operational_owner_v1.py", line 388, in reconcile
+    result = closure.reconcile_operational_capture_binding_v1(**args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_execution_closure_v1.py", line 2278, in reconcile_operational_capture_binding_v1
+    raise QualificationExecutionClosureV1Error(
+publication_policy_qualification_execution_closure_v1.QualificationExecutionClosureV1Error: original operational execution binding validation failed: operational capture plan custody failed: final original native transfer output physical read failed
+
+----------------------------------------------------------------------
+Ran 1 test in 38.833s
+
+FAILED (errors=1)

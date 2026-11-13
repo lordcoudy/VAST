@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import importlib.util
+import subprocess
+import sys
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -22,6 +24,24 @@ def _load_module():
 
 
 class PublicationRuntimeRefreezeHandoffV1Tests(unittest.TestCase):
+    def test_handoff_plan_loads_in_fresh_interpreter(self) -> None:
+        completed = subprocess.run(
+            [
+                sys.executable, "-I", "-S", "-B", str(Path(__file__).resolve()),
+                "PublicationRuntimeRefreezeHandoffV1Tests."
+                "test_handoff_plan_derives_all_runtime_environment_from_freeze_receipt",
+            ],
+            cwd=ROOT,
+            stdin=subprocess.DEVNULL,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=False,
+        )
+        self.assertEqual(
+            completed.returncode, 0, completed.stdout + completed.stderr,
+        )
+
     @staticmethod
     def _native_rows(module):
         return module._override_rows(

@@ -1,0 +1,1236 @@
+{
+  "schema_version": 1,
+  "scope": "closed_consumer24_failure_original_bytes_only",
+  "source_commit": "65c9fa91e2c396265183ec47cb090629ccdd174a",
+  "retainer": {
+    "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\Retain-RepairA4Consumer24Failure.v1.ps1",
+    "size_bytes": 12228,
+    "sha256": "3a356845d175ccf3e1efed6fc01998e556728745afdfa064129a388d28c7ee65",
+    "creation_time_utc_ticks": 639275041762100669,
+    "last_write_time_utc_ticks": 639275042077362953,
+    "attributes": 2080
+  },
+  "started_utc": "2026-10-13T16:04:06.0484509Z",
+  "finished_utc": "2026-10-13T16:04:10.6186205Z",
+  "destination_root": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals",
+  "retained_original_file_count": 39,
+  "retained_original_bytes": 192396,
+  "copy_method": "exclusive_byte_stream_no_normalization_no_hardlinks",
+  "destination_files_read_only": true,
+  "source_metadata_and_hashes_unchanged": true,
+  "larger25_fixture_and_controls_absent": true,
+  "original_exit_code": 1,
+  "complete_consumer_acceptance_asserted": false,
+  "arbitrary_descendant_quiescence_asserted": false,
+  "entries": [
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.result.v1.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-after.result.v1.json",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-after.result.v1.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "79ec41ade7674453d818cdda3e8a0a43d9135db47aec5dde2b2f749671bbe267",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "79ec41ade7674453d818cdda3e8a0a43d9135db47aec5dde2b2f749671bbe267",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "79ec41ade7674453d818cdda3e8a0a43d9135db47aec5dde2b2f749671bbe267",
+        "creation_time_utc_ticks": 639275042460760346,
+        "last_write_time_utc_ticks": 639275042460780343,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stderr.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-after.stderr.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-after.stderr.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042461675507,
+        "last_write_time_utc_ticks": 639275042461675507,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stdout.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-after.stdout.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-after.stdout.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275034145414635,
+        "last_write_time_utc_ticks": 639275034145414635,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275042462434038,
+        "last_write_time_utc_ticks": 639275042462457264,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.result.v1.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-before.result.v1.json",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-before.result.v1.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "8ae98df08a75e99490e965587b852e1ac631716494861f7bd7fe10cd0ddf23bc",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "8ae98df08a75e99490e965587b852e1ac631716494861f7bd7fe10cd0ddf23bc",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "8ae98df08a75e99490e965587b852e1ac631716494861f7bd7fe10cd0ddf23bc",
+        "creation_time_utc_ticks": 639275042463262153,
+        "last_write_time_utc_ticks": 639275042463262153,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stderr.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-before.stderr.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-before.stderr.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042464040234,
+        "last_write_time_utc_ticks": 639275042464040234,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stdout.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/raw-source-before.stdout.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/raw-source-before.stdout.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639274880796100112,
+        "last_write_time_utc_ticks": 639274880796100112,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275042464894561,
+        "last_write_time_utc_ticks": 639275042464904566,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-plan.v4.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/run-plan.v4.json",
+      "destination_relative": "linux/consumer-complete-24-controls/run-plan.v4.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-plan.v4.json",
+        "size_bytes": 4190,
+        "sha256": "559156711001149c8a94a8938d6cf57b4a8d8bce42ff76909dddfd5c68151967",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-plan.v4.json",
+        "size_bytes": 4190,
+        "sha256": "559156711001149c8a94a8938d6cf57b4a8d8bce42ff76909dddfd5c68151967",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\run-plan.v4.json",
+        "size_bytes": 4190,
+        "sha256": "559156711001149c8a94a8938d6cf57b4a8d8bce42ff76909dddfd5c68151967",
+        "creation_time_utc_ticks": 639275042465663014,
+        "last_write_time_utc_ticks": 639275042465673018,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-result.v4.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/run-result.v4.json",
+      "destination_relative": "linux/consumer-complete-24-controls/run-result.v4.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-result.v4.json",
+        "size_bytes": 12248,
+        "sha256": "db325e581a8dba5f10b9a7ccb98a9ae807d437ebadec2070f4a53f247ba49e3f",
+        "creation_time_utc_ticks": 639275034145574644,
+        "last_write_time_utc_ticks": 639275034145574644,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\run-result.v4.json",
+        "size_bytes": 12248,
+        "sha256": "db325e581a8dba5f10b9a7ccb98a9ae807d437ebadec2070f4a53f247ba49e3f",
+        "creation_time_utc_ticks": 639275034145574644,
+        "last_write_time_utc_ticks": 639275034145574644,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\run-result.v4.json",
+        "size_bytes": 12248,
+        "sha256": "db325e581a8dba5f10b9a7ccb98a9ae807d437ebadec2070f4a53f247ba49e3f",
+        "creation_time_utc_ticks": 639275042466409959,
+        "last_write_time_utc_ticks": 639275042466419977,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.after.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/source-head.after.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/source-head.after.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275034139094263,
+        "last_write_time_utc_ticks": 639275034139094263,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275034139094263,
+        "last_write_time_utc_ticks": 639275034139094263,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275042467181876,
+        "last_write_time_utc_ticks": 639275042467191888,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.before.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/source-head.before.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/source-head.before.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275042467937603,
+        "last_write_time_utc_ticks": 639275042467947608,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.after.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/source-tracked-status.after.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/source-tracked-status.after.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034139094263,
+        "last_write_time_utc_ticks": 639275034139094263,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034139094263,
+        "last_write_time_utc_ticks": 639275034139094263,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042468671643,
+        "last_write_time_utc_ticks": 639275042468671643,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.before.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/source-tracked-status.before.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/source-tracked-status.before.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880791259784,
+        "last_write_time_utc_ticks": 639274880791259784,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042469586288,
+        "last_write_time_utc_ticks": 639275042469586288,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\finished.v4.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/finished.v4.json",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/finished.v4.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\finished.v4.json",
+        "size_bytes": 6318,
+        "sha256": "58e375dc04efdc8cf2e32fe26dab5c5f95ad89afee76f52d5f403182e5c4cf99",
+        "creation_time_utc_ticks": 639275034139014258,
+        "last_write_time_utc_ticks": 639275034139014258,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\finished.v4.json",
+        "size_bytes": 6318,
+        "sha256": "58e375dc04efdc8cf2e32fe26dab5c5f95ad89afee76f52d5f403182e5c4cf99",
+        "creation_time_utc_ticks": 639275034139014258,
+        "last_write_time_utc_ticks": 639275034139014258,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\finished.v4.json",
+        "size_bytes": 6318,
+        "sha256": "58e375dc04efdc8cf2e32fe26dab5c5f95ad89afee76f52d5f403182e5c4cf99",
+        "creation_time_utc_ticks": 639275042470489982,
+        "last_write_time_utc_ticks": 639275042470500044,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\original-exit-code.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/original-exit-code.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/original-exit-code.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\original-exit-code.txt",
+        "size_bytes": 2,
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "creation_time_utc_ticks": 639275034139014258,
+        "last_write_time_utc_ticks": 639275034139014258,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\original-exit-code.txt",
+        "size_bytes": 2,
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "creation_time_utc_ticks": 639275034139014258,
+        "last_write_time_utc_ticks": 639275034139014258,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\original-exit-code.txt",
+        "size_bytes": 2,
+        "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "creation_time_utc_ticks": 639275042471488061,
+        "last_write_time_utc_ticks": 639275042471498074,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.result.v1.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.result.v1.json",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.result.v1.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "74e627ddb20246fd8da32fd08f123e8dab55632768273b56b42e21278215648a",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "74e627ddb20246fd8da32fd08f123e8dab55632768273b56b42e21278215648a",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "74e627ddb20246fd8da32fd08f123e8dab55632768273b56b42e21278215648a",
+        "creation_time_utc_ticks": 639275042472504802,
+        "last_write_time_utc_ticks": 639275042472504802,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stderr.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.stderr.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.stderr.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042473367650,
+        "last_write_time_utc_ticks": 639275042473367650,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stdout.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.stdout.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-after.stdout.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275034138814246,
+        "last_write_time_utc_ticks": 639275034138814246,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-after.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275042474348679,
+        "last_write_time_utc_ticks": 639275042474358684,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.result.v1.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.result.v1.json",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.result.v1.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "cb252a76b5bfa8827967f06b8edaaa6cc3f2c41cecf348fcff5972e27b98be6f",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "cb252a76b5bfa8827967f06b8edaaa6cc3f2c41cecf348fcff5972e27b98be6f",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.result.v1.json",
+        "size_bytes": 1249,
+        "sha256": "cb252a76b5bfa8827967f06b8edaaa6cc3f2c41cecf348fcff5972e27b98be6f",
+        "creation_time_utc_ticks": 639275042475228074,
+        "last_write_time_utc_ticks": 639275042475245149,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stderr.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.stderr.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.stderr.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stderr.raw",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042476126248,
+        "last_write_time_utc_ticks": 639275042476126248,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stdout.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.stdout.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/raw-source-before.stdout.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\raw-source-before.stdout.raw",
+        "size_bytes": 223,
+        "sha256": "74c46be2f969394819b6263c34a25dfbcb2e072ee8d025bbb3d934dbd2572f0e",
+        "creation_time_utc_ticks": 639275042477027521,
+        "last_write_time_utc_ticks": 639275042477037518,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.after.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-head.after.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-head.after.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275034123933371,
+        "last_write_time_utc_ticks": 639275034123933371,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275034123933371,
+        "last_write_time_utc_ticks": 639275034123933371,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.after.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275042477892380,
+        "last_write_time_utc_ticks": 639275042477902394,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.before.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-head.before.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-head.before.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639274880796180117,
+        "last_write_time_utc_ticks": 639274880796180117,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639274880796180117,
+        "last_write_time_utc_ticks": 639274880796180117,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-head.before.txt",
+        "size_bytes": 41,
+        "sha256": "f9b26c897808c6600c2439f35583b16b3eab80b020044107b5568d58031c1d80",
+        "creation_time_utc_ticks": 639275042478783325,
+        "last_write_time_utc_ticks": 639275042478793341,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.after.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-tracked-status.after.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-tracked-status.after.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034123933371,
+        "last_write_time_utc_ticks": 639275034123933371,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275034123933371,
+        "last_write_time_utc_ticks": 639275034123933371,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.after.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042479663102,
+        "last_write_time_utc_ticks": 639275042479663102,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.before.txt",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-tracked-status.before.txt",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/source-tracked-status.before.txt",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880796180117,
+        "last_write_time_utc_ticks": 639274880796180117,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639274880796180117,
+        "last_write_time_utc_ticks": 639274880796180117,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\source-tracked-status.before.txt",
+        "size_bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "creation_time_utc_ticks": 639275042480753922,
+        "last_write_time_utc_ticks": 639275042480753922,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\started.v4.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/started.v4.json",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/started.v4.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\started.v4.json",
+        "size_bytes": 2758,
+        "sha256": "88599ed3d6370c2c7529d0aec5f1bc53ba00e7ac6c3c33f78dcf7195ff33386c",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\started.v4.json",
+        "size_bytes": 2758,
+        "sha256": "88599ed3d6370c2c7529d0aec5f1bc53ba00e7ac6c3c33f78dcf7195ff33386c",
+        "creation_time_utc_ticks": 639274880801140453,
+        "last_write_time_utc_ticks": 639274880801140453,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\started.v4.json",
+        "size_bytes": 2758,
+        "sha256": "88599ed3d6370c2c7529d0aec5f1bc53ba00e7ac6c3c33f78dcf7195ff33386c",
+        "creation_time_utc_ticks": 639275042481578283,
+        "last_write_time_utc_ticks": 639275042481578283,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stderr.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/stderr.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/stderr.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stderr.raw",
+        "size_bytes": 2309,
+        "sha256": "4f73837cdc73f8428a455c83ff16553fe0aa137f9a53c93be1da42fc80884391",
+        "creation_time_utc_ticks": 639275034122453284,
+        "last_write_time_utc_ticks": 639275034122453284,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stderr.raw",
+        "size_bytes": 2309,
+        "sha256": "4f73837cdc73f8428a455c83ff16553fe0aa137f9a53c93be1da42fc80884391",
+        "creation_time_utc_ticks": 639275034122453284,
+        "last_write_time_utc_ticks": 639275034122453284,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stderr.raw",
+        "size_bytes": 2309,
+        "sha256": "4f73837cdc73f8428a455c83ff16553fe0aa137f9a53c93be1da42fc80884391",
+        "creation_time_utc_ticks": 639275042482455787,
+        "last_write_time_utc_ticks": 639275042482465790,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stdout.raw",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-complete-24-controls/consumer-fixture-24-minimum30/stdout.raw",
+      "destination_relative": "linux/consumer-complete-24-controls/consumer-fixture-24-minimum30/stdout.raw",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stdout.raw",
+        "size_bytes": 793,
+        "sha256": "c741d8483607c8c33707c470b4e0ddb5d405cb2d227b84376d477e2148a630c3",
+        "creation_time_utc_ticks": 639274884010959898,
+        "last_write_time_utc_ticks": 639274884010959898,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stdout.raw",
+        "size_bytes": 793,
+        "sha256": "c741d8483607c8c33707c470b4e0ddb5d405cb2d227b84376d477e2148a630c3",
+        "creation_time_utc_ticks": 639274884010959898,
+        "last_write_time_utc_ticks": 639274884010959898,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-complete-24-controls\\consumer-fixture-24-minimum30\\stdout.raw",
+        "size_bytes": 793,
+        "sha256": "c741d8483607c8c33707c470b4e0ddb5d405cb2d227b84376d477e2148a630c3",
+        "creation_time_utc_ticks": 639275042483340828,
+        "last_write_time_utc_ticks": 639275042483354484,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\producer-failure.v2.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-fixture-24-minimum30/producer-failure.v2.json",
+      "destination_relative": "linux/consumer-fixture-24-minimum30/producer-failure.v2.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\producer-failure.v2.json",
+        "size_bytes": 48325,
+        "sha256": "64b3bf33c243ad933ee8abc01ab542055c182bf3aaf9c0327da52aadbe407b7b",
+        "creation_time_utc_ticks": 639275034122453284,
+        "last_write_time_utc_ticks": 639275034122453284,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\producer-failure.v2.json",
+        "size_bytes": 48325,
+        "sha256": "64b3bf33c243ad933ee8abc01ab542055c182bf3aaf9c0327da52aadbe407b7b",
+        "creation_time_utc_ticks": 639275034122453284,
+        "last_write_time_utc_ticks": 639275034122453284,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-fixture-24-minimum30\\producer-failure.v2.json",
+        "size_bytes": 48325,
+        "sha256": "64b3bf33c243ad933ee8abc01ab542055c182bf3aaf9c0327da52aadbe407b7b",
+        "creation_time_utc_ticks": 639275042484243110,
+        "last_write_time_utc_ticks": 639275042484243110,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\accepted-policy\\checkpoint_policy_qualification_receipt.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-fixture-24-minimum30/accepted-policy/checkpoint_policy_qualification_receipt.json",
+      "destination_relative": "linux/consumer-fixture-24-minimum30/accepted-policy/checkpoint_policy_qualification_receipt.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\accepted-policy\\checkpoint_policy_qualification_receipt.json",
+        "size_bytes": 972,
+        "sha256": "3bc5e2626fd66bb4a07cf303a63d7301a12eea9dc1e2c551645f97d3c6b389f3",
+        "creation_time_utc_ticks": 639274987055343366,
+        "last_write_time_utc_ticks": 639274987055343366,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\accepted-policy\\checkpoint_policy_qualification_receipt.json",
+        "size_bytes": 972,
+        "sha256": "3bc5e2626fd66bb4a07cf303a63d7301a12eea9dc1e2c551645f97d3c6b389f3",
+        "creation_time_utc_ticks": 639274987055343366,
+        "last_write_time_utc_ticks": 639274987055343366,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-fixture-24-minimum30\\accepted-policy\\checkpoint_policy_qualification_receipt.json",
+        "size_bytes": 972,
+        "sha256": "3bc5e2626fd66bb4a07cf303a63d7301a12eea9dc1e2c551645f97d3c6b389f3",
+        "creation_time_utc_ticks": 639275042485043494,
+        "last_write_time_utc_ticks": 639275042485053513,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\complete-execution-closure\\qualification_execution_closure.v1.receipt.json",
+      "source_linux_path": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a/artifacts/accepted_policy_repair_20261011a/consumer-fixture-24-minimum30/complete-execution-closure/qualification_execution_closure.v1.receipt.json",
+      "destination_relative": "linux/consumer-fixture-24-minimum30/complete-execution-closure/qualification_execution_closure.v1.receipt.json",
+      "source_before": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\complete-execution-closure\\qualification_execution_closure.v1.receipt.json",
+        "size_bytes": 52485,
+        "sha256": "93e132ef25e7c662ebc936260afbbf6e76e6652e53d39a30eac16c3a3cef7f5e",
+        "creation_time_utc_ticks": 639274929200872259,
+        "last_write_time_utc_ticks": 639274929200872259,
+        "attributes": 128
+      },
+      "source_after": {
+        "path": "\\\\wsl.localhost\\Ubuntu\\home\\s-a-balashov\\work\\vast-accepted-policy-repair-20261011a-source-65c9fa91e2c396265183ec47cb090629ccdd174a\\artifacts\\accepted_policy_repair_20261011a\\consumer-fixture-24-minimum30\\complete-execution-closure\\qualification_execution_closure.v1.receipt.json",
+        "size_bytes": 52485,
+        "sha256": "93e132ef25e7c662ebc936260afbbf6e76e6652e53d39a30eac16c3a3cef7f5e",
+        "creation_time_utc_ticks": 639274929200872259,
+        "last_write_time_utc_ticks": 639274929200872259,
+        "attributes": 128
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\linux\\consumer-fixture-24-minimum30\\complete-execution-closure\\qualification_execution_closure.v1.receipt.json",
+        "size_bytes": 52485,
+        "sha256": "93e132ef25e7c662ebc936260afbbf6e76e6652e53d39a30eac16c3a3cef7f5e",
+        "creation_time_utc_ticks": 639275042485973387,
+        "last_write_time_utc_ticks": 639275042485983387,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-observations.v1.jsonl",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/capacity-observations.v1.jsonl",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 45460,
+        "sha256": "5dd95384e439b213e5f402ac14358d60956671cdcf411d531bf420a4f331c317",
+        "creation_time_utc_ticks": 639274880890814645,
+        "last_write_time_utc_ticks": 639275034244253166,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 45460,
+        "sha256": "5dd95384e439b213e5f402ac14358d60956671cdcf411d531bf420a4f331c317",
+        "creation_time_utc_ticks": 639274880890814645,
+        "last_write_time_utc_ticks": 639275034244253166,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 45460,
+        "sha256": "5dd95384e439b213e5f402ac14358d60956671cdcf411d531bf420a4f331c317",
+        "creation_time_utc_ticks": 639275042486942059,
+        "last_write_time_utc_ticks": 639275042486942059,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-sampler-result.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/capacity-sampler-result.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-sampler-result.v1.json",
+        "size_bytes": 449,
+        "sha256": "d9dedeff054fb8951ef173b6b4682c7f9205466e4959792d2efbc4f7034f58cf",
+        "creation_time_utc_ticks": 639275034244304073,
+        "last_write_time_utc_ticks": 639275034244343873,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\capacity-sampler-result.v1.json",
+        "size_bytes": 449,
+        "sha256": "d9dedeff054fb8951ef173b6b4682c7f9205466e4959792d2efbc4f7034f58cf",
+        "creation_time_utc_ticks": 639275034244304073,
+        "last_write_time_utc_ticks": 639275034244343873,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\capacity-sampler-result.v1.json",
+        "size_bytes": 449,
+        "sha256": "d9dedeff054fb8951ef173b6b4682c7f9205466e4959792d2efbc4f7034f58cf",
+        "creation_time_utc_ticks": 639275042487177144,
+        "last_write_time_utc_ticks": 639275042487177144,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\command.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/command.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\command.v1.json",
+        "size_bytes": 789,
+        "sha256": "d83aa6b23c0e24200bd230edb3aa91d4887c9cd4a58ad35e276adda90ce0fe50",
+        "creation_time_utc_ticks": 639274880790073909,
+        "last_write_time_utc_ticks": 639274880790073909,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\command.v1.json",
+        "size_bytes": 789,
+        "sha256": "d83aa6b23c0e24200bd230edb3aa91d4887c9cd4a58ad35e276adda90ce0fe50",
+        "creation_time_utc_ticks": 639274880790073909,
+        "last_write_time_utc_ticks": 639274880790073909,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\command.v1.json",
+        "size_bytes": 789,
+        "sha256": "d83aa6b23c0e24200bd230edb3aa91d4887c9cd4a58ad35e276adda90ce0fe50",
+        "creation_time_utc_ticks": 639275042487412403,
+        "last_write_time_utc_ticks": 639275042487412403,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stderr.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/original.stderr.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stderr.raw",
+        "size_bytes": 264,
+        "sha256": "0d876a7e4a3a2ddc8c388c9375065b26f7b9cd0ca28845c5bc238db1fdfa50e5",
+        "creation_time_utc_ticks": 639274880790116183,
+        "last_write_time_utc_ticks": 639275034146122144,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stderr.raw",
+        "size_bytes": 264,
+        "sha256": "0d876a7e4a3a2ddc8c388c9375065b26f7b9cd0ca28845c5bc238db1fdfa50e5",
+        "creation_time_utc_ticks": 639274880790116183,
+        "last_write_time_utc_ticks": 639275034146122144,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\original.stderr.raw",
+        "size_bytes": 264,
+        "sha256": "0d876a7e4a3a2ddc8c388c9375065b26f7b9cd0ca28845c5bc238db1fdfa50e5",
+        "creation_time_utc_ticks": 639275042487632445,
+        "last_write_time_utc_ticks": 639275042487632445,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stdout.raw",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/original.stdout.raw",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stdout.raw",
+        "size_bytes": 765,
+        "sha256": "65e62c76296dbf1716901d2d18d34915fe1ea18b03e75cb29e3ab5a34168a595",
+        "creation_time_utc_ticks": 639274880790106197,
+        "last_write_time_utc_ticks": 639275034145897195,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\original.stdout.raw",
+        "size_bytes": 765,
+        "sha256": "65e62c76296dbf1716901d2d18d34915fe1ea18b03e75cb29e3ab5a34168a595",
+        "creation_time_utc_ticks": 639274880790106197,
+        "last_write_time_utc_ticks": 639275034145897195,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\original.stdout.raw",
+        "size_bytes": 765,
+        "sha256": "65e62c76296dbf1716901d2d18d34915fe1ea18b03e75cb29e3ab5a34168a595",
+        "creation_time_utc_ticks": 639275042487867543,
+        "last_write_time_utc_ticks": 639275042487877544,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\result.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-execution-01/result.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\result.v1.json",
+        "size_bytes": 238,
+        "sha256": "4f5f1d186e3b40c6a9f38199810e1f4593e590c257999cb2e6d28ec7fc85f4a9",
+        "creation_time_utc_ticks": 639275034146176939,
+        "last_write_time_utc_ticks": 639275034146186938,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-execution-01\\result.v1.json",
+        "size_bytes": 238,
+        "sha256": "4f5f1d186e3b40c6a9f38199810e1f4593e590c257999cb2e6d28ec7fc85f4a9",
+        "creation_time_utc_ticks": 639275034146176939,
+        "last_write_time_utc_ticks": 639275034146186938,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-execution-01\\result.v1.json",
+        "size_bytes": 238,
+        "sha256": "4f5f1d186e3b40c6a9f38199810e1f4593e590c257999cb2e6d28ec7fc85f4a9",
+        "creation_time_utc_ticks": 639275042488092582,
+        "last_write_time_utc_ticks": 639275042488092582,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-observations.v1.jsonl",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-capacity-continuation-01/capacity-observations.v1.jsonl",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 3615,
+        "sha256": "19cd4a160a80629a5a75d402734f934cd8bed46eda24470f31e7c67086ec9f64",
+        "creation_time_utc_ticks": 639275024301700617,
+        "last_write_time_utc_ticks": 639275034206689781,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 3615,
+        "sha256": "19cd4a160a80629a5a75d402734f934cd8bed46eda24470f31e7c67086ec9f64",
+        "creation_time_utc_ticks": 639275024301700617,
+        "last_write_time_utc_ticks": 639275034206689781,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-capacity-continuation-01\\capacity-observations.v1.jsonl",
+        "size_bytes": 3615,
+        "sha256": "19cd4a160a80629a5a75d402734f934cd8bed46eda24470f31e7c67086ec9f64",
+        "creation_time_utc_ticks": 639275042488327072,
+        "last_write_time_utc_ticks": 639275042488327072,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-segment-result.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-capacity-continuation-01/capacity-segment-result.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-segment-result.v1.json",
+        "size_bytes": 3129,
+        "sha256": "80bcd3f4707801a85e49ac52872852b89e989eebc826e6a94c13dcb54f322146",
+        "creation_time_utc_ticks": 639275034206754680,
+        "last_write_time_utc_ticks": 639275034206754680,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\capacity-segment-result.v1.json",
+        "size_bytes": 3129,
+        "sha256": "80bcd3f4707801a85e49ac52872852b89e989eebc826e6a94c13dcb54f322146",
+        "creation_time_utc_ticks": 639275034206754680,
+        "last_write_time_utc_ticks": 639275034206754680,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-capacity-continuation-01\\capacity-segment-result.v1.json",
+        "size_bytes": 3129,
+        "sha256": "80bcd3f4707801a85e49ac52872852b89e989eebc826e6a94c13dcb54f322146",
+        "creation_time_utc_ticks": 639275042488537076,
+        "last_write_time_utc_ticks": 639275042488537076,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    },
+    {
+      "source_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\command.v1.json",
+      "source_linux_path": null,
+      "destination_relative": "native/consumer24-25-capacity-continuation-01/command.v1.json",
+      "source_before": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\command.v1.json",
+        "size_bytes": 1235,
+        "sha256": "050966e2434027ad59d3d88565b70cbd4dd7bae06e08ef74b9f54023731e8f9e",
+        "creation_time_utc_ticks": 639275024301665515,
+        "last_write_time_utc_ticks": 639275024301690563,
+        "attributes": 2080
+      },
+      "source_after": {
+        "path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\consumer24-25-capacity-continuation-01\\command.v1.json",
+        "size_bytes": 1235,
+        "sha256": "050966e2434027ad59d3d88565b70cbd4dd7bae06e08ef74b9f54023731e8f9e",
+        "creation_time_utc_ticks": 639275024301665515,
+        "last_write_time_utc_ticks": 639275024301690563,
+        "attributes": 2080
+      },
+      "destination": {
+        "path": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\consumer-01\\consumer24-failed-originals\\native\\consumer24-25-capacity-continuation-01\\command.v1.json",
+        "size_bytes": 1235,
+        "sha256": "050966e2434027ad59d3d88565b70cbd4dd7bae06e08ef74b9f54023731e8f9e",
+        "creation_time_utc_ticks": 639275042488743597,
+        "last_write_time_utc_ticks": 639275042488743597,
+        "attributes": 33
+      },
+      "source_before_after_equal": true,
+      "destination_bytes_equal": true
+    }
+  ]
+}

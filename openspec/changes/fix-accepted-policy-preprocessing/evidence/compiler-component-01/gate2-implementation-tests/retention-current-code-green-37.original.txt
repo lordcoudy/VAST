@@ -1,0 +1,114 @@
+..........................................E.EE...E.E....
+======================================================================
+ERROR: test_complete_controlled_pipeline_binds_native_arguments_authority_and_funded_packet (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_complete_controlled_pipeline_binds_native_arguments_authority_and_funded_packet)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 593, in test_complete_controlled_pipeline_binds_native_arguments_authority_and_funded_packet
+    setup.main()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 714, in main
+    _component_namespace_v1(bounded_source(Path(REPO)/COMPONENT_REL),Path(REPO)/COMPONENT_REL)["current_code_forms_quote_v1"](
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 142, in current_code_forms_quote_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 65, in _retention_read_v1
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpdvkxjkfe/repo/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'
+
+======================================================================
+ERROR: test_copy_liability_overflow_cuts_packet_write_and_final_acceptance (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_copy_liability_overflow_cuts_packet_write_and_final_acceptance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 619, in test_copy_liability_overflow_cuts_packet_write_and_final_acceptance
+    with self.assertRaises(AssertionError): setup.main()
+                                            ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 714, in main
+    _component_namespace_v1(bounded_source(Path(REPO)/COMPONENT_REL),Path(REPO)/COMPONENT_REL)["current_code_forms_quote_v1"](
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 142, in current_code_forms_quote_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 65, in _retention_read_v1
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpxmrn_xpj/repo/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'
+
+======================================================================
+ERROR: test_core_failure_cuts_later_work_and_retains_in_memory_facts_without_new_failure_file (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_core_failure_cuts_later_work_and_retains_in_memory_facts_without_new_failure_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 611, in test_core_failure_cuts_later_work_and_retains_in_memory_facts_without_new_failure_file
+    with self.assertRaises(RuntimeError) as caught: setup.main()
+                                                    ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 714, in main
+    _component_namespace_v1(bounded_source(Path(REPO)/COMPONENT_REL),Path(REPO)/COMPONENT_REL)["current_code_forms_quote_v1"](
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 142, in current_code_forms_quote_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 65, in _retention_read_v1
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpblqbw4a9/repo/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'
+
+======================================================================
+ERROR: test_refused_p0_result_preserves_ordered_causes_and_completed_proof (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_refused_p0_result_preserves_ordered_causes_and_completed_proof)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 634, in test_refused_p0_result_preserves_ordered_causes_and_completed_proof
+    with self.assertRaises(RuntimeError) as caught: setup.main()
+                                                    ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 714, in main
+    _component_namespace_v1(bounded_source(Path(REPO)/COMPONENT_REL),Path(REPO)/COMPONENT_REL)["current_code_forms_quote_v1"](
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 142, in current_code_forms_quote_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 65, in _retention_read_v1
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpsgijqpdt/repo/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'
+
+======================================================================
+ERROR: test_returned_p0_late_result_is_preserved_without_postdeadline_file (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.PipelineTests.test_returned_p0_late_result_is_preserved_without_postdeadline_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 626, in test_returned_p0_late_result_is_preserved_without_postdeadline_file
+    with self.assertRaises(RuntimeError) as caught: setup.main()
+                                                    ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 714, in main
+    _component_namespace_v1(bounded_source(Path(REPO)/COMPONENT_REL),Path(REPO)/COMPONENT_REL)["current_code_forms_quote_v1"](
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 142, in current_code_forms_quote_v1
+    raw, observed = _retention_read_v1(Path(repo_root) / row["path"], 262144)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 65, in _retention_read_v1
+    if not path.is_absolute() or path.resolve(strict=True) != path:
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1242, in resolve
+    s = self._flavour.realpath(self, strict=strict)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen posixpath>", line 432, in realpath
+  File "<frozen posixpath>", line 476, in _joinrealpath
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpksh21ob3/repo/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py'
+
+----------------------------------------------------------------------
+Ran 56 tests in 0.343s
+
+FAILED (errors=5)

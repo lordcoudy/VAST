@@ -1,0 +1,30 @@
+{
+ "daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+ "docker_info_projection": {
+  "containerd_commit": {
+   "ID": "1294c24a7da8e5a793ed378161673abe94118892"
+  },
+  "default_runtime": "runc",
+  "driver": "overlayfs",
+  "driver_status": [
+   [
+    "driver-type",
+    "io.containerd.snapshotter.v1"
+   ]
+  ],
+  "kernel_version": "6.6.87.2-microsoft-standard-WSL2",
+  "name": "docker-desktop",
+  "operating_system": "Docker Desktop",
+  "os_type": "linux",
+  "required_runtimes": [
+   "io.containerd.runc.v2",
+   "nvidia",
+   "runc"
+  ],
+  "server_version": "29.8.1"
+ },
+ "observation_sha256": "a179fe74c3f8825a715f6ba64fcb1ca6c5279280387d313cd72221322ee6ec21",
+ "observed_at_utc": "2026-10-07T23:25:44.144729+00:00",
+ "source": "worktree (uncommitted C_B candidate)",
+ "validator_roundtrip": true
+}

@@ -1,0 +1,25 @@
+--- a/tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py
++++ b/tests/test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py
+@@ -1134,6 +1134,11 @@
+ var cdSaved={now:cdCore.now,track:cdCore.track,send:cdCore.send,snapshot:cdCore.snapshot,writerProof:cdCore.writerProof,decode:cdCore.decode,hash:cdCore.hash,canon:cdCore.canon,view:cdCore.view,keys:cdCore.keys,uint:cdCore.uint,sha:cdCore.sha,setupView:cdCore.setupView};
+ var cdSource,cdHeld,cdWriter,cdSpawn,cdHash,cdPins,cdIndex=0,cdState=null,cdStatePins,cdExternal,cdExternalSHA,cdPrepared=cdCore.last_setup;
+ function cdGate(s){let n=cdSaved.now();if(n>=s.end)throw Error('cd_original_deadline');return n;}
++function cdRecord(v){
++ if(v===null||typeof v!=='object')return false;
++ let p=Object.getPrototypeOf(v);if(p!==null&&p!==Object.prototype)return false;
++ for(let k of Reflect.ownKeys(v)){if(typeof k!=='string')return false;let d=Object.getOwnPropertyDescriptor(v,k);if(!d||d.enumerable!==true||!Object.hasOwn(d,'value'))return false;}return true;
++}
+ function cdStopped(s,role,phase,error){
+  let child=s[role+'_child'],f=s[role+'_failure']={cause:'cd_'+role+'_'+phase,initiating_message:String(error?.message??error).replace(/[^\x20-\x7e]/g,'?').slice(0,80),[role+'_attempted']:true,pid:Number.isSafeInteger(child?.pid)?child.pid:null,tracking_completed:false,unknown_closure:true,stdin_extent_unknown:true,stdin_error_handler_installed:false,stdin_close_attempted:false,stdin_close_returned:false,secondary:[],omitted_or_unknown:true};
+  if(child){
+@@ -1180,7 +1185,9 @@
+   if(!cdIndex)cdStatePins=args.slice(0,3);
+   if(Object.keys(cdSaved).some(k=>cdCore[k]!==cdSaved[k])||cdCore.last_setup!==cdPrepared)throw Error('cd_core_drift');
+   if(!cdIndex){
+-   let k=cdSaved.keys,h=cdSaved.hash,c=cdSaved.canon,sha=cdSaved.sha,r=external?.receipt,a=external?.approval;
++   if(!cdRecord(external))throw Error('cd_external_delivery');
++   let k=cdSaved.keys,h=cdSaved.hash,c=cdSaved.canon,sha=cdSaved.sha,r=external.receipt,a=external.approval;
++   if(!cdRecord(r)||!cdRecord(a))throw Error('cd_external_delivery');
+    if(!k(external,'receipt,approval')||!k(r,'version,context_sha256,record_size_bytes,record_sha256,executor_call_sha256,max_output_tokens,terminal,tool_reference')||r.version!==1||!Number.isSafeInteger(r.record_size_bytes)||r.record_size_bytes<1||r.record_size_bytes>65536||!sha(r.record_sha256)||!sha(r.executor_call_sha256)||r.max_output_tokens!==100000||r.terminal!=='complete_untruncated'||typeof r.tool_reference!=='string'||!/^[\x20-\x7e]{1,96}$/.test(r.tool_reference)||r.context_sha256!==h(c(['vast.gate2.external-delivery.v1',args[0],Number(args[1]),args[2],...pins]))||!k(a,'reference,body_sha256,receipt_sha256')||typeof a.reference!=='string'||a.reference.length>96||!/^https:\/\/github\.com\/lordcoudy\/VAST\/pull\/9#issuecomment-[1-9][0-9]*$/.test(a.reference)||!sha(a.body_sha256)||a.receipt_sha256!==h(c(r)))throw Error('cd_external_delivery');
+    let prepared=cdSaved.setupView(cdPrepared);if(prepared.code_commit!==args[0]||prepared.packet.size_bytes!==BigInt(args[1])||prepared.packet.sha256!==args[2])throw Error('cd_prepared_packet');
+    cdExternal=c(external);cdExternalSHA=h(cdExternal);

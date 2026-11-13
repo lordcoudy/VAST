@@ -1,0 +1,42 @@
+EEE
+======================================================================
+ERROR: test_provider_encoder_refuses_unsupported_without_getters_or_early_encoding (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_provider_encoder_refuses_unsupported_without_getters_or_early_encoding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 290, in test_provider_encoder_refuses_unsupported_without_getters_or_early_encoding
+    value=self.js(body)
+          ^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 267, in js
+    source=ROOT_ENCODER+"\nconst input=JSON.parse(require('node:fs').readFileSync(0,'utf8'));\n"+body
+           ^^^^^^^^^^^^
+NameError: name 'ROOT_ENCODER' is not defined
+
+======================================================================
+ERROR: test_two_pass_complete_provider_encoder_matches_ascii_and_12k_boundary (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_two_pass_complete_provider_encoder_matches_ascii_and_12k_boundary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 276, in test_two_pass_complete_provider_encoder_matches_ascii_and_12k_boundary
+    value=self.js("console.log(JSON.stringify(gate2Canonical(input,12288)));",x)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 267, in js
+    source=ROOT_ENCODER+"\nconst input=JSON.parse(require('node:fs').readFileSync(0,'utf8'));\n"+body
+           ^^^^^^^^^^^^
+NameError: name 'ROOT_ENCODER' is not defined
+
+======================================================================
+ERROR: test_amended_complete_original_12k_exact_and_one_byte_over (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_amended_complete_original_12k_exact_and_one_byte_over)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 619, in test_amended_complete_original_12k_exact_and_one_byte_over
+    self.assertEqual(len(m.outer_collection_v1(call,x['frames'])),12288)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 66, in outer_collection_v1
+    need(len(raw)<=8192,'outer_complete_bound')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: outer_complete_bound
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.336s
+
+FAILED (errors=3)

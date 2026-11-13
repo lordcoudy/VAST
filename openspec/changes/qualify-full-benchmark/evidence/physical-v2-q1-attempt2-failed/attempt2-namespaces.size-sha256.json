@@ -1,0 +1,2117 @@
+{
+ "location": "E:/STUDY/VAST/tmp/qfb-root-20261007a",
+ "attempt": 2,
+ "note": "attempt-2 namespaces preserved in place, never reused",
+ "files": [
+  {
+   "path": "artifacts/publication_guardian_evidence_v1_qfb_20261008c/service_authority.v1.json",
+   "sha256": "96634f208ceed34b8b95a4e375ae8fcc58159da21eea14b125eec31c9b7586e6",
+   "size_bytes": 16040
+  },
+  {
+   "path": "artifacts/publication_guardian_evidence_v1_qfb_20261008c/service_lifecycle.v1.json",
+   "sha256": "46c9da67310b749bf72fb9cb0a64ebfd19edb914adee49734c854201930c5e45",
+   "size_bytes": 9712
+  },
+  {
+   "path": "artifacts/publication_guardian_inputs_v1_qfb_20261008c/preprocessing-contract-v1/checkpoint_analytics_preprocessing_contract.v1.json",
+   "sha256": "aba5e9ccd3ebfcc87e7bc1e71e4d693cee8bfc7ca3670cf09a9b78963241c052",
+   "size_bytes": 1078
+  },
+  {
+   "path": "artifacts/publication_guardian_inputs_v1_qfb_20261008c/preprocessing-contract-v1/checkpoint_analytics_preprocessing_contract.v1.receipt.json",
+   "sha256": "97ebe3f603fbcc0e7dcb1a4d7de48d92a9136ef8fd23a0fc08a51a6c54022e11",
+   "size_bytes": 20539
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/damage-cpu.jsonl",
+   "sha256": "64070efd0c4916e558b71d9cefd8d4045ef21827b317c12878ace242f8259a05",
+   "size_bytes": 2144964
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/damage-gpu.jsonl",
+   "sha256": "1ee9bbb1d94fdb167006503bc7d0cbe571b22ac3699245a4e762ec7ea451f99d",
+   "size_bytes": 2304943
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/foreign_object-cpu.jsonl",
+   "sha256": "39394adb5f88879cc9647949bd20432a041b69abb5247d57943029376aee2ed2",
+   "size_bytes": 1279125
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/foreign_object-gpu.jsonl",
+   "sha256": "e4ab6988095d1883a9f18c7ac812bb3a5a8436919fe60c47edc696138482a25c",
+   "size_bytes": 2343502
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/operational_group.v1.json",
+   "sha256": "92c42c9229c8a419e7743bd5e8e2c0dbe03f8a03cd8430601b090a1a547de602",
+   "size_bytes": 4314
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/plate_number-cpu.jsonl",
+   "sha256": "4e1692d25e2e704698d24631c6fd1415220154c280e1e85e8d883e91f1cbf136",
+   "size_bytes": 2329245
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/plate_number-gpu.jsonl",
+   "sha256": "8f6fdfdbbe8d8628d0fe05844cdad70654901840b1ba0c161feb6a0ff991174c",
+   "size_bytes": 2332488
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/vehicle_type-cpu.jsonl",
+   "sha256": "d53be2240f31d93417f12750f2132f7124f64253076f4cc5864244daa91408e2",
+   "size_bytes": 2176846
+  },
+  {
+   "path": "artifacts/publication_guardian_operational_v1_qfb_20261008c/vehicle_type-gpu.jsonl",
+   "sha256": "c1dcbb265b2859b914496a7518b1d5865b39be34dee1633333d5e5f83a4106b6",
+   "size_bytes": 2336179
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/capture_plan_index.v1.json",
+   "sha256": "9adca8e293e8c4599b994382f1befb0e87b9f9bf393286f8f59c996ec9477046",
+   "size_bytes": 17265
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/guardian_capture_context.v1.json",
+   "sha256": "e2b568c9645abcd528fe0eb2514c21c9417842c5b24c65260685de7fc4c5d32f",
+   "size_bytes": 150257
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_00.v1.json",
+   "sha256": "217dca1248c715b9b9d63616f5ac770fc1b3c132554b0f2209d8d97a6912ad3b",
+   "size_bytes": 3599
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_01.v1.json",
+   "sha256": "cc3b9145f98ab0986dcf35a3ad2e382b0ab87910218d7b17f298088cf9245b87",
+   "size_bytes": 3599
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_02.v1.json",
+   "sha256": "7b3d20313d5642facb04bc16c96c6460d5142c356bbe316cc0f10b459c3bf0df",
+   "size_bytes": 3627
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_03.v1.json",
+   "sha256": "9304109f33745e4c0b1ff31b6aaef8a1e677413823e946e786a100fe55cc759f",
+   "size_bytes": 3627
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_04.v1.json",
+   "sha256": "2d3eee03dfc8f977739846f5ba5c024789c1e8d451acbfb94478a4353dbf1acd",
+   "size_bytes": 3497
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_05.v1.json",
+   "sha256": "7722d32758c245368cf30b7f82f782cff69addbdcb493b9d6fc5ed4860a6b4c5",
+   "size_bytes": 3531
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_06.v1.json",
+   "sha256": "34c986f39a85a66eab64dabd51318de96e8247b3eae1252e79ccb9ecd53dd549",
+   "size_bytes": 3492
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_07.v1.json",
+   "sha256": "b64b93c0be4e9638e8b5344607e1e193e5e671cab1ed5b59bd90f0c9ab0c463f",
+   "size_bytes": 3531
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_08.v1.json",
+   "sha256": "7c2b18d5a16dde9fb1226665338350a78cf8a412441ad805d340b7372e03bcad",
+   "size_bytes": 3492
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_09.v1.json",
+   "sha256": "4afb5215d3fea591a9e4a1d45ada0b4b4048dd1a67a855f14b45b97ac1767628",
+   "size_bytes": 3531
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_10.v1.json",
+   "sha256": "c13eceba58dbd966eeb0227271056639f358b5fe1e5b8a8c59ef13c59672b440",
+   "size_bytes": 3492
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_11.v1.json",
+   "sha256": "67b6995dbb2038103056b20d22b56bbf7e4c783e7c58ddb0bcf7bf7c2a79f867",
+   "size_bytes": 3531
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_12.v1.json",
+   "sha256": "344190f3041537b505ea65f45fbae25e6030226abfeb43c27341a14a575c5d91",
+   "size_bytes": 3492
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_13.v1.json",
+   "sha256": "0ebb6ea4fd54a9d358164af05745daa8ac42dcf2cb252382ec5029e336ba7ca8",
+   "size_bytes": 3503
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_14.v1.json",
+   "sha256": "beaa29305b979671863b483b73f900cce6289efcead1bbffb5ca223cefcb7ef8",
+   "size_bytes": 3464
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_15.v1.json",
+   "sha256": "e2226f2342edb2e548379a9f32ee346c321dd979e03fe666cca86b105f844780",
+   "size_bytes": 3503
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_16.v1.json",
+   "sha256": "7feb1e90d2606fec4ae276daf04985449a2ab061559121f90ccca59fa3fb71ef",
+   "size_bytes": 3464
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_17.v1.json",
+   "sha256": "b0964c3b6b87e8744f4ff23368a66e4ebbe2eebbf6a96edcde79efee2d400e86",
+   "size_bytes": 3503
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_18.v1.json",
+   "sha256": "e6abca657a33b34489f659fe6597ff3ceb8295fd59fde7655f966314c4039e71",
+   "size_bytes": 3464
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_19.v1.json",
+   "sha256": "4d3f3b8ab0fe990835fe1217c9d626d761721c58bd4d4ee22526568872d544f9",
+   "size_bytes": 3503
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_20.v1.json",
+   "sha256": "80c6f03f899774ed364ed1741e936adfe18af6368c3a01be726e7bfdb9617c4f",
+   "size_bytes": 3464
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_21.v1.json",
+   "sha256": "4da43729321b2ab10fbf7dc5f3f1753ec51e7a936bed50684c12e94f0e9b91a6",
+   "size_bytes": 3605
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_22.v1.json",
+   "sha256": "e9f926403fb223011c05f3e6cf5cd2a332b36ee3bdbab1ecc56f3b2f5624f8fe",
+   "size_bytes": 3552
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_23.v1.json",
+   "sha256": "41709e98e7ffa4eebebe380a1f98c171e9904ff8f1e5abc2b2380b001f7c2b18",
+   "size_bytes": 3605
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_24.v1.json",
+   "sha256": "d72f78772e7ec669204401d0bc9053d1f773624464f534a09c7d98021303b8fa",
+   "size_bytes": 3552
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_25.v1.json",
+   "sha256": "94d059c66d6fcad83d85b18f0e6ef1cbe3d479c1ff5b55152f3a156d6cc96e60",
+   "size_bytes": 3605
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_26.v1.json",
+   "sha256": "17d0ff949c9447419ee81edd441e6d008a6abf4a4a5a0493b22aad4426589645",
+   "size_bytes": 3552
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_27.v1.json",
+   "sha256": "ebf8893a70f07e4401ee06fb7953bc9b386e83cdb7cb9571647bccae83f44f8a",
+   "size_bytes": 3605
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_28.v1.json",
+   "sha256": "f6b587b972ad9a205f808e76123a40dd65db93794fe463e710e948bac814b89f",
+   "size_bytes": 3552
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_29.v1.json",
+   "sha256": "21b77bd06e7317f857a1487cb6211507f81405b02d918b348f366c4adca2e750",
+   "size_bytes": 3633
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_30.v1.json",
+   "sha256": "1a50d7558ddaa9f16a1d84c7a0af7927ade5e1a78dbdaa91475517b24d9335c1",
+   "size_bytes": 3580
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_31.v1.json",
+   "sha256": "4ad7f9756beaf1a916db4d2ec9898b52b30b928f4bf3d570c9e54a508e960fc2",
+   "size_bytes": 3633
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_32.v1.json",
+   "sha256": "5971eb14f9eaefaf87f24afe03bf66e180af9c93b4a85c7a19137f003b503ca8",
+   "size_bytes": 3580
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_33.v1.json",
+   "sha256": "cf1281d582be63cca3b1f9b44eac346596025a51c4913f21cba6a42307d406ea",
+   "size_bytes": 3633
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_34.v1.json",
+   "sha256": "df5ca803274d52326172d4f2be9688a48ee4b7ccbca9842ffd2524b4e46b3a77",
+   "size_bytes": 3580
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_35.v1.json",
+   "sha256": "90b7ce7baad9e65b6daa50759ad2c63bf444ecef0c8d8cf31c79160813570285",
+   "size_bytes": 3633
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/native_context_36.v1.json",
+   "sha256": "c981b6b2b7f697e3dba2b390ba8fb94c3f66115fc306655d0d0b9b33d7a73bf2",
+   "size_bytes": 3580
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/original_operations.v1.json",
+   "sha256": "89314d3fbbc5a72931f2136d6b7386f2664eaee78da854b7826479cea818f70c",
+   "size_bytes": 206700
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/capture-plan/source_plan_inventory.v1.json",
+   "sha256": "45dd32516ae3482fd316078a43130cff1c383dbaefd9d782e2001d3b03668149",
+   "size_bytes": 14860
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+   "sha256": "7b32ebcf59141499162115a3b5038536107d081bb00e1630652633b336d07269",
+   "size_bytes": 32268403
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+   "sha256": "d44b66f936198dd901894b664053422c4186c8ca347f60380ec272063286f45e",
+   "size_bytes": 2849743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+   "sha256": "27b8bbd64ac8be729e9bd5435d6e563fe265c8b673cfbe3a703ce503f7ec8381",
+   "size_bytes": 8163
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/checkpoint_qualification_pilot_acceptance.json",
+   "sha256": "d277641c95aa667ea7abbcb4749a1a397d0354067deb36ce9d7a0c33976e5bba",
+   "size_bytes": 15477
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/drop_counters.csv",
+   "sha256": "f41c45c07563411b499bf6e83b6cc042ebfb98e784346773397fee6897ec08af",
+   "size_bytes": 1361
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+   "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+   "size_bytes": 206
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/frame_events.csv",
+   "sha256": "e79a172ebcb337153009899beed4beecd610528017b809a21214eba1d1034e6f",
+   "size_bytes": 5879341
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/frames.csv",
+   "sha256": "2d696bf673f18ef18994372c7977952770e4055e4db5728d719753a684b55b36",
+   "size_bytes": 148364
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+   "sha256": "b079da2821968c91b746d638a031b25396dd79c1b2d7c18446e3f2d19306dc4a",
+   "size_bytes": 1293997
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+   "sha256": "baebc41ce97834e3c2561535ce9288633d8da8c2c8586ce73931eac6ecb0c77e",
+   "size_bytes": 751296
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+   "sha256": "12c3a155cc627a87fbe44d48b30a146f201c6c00fc386e78a7344274795ceeb8",
+   "size_bytes": 6630625
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+   "sha256": "645eafbfaf9058ffa12eb441d2a2a2569e43a0cae8fdeb83b4a2a5a4b541671e",
+   "size_bytes": 17554057
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+   "sha256": "0e6dfc2a475c2855601034c032c6b181abf3195afba0e34f8983cfc83765ca56",
+   "size_bytes": 15220
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_events.csv",
+   "sha256": "213894ffef04c916bbbd6695926e3f95ae31739780fe966951eec3999bec4930",
+   "size_bytes": 5704014
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+   "sha256": "6fc73bafee238e08744fad67570d124514f59a5fbf3fa8b05e9180f00c52d981",
+   "size_bytes": 1340356
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+   "sha256": "5565bcdaea58e1467ecadda2b37b58d2eaa113dda09fa8543d8e68a51439619f",
+   "size_bytes": 79680
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/evidence/topology_events.csv",
+   "sha256": "bbf56e39b0b1110dcdbc67cdebe6c53fb110fc3a6e865eb18c25f0046e3ea54f",
+   "size_bytes": 8399612
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-cpu-h264-independent-processes/native_diagnostic.execution.v1.json",
+   "sha256": "7773ee5a61fa7d5e3ab5ddfe51d821ffc0b53bc09336c629d744df1ebab97fd1",
+   "size_bytes": 3299
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+   "sha256": "99b21eb53de453cec3c2894da2b8e634a6c61f9ede15db07dccbaf68717fadd1",
+   "size_bytes": 38140554
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/branch_terminals.csv",
+   "sha256": "38fdbc9fe3ba21c08c7dc04c1ce6a8ca8fa0973dde08736a0e10595bbffcde42",
+   "size_bytes": 3034796
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+   "sha256": "8f12d9ddc332cde9a251e413d958c6482d8996102209833c1c22009a38ddbb66",
+   "size_bytes": 8187
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/checkpoint_qualification_pilot_acceptance.json",
+   "sha256": "47541b4dc118611c5fc3da553a14b76212f53a5dcdbdddf502a50207b77baf8e",
+   "size_bytes": 15539
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/drop_counters.csv",
+   "sha256": "5c15a16ccb097be1d29b9b78b8244cc1fd51427891af682aa00dcebb91cb48d9",
+   "size_bytes": 1354
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+   "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+   "size_bytes": 206
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/frame_events.csv",
+   "sha256": "758e7e5c78b9a42f4f696b0b570c42325fb64b5f4a943e21b5582aaf1a0fba3f",
+   "size_bytes": 6656500
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/frames.csv",
+   "sha256": "f91f477eb871ee15d20fcdbec876d8152f4877e9aa8a838d83296594c6366984",
+   "size_bytes": 281796
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+   "sha256": "d67d913d89e8310d052356b2d4b6b5a1c8686a5375b429ecc97ec86cb494b6a8",
+   "size_bytes": 1315151
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/ingress_ledger.csv",
+   "sha256": "99dcc3ff532c4a2a7099f5a5eb707dc5d84aa3d3374e1648419d689f9fd30416",
+   "size_bytes": 749661
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/policy_decisions.csv",
+   "sha256": "643ae1f6c5d6417279ae0ef8572f8a2f4f51f5b0ec78aa9c65b39cd401a75b9b",
+   "size_bytes": 7828985
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+   "sha256": "e50ecd6c884fc041515544afd88dce24553e8422d2f1cc3a48ad94b43438ca62",
+   "size_bytes": 20691773
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/reset_evidence.csv",
+   "sha256": "6dd374a204140932ae9e4dda21820ff9232afe642e30f4e9c6da67d7c0147e62",
+   "size_bytes": 15219
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/resource_events.csv",
+   "sha256": "a3104da71be13b5aded5f8fce5555429fb5959e2116b984819ee0b5f24f8ebc2",
+   "size_bytes": 6511637
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/resource_intervals.csv",
+   "sha256": "cf82413cf20e20e8f86abff1e1c6309049a0353f5bd5dd564f08d2bd071653b4",
+   "size_bytes": 7731290
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/stage_contracts.csv",
+   "sha256": "e5927408605ec97ed1e4e2fee5aa891c949a72fea095670f07477e6902d345a2",
+   "size_bytes": 79680
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/evidence/topology_events.csv",
+   "sha256": "1a5170093b17f8c3eaf002c39c137ec1a3b34ec31433320b8e8b0e2533988a93",
+   "size_bytes": 15961834
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-gstreamer_custom-gpu-h264-independent-processes/native_diagnostic.execution.v1.json",
+   "sha256": "f663caf23ae55a02f23dc224c6fde9a86ea0eb7539e92b66fa6acb20694e55f4",
+   "size_bytes": 3299
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+   "sha256": "99173ac257ec757df356be1b7397b96d7acadfa3f16f860cd6e8a121d1c999c8",
+   "size_bytes": 31810756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/branch_terminals.csv",
+   "sha256": "e23bc88b45452cd2a21c5d1ade69ce32d91207dbd22347b89d7c700489e5b54c",
+   "size_bytes": 2797303
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+   "sha256": "aa117bc525fd66c865b7146c86b8693ddfba74459ab7509b064e5440a79426e3",
+   "size_bytes": 8147
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/checkpoint_qualification_pilot_acceptance.json",
+   "sha256": "63ec7e5173cf3869e1174ceb13eb2337b0ee58ffd43add1832fec43140b3480e",
+   "size_bytes": 15449
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/drop_counters.csv",
+   "sha256": "32e59da5a75bf50ee44a9d615555ced5b7d2bb938d612dbe52e1eb65e780d77b",
+   "size_bytes": 1337
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+   "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+   "size_bytes": 206
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/frame_events.csv",
+   "sha256": "38a70ce6ddbe0d5955714bd54e67505eda89cb3dee0fae28f7c524aa4e4e3e20",
+   "size_bytes": 5727088
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/frames.csv",
+   "sha256": "84f5d69430814d71a73f61b6cbc7ddeffeff2689bb42b5d394e6f8ff86f97e7c",
+   "size_bytes": 145168
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+   "sha256": "a2d453b7d3e7f8bc3a3076e40018e97c3355123063f4e1b06af568bbffc5a077",
+   "size_bytes": 1280610
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/ingress_ledger.csv",
+   "sha256": "aae6df4da9722550d864a27ac31cefe4def0cb2fe9c97a4afe6cef96e4bb98a3",
+   "size_bytes": 738217
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/policy_decisions.csv",
+   "sha256": "7764ace323132afe8919f8773a1e0ad3189b3ed76ee71506eca764040e697f78",
+   "size_bytes": 6502901
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+   "sha256": "f598b12d53fa46efc102633dd1a8bd0fad9b25d4ca62842591a8433026589971",
+   "size_bytes": 17277243
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/reset_evidence.csv",
+   "sha256": "76427f4f7d0b3b6ec448e441c4dd27d20e1eb99258d4be2234b40e9e6990ebb4",
+   "size_bytes": 14980
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/resource_events.csv",
+   "sha256": "61e3be031ac353b0967236177d2240493d18f565541578fb252a2dc4eb500c2a",
+   "size_bytes": 5567241
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/resource_intervals.csv",
+   "sha256": "0a04fc90324f3a80058632ceb14841185a878c0482747d54ffb9c97166a53f6e",
+   "size_bytes": 1325311
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/stage_contracts.csv",
+   "sha256": "4a28b34b1fbc21e7feaba8f8e285c693c4d02fd9569bfb2efb06fd70bbf96e69",
+   "size_bytes": 79296
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/evidence/topology_events.csv",
+   "sha256": "d788a0e08d68efe1f2f811a5758ed4cb3c62a9fdd6aee6fa9ba70314ffe285df",
+   "size_bytes": 8250978
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-cpu-h264-independent-processes/native_diagnostic.execution.v1.json",
+   "sha256": "6a725d97b04a31c3b7fdf50d32d1e95a0e6059b68b407a2b6686e582fbe98885",
+   "size_bytes": 3177
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence.operational/native_operational_requests.v1.jsonl",
+   "sha256": "8a4a1257402cd4943dc4a6d6a02435a448869116f455e1cd742f9fbb57fd1b11",
+   "size_bytes": 37697447
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/branch_terminals.csv",
+   "sha256": "1bd30f07fb3019b32656ecc3a164597519cad0c23dd90c5e81d19b961212333e",
+   "size_bytes": 2983937
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/checkpoint_publication_candidate.json",
+   "sha256": "c57dff1d23ce7ecc66afb797b3f8c8b41c726cee248be640cc4c010045cf1e2d",
+   "size_bytes": 8170
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/checkpoint_qualification_pilot_acceptance.json",
+   "sha256": "0c77af083e20b8ca0f6c2ac6188e0064383d79ab3dc439e69cbac606c63c0a3f",
+   "size_bytes": 15510
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/drop_counters.csv",
+   "sha256": "6644bcb639ed882deb7b99c3620fc52498e52dba9651d04507615abeb9bca4b7",
+   "size_bytes": 1335
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/fanout_work_counters.csv",
+   "sha256": "de21bdce6ed25a676ca271f7b8544664b11fae5a8a3cd39573a817c98da5f818",
+   "size_bytes": 206
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/frame_events.csv",
+   "sha256": "d3f2d3cd14b5e72a56d6c39eebf219a48d5689efaa4a5df721cbe6edc0cdd1b7",
+   "size_bytes": 6495041
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/frames.csv",
+   "sha256": "ad734c1310aa7f53c2eaf8a803d7fcf71a97c6c74bcf27af01b1a80817c0edaa",
+   "size_bytes": 275064
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/hardware_resource_samples.csv",
+   "sha256": "460c4aa11c28e8dfdd6b8b05b4d5c5a48543dd8f36c39a901db6f72ea4cfba7e",
+   "size_bytes": 1306633
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/ingress_ledger.csv",
+   "sha256": "aad5177179156cebecb045509e5b5040e98f6e005f9697f3c414f2ffccc093e1",
+   "size_bytes": 736662
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/policy_decisions.csv",
+   "sha256": "906fdfc72563d85d68cf80d539bc48295b68c644ef4af3f91bad77e3d458b582",
+   "size_bytes": 7706845
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/publication_policy_decisions.jsonl",
+   "sha256": "5df480583f4d975ac51b45482b42875cf568079e8406fedc36aebf1bb05e5638",
+   "size_bytes": 20438426
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/reset_evidence.csv",
+   "sha256": "16251c7d972be4bb685b29acc02d830a31b5b4e8ac56fc8faa4c7eb93896ad94",
+   "size_bytes": 14980
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/resource_events.csv",
+   "sha256": "bf8e8431c12b10951a8c03c79b7385678949e0deddad32c1fe406ea5b4a31967",
+   "size_bytes": 6367155
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/resource_intervals.csv",
+   "sha256": "0db2086e180c0a4eb39aa6ec5343d832fe230f2bd9c0bcb13f1a0c933f17fa45",
+   "size_bytes": 7627459
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/stage_contracts.csv",
+   "sha256": "eefcb8962769c2a6342f5b5decc6e0b631d33969da3b3d7439a4febc51953742",
+   "size_bytes": 79296
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/evidence/topology_events.csv",
+   "sha256": "af1a9e6f3d738647c226e8864226a8ada6869eb965e368ff61425070c37c0076",
+   "size_bytes": 15641815
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/native-precheck-openvino_gva-gpu-h264-independent-processes/native_diagnostic.execution.v1.json",
+   "sha256": "cadb68cbb5bfe1879f868681231cb590e78afa9d48da9deb9cc788bf06763f87",
+   "size_bytes": 3177
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/diagnostics/savant-original-savant-cpu-h264-independent-processes/.hardware-host/hardware_resource_samples.host.csv",
+   "sha256": "c8a58bdeba2ffd8f5dc29fa4f23db5be251d7e1f0d2e6bce5565d90b12ef2f04",
+   "size_bytes": 183252
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-gstreamer_custom-cpu-h264-independent-processes.original.json",
+   "sha256": "d5bef1a3875876f3ec96f7af2b4ca97e345d08ccd258ca59a8e1e071801d7c8f",
+   "size_bytes": 6923
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-gstreamer_custom-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-gstreamer_custom-gpu-h264-independent-processes.original.json",
+   "sha256": "5b4fb0b3649726afaf0ecb39bd653bb2a625eb290223f0ea40f92cc29d39ac4c",
+   "size_bytes": 6923
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-gstreamer_custom-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-openvino_gva-cpu-h264-independent-processes.original.json",
+   "sha256": "8caa31d5b8f02f21724d77cba6c2f37e1115fdeca6e7dd1db3ff1405abe957fe",
+   "size_bytes": 6789
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-openvino_gva-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "a3778828aacb7282d0015a6fc019ee14f93130dd974297a9d3ecd3c018b8d3b2",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-openvino_gva-gpu-h264-independent-processes.original.json",
+   "sha256": "35aacf01fff8fbde5438635b903f3e21884e80e92981017521f4a7a19a489d93",
+   "size_bytes": 6789
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/native-precheck-openvino_gva-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "a3778828aacb7282d0015a6fc019ee14f93130dd974297a9d3ecd3c018b8d3b2",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h264-independent-processes.original.json",
+   "sha256": "432dc37133996a88cbf7da3d4c0dad3b59ecf8f6062c4e219ebd5a6d9cc8ff56",
+   "size_bytes": 6811
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "b33d7120a7f725b0bf91de0fbbfa45992ff173a2796077a50b06d4fa6e0dd1bf",
+   "size_bytes": 39693
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h264-shared-video-dag.original.json",
+   "sha256": "295a7daee0914f0fe59279daa7f7c4a23e8e1ffdab48a8f8b5dd5814d5b1c660",
+   "size_bytes": 6757
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "18c8ae081183235c3a2e3c923fb545649fe55479d851838965679681d7304335",
+   "size_bytes": 28055
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h265-independent-processes.original.json",
+   "sha256": "16c652e046ec89218b4ae7f43e92e0d5710d7b9f3e522564a9b78b0d0dd387ab",
+   "size_bytes": 6811
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h265-independent-processes.source-plan.json",
+   "sha256": "bdfe2e2023b8881fed14b544c365ff9c9ef304265bbfab55b2d3e323b5b7d83b",
+   "size_bytes": 39693
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h265-shared-video-dag.original.json",
+   "sha256": "4bdbafbe68a097167d0f13a113f29c9e4a219ee80f785fdaaf21fc86c9f66de4",
+   "size_bytes": 6757
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-cpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "b66149098a76d35a5d40fc48c22b54d249148a046d999c856a74a1a098fce3ed",
+   "size_bytes": 28055
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h264-independent-processes.original.json",
+   "sha256": "de7c253447190e7ddbd447a408760daaee210eeefa1acd43bd66511acbba87a2",
+   "size_bytes": 6811
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "b33d7120a7f725b0bf91de0fbbfa45992ff173a2796077a50b06d4fa6e0dd1bf",
+   "size_bytes": 39693
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h264-shared-video-dag.original.json",
+   "sha256": "b6c00e486c1a3fbace2de55a5bfad69d5977fba3de9ee7649f96a839ca341013",
+   "size_bytes": 6757
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "18c8ae081183235c3a2e3c923fb545649fe55479d851838965679681d7304335",
+   "size_bytes": 28055
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h265-independent-processes.original.json",
+   "sha256": "be63a2974a9fdc3d48f4003a633aba11706aabc3359b75ec9013d1511fb6b247",
+   "size_bytes": 6811
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h265-independent-processes.source-plan.json",
+   "sha256": "bdfe2e2023b8881fed14b544c365ff9c9ef304265bbfab55b2d3e323b5b7d83b",
+   "size_bytes": 39693
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h265-shared-video-dag.original.json",
+   "sha256": "02691340afd7535cac22d34333b7ed8add5f73e71266360d69432e7f17818320",
+   "size_bytes": 6757
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-deepstream-gpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "b66149098a76d35a5d40fc48c22b54d249148a046d999c856a74a1a098fce3ed",
+   "size_bytes": 28055
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h264-independent-processes.original.json",
+   "sha256": "c27b4d245a6d28cce3f65179549fa0145aea1506fb6d0e4faf68e6346a5c818f",
+   "size_bytes": 6878
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h264-shared-video-dag.original.json",
+   "sha256": "18768ba45d32dedcb86f7ef4470975f72d4f553449894bd1b2619d0caa35e7b9",
+   "size_bytes": 6728
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+   "size_bytes": 28097
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h265-independent-processes.original.json",
+   "sha256": "93dda195ce7999e6aaade423110366e54dd376b20243cb2e66b09c70f4f1eaf3",
+   "size_bytes": 6878
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h265-independent-processes.source-plan.json",
+   "sha256": "ea5d94f168e14ef86bb8acbd2778508888f8cbeb1cdc9e7b94a18d9028de5613",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h265-shared-video-dag.original.json",
+   "sha256": "ef86d5e2d36661ed4caff91dec4eea3b1c3df4d257a73cb050cd97e2b76ddf25",
+   "size_bytes": 6728
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-cpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "bf1102fba171afd40cda0a2cc99e3a8746abf326c0f5903edba04303dd360e6e",
+   "size_bytes": 28097
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h264-independent-processes.original.json",
+   "sha256": "4aca9a161465bfe6ba003e61ae6d2a0ba4b36357712b9603030f3a2e0510f3b0",
+   "size_bytes": 6878
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "92be745b09933ad938da7302ec5ad3dc7aceae60b67df51f3d87dae4283573ac",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h264-shared-video-dag.original.json",
+   "sha256": "635bb143ea95b955af4d04096ad6419353d1d715f8e12ed95b8a08c0ad26503e",
+   "size_bytes": 6728
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "1c14e9be8aadf91a3e53938e973e55bf1336c63509594b280d71d787f942f0f1",
+   "size_bytes": 28097
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h265-independent-processes.original.json",
+   "sha256": "73e8ac334d1350255651b244d14d4935c602e7cbc04b9f2c3fc28420dbd59e93",
+   "size_bytes": 6878
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h265-independent-processes.source-plan.json",
+   "sha256": "ea5d94f168e14ef86bb8acbd2778508888f8cbeb1cdc9e7b94a18d9028de5613",
+   "size_bytes": 39843
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h265-shared-video-dag.original.json",
+   "sha256": "3eba158410ba4d7a37cda6771b447d1b59f77035c19ee7e6bd9c46f3efe9da76",
+   "size_bytes": 6728
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-gstreamer_custom-gpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "bf1102fba171afd40cda0a2cc99e3a8746abf326c0f5903edba04303dd360e6e",
+   "size_bytes": 28097
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h264-independent-processes.original.json",
+   "sha256": "73ba14b4cfe933b40e0f37f33641da57300d4a94163904ebdbc69229f1d48bc1",
+   "size_bytes": 6744
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "a3778828aacb7282d0015a6fc019ee14f93130dd974297a9d3ecd3c018b8d3b2",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h264-shared-video-dag.original.json",
+   "sha256": "9af67afa61bc1625c06d9e3e8960d5e193df2d9735f1d0994e18a0f828206cf2",
+   "size_bytes": 6594
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "477a9b4469d2e66483d96c0c53b2c92ffc46c91ac10ae9f22e8dc4be4207168e",
+   "size_bytes": 28069
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h265-independent-processes.original.json",
+   "sha256": "704270f01cc7522199d8dc86ba322bb00b0b8652f0b1ad1b467974b5e1846634",
+   "size_bytes": 6744
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h265-independent-processes.source-plan.json",
+   "sha256": "76b0665e323d4ba21f91348e7408bbf41b6f277f61806e2e9f81a7f6e6dadaf1",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h265-shared-video-dag.original.json",
+   "sha256": "add5ee0aa071b376d5969914e4638ab6975ee3c202faa1248af9acd70bae03ff",
+   "size_bytes": 6594
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-cpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "6549f352abd0a5ead554bbd611b0258fc71fc7a7a5bea3def51091a51d42f770",
+   "size_bytes": 28069
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h264-independent-processes.original.json",
+   "sha256": "6b5e42b822b582484cca2c37301897568601e15bff35dc97edf8b9d1706a6d20",
+   "size_bytes": 6744
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "a3778828aacb7282d0015a6fc019ee14f93130dd974297a9d3ecd3c018b8d3b2",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h264-shared-video-dag.original.json",
+   "sha256": "3537b1217df651030fa83367f931b1aed4ad18a62e2d240d4b8d7bcc24aeed63",
+   "size_bytes": 6594
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "477a9b4469d2e66483d96c0c53b2c92ffc46c91ac10ae9f22e8dc4be4207168e",
+   "size_bytes": 28069
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h265-independent-processes.original.json",
+   "sha256": "e5b15f25a014b75f590c20ab4f733cc33ca3f89df1ee49c6c18387cfe97c5dd5",
+   "size_bytes": 6744
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h265-independent-processes.source-plan.json",
+   "sha256": "76b0665e323d4ba21f91348e7408bbf41b6f277f61806e2e9f81a7f6e6dadaf1",
+   "size_bytes": 39743
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h265-shared-video-dag.original.json",
+   "sha256": "5a0dcfec86d6ef36efedc4056b00bd78e0b807965f1a1b231bcc73dd3ff4230f",
+   "size_bytes": 6594
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-openvino_gva-gpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "6549f352abd0a5ead554bbd611b0258fc71fc7a7a5bea3def51091a51d42f770",
+   "size_bytes": 28069
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h264-independent-processes.original.json",
+   "sha256": "abacfdb6cc301d54ab4cac40b2725cdad8f9da987c67c80dd2be125e64a762b4",
+   "size_bytes": 6756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "15583a171b95006ea657df27f1240bc49559c8263009b4862e4e7960ed4c41a1",
+   "size_bytes": 39593
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h264-shared-video-dag.original.json",
+   "sha256": "1bc703765d1738555414ced6b720a777ae209f2021d36eaabb4e280b204dfa56",
+   "size_bytes": 6702
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "84db26a07a36a25ca490712d4cedd905f7fdb39b1e469adcf2deb8e11b5dbe80",
+   "size_bytes": 28027
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h265-independent-processes.original.json",
+   "sha256": "5cb7b00dbfd7c896cdfbe7a839cab1feb6f5ea2f04c7f0afcd958b8472f8affa",
+   "size_bytes": 6756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h265-independent-processes.source-plan.json",
+   "sha256": "9130480ca25d924b1e842fe997030f1632763a400211c468953820e19d79af68",
+   "size_bytes": 39593
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h265-shared-video-dag.original.json",
+   "sha256": "024323b6acef94b51b82e6b0b10cf6e2f2e11514e6db04a9c8dcb8f254e30b63",
+   "size_bytes": 6702
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-cpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "9bc6412b15b2f04a9533f7c79912804724bc9fb5de7193d9bd85fbe232ba2c08",
+   "size_bytes": 28027
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h264-independent-processes.original.json",
+   "sha256": "c4f522aed81a23d188132100220fb747b10830890ed500358430b420e8f2510f",
+   "size_bytes": 6756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h264-independent-processes.source-plan.json",
+   "sha256": "15583a171b95006ea657df27f1240bc49559c8263009b4862e4e7960ed4c41a1",
+   "size_bytes": 39593
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h264-shared-video-dag.original.json",
+   "sha256": "18a2546b0d7cb5ba5d5d557db74850c1c7e494a2beb73f9987470684ed432317",
+   "size_bytes": 6702
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h264-shared-video-dag.source-plan.json",
+   "sha256": "84db26a07a36a25ca490712d4cedd905f7fdb39b1e469adcf2deb8e11b5dbe80",
+   "size_bytes": 28027
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h265-independent-processes.original.json",
+   "sha256": "01c03ce914bdf9591b803bf3b9b58ce1bbf81e80567e8f857bf4774501da3bae",
+   "size_bytes": 6756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h265-independent-processes.source-plan.json",
+   "sha256": "9130480ca25d924b1e842fe997030f1632763a400211c468953820e19d79af68",
+   "size_bytes": 39593
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h265-shared-video-dag.original.json",
+   "sha256": "afcad0d00239f33950c7b188e9f7be706a0043a4bde3bb95255e2b0060485ec9",
+   "size_bytes": 6702
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/qualification-cell-savant-gpu-h265-shared-video-dag.source-plan.json",
+   "sha256": "9bc6412b15b2f04a9533f7c79912804724bc9fb5de7193d9bd85fbe232ba2c08",
+   "size_bytes": 28027
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/savant-original-savant-cpu-h264-independent-processes.original.json",
+   "sha256": "a320e7b737ab67fd997b7dbd0db02413b332a34e2ca6a4f5076644b5d511a5be",
+   "size_bytes": 6801
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/original-operations/savant-original-savant-cpu-h264-independent-processes.source-plan.json",
+   "sha256": "15583a171b95006ea657df27f1240bc49559c8263009b4862e4e7960ed4c41a1",
+   "size_bytes": 39593
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+   "sha256": "4bd77399d6548bba87de05e51124c0625cb68be9db8835bbd3112ef6cc73652f",
+   "size_bytes": 1868
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stderr",
+   "sha256": "6bdcfce4a4135bc16edf1fe84dfaa80df0e89a98a2246ab7d427112b863b4517",
+   "size_bytes": 359
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+   "sha256": "2dd2f41c63e411fd1153739612d4dfdddc70c4d82fcebaa08e472c172e8b28e0",
+   "size_bytes": 2320
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stderr",
+   "sha256": "8088180e5269fd07bf79ef35b57864716ee7039b2a3f62d4d740fa65a91d97b1",
+   "size_bytes": 384
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+   "sha256": "9e83d5e679ebd220a20205df081f7c1b1625eb5af83ffaf4f5d6e56f57287d69",
+   "size_bytes": 2342
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+   "sha256": "736afc40bb96026e093f0ba263552e884c92680d38f9b3bdfe34fa7bfee1cbf2",
+   "size_bytes": 1867
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/measurement.cid",
+   "sha256": "84b2209b6975ea656e95df980fd558830cfbdc5941f6fddf521110b0e1731d10",
+   "size_bytes": 64
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+   "sha256": "2fa72d803b9ca319d4b3e8844abb5b5d1fcc9870e7a6e3915292c34b57e84da7",
+   "size_bytes": 3560
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+   "sha256": "5216104f37477131711ad1e70dd077b2a8beb6821b397bb8d7d4c55cc7ab46f3",
+   "size_bytes": 2355
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_01.launch.v1.json",
+   "sha256": "d6bb308ede7eeb93975a1ee80058848d63f88345b48d04826575e44cb31ea9af",
+   "size_bytes": 1824
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+   "sha256": "ca8d4127fcda5ebcef10445039a983fa21f6577806679bcbadc1748f58e6575b",
+   "size_bytes": 912
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_02.launch.v1.json",
+   "sha256": "dcd6ec2fefba73a40e3a6ef63df577474a1cd85cea34afd4b1429e0cf55ffc24",
+   "size_bytes": 2764
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+   "sha256": "f526c5398a7f59aa7ad121fa9095654ec61fd2a4d0bfebdf287c0cde3b644bd4",
+   "size_bytes": 912
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_03.launch.v1.json",
+   "sha256": "990164c2547ae831aa37ff6545c6dc84d1a395185c243833a255c07c7c3e585c",
+   "size_bytes": 2600
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+   "sha256": "8fa0d4460d048b4360b9ae93e732aba5eac8ae49c037e0f2ace6e71cc403217b",
+   "size_bytes": 911
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_04.launch.v1.json",
+   "sha256": "df6620fb7cc60bec801c636852014f8f6e94b0f4e22e9c868ae34181df46900b",
+   "size_bytes": 2247
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+   "sha256": "628bf615f3d5ebd5bac16c12834ebc86bafb65bc62c3bc7dad6daed2c1b5efc9",
+   "size_bytes": 910
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_05.launch.v1.json",
+   "sha256": "244a25e01d6019fdbc8679bc4ac0544e777c379c7f0b0b038688ddead8404e11",
+   "size_bytes": 7756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+   "sha256": "5d52461e14b98a81bacdb1f6de045453f52ec353a82ad24fb1c66a8182eaadbc",
+   "size_bytes": 913
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+   "sha256": "96dc5a748638e4ce6c75d14057c8646375fed92313d9344e0adbacda5f4eea09",
+   "size_bytes": 6034
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_01.v1.json",
+   "sha256": "cb6f6803edd5761eea5e2430100e0ab38ed0ccd7c708c0885ba70c45176caacd",
+   "size_bytes": 1868
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.stderr",
+   "sha256": "d4b768f246966d008257d45a46f3dbffb46217c29b5816d231b0a658918f7f5b",
+   "size_bytes": 359
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_02.v1.json",
+   "sha256": "4344f5c8f01f5ea38dc114b184a9f802db0a7c30a73844b8c1bdcbd2444c0e87",
+   "size_bytes": 2320
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.stderr",
+   "sha256": "a6033e8bd77b2cf798c2a3e533e819fdd27c6a8883b15aa0588eb8b1579fea39",
+   "size_bytes": 384
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_03.v1.json",
+   "sha256": "23937b6712a5fa1639af3f37ceb9959a2d43cd9c37eefa92df9cea488135d916",
+   "size_bytes": 2342
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/command_04.v1.json",
+   "sha256": "4147a3b9452f320453064d7cd8e388924bed1726e763af1e5fa9c88ad7baa243",
+   "size_bytes": 1867
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/measurement.cid",
+   "sha256": "0b4d576bdcca78c18b34033867ce92f2d3fdf4a099aca5d21a64706b36b9de1d",
+   "size_bytes": 64
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+   "sha256": "84f4dc5cfeba3fefa8d3f11200d07347f59bbae39de2fc5146998e77c87ecbec",
+   "size_bytes": 3560
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/container-custody/reservation.v1.json",
+   "sha256": "1752f9d6abe7cad2edd43ebe4875760db224115883389a8ea7f645f00f6d17c7",
+   "size_bytes": 2355
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_01.launch.v1.json",
+   "sha256": "d9f4fc1b1860c412a9af58a94c36f0861c26440224813ca167415524d8b6e791",
+   "size_bytes": 1824
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_01.terminal.v1.json",
+   "sha256": "68820a493a91aa7497c7ac73218ff9906976f67e38ab59a1585e674d7d851daa",
+   "size_bytes": 912
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_02.launch.v1.json",
+   "sha256": "8d29d2176fd42421de87049a76dc21a225a8decb3423c6183b2885541ae185d3",
+   "size_bytes": 2764
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_02.terminal.v1.json",
+   "sha256": "098f0a8711048a70280cffcd9f09197d02de97fcb254488d3419307ce25da818",
+   "size_bytes": 912
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_03.launch.v1.json",
+   "sha256": "451385b2c55c781abee69f9f9a4d6dee9469072b5a2a8211b77c0500760abe53",
+   "size_bytes": 2600
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_03.terminal.v1.json",
+   "sha256": "387a1740b48934b5df8e4623e278066e8eddf8aad403b2ddeda921a3bba994ae",
+   "size_bytes": 911
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_04.launch.v1.json",
+   "sha256": "712fcf28f2dd1119f2035052c106e5499253411dadc2f991615e561a33d8253c",
+   "size_bytes": 2247
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_04.terminal.v1.json",
+   "sha256": "d99bc138b70b496067683e54c4b3237bdfd0e683f85a2c674b6abc62747751e2",
+   "size_bytes": 910
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_05.launch.v1.json",
+   "sha256": "6284107e5173a0f7c80b910014c569ce7a31e7e2b7cf960e00b7864282364fd7",
+   "size_bytes": 7756
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/engine_05.terminal.v1.json",
+   "sha256": "ffe1ce1cc05c3d014f44c7f2e8ad9edc61efb5687cd5543b252fb27b179c9bd8",
+   "size_bytes": 913
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-gstreamer_custom-gpu-h264-independent-processes/original_engine_process_capture.v1.json",
+   "sha256": "6d3de42c2c8df03518d4d20a5d4a2d6b7149b13188b24cfb22f916cdd00a1679",
+   "size_bytes": 6034
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_01.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_01.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+   "sha256": "5f0274ed28a3dbee2655cd88e363f27e5d47ec7401ff19b218b749da366d979d",
+   "size_bytes": 1856
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_02.stderr",
+   "sha256": "7022b220b736e2409ba5dae07e3743b75f59458d09a9cd914ddacf7a73d8c185",
+   "size_bytes": 359
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_02.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+   "sha256": "a87a0adbe645291b72b56cbd44123db19706120d5397d4c3c6ebb6e8c827baf1",
+   "size_bytes": 2308
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_03.stderr",
+   "sha256": "7e399eea2a008613ae9fca6b8fefcb6c2492593a003c871401153ede2f997451",
+   "size_bytes": 384
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_03.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+   "sha256": "ff628ab2b8ce552ed1e4fdccbda60c7fe82864ca822531237980f6c9314b4175",
+   "size_bytes": 2330
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_04.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_04.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+   "sha256": "b9cf8fbe4b015bade9700d61b8b06a924eee68cf4717bc7270cd653ba818bcd6",
+   "size_bytes": 1855
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/measurement.cid",
+   "sha256": "a5f1bcac7364c194898adad2e2109343b35f5d47df6b973dce8f8d589313bece",
+   "size_bytes": 64
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+   "sha256": "985d44e105c2c1cc75bc27d17bcdba840141e8675f77acc6601187c5fefb37e4",
+   "size_bytes": 3434
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+   "sha256": "c78df228a8fc7a2f6c8d743c04355333dc4b6e4290b0a24f1f46fee157471978",
+   "size_bytes": 2249
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_01.launch.v1.json",
+   "sha256": "4e1dd357ae45f85c8fa49837b18c9ba3828b59908f1169f93bb352830f7159b3",
+   "size_bytes": 1722
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+   "sha256": "dff216b15b2f966c32a953ecbb0d423139cb9632d57be931462939021aebdc56",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_02.launch.v1.json",
+   "sha256": "a79ff2cd76fa3549f6eb019a237585af7cc944d5b4b117a683225146a1706005",
+   "size_bytes": 2658
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+   "sha256": "38269d1f8b57e32da7ce7cb9e4fa9a2f9592c899213eedd8f047c695adf46ae0",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_03.launch.v1.json",
+   "sha256": "95bc66c6de7991a745f86d45755235e4aa194cfc9ecdf266c1e37336d6470361",
+   "size_bytes": 2408
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_03.terminal.v1.json",
+   "sha256": "aed80e8eeabe8a98840314dfaa35e86fade49a56bfae3ca13950219434e9b208",
+   "size_bytes": 903
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_04.launch.v1.json",
+   "sha256": "bb27029b64bf3692ba3b6c63adf46db0d6c5aa20566ebe5ab43c9e7e136ff990",
+   "size_bytes": 2149
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_04.terminal.v1.json",
+   "sha256": "09db118f60865705097bbd8d709ec3f1c6e6394b4157282269b0813bc1692ce6",
+   "size_bytes": 902
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_05.launch.v1.json",
+   "sha256": "26be1f588f762762259a14ae1bfeaa23b93257d1bb2fd5fb7a3a80708042dae3",
+   "size_bytes": 8007
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_05.terminal.v1.json",
+   "sha256": "5567a6fa0126fcd1884ed5b484cb48f8f9c4835945a8e6abc00d962de5a70c7d",
+   "size_bytes": 905
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_06.launch.v1.json",
+   "sha256": "123523120401f857e1e31baecd8e6a122160c4a433097685a767fe39aabc3779",
+   "size_bytes": 1722
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/engine_06.terminal.v1.json",
+   "sha256": "d4c6ad6f3927685e021b2290f08cb8aa190f50a14525fd2daee586070ebca962",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+   "sha256": "1ec55b47f3b8a989f20a31fb6682cf3386f910bfd570495a3ab6d7795d52fdb6",
+   "size_bytes": 6561
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_01.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_01.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_01.v1.json",
+   "sha256": "977c268fab94e1e3feb8904d9e42fa97ea8e806599705259afe30ccc2c065c4c",
+   "size_bytes": 1856
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_02.stderr",
+   "sha256": "9dd28bda6ff9e6a33bf1171ccd1a94c010d27bff20702ceab03bb3854467cbd3",
+   "size_bytes": 359
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_02.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_02.v1.json",
+   "sha256": "8c0c63687102fad46c58cd14df67de068e1def52f3242317d241965d01daee00",
+   "size_bytes": 2308
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_03.stderr",
+   "sha256": "4f9e81115f71b7e0ed3b1092d0db3b658cec4f0d1ef6fafc211f7930b50d3cec",
+   "size_bytes": 384
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_03.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_03.v1.json",
+   "sha256": "448fb691a7233e0cb4e88190ce63cffbf3f21eb29bcd347bfdbefebe0b967859",
+   "size_bytes": 2330
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_04.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_04.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/command_04.v1.json",
+   "sha256": "2d439078843bbbd8bad42fd80a1076838098cfb733aa95ef3bb1d3031b9068b4",
+   "size_bytes": 1855
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/measurement.cid",
+   "sha256": "0cfab3b8ba014d4e50ac9adbb0f2024c934e68b62f9d1135ffed8af47602cf64",
+   "size_bytes": 64
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+   "sha256": "a6b463d599feac55604b14371a5ab26158dfe3e5a0af9e243b5492f4cfa14b2f",
+   "size_bytes": 3434
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/container-custody/reservation.v1.json",
+   "sha256": "638749e953de2af475c0ab1d44ef9946264a216dcd439c34aef4b0e174eaae11",
+   "size_bytes": 2249
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_01.launch.v1.json",
+   "sha256": "67149c5b6904a01de439b36820308dbbad02613dfc5b3cc2e05c1c2fba0d28da",
+   "size_bytes": 1722
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_01.terminal.v1.json",
+   "sha256": "433b2e223afd6834ba9f8ef00685800bbf27f2204ef98996c042838b96f70d30",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_02.launch.v1.json",
+   "sha256": "b2ae0dfa5f7ca978d70cf552e7cf7f8c5a7521d0e3b40a15f2db4943ddd5c93f",
+   "size_bytes": 2658
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_02.terminal.v1.json",
+   "sha256": "a9e4c2438afa603c8bbe9f6f65ce947b4f97fd02af09f1e48475669effdee2ad",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_03.launch.v1.json",
+   "sha256": "9464d00b7a782a76b18e8a98e806b94cf22492280e968d30da1b89e5e4adcf84",
+   "size_bytes": 2408
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_03.terminal.v1.json",
+   "sha256": "1e3dcfc448edd9ba240b2e992ca72f89c0ef549e9b4c16b346fbdf83bb45c668",
+   "size_bytes": 903
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_04.launch.v1.json",
+   "sha256": "ae458a3bf4eea13664a8a0d79e5bbfc3f80668038cd39bbea12412dd8b7b7783",
+   "size_bytes": 2149
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_04.terminal.v1.json",
+   "sha256": "3b22b99997e059855494d6a825fa8ec77addf0b876a3332f006bcdc5237944e1",
+   "size_bytes": 902
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_05.launch.v1.json",
+   "sha256": "b21ac7e12bd0ce13fc9f68f77f09048200c20bd42fdd666caf41acb06a9a52a6",
+   "size_bytes": 8007
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_05.terminal.v1.json",
+   "sha256": "fe279c8ab4c57707bd293ae1e23352394c5999b6d2b2784ca8c74e08097a57ae",
+   "size_bytes": 905
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_06.launch.v1.json",
+   "sha256": "c4192c327f33f018c5ffe439c313789ee90222fb686a83f64eda248b20cccfd3",
+   "size_bytes": 1722
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/engine_06.terminal.v1.json",
+   "sha256": "051904dfda326bc4862f7b15a49212fdaabdc9baed5c247906069aa6bf6ea1b3",
+   "size_bytes": 904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/native-precheck-openvino_gva-gpu-h264-independent-processes/original_engine_process_capture.v1.json",
+   "sha256": "e8d84ebae05bc48016fec3f82c2f3a2d06ce2371fb308bd4fd67311f6d7989e2",
+   "size_bytes": 6561
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_01.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_01.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_01.v1.json",
+   "sha256": "df17d95dde688e5ed754f8c8fc175642f5b65d6641b927fec2b1ee4501bf3e5f",
+   "size_bytes": 1838
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_02.stderr",
+   "sha256": "d627b568c2c25c323a2184eee2806413a04f71d6dd4eb3fbadbcde8a59e02e17",
+   "size_bytes": 359
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_02.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_02.v1.json",
+   "sha256": "d79d8c57792bc6152c046d1ec3e14a30c02fa37350373f90102599d706cc71e8",
+   "size_bytes": 2290
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_03.stderr",
+   "sha256": "28f8c2c061512f16fbbcc3cd229c6796936e9da6042baaedc9aef028c3b22f1d",
+   "size_bytes": 384
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_03.stdout",
+   "sha256": "1e69d142793cf850c6d9affc1b6ee6db1283fa6ccaa35327db71b2d2ffa6ad8f",
+   "size_bytes": 271
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_03.v1.json",
+   "sha256": "2df1a268108486edebd15bfa701fc28112342f4474613187d658563242d0bfb6",
+   "size_bytes": 2312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_04.stderr",
+   "sha256": "17391b21be16e6e4578ffb4018f57f78f084422dec33b4c8747e65f90ef2afda",
+   "size_bytes": 269
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_04.stdout",
+   "sha256": "72318ad181fc0cb712d05507368d7b559d41302aa02f067ea632ff9a6e1cd55e",
+   "size_bytes": 312
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/command_04.v1.json",
+   "sha256": "d180c7193dc1cec0e8620441d70feb473d748eedb03be12cc78eb0e1f00a4d34",
+   "size_bytes": 1837
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/measurement.cid",
+   "sha256": "26ed1c03d4a80b5007d3f1e4b0b0600326946d097d2daaed97905d908677b662",
+   "size_bytes": 64
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json",
+   "sha256": "4a9e3310f0ed120f5fe3b3eb272ebe391bcae3a6b08534d68b8d8ad2b3370af7",
+   "size_bytes": 3582
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/container-custody/reservation.v1.json",
+   "sha256": "d037c78edc8e7422356c8910330ebd81e20373636d45a1c7b36237711f91667d",
+   "size_bytes": 2401
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/engine_01.launch.v1.json",
+   "sha256": "3277f99d12bdc3cc49d6f9f3453f6a83f9dd951694e9f470107b5551ed2bdc6d",
+   "size_bytes": 1904
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/engine_01.terminal.v1.json",
+   "sha256": "01170c2b3486a79977b0aced40ae11f0cb604d30dfa1b942e0f57490bcaca3d1",
+   "size_bytes": 893
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/engine_02.failure.stdout.raw",
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "size_bytes": 0
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/engine_02.launch.v1.json",
+   "sha256": "c4c5c9934ce43dd4a1c6c2a3829933dd3d7c0bd033ca749904cc9b51169f2b62",
+   "size_bytes": 11235
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/engine_02.terminal.v1.json",
+   "sha256": "2e46dade8159e5d5e464d0505b1fc54e9f3a54bff71bf6b5b212e98833277261",
+   "size_bytes": 891
+  },
+  {
+   "path": "artifacts/publication_operational_capture_v1_qfb_20261008c/process-captures/savant-original-savant-cpu-h264-independent-processes/original_engine_process_capture.v1.json",
+   "sha256": "d6fe291fbe19db9afdd7d93158aef30b27f060da018b9434616ee76294bf24f9",
+   "size_bytes": 3202
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.deepstream.v2.json",
+   "sha256": "9886c07c3edf77790fe4c3c211368f8e3058dde3cedd68d0c09fdae4a0a30dda",
+   "size_bytes": 2459
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.gstreamer_custom.v2.json",
+   "sha256": "21879ee68938ebc98d879991d62f1cbe8ff4d75a335787524975776fc537c7bb",
+   "size_bytes": 2513
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.openvino_gva.v2.json",
+   "sha256": "b997a23d07af74ca8161a383dca4f7e03228de9603ddc877718003b6fb356197",
+   "size_bytes": 2477
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_calibration.savant.v2.json",
+   "sha256": "ddb2708ea4e91dd7f60448b799ed8ba0230e900e2e34c29e9a6b3af99002298c",
+   "size_bytes": 2423
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_mapping.v2.json",
+   "sha256": "d8e741b1e25707cca2a6671a697ea4d2f467c54e3bdfbc5fd2fcbad6a3db5a60",
+   "size_bytes": 16624
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/checkpoint_policy_qualification_bootstrap_receipt.v2.json",
+   "sha256": "1a1c35e500608ebcc235dfe3d0f3cdd0bb2c8e0342eec872e1a30a8315309fc6",
+   "size_bytes": 120910
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/_assets/container-engine/docker",
+   "sha256": "a429e235ef670ea83357a5c8c7451f0a69d485a6fee49f9032fd938a0ab4969d",
+   "size_bytes": 45570705
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/_assets/deepstream/adapter-config.json",
+   "sha256": "a2edd53451be4aaa6f29660a400dbf220c7dd248f49fe21c27bbbd1a00e67b2e",
+   "size_bytes": 4148
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/_assets/gstreamer_custom/analytics-execution-manifest.json",
+   "sha256": "8fe8bde7f576babd36d108f2038116bfd956c98c80efd1b6cedb5d39131bde73",
+   "size_bytes": 10628
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/_assets/openvino_gva/analytics-execution-manifest.json",
+   "sha256": "24433d5729a6e3d325c97f933f2d8315818e01e1277d8a79d2ae063a05e3f4c4",
+   "size_bytes": 10624
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/_assets/savant/adapter-config.json",
+   "sha256": "f83cbb24fb591d4aa17f82f14bc1d63d4ecc9ba48c3a95c138a904a450c2f805",
+   "size_bytes": 4116
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/cpu/h264/independent_processes.json",
+   "sha256": "60acd34589d618f85e0f6657abf6e9beb78784e158d9dbd6d15c48af00e695b6",
+   "size_bytes": 15506
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/cpu/h264/shared_video_dag.json",
+   "sha256": "e2841f5625eb571a6154010e57bdef923a511b18d0bfa150ddadc3092927a376",
+   "size_bytes": 15467
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/cpu/h265/independent_processes.json",
+   "sha256": "d661658bf0621eef6337ee7553cb8b9b9f166b331d44128969148b7da3328543",
+   "size_bytes": 15505
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/cpu/h265/shared_video_dag.json",
+   "sha256": "e00dfbee4032a5134a37edcdd0e3efb3df2baeafe4c71c252beb58a83718ca15",
+   "size_bytes": 15466
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/gpu/h264/independent_processes.json",
+   "sha256": "b8e5681dc1bc5e60fded7c17cb105c0f4545c91fefe49b227e4b441823185379",
+   "size_bytes": 15506
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/gpu/h264/shared_video_dag.json",
+   "sha256": "1b1181ff96be397b67b001f59f5c8461ac844293306a5716d2016c7fd1ed2f1f",
+   "size_bytes": 15467
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/gpu/h265/independent_processes.json",
+   "sha256": "ac2f7927b0ec5c1bc56ad2d5368effdc45ca64c7e46a135aac26746802bbdbfc",
+   "size_bytes": 15505
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/deepstream/gpu/h265/shared_video_dag.json",
+   "sha256": "8a4e31e8be4df910282bda19899846dddf2023b02595fe3e9a65bd99b03e25b9",
+   "size_bytes": 15466
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/cpu/h264/independent_processes.json",
+   "sha256": "8c5ac1ad3fd6e06bffef86dbedeaa6d7286aaae5f6ffb30c22cdc242ace9630a",
+   "size_bytes": 22477
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/cpu/h264/shared_video_dag.json",
+   "sha256": "0c311a77e450fd8a9d53afa0ea333fb7db018622d19b808f80005b050cf4fb2e",
+   "size_bytes": 22438
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/cpu/h265/independent_processes.json",
+   "sha256": "7fddbac37086e4df174ff3dda167fcfe8eb67ab82d7fb933307bfc99bdbab2b0",
+   "size_bytes": 22476
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/cpu/h265/shared_video_dag.json",
+   "sha256": "8b5170d49d3cf9cc92cfb592124a57a0f8ad8ebf60617b45dc35667365996c40",
+   "size_bytes": 22437
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/gpu/h264/independent_processes.json",
+   "sha256": "b4b9ba88e8228a9b53ed3123fced2fea8510d09061f3f26b106d2b508fa413de",
+   "size_bytes": 22477
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/gpu/h264/shared_video_dag.json",
+   "sha256": "3bf240d9d69a9815d60d2b19d85223156b72c82004d943bf45e6ff289c238d9d",
+   "size_bytes": 22438
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/gpu/h265/independent_processes.json",
+   "sha256": "74d312155d4ac5309a12484089afba1089a23957f3335ed5eee6a2f0680135a2",
+   "size_bytes": 22476
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/gstreamer_custom/gpu/h265/shared_video_dag.json",
+   "sha256": "87b3eb460d594e5fda052dbdf696136bd26a00f38b2a4eb864e4795c817ec172",
+   "size_bytes": 22437
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/cpu/h264/independent_processes.json",
+   "sha256": "ccd6971969ddb0ee0b2988e722c55df875bee1f6b065d3b85b4d0221a6e5ca0b",
+   "size_bytes": 37481
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/cpu/h264/shared_video_dag.json",
+   "sha256": "07a9a064d9ba9e9215595e20b9152c297a9346b4d3a596b486a78edced475205",
+   "size_bytes": 37442
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/cpu/h265/independent_processes.json",
+   "sha256": "03d696ef1d98d61d01f7c2c05a071e286d94d42aa640dc51f205b8a085348e63",
+   "size_bytes": 37480
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/cpu/h265/shared_video_dag.json",
+   "sha256": "869b5cc23a6550f194049405693d72fedaf01b52b7e6f22d9583c47c38eddaf3",
+   "size_bytes": 37441
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/gpu/h264/independent_processes.json",
+   "sha256": "5b9d4d305f876ffaffc6b81e324dd4351c919426299572bafe8dd8d8dd26e2df",
+   "size_bytes": 37481
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/gpu/h264/shared_video_dag.json",
+   "sha256": "55c38e4deb27c87333f584be8d69cc38e3bb84f6e339d5c441250028dc19d5e1",
+   "size_bytes": 37442
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/gpu/h265/independent_processes.json",
+   "sha256": "473c67491861aac7bb10b8e6dd00031808a626dbe742745e44a7c1dfdc24336c",
+   "size_bytes": 37480
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/openvino_gva/gpu/h265/shared_video_dag.json",
+   "sha256": "0bdd1c3526739e38cdae52800d09e20df0c218e3f39b690a1ec05b1c90bdaa7b",
+   "size_bytes": 37441
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/qualification-runtime-inputs.materialization.v2.json",
+   "sha256": "cdd95c7a741aef2a2be20a6f6f02704cee7d40ff326abf222c5636f5ecbd7560",
+   "size_bytes": 19652
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/cpu/h264/independent_processes.json",
+   "sha256": "caca79e874550a96f708fb843e6fbd3997cb3973a9451e66f35ad243c4c696ef",
+   "size_bytes": 15447
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/cpu/h264/shared_video_dag.json",
+   "sha256": "6ba23234166950c12916afb08a1abcc7d2cc68394cd3cd694076a186f0749956",
+   "size_bytes": 15408
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/cpu/h265/independent_processes.json",
+   "sha256": "008ab7f1e97d700ada01157c858f11cde75f1ec94845918a389f764534b211b2",
+   "size_bytes": 15446
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/cpu/h265/shared_video_dag.json",
+   "sha256": "f2768f983c04f672e392b57f4261746816be25e9c78ff5fd709edae8ca6dd7e9",
+   "size_bytes": 15407
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/gpu/h264/independent_processes.json",
+   "sha256": "6dd77df773d8bc4fb12d1f0d27ecd52e74432970a29cfcdf3da3e4e5e13269f1",
+   "size_bytes": 15447
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/gpu/h264/shared_video_dag.json",
+   "sha256": "ab125a15b88ca969f8e17bd0545a8f30fd5fff24fa4665607e6a3003e7ec5d33",
+   "size_bytes": 15408
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/gpu/h265/independent_processes.json",
+   "sha256": "a77f1a1dd1b1600067dc683fcb8960e125c69c41e48671a17a59237dd340ab12",
+   "size_bytes": 15446
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/bootstrap/qualification-runtime-inputs-v2/savant/gpu/h265/shared_video_dag.json",
+   "sha256": "68e0561c0e048bdeca1ae690b3a91ad05547eaf7079b9801ec5725c1180481aa",
+   "size_bytes": 15407
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/candidate/checkpoint_policy_capability_candidate_manifest.json",
+   "sha256": "efa7e7912b81369e1362d524b64dd790ad7b785192089c1a75907de8e28753eb",
+   "size_bytes": 63455
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/candidate/checkpoint_policy_qualification_candidate_receipt.json",
+   "sha256": "57200780dbeaa00853008f594294c6cf35bd6380c32793b8ea27f83c1906e06c",
+   "size_bytes": 1025
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/candidate/checkpoint_policy_qualification_index.v2.json",
+   "sha256": "91da955b464ea380e6081a8db01669a98a6c4f99a436c4b154434d20c0345cd0",
+   "size_bytes": 49683
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/damage.cpu.binding.json",
+   "sha256": "247082a5080410592fd062e421336fdb3f5544382a0239bdf65bc93066a22948",
+   "size_bytes": 5842
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/damage.gpu.binding.json",
+   "sha256": "ca7a561c4b8345fedbcf225bd0878efda507b4297eab29ad2166064d0b9e56d7",
+   "size_bytes": 5878
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/foreign_object.cpu.binding.json",
+   "sha256": "9bf57dcd5bd35d4c01c286f1524d2ddf0d2b228e1f78ca3b7d09d382447f10b9",
+   "size_bytes": 5876
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/foreign_object.gpu.binding.json",
+   "sha256": "88396bc569b4e634c7e79a5ca4ab38e0b073b15e44fe709134bf09cb6f624576",
+   "size_bytes": 5912
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/plate_number.cpu.binding.json",
+   "sha256": "8e3be44f4dae9796d9c85654b43dbe2e40b5642fa41f48f9199845290fa71ca9",
+   "size_bytes": 5866
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/plate_number.gpu.binding.json",
+   "sha256": "0a91cbe811866e9832d6e323dd5952923b3d8d16f68b0e80becd2a2da381791c",
+   "size_bytes": 5902
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/vehicle_type.cpu.binding.json",
+   "sha256": "c54dfe74c608063af1ad640d2e922f2b7cba58efb42fa31ae05d8292eec765b0",
+   "size_bytes": 5866
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/policy/vehicle_type.gpu.binding.json",
+   "sha256": "2997d84635c370d2267683fa63a022187b1287cf2a2d08a639d64ba1472de451",
+   "size_bytes": 5902
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/resource/cpu.binding.json",
+   "sha256": "156a90b6cb579dd07c9b938d0600124a3c474da53a5112bec24e2fabf0db41f2",
+   "size_bytes": 4737
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/bindings/resource/gpu.binding.json",
+   "sha256": "3615855dc1c99c3fd3078bab471fadd4e7083303d8dbb5f93097d2a63cd9a187",
+   "size_bytes": 4740
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/deepstream/qualification_fragment.json",
+   "sha256": "9f15245fa4dc7343bbde764a25eaf5911798bd6d1c62d36383347234741707af",
+   "size_bytes": 11246
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/damage.cpu.binding.json",
+   "sha256": "8d1f554f9befc57f689479df0b684514a6bd338b468adea19c9735e3d0888735",
+   "size_bytes": 8563
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/damage.gpu.binding.json",
+   "sha256": "318f40c22935870cd29a976ca68f143fdf5590d6a992e2c433861267e9f71d01",
+   "size_bytes": 8599
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/foreign_object.cpu.binding.json",
+   "sha256": "39038a694c578bd7cbad6b0c8855920d18aea76f3210623aece17e0c4d167e0f",
+   "size_bytes": 8655
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/foreign_object.gpu.binding.json",
+   "sha256": "efd61349c294e5e3611441131e94a9a5789ffb2b3aeeea5ac2dc1e6bb60e3322",
+   "size_bytes": 8691
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/plate_number.cpu.binding.json",
+   "sha256": "a613f84a2035e364bfba2fbe97326a46ca47d87754f3e8246cf8adedd0a1d934",
+   "size_bytes": 8633
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/plate_number.gpu.binding.json",
+   "sha256": "9a303d8c40595036b2c319a3132f0cb4d5caf365e737161e47d3a7bccbc8fb66",
+   "size_bytes": 8669
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/vehicle_type.cpu.binding.json",
+   "sha256": "4a994662a78e3b3894d15e22768cbd89f08d47aa1cb7e0fe0d06ede614db8800",
+   "size_bytes": 8549
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/policy/vehicle_type.gpu.binding.json",
+   "sha256": "c45613a08a07a08743739eb0439fc195d1db0fe666479140e1ac5c73b6becf13",
+   "size_bytes": 8585
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/resource/cpu.binding.json",
+   "sha256": "f2c268692a4b3f8f8824a930ee06bf84324d64d402ebcfa8cf9bc11345bafbd5",
+   "size_bytes": 6859
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/bindings/resource/gpu.binding.json",
+   "sha256": "19f6c414089c3aa41b766873d97fdb9a368fa70e2a6b281e595e55076b8fa482",
+   "size_bytes": 6862
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/gstreamer_custom/qualification_fragment.json",
+   "sha256": "5f2e54f2d99630cadf65117784e13f3340a6b205e7a1a023c8bda5d57803bda7",
+   "size_bytes": 11492
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/damage.cpu.binding.json",
+   "sha256": "ed0496e7204f48fb1a4ad3eff5881f0b1898635764a62e38d21c5224af46598d",
+   "size_bytes": 8198
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/damage.gpu.binding.json",
+   "sha256": "19e69e94608ee2803350212d061571153fa1276f5427ef1f88c1f531408f428e",
+   "size_bytes": 8234
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/foreign_object.cpu.binding.json",
+   "sha256": "2e17f610bedb897aba2b46d6d7d3f83d3f50745044e185ee91d596e489b466f8",
+   "size_bytes": 8290
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/foreign_object.gpu.binding.json",
+   "sha256": "f77da28f230f9520dc130076ca2a7948001d02ee01a6c6a92af52f7ff2bd3669",
+   "size_bytes": 8326
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/plate_number.cpu.binding.json",
+   "sha256": "a1ba6f184126f4f4826ddc0de94d5ea22cf4b2103e62cfce5507db2608cb67d8",
+   "size_bytes": 8268
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/plate_number.gpu.binding.json",
+   "sha256": "0af46326b89cbf3d2e6ec6822cf9ad68bd0a7631eb2c49f9cad97cb174a4445a",
+   "size_bytes": 8304
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/vehicle_type.cpu.binding.json",
+   "sha256": "71ab18f791e4d33642466f1c60d700c9ecf22b0723a39e1dbc4a9f201838b8ce",
+   "size_bytes": 8184
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/policy/vehicle_type.gpu.binding.json",
+   "sha256": "19a5e704c17bc7b6f2fbb687cdf948c16e1e5e6591222212f2a71a2d6b533c48",
+   "size_bytes": 8220
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/resource/cpu.binding.json",
+   "sha256": "04cee6ad07ff952e7a8f6e2ede9228559bca59b568da501a93dfe99275a67b77",
+   "size_bytes": 6423
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/bindings/resource/gpu.binding.json",
+   "sha256": "d6620f7096f182dc06b4af29b1920f3284742ae02697f46f99659e24b5cba09b",
+   "size_bytes": 6426
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/openvino_gva/qualification_fragment.json",
+   "sha256": "38f627807876843903238229f749d8052bb78f9105ea608f63c86e2619a4f593",
+   "size_bytes": 11328
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/damage.cpu.binding.json",
+   "sha256": "fefa815806ca800b784f965afc668a42be5bd418436e898b11f2e19f1a884090",
+   "size_bytes": 6902
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/damage.gpu.binding.json",
+   "sha256": "99131e2f2004724f8a54e6472271567b2f17e239c09ee326e72250162461da34",
+   "size_bytes": 6938
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/foreign_object.cpu.binding.json",
+   "sha256": "d7cc80a5bf3aa3a927e52b864e14bafdfd8c005dd627a6e4ab49ec6fffb3cb10",
+   "size_bytes": 6936
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/foreign_object.gpu.binding.json",
+   "sha256": "ec9822d740e7e84df14e8ba7e094227b50c9b1501a3e1a27a95c0b86f313a038",
+   "size_bytes": 6972
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/plate_number.cpu.binding.json",
+   "sha256": "332e38a78bbd8f6ab5559836530f7b768def21c2e16b43338b9b4740c8364792",
+   "size_bytes": 6926
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/plate_number.gpu.binding.json",
+   "sha256": "d22eaf3bc2f65c9ceb59cfd20143217d2f1a44d92c281929ba0ba830d9fceba7",
+   "size_bytes": 6962
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/vehicle_type.cpu.binding.json",
+   "sha256": "6321fa57c6f98c6fd7a40e6a993d6f7867b8b35b8ccfd676588f81c3cf4d7a62",
+   "size_bytes": 6926
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/policy/vehicle_type.gpu.binding.json",
+   "sha256": "c763010ad88b03afa1e65e034b8caa4ce1d2b2951acf7862b1898989e504daaf",
+   "size_bytes": 6962
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/resource/cpu.binding.json",
+   "sha256": "cadea6b64d2968c264aad7f570a1577b0f193ad5cad1d7d4c5b3639fbe8d50b3",
+   "size_bytes": 5797
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/bindings/resource/gpu.binding.json",
+   "sha256": "5c8dd96c4967ff54712ed741972f2d13237461b7b4aa3a75054f2ab1d9760e64",
+   "size_bytes": 5800
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/fragments/savant/qualification_fragment.json",
+   "sha256": "ff1b7a1eeedcc6ca0de00879185368e9cf05fcef6d10eaef8fc26a36e4ef4b01",
+   "size_bytes": 11082
+  },
+  {
+   "path": "artifacts/publication_policy_qualification_v2_qfb_20261008c/qualification_input_transaction.v2.receipt.json",
+   "sha256": "14ea3d1cbc0db52ada85473193b7ca35dce63ee5c8de4f34fdad11cd510f3839",
+   "size_bytes": 5426
+  }
+ ]
+}

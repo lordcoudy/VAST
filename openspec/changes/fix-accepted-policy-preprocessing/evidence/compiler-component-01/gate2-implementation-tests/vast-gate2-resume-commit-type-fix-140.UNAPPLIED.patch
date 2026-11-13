@@ -1,0 +1,50 @@
+--- a/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py
++++ b/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py
+@@ -403,7 +403,7 @@
+  throw Error('setup_frame_limit');}catch(e){return {observed,cause:String(e.message).slice(0,80)};}
+ }
+ async function gate2Complete(tools,first,finalizer,profile,expected){
+- gate2Profile(profile);if(!expected||Object.keys(expected).sort().join()!=='code_commit,core_sha256,factory_sha256'||! /^[0-9a-f]{40}$/.test(expected.code_commit)||['core_sha256','factory_sha256'].some(k=>typeof expected[k]!=='string'||! /^[0-9a-f]{64}$/.test(expected[k]))||gate2SHA256(first)!==expected.core_sha256)throw Error('external_expected_pins');let result={completed:false,setup_success:null,retention_complete:false,physical_acceptance:false,output_profile:profile},r;
++ gate2Profile(profile);if(!expected||Object.keys(expected).sort().join()!=='code_commit,core_sha256,factory_sha256'||typeof expected.code_commit!=='string'||! /^[0-9a-f]{40}$/.test(expected.code_commit)||['core_sha256','factory_sha256'].some(k=>typeof expected[k]!=='string'||! /^[0-9a-f]{64}$/.test(expected[k]))||gate2SHA256(first)!==expected.core_sha256)throw Error('external_expected_pins');let result={completed:false,setup_success:null,retention_complete:false,physical_acceptance:false,output_profile:profile},r;
+  function delivered(x){gate2Canonical(x,12288);if(x.isError!==false||!Array.isArray(x.content)||x.content.length!==1||x.content[0].type!=='text'||typeof x.content[0].text!=='string')throw Error('provider_unavailable');return x.content[0].text;}
+  try{
+   if(typeof finalizer!=='string'||!finalizer.length)throw Error('writer_literal');
+@@ -420,7 +420,7 @@
+ 
+ ROOT_RECEIVER = r"""function gate2Context(context){
+  let keys='code_commit,core_sha256,factory_sha256,packet_sha256,packet_size_bytes,selected_sha256';
+- if(!context||Object.keys(context).sort().join()!==keys||! /^[0-9a-f]{40}$/.test(context.code_commit)||!Number.isSafeInteger(context.packet_size_bytes)||context.packet_size_bytes<1||context.packet_size_bytes>32768||['packet_sha256','selected_sha256','core_sha256','factory_sha256'].some(k=>typeof context[k]!=='string'||! /^[0-9a-f]{64}$/.test(context[k])))throw Error('delivery_context');
++ if(!context||Object.keys(context).sort().join()!==keys||typeof context.code_commit!=='string'||! /^[0-9a-f]{40}$/.test(context.code_commit)||!Number.isSafeInteger(context.packet_size_bytes)||context.packet_size_bytes<1||context.packet_size_bytes>32768||['packet_sha256','selected_sha256','core_sha256','factory_sha256'].some(k=>typeof context[k]!=='string'||! /^[0-9a-f]{64}$/.test(context[k])))throw Error('delivery_context');
+  return gate2SHA256(gate2Canonical(['vast.gate2.external-delivery.v1',context.code_commit,context.packet_size_bytes,context.packet_sha256,context.selected_sha256,context.core_sha256,context.factory_sha256],1024));
+ }
+ function gate2Receive(recordText,chain,context,toolReference,expectedExecutorSourceSHA){
+@@ -582,6 +582,29 @@
+ for(let expected of [null,{}, {...good,extra:true},{...good,code_commit:'wrong'},{...good,core_sha256:'0'.repeat(64)},{...good,factory_sha256:null}]){let calls=0,refused=false;try{await gate2Complete({mcp__node_repl__js:async()=>{calls++;throw Error('must_not_call');}},'initial','finalizer',profile,expected);}catch(e){refused=true;}observed.push({calls,refused});}console.log(JSON.stringify(observed));"""
+         result=self.js('(async()=>{'+body+'})().catch(e=>{console.error(e);process.exitCode=1;});')
+         self.assertTrue(all(v=={'calls':0,'refused':True} for v in result))
++
++    def test_commit_types_refuse_before_provider_or_commit_coercion(self):
++        body=r"""let good='1234567890123456789012345678901234567890',profile={max_output_tokens:100000,max_record_bytes:65536},observed=[];
++for(let [label,make] of [['bigint',()=>BigInt(good)],['wrapper',()=>new String(good)],['coercible',counter=>({toString(){counter.n++;return good;}})],['number',()=>1e39],['null',()=>null],['undefined',()=>undefined],['array',()=>[good]]]){
++ let pre={n:0},context={n:0},calls=0,cause=null,contextCause=null;
++ try{await gate2Complete({mcp__node_repl__js:async()=>{calls++;throw Error('must_not_call');}},'initial','finalizer',profile,{code_commit:make(pre),core_sha256:gate2SHA256('initial'),factory_sha256:'0123456789abcdef'.repeat(4)});}catch(e){cause=e.message;}
++ try{gate2Context({code_commit:make(context),packet_size_bytes:10,packet_sha256:'0123456789abcdef'.repeat(4),selected_sha256:'123456789abcdef0'.repeat(4),core_sha256:gate2SHA256('initial'),factory_sha256:'23456789abcdef01'.repeat(4)});}catch(e){contextCause=e.message;}
++ observed.push({label,calls,cause,contextCause,preCoercions:pre.n,contextCoercions:context.n});
++}
++let validCalls=0;await gate2Complete({mcp__node_repl__js:async()=>{validCalls++;throw Error('controlled_stop');}},'initial','finalizer',profile,{code_commit:good,core_sha256:gate2SHA256('initial'),factory_sha256:'0123456789abcdef'.repeat(4)});
++let validContext=gate2Context({code_commit:good,packet_size_bytes:10,packet_sha256:'0123456789abcdef'.repeat(4),selected_sha256:'123456789abcdef0'.repeat(4),core_sha256:gate2SHA256('initial'),factory_sha256:'23456789abcdef01'.repeat(4)});
++console.log(JSON.stringify({observed,validCalls,validContext}));"""
++        value=self.js('(async()=>{'+body+'})().catch(e=>{console.error(e);process.exitCode=1;});')
++        self.assertEqual(len(value['observed']),7)
++        for result in value['observed']:
++            with self.subTest(label=result['label']):
++                self.assertEqual(result['calls'],0)
++                self.assertEqual(result['cause'],'external_expected_pins')
++                self.assertEqual(result['contextCause'],'delivery_context')
++                self.assertEqual(result['preCoercions'],0)
++                self.assertEqual(result['contextCoercions'],0)
++        self.assertEqual(value['validCalls'],1)
++        self.assertRegex(value['validContext'],r'^[0-9a-f]{64}$')
+ 
+     def test_two_pass_complete_provider_encoder_matches_ascii_and_12k_boundary(self):
+         x={'call':{'code':'fixed "\\\n'},'frames':[{'content':[{'type':'text','text':'{'+str(2**64-1)+'}'}],

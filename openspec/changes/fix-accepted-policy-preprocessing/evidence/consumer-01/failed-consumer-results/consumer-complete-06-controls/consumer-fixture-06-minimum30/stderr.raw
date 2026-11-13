@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 2548, in _require_socket_transport
+    endpoint.connect(record["path"])
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 165, in <module>
+    main()
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/openspec/changes/fix-accepted-policy-preprocessing/evidence/consumer-01/build_production_fixture_v2.py", line 122, in main
+    with prepared_complete_fixture_inputs_v2(
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 117, in prepared_complete_fixture_inputs_v2
+    runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 3469, in materialize_publication_policy_qualification_runtime_inputs_v2
+    result = _materialize_publication_policy_qualification_runtime_inputs_v2_held(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 3147, in _materialize_publication_policy_qualification_runtime_inputs_v2_held
+    _require_socket_transport(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 2575, in _require_socket_transport
+    _fail(f"{label} is not a reachable live SOCK_SEQPACKET transport: {error}")
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/publication_policy_qualification_runtime_inputs_v2.py", line 184, in _fail
+    raise QualificationRuntimeInputMaterializationV2Error(message)
+publication_policy_qualification_runtime_inputs_v2.QualificationRuntimeInputMaterializationV2Error: analytics execution endpoint is not a reachable live SOCK_SEQPACKET transport: [Errno 111] Connection refused

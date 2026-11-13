@@ -1,0 +1,50 @@
+{
+  "all_bytes_preserved": true,
+  "entries": [
+    {
+      "name": "vast-gate2-resume-thread-poll-red-122.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "f112ef8a69dca60364101df4466d18fde0e3e149afae991df45c12ba49d38e21",
+      "size_bytes": 5484
+    },
+    {
+      "name": "vast-gate2-resume-thread-poll-red-123.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "d63d7731e02aa3df46e43c80d2791dc1e112fb7c55188ebcea1646bcb2796949",
+      "size_bytes": 3817
+    },
+    {
+      "name": "vast-gate2-resume-thread-poll-green-124.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "8159c5540badfab7cde6bc193235ae36933ab7c41a96983e7dd7cd7d8853ca86",
+      "size_bytes": 1034
+    },
+    {
+      "name": "vast-gate2-resume-thread-poll-green-125.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "946acfd74cc11aff8da84cf35f68137c7af2d277f03e4bec7c5baf2f80df4833",
+      "size_bytes": 101
+    },
+    {
+      "name": "vast-gate2-resume-refreeze-canonical-green-126.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "64f9980b16255a7ac7dc06707a6460c48b39133c6e17bd40035eb89fd8e0c08c",
+      "size_bytes": 1186
+    },
+    {
+      "name": "vast-gate2-resume-refreeze-windows-green-127.original.txt",
+      "repository_copy": "copied_exact_once",
+      "sha256": "3eba672b8b43b1f11191e019f614321fe328e3e911cd94b0443a19b5e335a5f0",
+      "size_bytes": 864
+    },
+    {
+      "name": "vast-gate2-resume-refreeze-literals-128.original.json",
+      "repository_copy": "copied_exact_once",
+      "sha256": "bc0a0abc531923222eaa1f377d08825dabd91c3669d8fce2bc62365c5a713b60",
+      "size_bytes": 4001
+    }
+  ],
+  "physical_acceptance": false,
+  "scope": "Completed P0 controlled OP thread/poll fault originals122-125 and finalown126-128. Raw124 is an actual failing fixture-destructor case despite green filename; final125/126/127 pass. No physical evidence or source approval.",
+  "utc": "2026-10-17T02:40:15.829313+00:00"
+}

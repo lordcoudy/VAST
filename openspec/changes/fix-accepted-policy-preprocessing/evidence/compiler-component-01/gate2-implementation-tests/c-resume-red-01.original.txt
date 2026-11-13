@@ -1,0 +1,109 @@
+command: canonical WSL Python3.12.3 -I -S -B controlled resume parser/D-dispatch RED
+test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs) ... FAIL
+test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) ... 
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d940>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d8a0>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d9e0>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708da80>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708db20>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708dbc0>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708dc60>) ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (size=444, digest='144a2722e321edb44874ef6f11110389e5b51bb4539384c4c1eba2a6b5df78b8') ... FAIL
+  test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (size=443, digest='0000000000000000000000000000000000000000000000000000000000000000') ... FAIL
+test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion) ... FAIL
+
+======================================================================
+FAIL: test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 41, in test_resume_candidate_derives_only_child_completion_paths_and_existing_five_kwargs
+    self.assertEqual(kw["project_root"], str(root))
+AssertionError: '/home/s-a-balashov/work/vast-fixture-compi[49 chars]a-01' != '/tmp/tmp052p5av7/retained465/r1'
+- /home/s-a-balashov/work/vast-fixture-compiler-gate2-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-01
++ /tmp/tmp052p5av7/retained465/r1
+
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d940>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d8a0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708d9e0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708da80>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708db20>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708dbc0>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (mutation=<function InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root.<locals>.<lambda> at 0x7edfc708dc60>)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 60, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(mutation=mutation), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (size=444, digest='144a2722e321edb44874ef6f11110389e5b51bb4539384c4c1eba2a6b5df78b8')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 68, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(size=size, digest=digest), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root) (size=443, digest='0000000000000000000000000000000000000000000000000000000000000000')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 68, in test_existing_resume_candidate_mismatch_never_falls_back_to_legacy_root
+    with self.subTest(size=size, digest=digest), \
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 80, in test_c_native_d_branch_uses_canonical_unchanged_d_and_never_c_run_or_completion
+    self.assertEqual(c.native_main_v1(["D"] + args), 7)
+AssertionError: 1 != 7
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.022s
+
+FAILED (failures=11)

@@ -11,6 +11,7 @@ import os
 import re
 import stat
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
@@ -41,6 +42,9 @@ def _canonical(value: object) -> bytes:
 
 def _module(filename: str, name: str):
     path = Path(__file__).resolve().with_name(filename)
+    directory = str(path.parent)
+    if directory not in sys.path:
+        sys.path.insert(0, directory)
     spec = importlib.util.spec_from_file_location(name, path)
     _require(spec is not None and spec.loader is not None, f"required module is unavailable: {filename}")
     module = importlib.util.module_from_spec(spec)

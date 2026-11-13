@@ -1,0 +1,735 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_implementation_controlled_verification_v1",
+  "planning_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "planning_approval": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6215421351",
+  "scope": "task2.10 bounded V8 helper implementation; no component physical acceptance",
+  "physical_execution": false,
+  "task_2_10_complete": false,
+  "task_progress": {
+    "complete": 24,
+    "total": 46
+  },
+  "source_and_tests": [
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
+      "size_bytes": 9329,
+      "sha256": "d99e4139175fb8f9dd098fd7d6876f4b58330720d729848307d40fd16fcf9dad"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "size_bytes": 90799,
+      "sha256": "81c108d5f2336df668a4efa8090f0fd3f022e01e6364d803c49d0b7155760fbc"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "size_bytes": 19404,
+      "sha256": "f230fd6fd88d0b99309d3ec5b12a942a05c6ac131062ace734033a1fe2e8c013"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 41436,
+      "sha256": "a9c0428b0f85bd45df4e9f629a6a793f429abfcde54c5e86b227c9dd0bb6a437"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "size_bytes": 69033,
+      "sha256": "2152ec302f5fb5bce37bad882eb142839b54700b7631481afb858998f40a535f"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_probe_program_v1.py",
+      "size_bytes": 26298,
+      "sha256": "f35692198a1df636d69c9da0d54ed1365671dfa880ad834cea5b1bdfafac3219"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_probe_v1.py",
+      "size_bytes": 19496,
+      "sha256": "9f155cda056e7194a11d38581caaab30072f5f5c973c9880027f1b188aa8acb0"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_publisher_v1.py",
+      "size_bytes": 23351,
+      "sha256": "438c5d1a16a0712d5483ac2af0841e329daf875c301e9595a51d0004be350c07"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_recovery_v1.py",
+      "size_bytes": 46374,
+      "sha256": "2f2267e22636af05674591a840ce3e9a046d2c6a8042d87486fcd605bf2b2be3"
+    },
+    {
+      "path": "tests/fixtures/accepted_policy_fixture_compiler_v1.py",
+      "size_bytes": 103899,
+      "sha256": "d1d40b1e667983e395978e7d9714a5b8b25b2bdc73255d9d2a493ffbdf5e79e7"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_attach_v1.py",
+      "size_bytes": 21641,
+      "sha256": "aa45cf3645b249c5cb039ddb0e2c1ca58b0d8017ad89bad9b76713616dc1ba2d"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_component_v1.py",
+      "size_bytes": 6736,
+      "sha256": "32e7aa31c4158bb6e0a5e2e33096623647f786a124b5e78610379cc59eefb9f2"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_config_v1.py",
+      "size_bytes": 4615,
+      "sha256": "7257acaa7946ef2833e73db5d081f106d22d1ef87a8ec18724b08c90518e1407"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py",
+      "size_bytes": 62027,
+      "sha256": "7afd4cc5840fcb457b11677daddfdfb81f3c07c163d30d5273c7d775a7612ce7"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py",
+      "size_bytes": 14236,
+      "sha256": "5b097a65c996be8eae5defb722d79a813c6852cb2407a5ce93e621b59e5e906e"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py",
+      "size_bytes": 40441,
+      "sha256": "b704493d92586af164dc93b8bafc0bb4c74bba52870af887c79460f9d47f1deb"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_export_v1.py",
+      "size_bytes": 2468,
+      "sha256": "cef6092b66fbbb675c781e811eb6a9d6ad7728155d3f4d867f166cdf8a9c30fc"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py",
+      "size_bytes": 71173,
+      "sha256": "bac18a4ea1e05d0d8ce6571b70ab6b35d9487372a4bfbb495d84fe7d1f1f44e7"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_owner_v1.py",
+      "size_bytes": 35735,
+      "sha256": "3ada71ad2d0155c3edb24f6b85a544875e51bf264b00bd428db722cf4fa12ef2"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_probe_v1.py",
+      "size_bytes": 15648,
+      "sha256": "3d8a18f724769351c1308e49146afaac759ee7998597180fd12befcfa634a242"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_publisher_v1.py",
+      "size_bytes": 29569,
+      "sha256": "1639e8f7e6c29d7c5cfb49254676335359771e8d7bb78f4611cca494c5e3c62e"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_recovery_v1.py",
+      "size_bytes": 30701,
+      "sha256": "4c25fdcc92e2d09591e41a4179b14f2352f8b96c3097c808919b9536acd78cb4"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_seccomp_v1.py",
+      "size_bytes": 14043,
+      "sha256": "0af3c93662832738fb748fdb57e5bff07ff3315dc9fd145b8ba44e3c09c51768"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_transport_v1.py",
+      "size_bytes": 33345,
+      "sha256": "8d2273b8f018361c5767482da17466c71ffbbf2759a947c10979c1f3f85fc8ce"
+    },
+    {
+      "path": "tests/test_accepted_policy_fixture_compiler_v1.py",
+      "size_bytes": 12130,
+      "sha256": "ee76c6a72fb91939ab61c6c4a11274fbc2df15d86572860f4ab96251a39080fe"
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-combined-green-10.original.txt",
+      "size_bytes": 765,
+      "sha256": "b5367465c96b7c8796c0f09b4197d5ea70900f87c3ab4ee2e91b04903b6903bd"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-combined-green-12.original.txt",
+      "size_bytes": 766,
+      "sha256": "ab2dbacc6bc0fe59c29823334683158000b0896a746097bb3720d567e00e0631"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-authority-green-29.original.txt",
+      "size_bytes": 244,
+      "sha256": "8174d6c80213c1ae2ed7ed237677fc541ce8efb6089fa2920411d9f9e27b8c6f"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-authority-red-28.original.txt",
+      "size_bytes": 7021,
+      "sha256": "5194d67302dab058e977b53beb5b44d6efe08d0a785f4f4aa01335b94e1ecd48"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-integrated-green-33.original.txt",
+      "size_bytes": 361,
+      "sha256": "fc1b559770d03cd629edd4e6ee964da2b74f1940a2fce81cf8664fa68bd7c9f4"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-integrated-green-35.original.txt",
+      "size_bytes": 361,
+      "sha256": "719e3b664e89077802143e4c601c97541efb871b9d4020f263837174b8c6156c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-late-green-31.original.txt",
+      "size_bytes": 1588,
+      "sha256": "090c5e1f01bb74b4e370dba1e1762bcfb837b10e77daf368fbb7dffb4f2d1cd5"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-late-green-32.original.txt",
+      "size_bytes": 244,
+      "sha256": "ae1cdc91a0ee66f399956be56d87f2a74a5a30100f7317b261bc0f99a1b3599a"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-late-red-30.original.txt",
+      "size_bytes": 1094,
+      "sha256": "bd1a6744ce5ed75fb1399456d907376b71d8fc74b84ad84c66f93957b3206f89"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-completion-types-red-34.original.txt",
+      "size_bytes": 1873,
+      "sha256": "1af97d5f2b544e5b677cb988361a5dde089a34f8bbebb06cc516032d949d1b13"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-footer-green-17.original.txt",
+      "size_bytes": 240,
+      "sha256": "e27ca1856fa225cca615f6c02447468f57d1bb29e88e9370a8dcbd5c59edccde"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-footer-green-18.original.txt",
+      "size_bytes": 241,
+      "sha256": "d0609cfd435695e6f9d78dcd66ca3314db7a3efc1c7a8dc03cdfa6b5af0ad3fd"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-footer-green-22.original.txt",
+      "size_bytes": 243,
+      "sha256": "38b9e0464dd3b7954ef25fbf7258ce6e33f43de30f1e2f1e24f11f39cd0e520c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-footer-red-16.original.txt",
+      "size_bytes": 1443,
+      "sha256": "d7955e22d84ef6854079947252b8161146b10dbdd632b732bcec9eccb910afe6"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-01.original.txt",
+      "size_bytes": 251,
+      "sha256": "128f8c5553d9d402861864e6031383267c5506adf43195e163615099716ee3cb"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-02.original.txt",
+      "size_bytes": 254,
+      "sha256": "71b4e6ee40971c4c99f4ce0a0d4ae21ac37d84728331ab22db32fed87f9c7ec9"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-03.original.txt",
+      "size_bytes": 256,
+      "sha256": "c4563f26e97e8b8ef1af9d6df3425b4c1ae711fcd45ef5ae53f955022883dcd2"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-05.original.txt",
+      "size_bytes": 260,
+      "sha256": "62f9f4c2961a7565b359b02d28f328ab1ce19dc1f52933e8e5be491063c27684"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-06.original.txt",
+      "size_bytes": 261,
+      "sha256": "d6c36b69a1b7b74815c73594c681aeec4e39f1356bbe818208a3c07e64ca2c1c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-07.original.txt",
+      "size_bytes": 261,
+      "sha256": "a64c5d18258c01b7f0c4e9a4683fb0ee30bfecf42e23efdb0c69e511a623d822"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-green-09.original.txt",
+      "size_bytes": 264,
+      "sha256": "491eecd883a5f3a506bed253cf59d6029cbe74e4e87d13d3cfc6cfc8ce149f48"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-guard-deadline-red-19.original.txt",
+      "size_bytes": 1746,
+      "sha256": "561a3a0cfd4d23388624cc40db1b9da7521b737c69bdba7840aedff3d16fcfbc"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-input-custody-green-24.original.txt",
+      "size_bytes": 243,
+      "sha256": "db44b946698c57fe675f38238a44ca9664a5d3a2c752b6324ac665265b6c726a"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-input-custody-red-23.original.txt",
+      "size_bytes": 2692,
+      "sha256": "a35d935b1f34a6205116a4a42444f921ce6e69222875d8a71903ac6f94aa0bf6"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-integrated-green-25.original.txt",
+      "size_bytes": 579,
+      "sha256": "6b4969885526c440fece4c6171bdd25f42d24c7770effc9060e1cfcce86a9b05"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-outer-failure-red-20.original.txt",
+      "size_bytes": 1126,
+      "sha256": "b5536fae4d35842c033677a90733922b77542e9411ca49fcdc7c9a91cfef4426"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-outer-failure-red-21.original.txt",
+      "size_bytes": 1150,
+      "sha256": "b0c5dcb78d6834e5c1cf1efc3fa3435a3a42aae64b9d9b02e54ca3179ddabfe7"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-01.original.txt",
+      "size_bytes": 1278,
+      "sha256": "e83cde79c64253900e33371bb07d5d507056db36badfd7b97a58c345cf2dda05"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-02.original.txt",
+      "size_bytes": 1976,
+      "sha256": "ac1d07388b1f6deffed6bdb69ebecca18216e190228a08c7751a7f2d591911f2"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-03.original.txt",
+      "size_bytes": 2101,
+      "sha256": "3b3e635aaf9897e68ef5cb851c3abc5f6dbb361ce61f4db69aa8a04fc8e17cf0"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-04.original.txt",
+      "size_bytes": 2924,
+      "sha256": "926a9066ff7d631014d15888a927368eede909a69114be02ca4eff58be2a5192"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-05.original.txt",
+      "size_bytes": 1132,
+      "sha256": "7325da9650ec2472aef8a222f5685a3b24d7d1b17893138db3da853a1fe717f3"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-06.original.txt",
+      "size_bytes": 1201,
+      "sha256": "a986abfb745fe2155e8470d8b369b1745ae49b729f83361f95a1de448f7142da"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-08.original.txt",
+      "size_bytes": 1950,
+      "sha256": "3fcc0281f0f6de1cf5307d4b4670b49fbc38475c4d8e7013734e5458a6747b30"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-09.original.txt",
+      "size_bytes": 2047,
+      "sha256": "fa43434dfc5fda7ddac46b2b47c7c56ccec0db8dfd7ee47f16950c842d8ef482"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-red-11.original.txt",
+      "size_bytes": 1051,
+      "sha256": "d63c786eb2ef20dd28ce6362902ec46db3acb825865f51094ab4d9152eaf4324"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-refusal-budget-green-27.original.txt",
+      "size_bytes": 244,
+      "sha256": "af9cae7dd25ae2fa7a50ea9f68a7cffad4ff844417ef2ba5352c2beeb3b07ca6"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-refusal-budget-red-26.original.txt",
+      "size_bytes": 3518,
+      "sha256": "eb75e562d1a8920900dfdfa93f78803d8847b123552828c83a54669f16fc9e23"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-review-green-15.original.txt",
+      "size_bytes": 267,
+      "sha256": "81febdef1a163df70e35460173e1a4e924def7ab72aeaea108cd6ee8a83e8408"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-review-red-13.original.txt",
+      "size_bytes": 14620,
+      "sha256": "e00f74ad1dc4ce987e8f7d5fde5707f4647604eb6d71cfbbcb5feaa290908e95"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/c-review-red-14.original.txt",
+      "size_bytes": 1763,
+      "sha256": "9b2114f6ba91a82d7d5b9573810e13c2025acbabc28134e1fd6f692eb01a59d3"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-green-01.original.txt",
+      "size_bytes": 834,
+      "sha256": "0d22e1cd5c6aa54069e05df1420b2cf2ea6955aa9004e604065b04ae31744c06"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-green-02.original.txt",
+      "size_bytes": 110,
+      "sha256": "1607edbfae007ff56d6138df5d24d28abfe4b1ef27902563e1bb9ad258e5c4ec"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-green-03.original.txt",
+      "size_bytes": 113,
+      "sha256": "0fa6e9196f096183c02cc2acc9c66c1dc944647981973bb5cc84a89647a36d1e"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-green-04.original.txt",
+      "size_bytes": 114,
+      "sha256": "3efc3bd5f9b54b089f852ad6b401ee5c3dafa5c72c296e25c9c78023519d5286"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-green-05.original.txt",
+      "size_bytes": 115,
+      "sha256": "ad39657e9a93015fea4ac1851d18700cb486bc60497c740c21a23113b02c3119"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-red-01.original.txt",
+      "size_bytes": 1529,
+      "sha256": "5d0a178545a697065b24e0eb75d5462feb878acdaced6511cbe1a7e3ba1594b8"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-red-02.original.txt",
+      "size_bytes": 1083,
+      "sha256": "72cf03dbd4dd867e86f247b6b138f029724dfedd96d75bb53a7beb097471378d"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-red-03.original.txt",
+      "size_bytes": 2623,
+      "sha256": "8ae4fe3c6a1a058e109d2296ea931e4c4e2080133fc5a6c097ad6c0aee9fbfec"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-red-04.original.txt",
+      "size_bytes": 791,
+      "sha256": "edb5c055f66a4dcaebe4ab74aa587c8d459681b8b44730abbf99dc5dc8d94688"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-child-red-05.original.txt",
+      "size_bytes": 840,
+      "sha256": "f1edfe19d8d2380e05f9f04fedf445cc8c1e8de8e2dd2286230b45422c823422"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-completion-green-01.original.txt",
+      "size_bytes": 161,
+      "sha256": "35cc6a1fe7d44da1b6dd6e031d3ab972d2e73925756af995793146526e318f15"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-completion-red-01.original.txt",
+      "size_bytes": 11369,
+      "sha256": "b8b6fc409e30b28fc89f86d3672d396aeeb8891b6866c40058caf1f2b5ca9110"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-01.original.txt",
+      "size_bytes": 1860,
+      "sha256": "dcb8fb87f361a1e41defb4dc0b9ef360f4d20125953ba2817a081c25fff84569"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-02.original.txt",
+      "size_bytes": 151,
+      "sha256": "cb3260ee73fc421c0f955f49e50bbe1a8e4062dc08be64737ef6ccc7c2cb7f44"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-03.original.txt",
+      "size_bytes": 152,
+      "sha256": "216da1a359e758ceb4703fa37f157cc1421f8dde7d93b982e7fa2a2ada63d9d3"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-04.original.txt",
+      "size_bytes": 153,
+      "sha256": "b0e62d0e5b65707b562707f64c51f2e7e80465bf9fea720b4278088d10313c61"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-05.original.txt",
+      "size_bytes": 155,
+      "sha256": "0d17ab3622c44f2dace1128c8881a7f1a52aa583c4172a1ffcc11f577028ed6a"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-green-06.original.txt",
+      "size_bytes": 157,
+      "sha256": "a3865455d23c9466c854407a012a015f390ac90afc5d303ff3e17ba39d2209c3"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-01.original.txt",
+      "size_bytes": 1607,
+      "sha256": "f350ee2b344f6425c9fb240ef843899ab0c2184ab1977bfc3dcc5988daf0f5d5"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-02.original.txt",
+      "size_bytes": 3093,
+      "sha256": "455f3a5686ae009d8b824c6f92956109553afb47a787b173993242581203a58f"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-03.original.txt",
+      "size_bytes": 2039,
+      "sha256": "6d6d455860968a3ebab9599869759818b7e7af68f95beda63ceae71385743492"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-04.original.txt",
+      "size_bytes": 3691,
+      "sha256": "68bf2b329eeb58edf9c9b11a88c118dc039b0ae43300b20570313faf628dcfd0"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-05.original.txt",
+      "size_bytes": 1702,
+      "sha256": "7920146f2447fbab1553c404f30006926dbefb95b5ea047ddbaee0b5f5c8b952"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-core-red-06.original.txt",
+      "size_bytes": 2672,
+      "sha256": "42f51fd2cebc5d9b31e481dc8cabbd516073b361ad7dc3a18da7bae1f8ada0ac"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-gap-green-01.original.txt",
+      "size_bytes": 158,
+      "sha256": "3046e336c76229aab9cb4cb1d400ca39ee42f63f6630eb46889f11d70c6fc82b"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-gap-red-01.original.txt",
+      "size_bytes": 1395,
+      "sha256": "3208e62c5b4ea9c73ab09ba68700e3a9e8166d29d3c00c818f48b50e13e75f84"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-green-01.original.txt",
+      "size_bytes": 1505,
+      "sha256": "0357f8d33fa35e58e83c37da688fa222c1cea872abf1b34e5ae906ccf9c57be1"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-green-02.original.txt",
+      "size_bytes": 110,
+      "sha256": "ce895947b8ffcb2e77addf8382970fd1c07ecab9486fbbfca209319a47c37f4f"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-green-03.original.txt",
+      "size_bytes": 116,
+      "sha256": "6bd1ff4b2acbf2cc7c0e598f496b49c50774c85560cb87ce328c531e89653b0d"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-green-04.original.txt",
+      "size_bytes": 145,
+      "sha256": "cc0dcb156cb7a83961bb552089975d95dd797bfbed172fa8ecb407e9e7747229"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-red-01.original.txt",
+      "size_bytes": 1046,
+      "sha256": "a676c4fad02176e60e2120392653f3de1285c8802833e39246956fae194a42a7"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-red-04.original.txt",
+      "size_bytes": 2251,
+      "sha256": "e0fc681375bee154b19e4577db4cd58ccf94b2e16039b7ea4d02051213d0e33b"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/d-test-invocation-01.original.txt",
+      "size_bytes": 228,
+      "sha256": "7ecb417bfdebb5e6851577a909fa294f0499c1f0b3ef103320427e93fa8a953c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/export-import-01.original.txt",
+      "size_bytes": 98,
+      "sha256": "98d5e9b9951fcbe3c0e6acf530997a1c02e92dab1d1d567ebde28c47ba7f4fea"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-integrated-01.original.txt",
+      "size_bytes": 459,
+      "sha256": "35397a08d2087acab27e92856010fc1f26b4ed0956559e990e6686291707ffe8"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-integrated-02.original.txt",
+      "size_bytes": 463,
+      "sha256": "f5e24f4df4f90635ec4c92a5318f657fb490399902bc5f45da50b27c773a6190"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-openspec-01.original.txt",
+      "size_bytes": 3694,
+      "sha256": "05e38ae91d3b7f9a85899c7d64bc9cc45cf3f25b0e04545bc074434517261967"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-syntax-01.original.txt",
+      "size_bytes": 143,
+      "sha256": "95156a7c8a660c6fd1133c20aef5accf746fd3781a194959fb165300e90eeb2c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/gate2-syntax-02.original.txt",
+      "size_bytes": 1551,
+      "sha256": "22302e80099935cf37aa41e2b198a68b3df0a70407f59c74a9855f83266e2926"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/owner-green-01.original.txt",
+      "size_bytes": 215,
+      "sha256": "bde42c2474315b64236228a53e80a1f35ca0945ae4320bf66f3575e2039224bb"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/owner-red-01.original.txt",
+      "size_bytes": 16506,
+      "sha256": "791d6a43840db6d389726f2296f7094afabb6cbeb3e77259db537ce0357e06bf"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/owner-regression-01.original.txt",
+      "size_bytes": 301,
+      "sha256": "0fcab55d2854cce467d3def7fe748eead6db9edf80186d0593d7c42d334f0a22"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-green-01.original.txt",
+      "size_bytes": 116,
+      "sha256": "dc11d995a38320510c300f3fcbaa5221f1e8896aed765db8223fa4328a8a6a2e"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-green-02.original.txt",
+      "size_bytes": 124,
+      "sha256": "7f49a4545f06f75f1b666033c2a62844dccec4a838307673026c8205352600b1"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-green-01.original.txt",
+      "size_bytes": 129,
+      "sha256": "1b3af43ca27bd8996744006a71dae62f6215eff95f05270e6f0e78e9f0a09853"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-green-02.original.txt",
+      "size_bytes": 131,
+      "sha256": "72ef1916f775b3a8c90d9ae24283ee342ed076580c16657ae3925fe902872d6c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-green-03.original.txt",
+      "size_bytes": 133,
+      "sha256": "23c7999173bfa21b3bb5eec3989046e7754ae9ecba7edb77c33f77c5b3273faf"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-red-01.original.txt",
+      "size_bytes": 167963,
+      "sha256": "04165bf254d4dbef44e93b68bb9725df0a2d801f8f9271e547f8aaff418151c0"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-red-02.original.txt",
+      "size_bytes": 2578,
+      "sha256": "92b9038bd8cb8daee02c63a2d7bec6726111168558fe61cf9fdb1dbe1d34a103"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-owner-red-03.original.txt",
+      "size_bytes": 7010,
+      "sha256": "6e72a242c6481affb4ab2b3b57fb05d2cbb98839aae12790aa90ef58e1b08c66"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-red-01.original.txt",
+      "size_bytes": 1023,
+      "sha256": "afdfdc9926b85e9686e1a1f18e7c1c0602edabb831ee43c9de9c9bdda793b3b4"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-red-02.original.txt",
+      "size_bytes": 9777,
+      "sha256": "3fd49d2885a70f1075b5fd9a27f39c69d0d4ee5d5e77658e69fbe84c3198797f"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/p0-review-json-red-01.original.txt",
+      "size_bytes": 1248,
+      "sha256": "7235ea08d839b42e2ce56a97c84ef1b1e3939ebe15e6d4bb204d9d96fcf14cd6"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-correction-copy-reserve-red.original.txt",
+      "size_bytes": 834,
+      "sha256": "e777c3b8ab798202817a048af82957bab564fd4b98cb092224b8deee6aaf01da"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-correction-grammar-green.original.txt",
+      "size_bytes": 86,
+      "sha256": "3447214be27c78af32323f1c44497796f050e9118fc7b9ffc5792f131c67f60b"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-correction-green.original.txt",
+      "size_bytes": 250,
+      "sha256": "f67e7814ca49b4683496c3e58cc5c0ce5bcb3e512a3931b77b04a02f8e259146"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-correction-initial-red.original.txt",
+      "size_bytes": 2448,
+      "sha256": "d40fe39fb6aa1547eaf51e5beda1aed0800fc38f470f90f48b07675d65fc6d25"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-correction-tests.v1.json",
+      "size_bytes": 3258,
+      "sha256": "a116bb79b41f0fb27a300d617d87b0798c9a6f6f427b451f4de151240f106f25"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-grammar-green.original.txt",
+      "size_bytes": 86,
+      "sha256": "3447214be27c78af32323f1c44497796f050e9118fc7b9ffc5792f131c67f60b"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-green.original.txt",
+      "size_bytes": 244,
+      "sha256": "9ae29b82845104b9df1fa51d6f60337e8200f3f059a730e51705f510807bc5c0"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-identity-accounting-red.original.txt",
+      "size_bytes": 1465,
+      "sha256": "f9ea7350bd4068283633d836f082e224108ea9a0918f7de012bcac9d248f8a7e"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-integration-red.original.txt",
+      "size_bytes": 3277,
+      "sha256": "92bba19c6c5c20c3c2991294cec5998d2ad365d6ef5f51e95a6a82d4057c6216"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-package-fields-red.original.txt",
+      "size_bytes": 1521,
+      "sha256": "e8f2326dad202abc6434be4d66484ec8589ed5a1cb7c6c4205e21ace14f6a032"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-red.original.txt",
+      "size_bytes": 10509,
+      "sha256": "c3c675c801fef4604ca39ee5780a402fd79cd9f7a584a8a680ccd2fe389ad0c0"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-tests.v1.json",
+      "size_bytes": 2186,
+      "sha256": "25d4b9daa9d379ea6e8f4311c877fbc36507c4a9e2fdc074b307bb8b36d90a8c"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-unknown-extent-red.original.txt",
+      "size_bytes": 912,
+      "sha256": "a50422f4173bd398c67e4c2a66eb32c190b53729b21b3fed9ffdcbf771216349"
+    },
+    {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-implementation-tests/recovery-validator-red.original.txt",
+      "size_bytes": 972,
+      "sha256": "e86f4b617a6e0cf51df2523aaf836b8bcf77cd39e41fd033b40169fc4b1ed437"
+    }
+  ],
+  "checks": [
+    {
+      "command": "wsl.exe -d Ubuntu --cd /mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST --exec /usr/bin/python3 -B -m unittest discover -s tests -p test_accepted_policy_fixture_compiler*_v1.py",
+      "runtime": "Python3.12.3 / canonical Ubuntu WSL",
+      "result": "PASS",
+      "tests": 363,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "original": "gate2-implementation-tests/gate2-integrated-02.original.txt"
+    },
+    {
+      "command": "ast.parse for all25 fixture/test Python files with feature_version=(3,10)",
+      "result": "PASS",
+      "files": 25,
+      "original": "gate2-implementation-tests/gate2-syntax-02.original.txt"
+    },
+    {
+      "command": "openspec validate --all --strict --no-interactive",
+      "result": "PASS",
+      "warning_disposition": "Existing informational >500-character requirement messages retained; no errors. No dedicated CI behavioral-conformance gate is installed.",
+      "original": "gate2-implementation-tests/gate2-openspec-01.original.txt"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "advisory_review_boundary": {
+    "formal_exact_commit_approval": false,
+    "findings": "See gate2-implementation-advisory-01.v1.json; earlier BLOCK findings and failed RED/harness logs preserved.",
+    "remaining": "Formal whole implemented exact-commit reviews + required hosted CPU/host checks + delegated AGENT PR approval before physical use."
+  },
+  "grok_cli": {
+    "version": "1.0.60",
+    "model": "user configured default; no override",
+    "implementation_session": "01a144ac-229f-78e2-8e76-6b6216faf3be",
+    "corrective_invocation_exit_code": 0,
+    "corrective_tests": 20,
+    "final_p0_owner_integration_tests": 34,
+    "final_output": {
+      "path": "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/gate2-grok-p0-implementation.final-output.original.txt",
+      "size_bytes": 3629,
+      "sha256": "1fcf684e5ef6af162d205b307148e0ea5432b1c6ed6e3146a257fafa6cd23d88"
+    },
+    "independent_review": "A fresh Grok session is required for formal implementation review; the authoring session is not counted as independent."
+  },
+  "limitations": [
+    "Controlled tests invoke no actual Docker fixture, F2 archive, P0 root collector, C container or retained ELF.",
+    "Native call and final persistence timing cannot be reconstructed from leftover control files; each actual successful invocation/status/EOF and completed write proof needs external independent review.",
+    "F2/P0 proof packet and C completion descriptors obtain authority only from external evidence approval, never their own strings or hashes.",
+    "No storage/image/config changes, B/C retries, Q1, archive or merge are authorized by this component implementation."
+  ]
+}

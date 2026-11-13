@@ -1,0 +1,1839 @@
+{
+  "artifact_kind": "vast_a16_completed_original_retention_v1",
+  "campaign_authority": false,
+  "catalogue": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals.v1.json",
+  "completed_states": {
+    "captures": {
+      "preparation": {
+        "finished_utc": "2026-10-11T22:19:41.241564+00:00",
+        "original_exit_code": 0,
+        "original_source_commit_metadata_present": true,
+        "result_source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/original.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:15:33.350422+00:00"
+      },
+      "preparation-independent-01": {
+        "finished_utc": "2026-10-11T22:20:50.378682+00:00",
+        "original_exit_code": 1,
+        "original_source_commit_metadata_present": true,
+        "preserved_failure": "Transferred shell variables vanished before the independent source gate.",
+        "result_source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:20:50.377415+00:00"
+      },
+      "preparation-independent-02": {
+        "finished_utc": "2026-10-11T22:26:18.353058+00:00",
+        "original_exit_code": 0,
+        "original_source_commit_metadata_present": true,
+        "result_source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent-02.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:25:40.213335+00:00"
+      },
+      "reconstruction-copy": {
+        "finished_utc": "2026-10-11T22:32:31.325775+00:00",
+        "original_exit_code": 0,
+        "original_source_commit_metadata_present": true,
+        "result_source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/original.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:31:46.960335+00:00"
+      },
+      "reconstruction-independent-01": {
+        "finished_utc": "2026-10-11T22:34:34.036772+00:00",
+        "original_exit_code": 1,
+        "original_source_commit_metadata_present": false,
+        "preserved_failure": "Transferred nested Python quoting failed at parsing, before independent predicates.",
+        "result_source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent.result.v1.json",
+        "source_binding_boundary": "Literal A16 control-directory context only; absent original metadata field is not invented.",
+        "started_utc": "2026-10-11T22:34:34.030061+00:00"
+      },
+      "reconstruction-independent-02": {
+        "finished_utc": "2026-10-11T22:45:46.269326+00:00",
+        "original_exit_code": 1,
+        "original_source_commit_metadata_present": true,
+        "preserved_failure": "Verifier refused legitimate unittest docstring-split OK formatting; original suite was not rerun.",
+        "result_source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-02/original.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:45:28.049635+00:00"
+      },
+      "reconstruction-independent-03": {
+        "finished_utc": "2026-10-11T22:53:20.953165+00:00",
+        "original_exit_code": 0,
+        "original_source_commit_metadata_present": true,
+        "result_source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03/original.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:52:48.621621+00:00"
+      },
+      "reconstruction-plan": {
+        "finished_utc": "2026-10-11T22:28:25.865564+00:00",
+        "original_exit_code": 0,
+        "original_source_commit_metadata_present": true,
+        "result_source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/reconstruction-plan.original.result.v1.json",
+        "source_binding_boundary": "Actual metadata field",
+        "started_utc": "2026-10-11T22:28:09.230605+00:00"
+      }
+    },
+    "focused": {
+      "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01",
+      "finished_utc": "2026-10-11T22:26:09Z",
+      "original_recipe_rc_file": 0,
+      "original_skip_count": 1,
+      "original_tests_run": 212,
+      "record_boundary": "Finished recipe RC/UTC controls and original unittest streams; no separate captured outer result file is inventoried.",
+      "retained_outer_result_file": false,
+      "started_utc": "2026-10-11T22:23:56Z"
+    },
+    "integration": {
+      "existing_managed_outer_controls_not_copied": true,
+      "finished_utc": "2026-10-11T22:55:21.7606781+00:00",
+      "original_cases": 9,
+      "original_exit_code": 0,
+      "original_skips": 0,
+      "original_source_commit_metadata_present": true,
+      "result_source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/original.result.v1.json",
+      "source_binding_boundary": "Actual metadata field",
+      "started_utc": "2026-10-11T22:54:50.3465727+00:00"
+    },
+    "reconstruction": {
+      "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+      "finished_utc": "2026-10-11T22:32:30Z",
+      "original_recipe_rc_file": 0,
+      "started_utc": "2026-10-11T22:31:47Z"
+    },
+    "source_comparison": {
+      "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+      "finished_utc": "2026-10-11T22:26:32Z",
+      "missing_outer_record": "Recipe RC/UTC/reports exist; outer completed tool result was not emitted after an orchestration store error.",
+      "original_recipe_rc_file": 0,
+      "outer_tool_exit_emission_available": false,
+      "started_utc": "2026-10-11T22:26:24Z"
+    }
+  },
+  "exclusions": [
+    "All current/later full-suite and consumer outputs",
+    "Native/model/corpus/tensor/fixture input trees",
+    "Existing managed integration outer controls (referenced, not recopied)",
+    "Absent outer source-comparison tool emission"
+  ],
+  "existing_managed_outer_controls_untouched": [
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759290354521300,
+        "st_dev": 114,
+        "st_ino": 2814749768773648,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791759290354521300,
+        "st_nlink": 1,
+        "st_size": 971
+      },
+      "sha256": "cd24eae1651168e63f25bdc8d2d3b8e316303ebc778d02b6f57ce22a861f9a22",
+      "size_bytes": 971,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/command.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321768484900,
+        "st_dev": 114,
+        "st_ino": 7881299348517062,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791759321768484900,
+        "st_nlink": 1,
+        "st_size": 1492
+      },
+      "sha256": "a3ecd44d918dbb42615a574836deefaf0d841e37219d241b1ec121917d1736ae",
+      "size_bytes": 1492,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321760973400,
+        "st_dev": 114,
+        "st_ino": 24488322975494162,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791759321760973400,
+        "st_nlink": 1,
+        "st_size": 72
+      },
+      "sha256": "ec0fa1953f2ef0d53412f9fa20f8f2d96bfd219ed31a4782df0542031b2736a5",
+      "size_bytes": 72,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/original.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321760973400,
+        "st_dev": 114,
+        "st_ino": 2533274792062996,
+        "st_mode": 33279,
+        "st_mtime_ns": 1791759321760973400,
+        "st_nlink": 1,
+        "st_size": 356
+      },
+      "sha256": "3669c10fbdc200599e51096654929da77e65e392d2e84568ab759a762ac95c20",
+      "size_bytes": 356,
+      "source": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/integration-a16-original-control-01/original.stderr.raw"
+    }
+  ],
+  "file_count": 103,
+  "files": [
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757592076103296,
+        "st_dev": 2128,
+        "st_ino": 965830,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757592076103296,
+        "st_nlink": 1,
+        "st_size": 405
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-cold.stdout.json",
+      "sha256": "a691c230f55d720f89fdf669569866bde5eaabaff40b8510c584fc151fe55469",
+      "size_bytes": 405,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-cold.stdout.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-cold.stdout.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757590292002688,
+        "st_dev": 2128,
+        "st_ino": 965827,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757590292002688,
+        "st_nlink": 1,
+        "st_size": 405
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-materialize.stdout.json",
+      "sha256": "b5c27e3be76c73c5875cd1917df4983dc1d2f7b3ab8074eb403e047124ad361c",
+      "size_bytes": 405,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-materialize.stdout.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/code-closure-materialize.stdout.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757590276001763,
+        "st_dev": 2128,
+        "st_ino": 965832,
+        "st_mode": 33060,
+        "st_mtime_ns": 1791757590272001531,
+        "st_nlink": 1,
+        "st_size": 32367
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/execution-code-closure.v1.json",
+      "sha256": "7eb06189ccbd194a626bb60722262e3a5d8e4fbbfa32efe30aefe85a1dc4a444",
+      "size_bytes": 32367,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/execution-code-closure.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/execution-code-closure.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757584367660171,
+        "st_dev": 2128,
+        "st_ino": 965821,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757584367660171,
+        "st_nlink": 1,
+        "st_size": 556
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helpers.sha256.txt",
+      "sha256": "62700777cd69b7ec942d2b4dbe81c9eb9c0a1bc0509c4914a6ceea3155954985",
+      "size_bytes": 556,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helpers.sha256.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helpers.sha256.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757592080103514,
+        "st_dev": 2128,
+        "st_ino": 965833,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757592080103514,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt",
+      "sha256": "18174beb867bf61bfc1433f7f3036a5e0ef94859166aed13c6e0244a321a44f2",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757587951867392,
+        "st_dev": 2128,
+        "st_ino": 965824,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757587951867392,
+        "st_nlink": 1,
+        "st_size": 136646
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-packaged-closure.inventory.v1.json",
+      "sha256": "9107d45bb375fad0cf1792a61d6692959826486bd3ec17d5f0591f5627546b25",
+      "size_bytes": 136646,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-packaged-closure.inventory.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-packaged-closure.inventory.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757588003870399,
+        "st_dev": 2128,
+        "st_ino": 965825,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757588003870399,
+        "st_nlink": 1,
+        "st_size": 6958
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/native-worker.plan.json",
+      "sha256": "bbf70001d128f7b784682ddde4086e81cd52b8b1a8547a36a28e51881a00b209",
+      "size_bytes": 6958,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/native-worker.plan.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/native-worker.plan.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757592080103514,
+        "st_dev": 2128,
+        "st_ino": 965831,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757592080103514,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757584367660171,
+        "st_dev": 2128,
+        "st_ino": 965823,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757584367660171,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757584367660171,
+        "st_dev": 2128,
+        "st_ino": 965822,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757584367660171,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757584363659939,
+        "st_dev": 2128,
+        "st_ino": 965820,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757584363659939,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757588471897459,
+        "st_dev": 2128,
+        "st_ino": 965826,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757588471897459,
+        "st_nlink": 1,
+        "st_size": 1269
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-comparison.v1.json",
+      "sha256": "70e7dbe25727dcee82f47e8c3e03fc40e06628b2e6e3e3c47f1840a6ab323ea4",
+      "size_bytes": 1269,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-comparison.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-comparison.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757584363659939,
+        "st_dev": 2128,
+        "st_ino": 965819,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757584363659939,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt",
+      "sha256": "0ccfeb343d15eb3790d6211b64c086a2b5466ee519eb5e7837f28837394334a3",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757436706149549,
+        "st_dev": 2128,
+        "st_ino": 948418,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757436706149549,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757569702810433,
+        "st_dev": 2128,
+        "st_ino": 965815,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757569702810433,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt",
+      "sha256": "fdba930b47b163b1fecb7b40447690441ca6ce5a7dd1191baefbb4d0a78f6f3b",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757569698810202,
+        "st_dev": 2128,
+        "st_ino": 965814,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757569698810202,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.rc.txt",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.rc.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.rc.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757569626806050,
+        "st_dev": 2128,
+        "st_ino": 965813,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757569626806050,
+        "st_nlink": 1,
+        "st_size": 48526
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stderr.log",
+      "sha256": "c3b0044e488a1aacf12f028fb9f7714250a74a064c9b564564f1779e05be9f58",
+      "size_bytes": 48526,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757436710149796,
+        "st_dev": 2128,
+        "st_ino": 965812,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757436710149796,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/original.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757436710149796,
+        "st_dev": 2128,
+        "st_ino": 948425,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757436710149796,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt",
+      "sha256": "360ce9db3fb7347dd6ca56dc445f9b5d3171a1fcc9fa649d5a5ba59220f692a0",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757436706149549,
+        "st_dev": 2128,
+        "st_ino": 948419,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757436706149549,
+        "st_nlink": 1,
+        "st_size": 1849
+      },
+      "retained": "a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test-modules.txt",
+      "sha256": "e01f8a81ff1397379665dbe2e0a9e8a1de2a0384993e5f300d5c8ce1729a5285",
+      "size_bytes": 1849,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test-modules.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test-modules.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759292151098310,
+        "st_dev": 2128,
+        "st_ino": 965871,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759292151098310,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/commit.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321203284048,
+        "st_dev": 2128,
+        "st_ino": 965918,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321203284048,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759292155098580,
+        "st_dev": 2128,
+        "st_ino": 965882,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759292155098580,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/containers.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293739205453,
+        "st_dev": 2128,
+        "st_ino": 965885,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293739205453,
+        "st_nlink": 1,
+        "st_size": 309
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/disk.before.txt",
+      "sha256": "c32a60934201c2216f7adff7013cbd104cc2ec22c6fe665394e2d46b2342d263",
+      "size_bytes": 309,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/disk.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/disk.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293735205183,
+        "st_dev": 2128,
+        "st_ino": 965884,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293735205183,
+        "st_nlink": 1,
+        "st_size": 37
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/docker-engine-id.txt",
+      "sha256": "d86a939c0f355a5811b3168c3edf4f03752620f37f8c62979f98b1cb22cc1d9d",
+      "size_bytes": 37,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/docker-engine-id.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/docker-engine-id.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321203284048,
+        "st_dev": 2128,
+        "st_ino": 965917,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321203284048,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt",
+      "sha256": "0fea113037b0589c1466bf6ef44aac950d193aafd1e16afe092b98639ddb288d",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/finished.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321219285030,
+        "st_dev": 2128,
+        "st_ino": 965919,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321219285030,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.after.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.after.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759292175099930,
+        "st_dev": 2128,
+        "st_ino": 965883,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759292175099930,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.before.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/gpu-compute.before.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293743205723,
+        "st_dev": 2128,
+        "st_ino": 965886,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293743205723,
+        "st_nlink": 1,
+        "st_size": 1416
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/integration-test-ids.txt",
+      "sha256": "a036d62f684e27bc048622992cbde0710eb8de4f802c7eced51ba482bdd591e8",
+      "size_bytes": 1416,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/integration-test-ids.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/integration-test-ids.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321203284048,
+        "st_dev": 2128,
+        "st_ino": 965890,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321203284048,
+        "st_nlink": 1,
+        "st_size": 1434
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/results.txt",
+      "sha256": "a48a8caf842fb1a9c11283cf523d31b98cc14006ae6101380bed34376925217f",
+      "size_bytes": 1434,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/results.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/results.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759292155098580,
+        "st_dev": 2128,
+        "st_ino": 965872,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759292155098580,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt",
+      "sha256": "c75a2cf5630ebea9669f127cc05584e7ce1c756e09d3a8b90c5fd1f3d0de2f79",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/started.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293911217058,
+        "st_dev": 2128,
+        "st_ino": 965889,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293911217058,
+        "st_nlink": 1,
+        "st_size": 501
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.outcome.json",
+      "sha256": "5aa8bad006eadee2fcd4cdb5e1f891a50a466d1827995b345eb179bd01858fa6",
+      "size_bytes": 501,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293911217058,
+        "st_dev": 2128,
+        "st_ino": 965888,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293911217058,
+        "st_nlink": 1,
+        "st_size": 335
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stderr.log",
+      "sha256": "99332b92b946b6dbf37901721aa6bcf1bb9e3411ca7ae41361388a1e8dd2254b",
+      "size_bytes": 335,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293743205723,
+        "st_dev": 2128,
+        "st_ino": 965887,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293743205723,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_deepstream_runtime_image_evidence_v1.DeepStreamRuntimeImageEvidenceV1Tests.test_exact_materialized_image_evidence_and_qualification_fragment.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759296303378446,
+        "st_dev": 2128,
+        "st_ino": 965893,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759296303378446,
+        "st_nlink": 1,
+        "st_size": 533
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.outcome.json",
+      "sha256": "170adaca161ea5a6a7c020dbc4e250ce9b0ed8b097d7727731b9db12c66a9a2f",
+      "size_bytes": 533,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759296303378446,
+        "st_dev": 2128,
+        "st_ino": 965892,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759296303378446,
+        "st_nlink": 1,
+        "st_size": 355
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stderr.log",
+      "sha256": "1c23b5cf4133fe5606c1b63144cec38805ac0a9849c94405d2e92a59fa966e57",
+      "size_bytes": 355,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759293919217597,
+        "st_dev": 2128,
+        "st_ino": 965891,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759293919217597,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_exact_accepted_parity_preprocessing_and_runtime_images_are_bound.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759299055555398,
+        "st_dev": 2128,
+        "st_ino": 965896,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759299055555398,
+        "st_nlink": 1,
+        "st_size": 513
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.outcome.json",
+      "sha256": "af723f95229ce17ad65eca032fe2e1ee4918c2960f7e14becfddfa0f6a4f167f",
+      "size_bytes": 513,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759299055555398,
+        "st_dev": 2128,
+        "st_ino": 965895,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759299055555398,
+        "st_nlink": 1,
+        "st_size": 335
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stderr.log",
+      "sha256": "f111e31dbc54f093d747a2e3a98e61811f99da460133ef7d77fddc121d5bb97a",
+      "size_bytes": 335,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759296335380605,
+        "st_dev": 2128,
+        "st_ino": 965894,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759296335380605,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_gstreamer_custom_qualification_fragment_v3.GstreamerCustomQualificationFragmentV3Tests.test_phase_one_materializes_exact_physical_binding_fragment.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759302423760587,
+        "st_dev": 2128,
+        "st_ino": 965900,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759302423760587,
+        "st_nlink": 1,
+        "st_size": 453
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.outcome.json",
+      "sha256": "a3b48f8a65797bb4cde202bb206b17130f5527b9abad0cbeb43711f0c7a8f3d3",
+      "size_bytes": 453,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759302423760587,
+        "st_dev": 2128,
+        "st_ino": 965898,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759302423760587,
+        "st_nlink": 1,
+        "st_size": 289
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stderr.log",
+      "sha256": "b294b2b21487d39083f372a7040790f8978597de037a908709884db869e75eb0",
+      "size_bytes": 289,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759299087557347,
+        "st_dev": 2128,
+        "st_ino": 965897,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759299087557347,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_checkpoint_openvino_gva_publication_runtime_v3.OpenVINOGVAPublicationRuntimeV3Tests.test_live_daemon_reads_private_held_fd_copy.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759303830225536,
+        "st_dev": 2128,
+        "st_ino": 965903,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759303830225536,
+        "st_nlink": 1,
+        "st_size": 497
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.outcome.json",
+      "sha256": "5606b84db6c7c72b8e77eb0b82bb0bbf9c5dea70fda895750a5118071da26a0c",
+      "size_bytes": 497,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759303830225536,
+        "st_dev": 2128,
+        "st_ino": 965902,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759303830225536,
+        "st_nlink": 1,
+        "st_size": 319
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stderr.log",
+      "sha256": "8b959b703d92d2e6316b784bef70246b00130c6fdf808fb76e8b22e789a311b8",
+      "size_bytes": 319,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759302431761075,
+        "st_dev": 2128,
+        "st_ino": 965901,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759302431761075,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759305610333979,
+        "st_dev": 2128,
+        "st_ino": 965907,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759305610333979,
+        "st_nlink": 1,
+        "st_size": 477
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.outcome.json",
+      "sha256": "f62e622366988f8f6330c61eeca0eaa24859a8f9e2f3482e6cfcc3cd14e38b08",
+      "size_bytes": 477,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759305610333979,
+        "st_dev": 2128,
+        "st_ino": 965906,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759305610333979,
+        "st_nlink": 1,
+        "st_size": 311
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stderr.log",
+      "sha256": "e20d267be98844bd8791c7a29d4ffd1bddf77c0b716386cc838cac33229c312b",
+      "size_bytes": 311,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759303854226998,
+        "st_dev": 2128,
+        "st_ino": 965905,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759303854226998,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_kpp_iss_publication_v3_dataset_integration.KppIssPublicationV3DatasetIntegrationTests.test_require_files_rehashes_the_complete_exact_corpus.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306162367435,
+        "st_dev": 2128,
+        "st_ino": 965910,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306162367435,
+        "st_nlink": 1,
+        "st_size": 515
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.outcome.json",
+      "sha256": "fea3a974c639d7969ad500d46cade6f01351174bb42494998148ca57e86f01b8",
+      "size_bytes": 515,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306162367435,
+        "st_dev": 2128,
+        "st_ino": 965909,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306162367435,
+        "st_nlink": 1,
+        "st_size": 337
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stderr.log",
+      "sha256": "2dcf3b65dbda33425e4335b8b53483f71689e468888cf9d2a495e3921c4d92c0",
+      "size_bytes": 337,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759305678338122,
+        "st_dev": 2128,
+        "st_ino": 965908,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759305678338122,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_current_qualification_fragments_match_physical_receipts.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306670398178,
+        "st_dev": 2128,
+        "st_ino": 965913,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306670398178,
+        "st_nlink": 1,
+        "st_size": 507
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.outcome.json",
+      "sha256": "f073a7ffe7377a3218d0d12ddf6f0e05353a3d3786cf8467d020ff5abdfe203b",
+      "size_bytes": 507,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306666397936,
+        "st_dev": 2128,
+        "st_ino": 965912,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306666397936,
+        "st_nlink": 1,
+        "st_size": 329
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stderr.log",
+      "sha256": "21fc333701b88e6cb79182449a8a72c3bd1366ce92f5dbc15e667b42f3d5381c",
+      "size_bytes": 329,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306198369614,
+        "st_dev": 2128,
+        "st_ino": 965911,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306198369614,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_fix_benchmark_patch_matches_exact_runtime_constants.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321167281838,
+        "st_dev": 2128,
+        "st_ino": 965916,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321167281838,
+        "st_nlink": 1,
+        "st_size": 519
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.outcome.json",
+      "sha256": "3b72efba55c4189302fdb5dd34a67e746a53d526c9b7174531750e010817495a",
+      "size_bytes": 519,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.outcome.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.outcome.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759321167281838,
+        "st_dev": 2128,
+        "st_ino": 965915,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759321167281838,
+        "st_nlink": 1,
+        "st_size": 342
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stderr.log",
+      "sha256": "5c4711b808be4aa4254a93a4aa0051a80e4f3c77bec84947fcabd76a64d0377f",
+      "size_bytes": 342,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759306710400599,
+        "st_dev": 2128,
+        "st_ino": 965914,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759306710400599,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/integration-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01/test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756933345377572,
+        "st_dev": 2128,
+        "st_ino": 962726,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756933345377572,
+        "st_nlink": 1,
+        "st_size": 1469
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/command.v1.json",
+      "sha256": "05077dd6f23e30924a4bbd5399c4becfc0a77568629a62340a9f56808cb17961",
+      "size_bytes": 1469,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/command.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/command.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757578351310650,
+        "st_dev": 2128,
+        "st_ino": 965816,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757578351310650,
+        "st_nlink": 1,
+        "st_size": 694903
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent-02.input-hashes.v1.json",
+      "sha256": "969dec3ca01bed7683b082af33de3bf4f4b9d4fb03ff2b939187b4b6bb674ffe",
+      "size_bytes": 694903,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent-02.input-hashes.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent-02.input-hashes.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757578351310650,
+        "st_dev": 2128,
+        "st_ino": 965817,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757578351310650,
+        "st_nlink": 1,
+        "st_size": 2163
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent-02.result.v1.json",
+      "sha256": "b2d9a16c3a5997f1770d053d176d84ae21ad97ecd1f53c4bfbb9a4d19c28c933",
+      "size_bytes": 2163,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent-02.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent-02.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757540207240779,
+        "st_dev": 2128,
+        "st_ino": 966684,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757540207240779,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent-02.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent-02.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent-02.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757574639095074,
+        "st_dev": 2128,
+        "st_ino": 966683,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757574639095074,
+        "st_nlink": 1,
+        "st_size": 53
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent-02.stdout.raw",
+      "sha256": "220469787b7af23a586a99f3f610656558303e5218b316b45b36f16459a3ab36",
+      "size_bytes": 53,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent-02.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent-02.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757250374143039,
+        "st_dev": 2128,
+        "st_ino": 965811,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757250374143039,
+        "st_nlink": 1,
+        "st_size": 917
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent.result.v1.json",
+      "sha256": "f60d14f94246032b503f7ecaf04aa94198f910fc837850e8747a141e0e7a57ef",
+      "size_bytes": 917,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757250374143039,
+        "st_dev": 2128,
+        "st_ino": 965810,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757250374143039,
+        "st_nlink": 1,
+        "st_size": 134
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent.stderr.raw",
+      "sha256": "d9f9eac76cbd717e6c253e3f90c249f36e158d6cf62466305daea7322c3afbcc",
+      "size_bytes": 134,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757250374143039,
+        "st_dev": 2128,
+        "st_ino": 965809,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757250374143039,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/independent.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/independent.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/independent.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757181238480073,
+        "st_dev": 2128,
+        "st_ino": 965808,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757181238480073,
+        "st_nlink": 1,
+        "st_size": 527
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/original.result.v1.json",
+      "sha256": "7cf957ec421440f769b3214966d1e4a4ad4ddec50c9d394c44e76aed7874d460",
+      "size_bytes": 527,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/original.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756933345377572,
+        "st_dev": 2128,
+        "st_ino": 962728,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756933345377572,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/original.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/original.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/original.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756933345377572,
+        "st_dev": 2128,
+        "st_ino": 962727,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756933345377572,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/original.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/original.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/original.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757705862630276,
+        "st_dev": 2128,
+        "st_ino": 965836,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757705862630276,
+        "st_nlink": 1,
+        "st_size": 912
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/reconstruction-plan.original.result.v1.json",
+      "sha256": "d19b8e3cc155c75b512dc56218bf549aca8c2ea40451d8666d1f5374ad05702f",
+      "size_bytes": 912,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/reconstruction-plan.original.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/reconstruction-plan.original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757689225519121,
+        "st_dev": 2128,
+        "st_ino": 965835,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757689225519121,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/reconstruction-plan.original.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/reconstruction-plan.original.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/reconstruction-plan.original.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757705858630015,
+        "st_dev": 2128,
+        "st_ino": 948471,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757705858630015,
+        "st_nlink": 1,
+        "st_size": 16871
+      },
+      "retained": "a16-completed-originals/prepare-original-controls/reconstruction-plan.original.stdout.json",
+      "sha256": "f5e5ac4e73a5232389237d38bb5c194a1c4a9add240368db1b8b6927c1e1633a",
+      "size_bytes": 16871,
+      "source": "/var/tmp/vast-repair-precheck-inputs-a16f243e-01/reconstruction-plan.original.stdout.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/prepare-original-controls/reconstruction-plan.original.stdout.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757907451412894,
+        "st_dev": 2128,
+        "st_ino": 965844,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757907451412894,
+        "st_nlink": 1,
+        "st_size": 804
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helper-plan-wrapper.sha256",
+      "sha256": "c7c721b205a4d5ced7b66821eec83720f166cb5b1325206af4f9f4f9d2c41787",
+      "size_bytes": 804,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helper-plan-wrapper.sha256",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/external-helper-plan-wrapper.sha256"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757950807809978,
+        "st_dev": 2128,
+        "st_ino": 965864,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757950807809978,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt",
+      "sha256": "cf25f815d4dfca2a2776bff6c61a8f2e1be37ef8c3ae5484a735401c927c4c71",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/finished.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757950803809690,
+        "st_dev": 2128,
+        "st_ino": 965863,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757950803809690,
+        "st_nlink": 1,
+        "st_size": 2
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "size_bytes": 2,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.rc.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757907451412894,
+        "st_dev": 2128,
+        "st_ino": 965846,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757907451412894,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757950799809404,
+        "st_dev": 2128,
+        "st_ino": 965845,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757950799809404,
+        "st_nlink": 1,
+        "st_size": 6169
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.json",
+      "sha256": "583b62255915e9a0b5e0f67617d9b9859785fc2917746775d62b4566cea76a9b",
+      "size_bytes": 6169,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/original.stdout.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757907447412602,
+        "st_dev": 2128,
+        "st_ino": 965843,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757907447412602,
+        "st_nlink": 1,
+        "st_size": 41
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt",
+      "sha256": "f215f230f8e4a7e734d0ed11b38a354fb73a4e0f1989b1beb4591c1d2f258cd2",
+      "size_bytes": 41,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/source-commit.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757907447412602,
+        "st_dev": 2128,
+        "st_ino": 965842,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757907447412602,
+        "st_nlink": 1,
+        "st_size": 21
+      },
+      "retained": "a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt",
+      "sha256": "a0af82e7d0257551b29ca29bc999a1c8300d5c0f8fafb2ff1436a043bc708da6",
+      "size_bytes": 21,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8/started.txt"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757906955376794,
+        "st_dev": 2128,
+        "st_ino": 965838,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757906955376794,
+        "st_nlink": 1,
+        "st_size": 1135
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/command.v1.json",
+      "sha256": "a8e5f1f1c95f1460591c26730cc46b2ea64d75c295205bf94fdf1075c8c4a9d3",
+      "size_bytes": 1135,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/command.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/command.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758728045821498,
+        "st_dev": 2128,
+        "st_ino": 965874,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758728045821498,
+        "st_nlink": 1,
+        "st_size": 649
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-02/command.v1.json",
+      "sha256": "744d13a21a0f2525022d5096bb0b9d4509381fd9a21b6f6163f8939ab8a43e13",
+      "size_bytes": 649,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-02/command.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-02/command.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758746265033021,
+        "st_dev": 2128,
+        "st_ino": 965877,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758746265033021,
+        "st_nlink": 1,
+        "st_size": 1279
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-02/original.result.v1.json",
+      "sha256": "93423e1442007989b49faa3197aa16769b3c7735e13cdd76c3d64646751ad93d",
+      "size_bytes": 1279,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-02/original.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-02/original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758746253032336,
+        "st_dev": 2128,
+        "st_ino": 965876,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758746253032336,
+        "st_nlink": 1,
+        "st_size": 1052
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-02/original.stderr.raw",
+      "sha256": "2041e6c257f9ed95aa7598d8a05e5fd3348338402de3fdc4a40182edb3204f56",
+      "size_bytes": 1052,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-02/original.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-02/original.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758728045821498,
+        "st_dev": 2128,
+        "st_ino": 965875,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758728045821498,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-02/original.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-02/original.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-02/original.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759168618889635,
+        "st_dev": 2128,
+        "st_ino": 965879,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759168618889635,
+        "st_nlink": 1,
+        "st_size": 649
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-03/command.v1.json",
+      "sha256": "d7c8bd1ba6774524d7a448c1b493745ee96c81b7783cff9e878ffc9dec88373d",
+      "size_bytes": 649,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03/command.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-03/command.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759200950552379,
+        "st_dev": 2128,
+        "st_ino": 965869,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759200950552379,
+        "st_nlink": 1,
+        "st_size": 1280
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-03/original.result.v1.json",
+      "sha256": "5fec9462711cc0b0781474f31c87d34285e4a38549c486e725a1d0a7e5d844d9",
+      "size_bytes": 1280,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03/original.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-03/original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759168618889635,
+        "st_dev": 2128,
+        "st_ino": 965881,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759168618889635,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-03/original.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03/original.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-03/original.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791759200942551900,
+        "st_dev": 2128,
+        "st_ino": 965880,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791759200942551900,
+        "st_nlink": 1,
+        "st_size": 13402
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent-03/original.stdout.raw",
+      "sha256": "eb9ae308eb91c4c6b18a2eaf77251d48e31a15a00f3d8dd09591353c2868a09a",
+      "size_bytes": 13402,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent-03/original.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent-03/original.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758074033192035,
+        "st_dev": 2128,
+        "st_ino": 965868,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758074033192035,
+        "st_nlink": 1,
+        "st_size": 3356
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent.result.v1.json",
+      "sha256": "a2036e14552acbe6b0a0894c310f2cbcb32f49aee82bb7799bf66a990d5bf4e8",
+      "size_bytes": 3356,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758074033192035,
+        "st_dev": 2128,
+        "st_ino": 965867,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758074033192035,
+        "st_nlink": 1,
+        "st_size": 204
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent.stderr.raw",
+      "sha256": "88e558e6c76a47b38da14b2033d2934035df9c05c3d549514708f0fc59047b49",
+      "size_bytes": 204,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791758074029191764,
+        "st_dev": 2128,
+        "st_ino": 965866,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791758074029191764,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/independent.stdout.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/independent.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/independent.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757951323847022,
+        "st_dev": 2128,
+        "st_ino": 965865,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757951323847022,
+        "st_nlink": 1,
+        "st_size": 1249
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/original.result.v1.json",
+      "sha256": "dfd7e2ac87995d45e6f41cd69d287b996c7ca12c529f1dda476db0941924c52c",
+      "size_bytes": 1249,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/original.result.v1.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/original.result.v1.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757906955376794,
+        "st_dev": 2128,
+        "st_ino": 965840,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757906955376794,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/original.stderr.raw",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/original.stderr.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/original.stderr.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757951319846736,
+        "st_dev": 2128,
+        "st_ino": 965839,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757951319846736,
+        "st_nlink": 1,
+        "st_size": 234
+      },
+      "retained": "a16-completed-originals/reconstruction-original-controls/original.stdout.raw",
+      "sha256": "42647660fcf672616b349a3548c72e0cb76873c43b4c77c4c5adcd3487c131c1",
+      "size_bytes": 234,
+      "source": "/var/tmp/vast-repair-reconstruction-a16f243e-01/original.stdout.raw",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/reconstruction-original-controls/original.stdout.raw"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757016455468973,
+        "st_dev": 2128,
+        "st_ino": 962832,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757016455468973,
+        "st_nlink": 1,
+        "st_size": 8128
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.report.json",
+      "sha256": "44c7fbbf3939d4f621ae1c0b2ce25b366dca08a1bdf193dfdf6bf0468def760c",
+      "size_bytes": 8128,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.report.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.report.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756991187131597,
+        "st_dev": 2128,
+        "st_ino": 962775,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756991187131597,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756991187131597,
+        "st_dev": 2128,
+        "st_ino": 962774,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756991187131597,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/asset-copy.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757145770299066,
+        "st_dev": 2128,
+        "st_ino": 965807,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757145770299066,
+        "st_nlink": 1,
+        "st_size": 719773
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.report.json",
+      "sha256": "8edfaf6205f77fda79d5c9592359c79e59371398e824d1de370c34f9ee08f026",
+      "size_bytes": 719773,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.report.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.report.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757016459469228,
+        "st_dev": 2128,
+        "st_ino": 962834,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757016459469228,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791757016459469228,
+        "st_dev": 2128,
+        "st_ino": 962833,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791757016459469228,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/fresh-copy.stdout.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756991183131375,
+        "st_dev": 2128,
+        "st_ino": 962773,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756991183131375,
+        "st_nlink": 1,
+        "st_size": 7569
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.report.json",
+      "sha256": "8f22b71ceae766c686c5d28138a7781661c19a3b5f8b51c687a62edf882a064e",
+      "size_bytes": 7569,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.report.json",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.report.json"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756990819111310,
+        "st_dev": 2128,
+        "st_ino": 962732,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756990819111310,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stderr.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stderr.log"
+    },
+    {
+      "physical_epoch": {
+        "st_ctime_ns": 1791756990819111310,
+        "st_dev": 2128,
+        "st_ino": 962731,
+        "st_mode": 33188,
+        "st_mtime_ns": 1791756990819111310,
+        "st_nlink": 1,
+        "st_size": 0
+      },
+      "retained": "a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0,
+      "source": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stdout.log",
+      "target": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals/source-input-copy-a16f243e7e80f093342ccdddf717d59d6d46f0a8/regression-copy.stdout.log"
+    }
+  ],
+  "helper_sha256": "65fb7ef980246e1fd5b8054a4eaad6c04e6015928523532420c9f5e37bc68941",
+  "limits": [
+    "Failed originals stay failed; each passing original is retained separately.",
+    "No missing command, UTC, raw stream or return-code record is reconstructed or invented.",
+    "Retention is mechanical provenance, not consumer acceptance, full-suite completion, archive or Q1."
+  ],
+  "retention_output": "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/a16-completed-originals",
+  "reviewed_plan_sha256": "370d6ecef04ed8ede2148bc23831af87e5f0ec525099d39ba2b6660bbd987849",
+  "schema_version": 1,
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "source_read_only": true,
+  "status": "retained_exactly",
+  "total_bytes": 1724863
+}

@@ -1,0 +1,13 @@
+test_compiler_refusal_opens_no_elf_or_socket_and_has_no_fallback (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_compiler_refusal_opens_no_elf_or_socket_and_has_no_fallback) ... ok
+test_deadline_after_flush_preserves_primary_and_close_cause (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_deadline_after_flush_preserves_primary_and_close_cause) ... ok
+test_enclosing_clock_cannot_supply_a_fresh_window_longer_than_150_seconds (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_enclosing_clock_cannot_supply_a_fresh_window_longer_than_150_seconds) ... ok
+test_expired_foreign_root_and_foreign_source_refuse_at_all_three_entrypoints (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_expired_foreign_root_and_foreign_source_refuse_at_all_three_entrypoints) ... ok
+test_reply_string_and_table_overflow_refuse_before_output (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_reply_string_and_table_overflow_refuse_before_output) ... ok
+test_socket_and_elf_cleanup_both_run_without_replacing_consumer_failure (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_socket_and_elf_cleanup_both_run_without_replacing_consumer_failure) ... ok
+test_source_write_or_flush_failure_preserves_distinct_close_cause (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_source_write_or_flush_failure_preserves_distinct_close_cause) ... ok
+test_valid_preflight_binds_prospective_state_and_source_without_writing (tests.test_accepted_policy_fixture_preflight_v1.FixturePreflightTests.test_valid_preflight_binds_prospective_state_and_source_without_writing) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.087s
+
+OK

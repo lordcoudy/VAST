@@ -1,0 +1,10 @@
+6,7c6,7
+< root=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec
+< base="$root/artifacts/fix_benchmark_preparations_20260928g"
+---
+> root=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
+> base="$root/artifacts/qualify_full_benchmark_20261007a"
+19c19
+<   work="$(mktemp -d /tmp/vast-benchmark-worker-20260928g.XXXXXXXX)"
+---
+>   work="$(mktemp -d /tmp/vast-benchmark-worker-qfb-20261007a.XXXXXXXX)"

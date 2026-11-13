@@ -1,0 +1,323 @@
+test_closure_receipt_atomic_commit_three_windows_exact_retry (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ok
+test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_concurrent_identical_materializers_leave_one_exact_cold_bundle (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_dangling_symlink_and_same_bytes_hardlink_are_rejected (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_drifted_acceptance_operational_binding_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_external_runtime_expectations_reject_self_consistent_service_b (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_guardian_one_or_extra_request_cannot_match_accepted_workload (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... test_noop_guardian_dependencies_cannot_bypass_authenticated_stop (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... test_partial_checkpoint_cell_set_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_receipt_last_closes_exact_32_cells_and_loads_cold (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_receipt_last_partial_commit_resumes_but_collisions_fail (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_service_authority_must_bind_exact_preprocessing_authority (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_wrong_authority_or_nonclean_lifecycle_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+test_wrong_runtime_socket_fails_before_output (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) ... ERROR
+
+======================================================================
+ERROR: test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1471, in test_cold_load_snapshot_modes_accept_0555_only_without_mode_enforcement
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_concurrent_identical_materializers_leave_one_exact_cold_bundle (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1400, in test_concurrent_identical_materializers_leave_one_exact_cold_bundle
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_dangling_symlink_and_same_bytes_hardlink_are_rejected (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1438, in test_dangling_symlink_and_same_bytes_hardlink_are_rejected
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_drifted_acceptance_operational_binding_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1250, in test_drifted_acceptance_operational_binding_fails_closed
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_external_runtime_expectations_reject_self_consistent_service_b (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1222, in test_external_runtime_expectations_reject_self_consistent_service_b
+    fixture = Fixture(
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_guardian_one_or_extra_request_cannot_match_accepted_workload (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='one')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1339, in test_guardian_one_or_extra_request_cannot_match_accepted_workload
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_guardian_one_or_extra_request_cannot_match_accepted_workload (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='extra')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1339, in test_guardian_one_or_extra_request_cannot_match_accepted_workload
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_noop_guardian_dependencies_cannot_bypass_authenticated_stop (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='command')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1280, in test_noop_guardian_dependencies_cannot_bypass_authenticated_stop
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_noop_guardian_dependencies_cannot_bypass_authenticated_stop (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='schema')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1280, in test_noop_guardian_dependencies_cannot_bypass_authenticated_stop
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_noop_guardian_dependencies_cannot_bypass_authenticated_stop (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='self_hash')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1280, in test_noop_guardian_dependencies_cannot_bypass_authenticated_stop
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_noop_guardian_dependencies_cannot_bypass_authenticated_stop (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests) (mode='timing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1280, in test_noop_guardian_dependencies_cannot_bypass_authenticated_stop
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_partial_checkpoint_cell_set_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1236, in test_partial_checkpoint_cell_set_fails_closed
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_receipt_last_closes_exact_32_cells_and_loads_cold (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1113, in test_receipt_last_closes_exact_32_cells_and_loads_cold
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_receipt_last_partial_commit_resumes_but_collisions_fail (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1365, in test_receipt_last_partial_commit_resumes_but_collisions_fail
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_service_authority_must_bind_exact_preprocessing_authority (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1189, in test_service_authority_must_bind_exact_preprocessing_authority
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_wrong_authority_or_nonclean_lifecycle_fails_closed (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1169, in test_wrong_authority_or_nonclean_lifecycle_fails_closed
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+======================================================================
+ERROR: test_wrong_runtime_socket_fails_before_output (test_publication_policy_qualification_execution_closure_v1.PublicationPolicyQualificationExecutionClosureV1Tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 1154, in test_wrong_runtime_socket_fails_before_output
+    fixture = Fixture(Path(tmp))
+  File "/work/root/tests/test_publication_policy_qualification_execution_closure_v1.py", line 274, in __init__
+    code_closure_target.materialize_execution_code_closure_v1(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 349, in materialize_execution_code_closure_v1
+    body = _receipt_body(root, custody)
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 299, in _receipt_body
+    "interpreter": _hash_external_regular(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 225, in _hash_external_regular
+    _require(
+  File "/work/root/scripts/publication_policy_qualification_execution_code_closure_v1.py", line 51, in _require
+    raise ExecutionCodeClosureV1Error(message)
+publication_policy_qualification_execution_code_closure_v1.ExecutionCodeClosureV1Error: Python interpreter is not one canonical physical file
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.188s
+
+FAILED (errors=17)

@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_observed_stopped_source_size_drift_refuses (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_observed_stopped_source_size_drift_refuses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 439, in test_observed_stopped_source_size_drift_refuses
+    with self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+======================================================================
+FAIL: test_validator_recomputes_largest_physical_charge (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_validator_recomputes_largest_physical_charge)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 447, in test_validator_recomputes_largest_physical_charge
+    with self.assertRaises(compiler.FixtureCompilerError):
+AssertionError: FixtureCompilerError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.429s
+
+FAILED (failures=2)

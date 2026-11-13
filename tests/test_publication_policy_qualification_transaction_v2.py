@@ -50,6 +50,12 @@ class Fixture:
         self.hardware_collector = root / target.HARDWARE_RESOURCE_COLLECTOR_PATH
         self.hardware_collector.parent.mkdir(parents=True, exist_ok=True)
         self.hardware_collector.write_bytes(b"# qualification collector fixture\n")
+        # R2: the transaction records the interval-emitter sources next to the collector.
+        for _relative in target.AUTHORITY_V2_INTERVAL_EMITTERS.values():
+            _emitter = root / _relative
+            _emitter.parent.mkdir(parents=True, exist_ok=True)
+            if not _emitter.exists():
+                _emitter.write_bytes(b"# interval emitter fixture\n")
         self.patch_path = write_json(
             root / "artifacts/images/qualification_image_identity_patch.v1.json",
             {"artifact_kind": "patch", "patch_sha256": "a" * 64},

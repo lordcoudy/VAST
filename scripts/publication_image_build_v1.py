@@ -16,10 +16,14 @@ from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from typing import Mapping, Sequence
 
+from publication_image_freeze_receipt_validation_v1 import (
+    RECEIPT_KIND,
+    load_publication_image_freeze_receipt,
+)
+
 
 REGISTRY_RELATIVE_PATH = "configs/publication_image_build_v1.json"
 ARTIFACT_KIND = "vast_publication_image_build_registry_v1"
-RECEIPT_KIND = "vast_publication_image_freeze_receipt_v1"
 _SHA256 = re.compile(r"^sha256:[0-9a-f]{64}$")
 _REMOTE_DIGEST = re.compile(r"^[^@\s]+@sha256:[0-9a-f]{64}$")
 _IMAGE_NAME = re.compile(r"^[a-z][a-z0-9_]*$")
@@ -427,20 +431,6 @@ def _receipt_sha256(payload: Mapping[str, object]) -> str:
     unsigned = dict(payload)
     unsigned.pop("receipt_sha256", None)
     return hashlib.sha256(_canonical_json(unsigned)).hexdigest()
-
-
-def load_publication_image_freeze_receipt(path: Path) -> dict[str, object]:
-    receipt_path = Path(path)
-    info = receipt_path.lstat()
-    _require(stat.S_ISREG(info.st_mode) and not receipt_path.is_symlink() and int(info.st_nlink) == 1, "producer receipt must be a physical single-link file")
-    try:
-        data = json.loads(receipt_path.read_bytes())
-    except (UnicodeError, json.JSONDecodeError) as error:
-        raise ValueError("producer receipt is not valid JSON") from error
-    _require(isinstance(data, dict) and data.get("artifact_kind") == RECEIPT_KIND and data.get("schema_version") == 1, "producer receipt envelope drifted")
-    _require(type(data.get("receipt_sha256")) is str and data["receipt_sha256"] == _receipt_sha256(data), "producer receipt self-identity drifted")
-    _require(isinstance(data.get("images"), list), "producer receipt images are invalid")
-    return data
 
 
 def _write_exclusive_json(path: Path, payload: Mapping[str, object]) -> None:

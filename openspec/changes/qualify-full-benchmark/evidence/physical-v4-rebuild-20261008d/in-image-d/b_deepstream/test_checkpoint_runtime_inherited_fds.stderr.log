@@ -1,0 +1,9 @@
+test_declared_file_descriptor_reaches_the_exact_native_popen (test_checkpoint_runtime_inherited_fds.CheckpointRuntimeInheritedFdTests) ... ok
+test_declared_file_descriptor_survives_real_child_exec (test_checkpoint_runtime_inherited_fds.CheckpointRuntimeInheritedFdTests) ... ok
+test_invalid_inherited_fds_fail_closed (test_checkpoint_runtime_inherited_fds.CheckpointRuntimeInheritedFdTests) ... ok
+test_worker_and_source_specs_bind_closed_unique_inherited_fds (test_checkpoint_runtime_inherited_fds.CheckpointRuntimeInheritedFdTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.012s
+
+OK

@@ -1,0 +1,43 @@
+................................./mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py:-1: ResourceWarning: unclosed file <_io.FileIO name='/tmp/tmpjxnqwl5s/native-root-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/outputs/D/controls/before.dmesg.stderr.original' mode='xb' closefd=True>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+E/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py:-1: ResourceWarning: unclosed file <_io.FileIO name='/tmp/tmp6i1o1qhf/outputs/D/controls/before.dmesg.stderr.original' mode='xb' closefd=True>
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+F.....................................
+======================================================================
+ERROR: test_native_path_maximum_controls_with_actual_empty_gpu_fit_private_20k_receipt (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_native_path_maximum_controls_with_actual_empty_gpu_fit_private_20k_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 803, in run_d_v1
+    raise StageDRefusal('d_component_failed')
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_component_failed
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 666, in test_native_path_maximum_controls_with_actual_empty_gpu_fit_private_20k_receipt
+    result=self.native_shaped_controls(gpu_empty=True,refusal=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 634, in native_shaped_controls
+    result = self.run_d(observer=observer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 346, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 807, in run_d_v1
+    raise StageDRefusal(code, facts) from error
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_component_failed
+
+======================================================================
+FAIL: test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 654, in test_old_maximum_whitespace_gpu_case_refuses_before_copy_or_execution
+    self.native_shaped_controls(gpu_empty=False,refusal=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 629, in native_shaped_controls
+    self.assertIn('d_control_reserve',caught.exception.facts['causes'])
+AssertionError: 'd_control_reserve' not found in ['d_TypeError', 'd_component_failed']
+
+----------------------------------------------------------------------
+Ran 72 tests in 0.268s
+
+FAILED (failures=1, errors=1)

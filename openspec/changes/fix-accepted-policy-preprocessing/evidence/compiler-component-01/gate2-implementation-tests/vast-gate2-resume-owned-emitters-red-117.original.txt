@@ -1,0 +1,249 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+FFFFFFFFF
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=1, errors=['child', 'child'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled child
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=1, errors=['stdin', 'stdin'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stdin
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=1, errors=['stdout', 'stdout'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stdout
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event on Pipe instance at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=1, errors=['stderr', 'stderr'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stderr
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event on Pipe instance at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=1, errors=['ready', 'ready'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled ready
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event on Pipe instance at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=2, errors=['child', 'child'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled child
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=2, errors=['stdin', 'stdin'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stdin
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=2, errors=['stdout', 'stdout'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stdout
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event on Pipe instance at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters) (stage=2, errors=['stderr', 'stderr'])
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 795, in test_tracking_fallback_owns_async_repeated_errors_from_only_its_fixed_emitters
+    value=self.node(code,track_throw=stage,fallback_errors=errors,**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 492, in node
+    self.assertEqual(result.returncode,0,result.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : [eval]:9
+function fallbackErrors(p,which){if(test.track_throw!==which||!test.fallback_errors)return;queueMicrotask(()=>{for(let name of test.fallback_errors){let emitter=name==='child'?p:name==='ready'?p.stdio[3]:p[name];emitter.emit('error',Error('controlled '+name));}});}
+                                                                                                                                                                                                                                         ^
+
+Error: controlled stderr
+    at [eval]:9:234
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+Emitted 'error' event on Pipe instance at:
+    at [eval]:9:221
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+
+Node.js v25.2.1
+
+
+----------------------------------------------------------------------
+Ran 1 test in 1.997s
+
+FAILED (failures=9)

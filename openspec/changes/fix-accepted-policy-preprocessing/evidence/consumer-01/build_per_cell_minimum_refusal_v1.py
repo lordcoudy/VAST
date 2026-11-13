@@ -1,0 +1,285 @@
+#!/usr/bin/env python3
+"""Fresh genuine 29-sample cell refusal evidence, never accepted qualification."""
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+import re
+import sys
+
+from build_production_fixture_v2 import (
+    _add_fixture_execution_arguments_v2, _fixture_execution_inputs_v2,
+    _fixture_observation_maps_v2, _fixture_entrypoint_sha256_v2,
+    _canonical_fixture_directory_v2, _canonical_fixture_root_v2, _fixture_source_root_v2, _fresh_json, _git,
+    _raise_fixture_producer_failure_v2,
+    _fixture_source_capture_v2,
+    _fixture_failure_report_v2, _fixture_report_context_v2,
+    _fixture_argument_parser_v2, _fixture_cli_v2,
+)
+
+
+REFUSAL_COORDINATE = ("gstreamer_custom", "cpu", "h264", "independent_processes")
+
+
+def _raw_committed_source_proof(root: Path, *, source_capture=None, slot=None) -> dict:
+    if source_capture is None or slot not in ("before-proof", "after-proof"):
+        raise ValueError("literal stock proof requires its explicit fixed source capture")
+    return source_capture.proof(root, slot=slot)
+
+
+def _select_refusal_operation(prepared: dict) -> str:
+    from publication_physical_io_v1 import PhysicalRootCustodyV1
+    from tests.fixtures.accepted_policy_fixture_compiler_v1 import _json_bound
+    from tests.fixtures.accepted_policy_physical_fixture_v2 import _fixture_operation_sample_counts_v2
+
+    plan = prepared["capture_plan"]
+    operations = plan["operation_manifest"]["operations"]
+    if type(operations) is not list or len(operations) != 37:
+        raise ValueError("fresh refusal fixture requires exactly 37 operations")
+    _json_bound(operations)
+    _fixture_operation_sample_counts_v2(plan, samples_per_branch=31,
+        qualification_samples_by_operation_id=None)
+    coordinates = {}
+    for row in operations:
+        if row["phase"] != "qualification_cell":
+            continue
+        source_path = Path(row["descriptors"]["source_plan"]["path"])
+        with PhysicalRootCustodyV1.open(source_path.parent, label="fixture refusal source plan") as custody:
+            _, payload = custody.read_descriptor(source_path, label="fixture refusal source plan",
+                maximum=16 * 1024**2, capture=True)
+            custody.verify()
+        source = json.loads(payload)
+        del payload
+        if type(source) is not dict:
+            raise ValueError("fixture refusal source plan requires a JSON object")
+        _json_bound(source)
+        topology = source["topology_kind"]
+        if type(topology) is not str or len(topology) > 512:
+            raise ValueError("fixture refusal topology exceeds its string bound")
+        coordinate = (row["system"], "cpu" if row["policy"] == "cpu_only" else "gpu",
+                      row["codec"], topology)
+        del source
+        if coordinate in coordinates:
+            raise ValueError("fresh refusal fixture has duplicate qualification coordinates")
+        coordinates[coordinate] = row["operation_id"]
+    if len(coordinates) != 32 or REFUSAL_COORDINATE not in coordinates:
+        raise ValueError("fresh refusal fixture requires all 32 qualification coordinates")
+    return coordinates[REFUSAL_COORDINATE]
+
+
+def _require_plain_promoter_refusal_v1(error, expected):
+    from publication_policy_qualification import QualificationError
+
+    if type(error) is not QualificationError:
+        raise error
+    arguments = error.args
+    if (type(arguments) is not tuple or len(arguments) != 1
+            or type(arguments[0]) is not str or len(arguments[0]) > len(expected)):
+        raise error
+
+
+def main(*, _failure_state=None) -> None:
+    parser = _fixture_argument_parser_v2(_failure_state, description=__doc__)
+    parser.add_argument("--project-root", required=True)
+    parser.add_argument("--expected-source-commit", required=True)
+    parser.add_argument("--artifact-base", required=True)
+    parser.add_argument("--namespace", required=True)
+    parser.add_argument("--output-dir", required=True)
+    parser.add_argument("--socket-prefix", default=".apf29")
+    _add_fixture_execution_arguments_v2(parser)
+    args = parser.parse_args()
+    source_root = _fixture_source_root_v2(Path(__file__))
+    root = _canonical_fixture_root_v2(args.project_root, source_root=source_root)
+    if re.fullmatch(r"[0-9a-f]{40}", args.expected_source_commit) is None:
+        raise ValueError("expected source commit must be an exact commit SHA")
+    sys.path.insert(0, str(root))
+    sys.path.insert(0, str(root / "scripts"))
+    qualification, admission, reader_deadline, overrides = _fixture_execution_inputs_v2(args)
+    if overrides is not None:
+        raise ValueError("the fixed negative-29 recipe does not accept qualification overrides")
+    if re.fullmatch(r"[a-z0-9][a-z0-9-]{0,100}", args.namespace) is None:
+        raise ValueError("fixture upstream namespace is invalid")
+    base = _canonical_fixture_directory_v2(args.artifact_base, root=root, fresh=False)
+    output = _canonical_fixture_directory_v2(args.output_dir, root=root, fresh=True)
+    context = _fixture_source_capture_v2(project_root=root, output_dir=output, capture_dir=args.source_capture_dir,
+        deadline=reader_deadline, expected_commit=args.expected_source_commit, negative=True)
+    if _failure_state is not None:
+        _failure_state["source_context"] = context
+    with context as source_capture:
+        _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
+            source_capture, **({} if _failure_state is None else {"_failure_state": _failure_state}))
+
+
+def _run_refusal_v1(args, root, qualification, admission, reader_deadline, base, output,
+                    source_capture, *, _failure_state=None):
+    before_head = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="before-head")
+    before_status = _git(root, "status", "--porcelain", "--untracked-files=no",
+        source_capture=source_capture, slot="before-status")
+    if before_head.decode().strip() != args.expected_source_commit or before_status:
+        raise ValueError("refusal fixture requires exact clean frozen source")
+    before_raw = _raw_committed_source_proof(root, source_capture=source_capture, slot="before-proof")
+    if before_raw["original_exit_code"] != 0:
+        raise ValueError("stock raw committed source proof failed before refusal fixture")
+    from tests.fixtures.accepted_policy_fixture_provenance_v1 import loaded_fixture_production_sources_v1
+    from tests.fixtures.accepted_policy_physical_fixture_v2 import (
+        build_original_native_fixture_observations_v2, prepared_complete_fixture_inputs_v2,
+    )
+    from tests.fixtures.accepted_policy_consumer_fixture_v2 import materialize_fixture_completed_execution_v2
+
+    original_sources = loaded_fixture_production_sources_v1(project_root=root)
+    config_base = root / "configs" / f"checkpoint_analytics_model_parity.refreshed.v4.{args.namespace}.accepted"
+    observations = base / "consumer-runtime-observations-02"
+    report = {"schema_version": 1, "campaign_authority": False, "physical_inference_observed": False,
+              "accepted_policy_qualification_asserted": False, "complete_consumer_positive_asserted": False,
+              "default_guardian_refusal_asserted": False, "source_commit": args.expected_source_commit,
+              "project_root": str(root), "entrypoint_sha256": _fixture_entrypoint_sha256_v2(root, Path(__file__)),
+              "refusal_coordinate": REFUSAL_COORDINATE, "expected_measured_sample_count": 3960,
+              "source_raw_before": before_raw, "initial_loaded_production_sources": original_sources}
+    primary, secondary, after_raw = None, [], None
+
+    def remember(error):
+        nonlocal primary
+        if primary is None:
+            primary = error
+        elif error is not primary and not any(error is previous for previous in secondary):
+            secondary.append(error)
+
+    try:
+        image_inspections, device_probes = _fixture_observation_maps_v2(observations)
+        with prepared_complete_fixture_inputs_v2(
+            project_root=root, output_dir=output,
+            identity_patch_path=base / "qualification_image_identity_patch.json",
+            accepted_model_parity_manifest_path=config_base.with_suffix(".accepted.yaml"),
+            accepted_model_parity_assessment_path=Path(str(config_base) + ".assessment.json"),
+            accepted_model_parity_receipt_path=Path(str(config_base) + ".acceptance_receipt.json"),
+            image_inspections=image_inspections, device_probes=device_probes,
+            socket_prefix=args.socket_prefix,
+            compiler_qualification=qualification, compiler_admission=admission,
+            compiler_absolute_deadline_ns=args.compiler_deadline_ns,
+        ) as prepared:
+            operation_id = _select_refusal_operation(prepared)
+            native = build_original_native_fixture_observations_v2(
+                prepared=prepared, samples_per_branch=31,
+                qualification_samples_by_operation_id={operation_id: 29},
+            )
+            chain = materialize_fixture_completed_execution_v2(prepared=prepared, native=native)
+            from publication_policy_qualification import QualificationError, assess_policy_qualification, promote_policy_qualification
+            from publication_policy_qualification_pilot_validation_v2 import policy_pilot_validator
+            from publication_qualification_promotion_v2 import _fragment_validator
+            from tests.test_accepted_policy_f5_real_refusals import genuine_f5_context_v1
+
+            context, pilots = genuine_f5_context_v1(root, chain["index_path"])
+            counts, total = [], 0
+            for pilot in pilots:
+                coordinate = tuple(pilot[field] for field in ("system", "resource", "codec", "topology_kind"))
+                rows = policy_pilot_validator(pilot, context)
+                expected = 29 if coordinate == REFUSAL_COORDINATE else 31
+                branch_counts = {branch: sum(row["branch"] == branch for row in rows)
+                                 for branch in context["policy"].ANALYTICS_BRANCHES}
+                if set(branch_counts.values()) != {expected} or len(rows) != 4 * expected:
+                    raise ValueError("actual F5 samples do not match the fresh mixed-cell observations")
+                counts.append({"coordinate": coordinate, "branch_counts": branch_counts, "measured_sample_count": len(rows)})
+                total += len(rows)
+            if len(counts) != 32 or total != 3960:
+                raise ValueError("actual F5 mixed-cell measured coverage drifted")
+            expected_blocker = (f"pilot {REFUSAL_COORDINATE}/{context['policy'].ANALYTICS_BRANCHES[0]} "
+                                "requires at least 30 accepted samples")
+            assessment = assess_policy_qualification(
+                project_root=root, index_path=chain["index_path"],
+                pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
+            report["actual_f1_assessment"] = assessment
+            if _failure_state is not None:
+                _failure_state["assessment"] = assessment
+                _failure_state["assessment_returned"] = True
+            if assessment.get("passed") is not False or assessment.get("blockers") != [expected_blocker]:
+                refusal = ValueError("actual F1 did not reach the exact genuine per-cell minimum refusal")
+                refusal.fixture_assessment = assessment
+                raise refusal
+            promotion_parent = output / "must-remain-absent"
+            promotion_output = promotion_parent / "accepted-policy"
+            if promotion_parent.exists() or promotion_output.exists():
+                raise ValueError("refused promotion namespace is not fresh")
+            try:
+                promote_policy_qualification(project_root=root, index_path=chain["index_path"], output_dir=promotion_output,
+                    pilot_validator=policy_pilot_validator, fragment_validator=_fragment_validator)
+            except QualificationError as error:
+                _require_plain_promoter_refusal_v1(error, "policy qualification is blocked: " + expected_blocker)
+                if str(error) != "policy qualification is blocked: " + expected_blocker:
+                    raise
+                promotion_refusal = str(error)
+            else:
+                raise ValueError("actual promoter accepted an underfilled branch cell")
+            if promotion_parent.exists() or promotion_output.exists():
+                raise ValueError("refused promotion created an output parent or leaf")
+            report.update(original_operation_count=len(native["operations"]), completed_index=str(chain["index_path"]),
+                          transaction_receipt=str(prepared["transaction"]["transaction_receipt_path"]),
+                          preprocessing_contract=str(prepared["preprocessing"]["contract_path"]),
+                          preprocessing_receipt=str(prepared["preprocessing"]["receipt_path"]),
+                          execution_config=str(chain["execution_config_path"]), binding_set_dir=str(chain["binding_set_dir"]),
+                          execution_closure=str(chain["closure"]["receipt_path"]), measured_sample_count=total,
+                          measured_cells=counts, actual_f1_assessment=assessment, actual_promotion_refusal=promotion_refusal,
+                          promotion_parent_absent=True, promotion_output_absent=True,
+                          complete_original_accounting_cold_validated=True, genuine_per_cell_minimum_refusal_asserted=True)
+        current = loaded_fixture_production_sources_v1(project_root=root)
+        by_name = {row["module"]: row for row in current}
+        if any(by_name.get(row["module"]) != row for row in original_sources):
+            raise ValueError("loaded production source provenance changed during refusal fixture")
+        report["final_loaded_production_sources"] = current
+    except BaseException as error:
+        remember(error)
+        try:
+            if output.is_dir():
+                _fresh_json(output / "per-cell-minimum-failure.v1.json",
+                            _fixture_failure_report_v2(report, error, _failure_state),
+                            absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                            **_fixture_report_context_v2(_failure_state, "failure"))
+        except BaseException as report_error:
+            remember(report_error)
+    finally:
+        from tests.fixtures.accepted_policy_standalone_reader_fixture_v2 import _monotonic_ns
+
+        observe_end = reader_deadline["absolute_monotonic_ns"] - sum(
+            reader_deadline[key] for key in ("term_grace_ns", "kill_grace_ns", "final_ns"))
+        for check in ("proof", "head", "status"):
+            try:
+                observed_now = _monotonic_ns()
+            except BaseException as clock_error:
+                remember(clock_error)
+                break
+            if observed_now >= observe_end:
+                remember(ValueError("fixture source finalization deadline expired"))
+                break
+            try:
+                if check == "proof":
+                    after_raw = _raw_committed_source_proof(root, source_capture=source_capture, slot="after-proof")
+                    try:
+                        if output.is_dir():
+                            _fresh_json(output / "raw-source-after.v1.json", after_raw,
+                                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                                **_fixture_report_context_v2(_failure_state, "after-proof"))
+                    except BaseException as report_error:
+                        remember(report_error)
+                    changed = after_raw["original_exit_code"] != 0
+                elif check == "head":
+                    changed = _git(root, "rev-parse", "HEAD", source_capture=source_capture, slot="after-head") != before_head
+                else:
+                    changed = _git(root, "status", "--porcelain", "--untracked-files=no",
+                        source_capture=source_capture, slot="after-status") != before_status
+                if changed:
+                    raise ValueError("raw committed source or tracked Git state changed during refusal fixture")
+            except BaseException as final_error:
+                remember(final_error)
+    if primary is not None:
+        _raise_fixture_producer_failure_v2(primary, secondary)
+    report["source_raw_after"] = after_raw
+    _fresh_json(output / "per-cell-minimum-refusal-report.v1.json", report,
+                absolute_deadline_ns=reader_deadline["absolute_monotonic_ns"],
+                **_fixture_report_context_v2(_failure_state, "final"))
+    print(json.dumps({"genuine_per_cell_minimum_refusal_asserted": True, "measured_sample_count": 3960,
+                      "default_guardian_refusal_asserted": False,
+                      "report_path": str(output / "per-cell-minimum-refusal-report.v1.json")}, sort_keys=True), flush=True)
+
+
+if __name__ == "__main__":
+    raise SystemExit(_fixture_cli_v2(main, "negative"))

@@ -1,0 +1,32 @@
+EEE
+======================================================================
+ERROR: test_frozen_index_has_no_commit_or_self_hash_cycle (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.FixedLimitsTests.test_frozen_index_has_no_commit_or_self_hash_cycle)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 28, in test_frozen_index_has_no_commit_or_self_hash_cycle
+    bindings = component.retained_source_bindings_v1(root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'retained_source_bindings_v1'
+
+======================================================================
+ERROR: test_index_hash_canonical_and_link_guards_are_real (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.FixedLimitsTests.test_index_hash_canonical_and_link_guards_are_real)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 38, in test_index_hash_canonical_and_link_guards_are_real
+    raw = (root / component.RETENTION_INDEX_REL_V1).read_bytes()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'RETENTION_INDEX_REL_V1'
+
+======================================================================
+ERROR: test_one_authority_preserves_combined_and_successor_bounds (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.FixedLimitsTests.test_one_authority_preserves_combined_and_successor_bounds)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 14, in test_one_authority_preserves_combined_and_successor_bounds
+    self.assertEqual(component.TOTAL_F2_LIMIT_V1, 8388608)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_component_v1' has no attribute 'TOTAL_F2_LIMIT_V1'
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.008s
+
+FAILED (errors=3)

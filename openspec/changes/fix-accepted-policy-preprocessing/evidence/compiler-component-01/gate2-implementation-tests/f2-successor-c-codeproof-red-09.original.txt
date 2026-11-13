@@ -1,0 +1,42 @@
+test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) ... 
+  test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=0, charge=25014272) ... FAIL
+  test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=0, charge=25538559) ... FAIL
+  test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=12582912, charge=36007936) ... FAIL
+  test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=12582912, charge=36532223) ... FAIL
+
+======================================================================
+FAIL: test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=0, charge=25014272)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 372, in test_packet_refuses_self_authority_and_changed_code_or_seed
+    with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=0, charge=25538559)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 372, in test_packet_refuses_self_authority_and_changed_code_or_seed
+    with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=12582912, charge=36007936)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 372, in test_packet_refuses_self_authority_and_changed_code_or_seed
+    with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+AssertionError: Gate2Refusal not raised
+
+======================================================================
+FAIL: test_packet_refuses_self_authority_and_changed_code_or_seed (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.BoundTests.test_packet_refuses_self_authority_and_changed_code_or_seed) (gap=12582912, charge=36532223)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 372, in test_packet_refuses_self_authority_and_changed_code_or_seed
+    with self.assertRaisesRegex(gate.Gate2Refusal, "initial_charge_omitted_forms"):
+AssertionError: Gate2Refusal not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.065s
+
+FAILED (failures=4)

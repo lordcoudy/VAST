@@ -1,0 +1,55 @@
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 204, in _physical_file
+    before = candidate.lstat()
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 849, in lstat
+    return self.stat(follow_symlinks=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 842, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/artifacts/analytics_execution_bindings/publication_v3/index.json'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 245, in _read_fragment
+    fragment = fragment_validator(system, path, root)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification.py", line 151, in _default_fragment_validator
+    return validate_deepstream_qualification_fragment(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 803, in validate_deepstream_qualification_fragment
+    _terminals, accepted_model_material = _terminal_identities(
+                                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 320, in _terminal_identities
+    index_descriptor = _exact_descriptor(
+                       ^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 240, in _exact_descriptor
+    observed = _descriptor(root, exact[0], label)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 221, in _descriptor
+    path = _physical_file(root, relative, label)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/checkpoint_deepstream_qualification_fragment_v1.py", line 208, in _physical_file
+    raise DeepStreamQualificationFragmentV1Error(
+checkpoint_deepstream_qualification_fragment_v1.DeepStreamQualificationFragmentV1Error: analytics execution binding index physical file is missing or escapes project_root
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 842, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 825, in main
+    result = build_policy_qualification_index_v2(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 733, in build_policy_qualification_index_v2
+    bindings, fragment_descriptors = _build_bindings(
+                                     ^^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 290, in _build_bindings
+    _, descriptor, fragment = _read_fragment(
+                              ^^^^^^^^^^^^^^^
+  File "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a/scripts/publication_policy_qualification_index_v2.py", line 247, in _read_fragment
+    raise PolicyQualificationIndexV2Error(
+PolicyQualificationIndexV2Error: deepstream fragment validation failed: analytics execution binding index physical file is missing or escapes project_root

@@ -19,6 +19,7 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
+from publication_policy_qualification_transaction_validation_v2 import AUTHORITY_V2_INTERVAL_EMITTERS  # noqa: E402
 
 import publication_policy_qualification_pilot_executor_v2 as target  # noqa: E402
 import publication_policy_qualification_execution_code_closure_v1 as code_closure_target  # noqa: E402
@@ -216,6 +217,12 @@ class InputFixture:
         self.hardware_resource_collector.write_bytes(
             b"# qualification collector fixture\n"
         )
+        # R2: the transaction records the interval-emitter sources next to the collector.
+        for _relative in AUTHORITY_V2_INTERVAL_EMITTERS.values():
+            _emitter = root / _relative
+            _emitter.parent.mkdir(parents=True, exist_ok=True)
+            if not _emitter.exists():
+                _emitter.write_bytes(b"# interval emitter fixture\n")
         for module in code_closure_target.SEED_MODULES:
             source = root / "scripts" / f"{module}.py"
             if not source.exists():
@@ -423,6 +430,10 @@ class InputFixture:
             "hardware_resource_collector": descriptor(
                 root, self.hardware_resource_collector
             ),
+            "resource_interval_emitters": {
+                system: descriptor(root, root / relative)
+                for system, relative in AUTHORITY_V2_INTERVAL_EMITTERS.items()
+            },
             "image_identity_patch": descriptor(root, self.image_patch),
             "image_identity_patch_sha256": "8" * 64,
             "accepted_model_parity_manifest": descriptor(

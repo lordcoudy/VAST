@@ -1,0 +1,19 @@
+controlled current final1415B bootstrap compact3frame C and direct D geometry, no native commands
+test_resume_verified_bootstrap_complete_actual_call_and_poststdout_failure_frame (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.NativeEntryTests.test_resume_verified_bootstrap_complete_actual_call_and_poststdout_failure_frame) ... ok
+test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib) ... {"resume_d_complete_frame_geometry": {"command_bytes": 2353, "call_bytes": 2763, "stdout_bytes": 568, "stderr_bytes": 388, "frame_bytes": 4006, "bootstrap_bytes": 1415}}
+{"resume_c_complete_frame_geometry": {"stage": "C6", "call_bytes": 2397, "stdout_bytes": 725, "stderr_bytes": 388, "frame_bytes": 4138, "frame_count": 3}}
+FAIL
+
+======================================================================
+FAIL: test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib (tests.test_accepted_policy_fixture_compiler_gate2_invocation_v1.InvocationTests.test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_invocation_v1.py", line 344, in test_resume_actual_completion_and_all_observed_tool_frames_fit_four_kib
+    self.assertTrue(all(size<=4096 for _,size in measurements),measurements)
+AssertionError: False is not true : [('C6', 4138), ('C5', 4068)]
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.029s
+
+FAILED (failures=1)
+{"resume_c_complete_frame_geometry": {"stage": "C5", "call_bytes": 2327, "stdout_bytes": 725, "stderr_bytes": 388, "frame_bytes": 4068, "frame_count": 3}}

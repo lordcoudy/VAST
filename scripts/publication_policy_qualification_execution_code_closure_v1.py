@@ -32,6 +32,7 @@ SEED_MODULES = (
     "checkpoint_qualification_pilot_acceptance_v1",
     "publication_operational_stock_operations_v1",
     "publication_benchmark_native_diagnostic_v1",
+    "publication_qualification_operational_owner_v1",
     "publication_gstreamer_component_runtime_v1",
     "publication_gstreamer_component_cli_v1",
     "publication_gstreamer_component_inputs_v1",

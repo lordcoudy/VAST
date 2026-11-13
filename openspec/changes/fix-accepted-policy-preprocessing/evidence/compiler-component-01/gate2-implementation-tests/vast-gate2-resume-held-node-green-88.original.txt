@@ -1,0 +1,67 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+CONTROLLED_NODE_QUOTE 17769 7741 5167 1635 9817
+..E.EE.......EF.
+======================================================================
+ERROR: test_held_source_positive_shortreads_one_fd_and_stdin_contains_the_exact_authenticated_buffer (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_held_source_positive_shortreads_one_fd_and_stdin_contains_the_exact_authenticated_buffer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 342, in test_held_source_positive_shortreads_one_fd_and_stdin_contains_the_exact_authenticated_buffer
+    value=self.node(self.code(),source_short=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 265, in node
+    return json.loads(result.stdout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+======================================================================
+ERROR: test_inner_lossless_encoding_keeps_u64_bytes_and_refuses_corrupt_or_large_decode (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_inner_lossless_encoding_keeps_u64_bytes_and_refuses_corrupt_or_large_decode)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 488, in test_inner_lossless_encoding_keeps_u64_bytes_and_refuses_corrupt_or_large_decode
+    self.assertEqual(facts['pipes'][0]['encoding'],'br64')
+                     ~~~~~^^^^^^^^^
+KeyError: 'pipes'
+
+======================================================================
+ERROR: test_node_complete_six_call_collection_geometry (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_complete_six_call_collection_geometry)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 430, in test_node_complete_six_call_collection_geometry
+    full=m.outer_collection_v1(call,frames)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 66, in outer_collection_v1
+    need(len(raw)<=8192,'outer_complete_bound')
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: outer_complete_bound
+
+======================================================================
+ERROR: test_node_stdin_error_is_sticky_even_if_finish_and_close_follow (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_stdin_error_is_sticky_even_if_finish_and_close_follow)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 532, in test_node_stdin_error_is_sticky_even_if_finish_and_close_follow
+    self.assertTrue(facts['stdin_finished']);self.assertTrue(facts['stdin_closed'])
+                    ~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'stdin_finished'
+
+======================================================================
+FAIL: test_node_writer_uses_same_original_end_and_distinct_actual_terminal (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_node_writer_uses_same_original_end_and_distinct_actual_terminal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 469, in test_node_writer_uses_same_original_end_and_distinct_actual_terminal
+    self.assertEqual(value['spawned'],2);self.assertEqual(value['killed'],0)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 2
+
+----------------------------------------------------------------------
+Ran 16 tests in 6.043s
+
+FAILED (failures=1, errors=4)

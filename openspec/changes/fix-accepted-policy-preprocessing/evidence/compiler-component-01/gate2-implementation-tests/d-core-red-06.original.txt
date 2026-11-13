@@ -1,0 +1,32 @@
+EFF
+======================================================================
+ERROR: test_fresh_code_closure_needs_no_unexported_probe_module (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.InfoTests.test_fresh_code_closure_needs_no_unexported_probe_module)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 647, in test_fresh_code_closure_needs_no_unexported_probe_module
+    self.assertEqual(stage._info_identity_v1(original, cids)['running'], 0)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 363, in _info_identity_v1
+    from tests.fixtures.accepted_policy_fixture_compiler_probe_v1 import EXPECTED
+ModuleNotFoundError: import of tests.fixtures.accepted_policy_fixture_compiler_probe_v1 halted; None in sys.modules
+
+======================================================================
+FAIL: test_floor_metrics_require_known_four_kib_ext4_allocation_unit (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.InfoTests.test_floor_metrics_require_known_four_kib_ext4_allocation_unit) (fragment=8192)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 654, in test_floor_metrics_require_known_four_kib_ext4_allocation_unit
+    with self.assertRaises(stage.StageDRefusal) as caught:
+AssertionError: StageDRefusal not raised
+
+======================================================================
+FAIL: test_floor_metrics_require_known_four_kib_ext4_allocation_unit (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.InfoTests.test_floor_metrics_require_known_four_kib_ext4_allocation_unit) (fragment=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 654, in test_floor_metrics_require_known_four_kib_ext4_allocation_unit
+    with self.assertRaises(stage.StageDRefusal) as caught:
+AssertionError: StageDRefusal not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.010s
+
+FAILED (failures=2, errors=1)

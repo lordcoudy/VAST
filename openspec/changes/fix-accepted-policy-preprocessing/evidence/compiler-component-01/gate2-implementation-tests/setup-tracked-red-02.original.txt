@@ -1,0 +1,45 @@
+FFFFF
+======================================================================
+FAIL: test_boot_floor_and_reserve_are_rechecked_after_observation (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.GateTests.test_boot_floor_and_reserve_are_rechecked_after_observation) (observation='boot', late=151000000000)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 43, in test_boot_floor_and_reserve_are_rechecked_after_observation
+    with self.assertRaises(AssertionError):
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_boot_floor_and_reserve_are_rechecked_after_observation (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.GateTests.test_boot_floor_and_reserve_are_rechecked_after_observation) (observation='boot', late=20000000000)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 43, in test_boot_floor_and_reserve_are_rechecked_after_observation
+    with self.assertRaises(AssertionError):
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_boot_floor_and_reserve_are_rechecked_after_observation (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.GateTests.test_boot_floor_and_reserve_are_rechecked_after_observation) (observation='floors', late=151000000000)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 43, in test_boot_floor_and_reserve_are_rechecked_after_observation
+    with self.assertRaises(AssertionError):
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_boot_floor_and_reserve_are_rechecked_after_observation (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.GateTests.test_boot_floor_and_reserve_are_rechecked_after_observation) (observation='floors', late=20000000000)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 43, in test_boot_floor_and_reserve_are_rechecked_after_observation
+    with self.assertRaises(AssertionError):
+AssertionError: AssertionError not raised
+
+======================================================================
+FAIL: test_export_mutation_rechecks_deadline_after_floors (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.GateTests.test_export_mutation_rechecks_deadline_after_floors)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 53, in test_export_mutation_rechecks_deadline_after_floors
+    with self.assertRaises(AssertionError):
+AssertionError: AssertionError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.008s
+
+FAILED (failures=5)

@@ -1,0 +1,28 @@
+E..
+======================================================================
+ERROR: test_time_order_and_allocation_semantics_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_time_order_and_allocation_semantics_refuse) (group='timing', field='finish')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1227, in test_time_order_and_allocation_semantics_refuse
+    self.validate()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1072, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py", line 513, in validate_p0_originals_v1
+    return _validate_p0_originals(descriptor, project_root, expected_code_commit,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py", line 574, in _validate_p0_originals
+    _originals_require(all(_originals_number(item) for item in timing.values()), "p0_completion_timing")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py", line 574, in <genexpr>
+    _originals_require(all(_originals_number(item) for item in timing.values()), "p0_completion_timing")
+                           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py", line 398, in _originals_number
+    return type(value) in (int, float) and math.isfinite(value) and value >= 0
+                                           ^^^^^^^^^^^^^^^^^^^^
+OverflowError: int too large to convert to float
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.026s
+
+FAILED (errors=1)

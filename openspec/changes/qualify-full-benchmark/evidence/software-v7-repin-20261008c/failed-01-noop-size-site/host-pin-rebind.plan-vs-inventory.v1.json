@@ -1,0 +1,30 @@
+{
+ "hex_literals_not_in_any_receipt_left_unchanged": [
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 220,
+   "status": "not_in_any_old_or_new_receipt",
+   "value": "314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 223,
+   "status": "not_in_any_old_or_new_receipt",
+   "value": "b6772ea56a31886b2599ed602e325d39b876d33d740bd3b983f1b96dbcf82c0f"
+  }
+ ],
+ "inventory_sites": 57,
+ "inventory_sites_not_planned": [],
+ "inventory_sites_outside_pin_files": [],
+ "mapping_size": 143,
+ "old_values_unpaired_or_unknown": [],
+ "planned_keys_not_in_mapping": [],
+ "planned_sites": 58,
+ "planned_sites_outside_inventory": [
+  [
+   "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   332
+  ]
+ ],
+ "status": "failed"
+}

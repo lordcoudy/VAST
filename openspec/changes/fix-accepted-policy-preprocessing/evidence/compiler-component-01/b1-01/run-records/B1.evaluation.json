@@ -1,0 +1,509 @@
+{
+ "passed": false,
+ "failed": [
+  {
+   "check": "core_write_eperm_glibc_setrlimit",
+   "ok": false,
+   "detail": {
+    "exception": "ValueError"
+   }
+  }
+ ],
+ "all": [
+  {
+   "check": "uid_gid_1000",
+   "ok": true,
+   "detail": [
+    1000,
+    1000
+   ]
+  },
+  {
+   "check": "no_new_privs",
+   "ok": true,
+   "detail": "1"
+  },
+  {
+   "check": "seccomp_filter",
+   "ok": true,
+   "detail": [
+    "2",
+    "1"
+   ]
+  },
+  {
+   "check": "capabilities_empty",
+   "ok": true,
+   "detail": {
+    "CapInh": "0000000000000000",
+    "CapPrm": "0000000000000000",
+    "CapEff": "0000000000000000",
+    "CapBnd": "0000000000000000",
+    "CapAmb": "0000000000000000"
+   }
+  },
+  {
+   "check": "core_1_1",
+   "ok": true,
+   "detail": [
+    "Max core file size        1                    1                    bytes     "
+   ]
+  },
+  {
+   "check": "fsize_16mib",
+   "ok": true,
+   "detail": [
+    "Max file size             16777216             16777216             bytes     "
+   ]
+  },
+  {
+   "check": "memory_max",
+   "ok": true,
+   "detail": "536870912"
+  },
+  {
+   "check": "swap_max_0",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "check": "pids_max_32",
+   "ok": true,
+   "detail": "32"
+  },
+  {
+   "check": "cpu_max_one",
+   "ok": true,
+   "detail": "100000 100000"
+  },
+  {
+   "check": "interfaces_lo_only",
+   "ok": true,
+   "detail": [
+    "lo"
+   ]
+  },
+  {
+   "check": "no_nvidia_dev",
+   "ok": true,
+   "detail": [
+    "core",
+    "fd",
+    "full",
+    "mqueue",
+    "null",
+    "ptmx",
+    "pts",
+    "random",
+    "stderr",
+    "stdin",
+    "stdout",
+    "tty",
+    "urandom",
+    "zero"
+   ]
+  },
+  {
+   "check": "rw_mounts",
+   "ok": true,
+   "detail": [
+    [
+     "/dev",
+     "tmpfs",
+     "EACCES",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/dev/mqueue",
+     "mqueue",
+     true,
+     {
+      "bytes": 0,
+      "free_bytes": 0,
+      "free_inodes": 0,
+      "inodes": 0
+     }
+    ],
+    [
+     "/dev/pts",
+     "devpts",
+     "EACCES",
+     {
+      "bytes": 0,
+      "free_bytes": 0,
+      "free_inodes": 0,
+      "inodes": 0
+     }
+    ],
+    [
+     "/proc",
+     "proc",
+     "ENOENT",
+     {
+      "bytes": 0,
+      "free_bytes": 0,
+      "free_inodes": 0,
+      "inodes": 0
+     }
+    ],
+    [
+     "/proc/interrupts",
+     "tmpfs",
+     "ENOTDIR",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/proc/kcore",
+     "tmpfs",
+     "ENOTDIR",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/proc/keys",
+     "tmpfs",
+     "ENOTDIR",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/proc/latency_stats",
+     "tmpfs",
+     "ENOTDIR",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/proc/timer_list",
+     "tmpfs",
+     "ENOTDIR",
+     {
+      "bytes": 67108864,
+      "free_bytes": 67108864,
+      "free_inodes": 3075712,
+      "inodes": 3075727
+     }
+    ],
+    [
+     "/work",
+     "tmpfs",
+     true,
+     {
+      "bytes": 134217728,
+      "free_bytes": 134217728,
+      "free_inodes": 4095,
+      "inodes": 4096
+     }
+    ]
+   ]
+  },
+  {
+   "check": "rw_mounts_sha256_matches_host_live",
+   "ok": true,
+   "detail": [
+    "3da03bbba33c8c86f2935cfcfcc07f16bb4020337d8d130deb5d8595851ff470",
+    "3da03bbba33c8c86f2935cfcfcc07f16bb4020337d8d130deb5d8595851ff470"
+   ]
+  },
+  {
+   "check": "memfd_noexec",
+   "ok": true,
+   "detail": {
+    "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "size_bytes": 2,
+    "text": "0\n",
+    "truncated": false
+   }
+  },
+  {
+   "check": "work_mount_flags",
+   "ok": true,
+   "detail": [
+    [
+     "/work",
+     "tmpfs",
+     "rw,nosuid,nodev,noexec,relatime",
+     "rw,size=131072k,nr_inodes=4096,mode=700,uid=1000,gid=1000"
+    ]
+   ]
+  },
+  {
+   "check": "core_query_null_new_ok",
+   "ok": true,
+   "detail": {
+    "cur": 1,
+    "errno": null,
+    "max": 1,
+    "result": 0
+   }
+  },
+  {
+   "check": "core_write_eperm_setrlimit_unchanged",
+   "ok": true,
+   "detail": {
+    "errno": "EPERM",
+    "result": -1
+   }
+  },
+  {
+   "check": "core_write_eperm_setrlimit_zero",
+   "ok": true,
+   "detail": {
+    "errno": "EPERM",
+    "result": -1
+   }
+  },
+  {
+   "check": "core_write_eperm_prlimit64_unchanged",
+   "ok": true,
+   "detail": {
+    "errno": "EPERM",
+    "result": -1
+   }
+  },
+  {
+   "check": "core_write_eperm_prlimit64_zero",
+   "ok": true,
+   "detail": {
+    "errno": "EPERM",
+    "result": -1
+   }
+  },
+  {
+   "check": "core_write_eperm_prlimit64_upper_alias_zero",
+   "ok": true,
+   "detail": {
+    "errno": "EPERM",
+    "result": -1
+   }
+  },
+  {
+   "check": "core_write_eperm_glibc_setrlimit",
+   "ok": false,
+   "detail": {
+    "exception": "ValueError"
+   }
+  },
+  {
+   "check": "nofile_positive_control",
+   "ok": true,
+   "detail": {
+    "query": {
+     "cur": 1024,
+     "errno": null,
+     "max": 1048576,
+     "result": 0
+    },
+    "set_unchanged": {
+     "errno": null,
+     "result": 0
+    }
+   }
+  },
+  {
+   "check": "no_crash_glibc_setrlimit",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_nofile_positive_control",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_prlimit64_unchanged",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_prlimit64_upper_alias_zero",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_prlimit64_zero",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_query_null_new",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_setrlimit_unchanged",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "no_crash_setrlimit_zero",
+   "ok": true,
+   "detail": 0
+  },
+  {
+   "check": "inheritance_core_seccomp_nnp",
+   "ok": true,
+   "detail": [
+    [
+     "Max core file size        1                    1                    bytes     "
+    ],
+    {
+     "NoNewPrivs": "1",
+     "Seccomp": "2"
+    }
+   ]
+  },
+  {
+   "check": "tmpfs_bytes_enospc_range",
+   "ok": true,
+   "detail": {
+    "total": 134217728,
+    "last": {
+     "bytes": 0,
+     "outcome": "ENOSPC"
+    },
+    "files": 9,
+    "start": []
+   }
+  },
+  {
+   "check": "tmpfs_inodes_enospc",
+   "ok": true,
+   "detail": {
+    "created": 4095,
+    "outcome": "ENOSPC",
+    "starting_entries": []
+   }
+  },
+  {
+   "check": "python",
+   "ok": true,
+   "detail": [
+    "/usr/bin/python3.10",
+    true,
+    "3.10.12 (main, Nov 20 2023, 15:14:05) [G"
+   ]
+  },
+  {
+   "check": "cc",
+   "ok": true,
+   "detail": [
+    "/usr/bin/x86_64-linux-gnu-gcc-11",
+    [
+     "cc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0"
+    ]
+   ]
+  },
+  {
+   "check": "helper_as",
+   "ok": true,
+   "detail": [
+    "as",
+    "/usr/bin/x86_64-linux-gnu-as"
+   ]
+  },
+  {
+   "check": "helper_cc1",
+   "ok": true,
+   "detail": [
+    "/usr/lib/gcc/x86_64-linux-gnu/11/cc1",
+    "/usr/lib/gcc/x86_64-linux-gnu/11/cc1"
+   ]
+  },
+  {
+   "check": "helper_collect2",
+   "ok": true,
+   "detail": [
+    "/usr/lib/gcc/x86_64-linux-gnu/11/collect2",
+    "/usr/lib/gcc/x86_64-linux-gnu/11/collect2"
+   ]
+  },
+  {
+   "check": "helper_ld",
+   "ok": true,
+   "detail": [
+    "ld",
+    "/usr/bin/x86_64-linux-gnu-ld.bfd"
+   ]
+  },
+  {
+   "check": "reached_headers",
+   "ok": true,
+   "detail": 25
+  },
+  {
+   "check": "c4_E_killed_at_bound_or_finished",
+   "ok": true,
+   "detail": {
+    "returncode": -9,
+    "killed_at_deadline": true,
+    "elapsed_s": 10.0
+   }
+  },
+  {
+   "check": "c5_full_window_still_running",
+   "ok": true,
+   "detail": {
+    "window": 20.0,
+    "rc": -9,
+    "rss_first_last_max": [
+     [
+      11200
+     ],
+     [
+      11200
+     ],
+     11200
+    ],
+    "output": {
+     "stderr": 0,
+     "stdout": 0
+    }
+   }
+  },
+  {
+   "check": "runner_no_causes",
+   "ok": true,
+   "detail": []
+  },
+  {
+   "check": "exit_0_not_oom",
+   "ok": true,
+   "detail": {
+    "Dead": false,
+    "Error": "",
+    "ExitCode": 0,
+    "FinishedAt": "2026-10-16T08:38:03.043204035Z",
+    "OOMKilled": false,
+    "Paused": false,
+    "Pid": 0,
+    "Restarting": false,
+    "Running": false,
+    "StartedAt": "2026-10-16T08:37:32.671316528Z",
+    "Status": "exited"
+   }
+  }
+ ]
+}

@@ -1,0 +1,266 @@
+"""Explicit physical-input fixture setup for accepted-policy consumer evidence.
+
+This is deliberately not a discovered test: full-v4 and authenticated KPP
+inputs must come from the freshly renewed repair root. Container commands
+use one held artificial ELF boundary; all authority readers and builders
+remain production defaults. No historical qualification arm is an input.
+"""
+from __future__ import annotations
+
+from contextlib import contextmanager
+from pathlib import Path
+import hashlib
+import json
+import os
+import socket
+import tempfile
+from types import SimpleNamespace
+from typing import Any, Mapping
+
+import pandas as pd
+
+from publication_guardian_preprocessing_contract_v1 import materialize_guardian_preprocessing_contract_v1
+from publication_operational_capture_plan_v1 import held_operational_capture_plan_v1
+from publication_operational_stock_operations_v1 import prepare_stock_operational_capture_plan_v1
+from publication_policy_qualification_execution_code_closure_v1 import materialize_execution_code_closure_v1
+from publication_policy_qualification_runtime_inputs_v2 import DOCKER_ASSET, materialize_publication_policy_qualification_runtime_inputs_v2
+from publication_policy_qualification_transaction_v2 import materialize_publication_policy_qualification_transaction_v2
+from checkpoint_admission import schedule_fingerprint_for_records
+from checkpoint_publication_runtime import NATIVE_EXECUTION_BINDING_PROVENANCE, _acceptance_evidence_files
+from checkpoint_qualification_pilot_acceptance_v1 import finalize_checkpoint_qualification_pilot_acceptance_v1
+from publication_acceptance_evidence import FULL_RESOURCE_EVIDENCE_FILES
+from tests.fixtures.accepted_policy_original_custody_fixture_v1 import prepare_original_fixture_engine_v1
+from tests.fixtures.accepted_policy_original_custody_fixture_v1 import preflight_original_fixture_engine_v1
+from tests.fixtures.accepted_policy_original_custody_fixture_v1 import capture_original_fixture_operation_v1
+from tests.fixtures.accepted_policy_native_fixture_v1 import write_native_policy_fixture_cell_v1
+from tests.fixtures import accepted_policy_fixture_compiler_admission_v1 as fixture_admission
+
+
+@contextmanager
+def prepared_complete_fixture_inputs_v1(
+    *,
+    project_root: Path,
+    output_dir: Path,
+    identity_patch_path: Path,
+    accepted_model_parity_manifest_path: Path,
+    accepted_model_parity_assessment_path: Path,
+    accepted_model_parity_receipt_path: Path,
+    image_inspections: Mapping[str, Any],
+    device_probes: Mapping[str, Any],
+    socket_prefix: str = ".apf01",
+    compiler_qualification=None,
+    compiler_admission=None,
+    compiler_absolute_deadline_ns=None,
+):
+    """Hold a real cold-validated 37-operation plan and runtime input bundle."""
+    root = project_root.resolve(strict=True)
+    output = output_dir.absolute()
+    if output.resolve(strict=False) != output or not output.is_relative_to(root) or output.exists():
+        raise ValueError("explicit consumer fixture requires a fresh canonical project namespace")
+    if not socket_prefix.startswith(".") or "/" in socket_prefix or len(socket_prefix) > 36:
+        raise ValueError("fixture socket prefix is invalid")
+    inspection_aliases = dict(image_inspections)
+    for image in image_inspections.values():
+        for reference in (image["Id"], *(image.get("RepoTags") or []), *(image.get("RepoDigests") or [])):
+            previous = inspection_aliases.setdefault(reference, image)
+            if previous != image:
+                raise ValueError("captured image inspection aliases disagree")
+    preflight_original_fixture_engine_v1(project_root=root, output_dir=output / "command-boundary",
+        image_inspections=inspection_aliases, device_probes=device_probes,
+        compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
+        compiler_absolute_deadline_ns=compiler_absolute_deadline_ns)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    output.mkdir(mode=0o700, parents=True, exist_ok=False)
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    socket_dir = native_socket_root / "runtime"
+    socket_dir.mkdir(mode=0o700, exist_ok=False)
+    front_path = socket_dir / "analytics-execution.sock"
+    control_path = socket_dir / "analytics-control.sock"
+    engine_path = socket_dir / "engine.sock"
+    for path in (front_path, control_path, engine_path):
+        if path.exists() or path.is_symlink() or len(str(path).encode()) >= 108:
+            raise ValueError("fixture socket reservation is occupied or exceeds AF_UNIX bound")
+    fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+    front = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+    control = socket.socket(socket.AF_UNIX, socket.SOCK_SEQPACKET)
+    try:
+        fixture_admission._compiler_preparation_clock_v1(compiler_absolute_deadline_ns)
+        front.bind(str(front_path))
+        control.bind(str(control_path))
+        with prepare_original_fixture_engine_v1(
+            project_root=root, output_dir=output / "command-boundary",
+            image_inspections=inspection_aliases, device_probes=device_probes,
+            socket_path=engine_path,
+            compiler_qualification=compiler_qualification, compiler_admission=compiler_admission,
+            compiler_absolute_deadline_ns=compiler_absolute_deadline_ns,
+        ) as engine:
+            transaction = materialize_publication_policy_qualification_transaction_v2(
+                project_root=root, identity_patch_path=identity_patch_path,
+                accepted_model_parity_manifest_path=accepted_model_parity_manifest_path,
+                accepted_model_parity_assessment_path=accepted_model_parity_assessment_path,
+                accepted_model_parity_receipt_path=accepted_model_parity_receipt_path,
+                output_root=output / "qualification-transaction", docker=str(engine.engine.path),
+            )
+            preprocessing = materialize_guardian_preprocessing_contract_v1(
+                project_root=root, qualification_transaction_receipt_path=transaction["transaction_receipt_path"],
+                output_dir=output / "guardian-preprocessing",
+            )
+            closure_path = output / "execution-code-closure.v1.json"
+            code_closure = materialize_execution_code_closure_v1(project_root=root, receipt_path=closure_path)
+            pilot_root = output / "pilots"
+            guardian_output = output / "guardian-journals"
+            common = {key: transaction[key] for key in (
+                "candidate_index_path", "candidate_manifest_path", "candidate_receipt_path",
+                "bootstrap_mapping_path", "bootstrap_receipt_path", "bootstrap_dir", "transaction_receipt_path",
+            )}
+            capture = prepare_stock_operational_capture_plan_v1(
+                project_root=root, output_dir=output / "operational-capture",
+                mode="complete_qualification_operational_identity_v1", **common,
+                preprocessing_contract_path=preprocessing["contract_path"],
+                preprocessing_receipt_path=preprocessing["receipt_path"],
+                execution_code_closure_path=closure_path, pilot_root=pilot_root,
+                guardian_output_dir=guardian_output, container_engine_path=engine.engine.path,
+                container_engine_socket_path=engine.engine_socket["path"],
+            )
+            with held_operational_capture_plan_v1(
+                project_root=root, index_path=capture["descriptor"]["path"], expected_descriptor=capture["descriptor"],
+            ) as held_plan:
+                runtime = materialize_publication_policy_qualification_runtime_inputs_v2(
+                    project_root=root, **common, container_engine_path=engine.engine.path,
+                    container_engine_socket_path=engine.engine_socket["path"],
+                    analytics_socket_path=front_path, scratch_root=output,
+                    operational_capture_plan=held_plan,
+                )
+                captured_engine_path = runtime["runtime_input_root"] / DOCKER_ASSET
+                captured_engine_fd = os.open(captured_engine_path, os.O_RDONLY | os.O_NOFOLLOW)
+                captured_engine_bytes = captured_engine_path.read_bytes()
+                captured_engine = SimpleNamespace(path=captured_engine_path, fd=captured_engine_fd,
+                    size=len(captured_engine_bytes), sha256=hashlib.sha256(captured_engine_bytes).hexdigest(),
+                    proc_path=f"/proc/self/fd/{captured_engine_fd}")
+                try:
+                    yield {
+                    "root": root, "output_dir": output, "engine": engine,
+                    "capture_engine": captured_engine,
+                    "front_socket": front, "control_socket": control,
+                    "front_socket_path": front_path, "control_socket_path": control_path,
+                    "native_socket_root": native_socket_root,
+                    "transaction": transaction, "preprocessing": preprocessing,
+                    "code_closure": code_closure, "code_closure_path": closure_path,
+                    "capture_plan": held_plan, "capture_plan_descriptor": capture["descriptor"],
+                    "runtime": runtime, "pilot_root": pilot_root, "guardian_output_dir": guardian_output,
+                    "limits": {"campaign_authority": False, "physical_inference_observed": False,
+                               "upstream": "fresh_physical_full_v4_and_authenticated_kpp",
+                               "command_boundary": "held_artificial_elf_not_docker"},
+                    }
+                finally:
+                    os.close(captured_engine_fd)
+    finally:
+        front.close()
+        control.close()
+
+
+def build_original_native_fixture_observations_v1(*, prepared: Mapping[str, Any], samples_per_branch: int = 30) -> dict[str, Any]:
+    """Create all 37 originals and cold-validate real child/container custody."""
+    root, output = prepared["root"], prepared["output_dir"]
+    plan = prepared["capture_plan"]
+    capability = json.loads(Path(prepared["transaction"]["candidate_manifest_path"]).read_bytes())
+    contexts = {row["operation_id"]: row["descriptor"] for row in plan["index"]["native_contexts"]}
+    operations = []
+    domains = []
+    for row in plan["operation_manifest"]["operations"]:
+        original = json.loads(Path(row["original_operation"]["path"]).read_bytes())
+        source_plan = json.loads(Path(row["descriptors"]["source_plan"]["path"]).read_bytes())
+        calibration = json.loads(Path(row["descriptors"]["calibration"]["path"]).read_bytes())
+        native_context = plan["native_contexts_by_id"][row["operation_id"]]
+        coordinate_resource = "cpu" if row["policy"] == "cpu_only" else "gpu"
+        worker_ids = {(branch, worker["stream_id"]): worker["worker_id"]
+                      for route, workers in row["front_workers_by_route"].items()
+                      for branch, resource in [route.split(":")] if resource == coordinate_resource
+                      for worker in workers}
+        source_sha256 = {int(stream["stream_id"]): stream["source_sha256"] for stream in source_plan["streams"]}
+        directory = Path(original["outputs"]["measurement_dir"])
+        producer_operational = output / "native-producer" / row["operation_id"]
+        metadata = write_native_policy_fixture_cell_v1(
+            output_dir=directory, capability=capability, system=row["system"], resource=coordinate_resource,
+            codec=row["codec"], topology_kind=source_plan["topology_kind"],
+            samples_per_branch=samples_per_branch, dropped_ingress=coordinate_resource == "gpu",
+            source_sha256_by_stream=source_sha256, run_id=row["run_id"], arm_id=row["arm_id"],
+            calibration=calibration,
+            operational_context={"header": native_context["native_header"], "output_dir": producer_operational},
+            worker_ids_by_branch_stream=worker_ids,
+            limits_path=output / "observation-limits" / f"{row['operation_id']}.json",
+        )
+        native_payload = (producer_operational / "native_operational_requests.v1.jsonl").read_bytes()
+        capture = capture_original_fixture_operation_v1(
+            project_root=root, operation_id=row["operation_id"], original_operation_descriptor=row["original_operation"],
+            native_context_descriptor=contexts[row["operation_id"]], expected_container_image=original["container_image"],
+            native_domain_payload=native_payload, engine=prepared["capture_engine"],
+            engine_socket=prepared["engine"].engine_socket,
+            scratch_dir=output / "child-scratch" / row["operation_id"],
+            native_domain_output=Path(original["outputs"]["native_domain"]),
+            process_receipt_output=Path(original["outputs"]["process_receipt"]),
+            container_receipt_output=Path(original["outputs"]["container_receipt"]),
+        )
+        domains.append({"operation_id": row["operation_id"], "descriptor": capture["native_domain"]})
+        operations.append({"operation": row, "original": original, "source_plan": source_plan,
+                           "metadata": metadata, "capture": capture})
+    if len(operations) != 37:
+        raise ValueError("complete fixture lost a required original operation")
+    return {"operations": operations, "native_domains": domains, "capability_manifest": capability,
+            "qualification_count": sum(item["operation"]["phase"] == "qualification_cell" for item in operations),
+            "campaign_authority": False, "physical_inference_observed": False}
+
+
+def finalize_fixture_qualification_cells_v1(*, prepared: Mapping[str, Any], native: Mapping[str, Any], guardian_authority_path: Path) -> list[dict[str, Any]]:
+    """Run the default real pilot finalizer while the fixture guardian is live."""
+    runtime_receipt = json.loads(Path(prepared["runtime"]["receipt_path"]).read_bytes())
+    bundles = {record["arm_id"]: record for record in runtime_receipt["bundles"]}
+    transaction = prepared["transaction"]
+    result = []
+    for item in native["operations"]:
+        row = item["operation"]
+        if row["phase"] != "qualification_cell":
+            continue
+        directory = Path(item["original"]["outputs"]["measurement_dir"])
+        frames = pd.read_csv(directory / "frames.csv")
+        ingress = pd.read_csv(directory / "ingress_ledger.csv")
+        fingerprint = schedule_fingerprint_for_records({**record, "sequence": record["admission_seq"]} for record in ingress.to_dict(orient="records"))
+        candidate = {
+            "schema_version": 2, "artifact_kind": "checkpoint_publication_runtime_candidate",
+            "status": "pending_full_resource_validation", "run_id": row["run_id"],
+            "system": row["system"], "scenario": row["scenario"], "codec": row["codec"],
+            "policy": row["policy"], "deadline_ms": row["deadline_ms"],
+            "execution_binding_provenance": NATIVE_EXECUTION_BINDING_PROVENANCE,
+            "topology_kind": item["source_plan"]["topology_kind"], "cohort_id": str(ingress.iloc[0]["cohort_id"]),
+            "measurement_schedule_fingerprint_sha256": fingerprint,
+            "completed_frames_by_stream": {str(stream): int(count) for stream, count in frames.groupby("stream_id").size().items()},
+            "summary": {"campaign_authority": False, "physical_inference_observed": False, "fixture_observations": True},
+            "evidence_sha256": {name: hashlib.sha256((directory / name).read_bytes()).hexdigest() for name in _acceptance_evidence_files(row["policy"])},
+            "pending_full_resource_evidence": list(FULL_RESOURCE_EVIDENCE_FILES),
+        }
+        path = directory / "checkpoint_publication_candidate.json"
+        with path.open("x", encoding="ascii") as stream:
+            stream.write(json.dumps(candidate, sort_keys=True, separators=(",", ":")) + "\n")
+        bundle_path = Path(prepared["runtime"]["receipt_path"]).parent / bundles[row["arm_id"]]["path"]
+        calibration_path = Path(row["descriptors"]["calibration"]["path"])
+        acceptance = finalize_checkpoint_qualification_pilot_acceptance_v1(
+            project_root=prepared["root"], output_dir=directory, expected_run_id=row["run_id"],
+            expected_arm_id=row["arm_id"], expected_system=row["system"],
+            expected_resource="cpu" if row["policy"] == "cpu_only" else "gpu", expected_scenario=row["scenario"],
+            expected_codec=row["codec"], expected_policy=row["policy"], expected_deadline_ms=row["deadline_ms"],
+            topology_kind=item["source_plan"]["topology_kind"], hardware_collector_stopped=True,
+            candidate_manifest_path=transaction["candidate_manifest_path"], candidate_receipt_path=transaction["candidate_receipt_path"],
+            qualification_index_path=transaction["candidate_index_path"], bootstrap_mapping_path=transaction["bootstrap_mapping_path"],
+            bootstrap_calibration_path=calibration_path, bootstrap_receipt_path=transaction["bootstrap_receipt_path"],
+            qualification_transaction_receipt_path=transaction["transaction_receipt_path"],
+            runtime_input_materialization_receipt_path=prepared["runtime"]["receipt_path"], runtime_input_bundle_path=bundle_path,
+            guardian_service_authority_path=guardian_authority_path,
+            preprocessing_contract_path=prepared["preprocessing"]["contract_path"],
+            preprocessing_contract_receipt_path=prepared["preprocessing"]["receipt_path"],
+        )
+        result.append({"operation_id": row["operation_id"], "acceptance_sha256": acceptance["sha256"]})
+    if len(result) != 32:
+        raise ValueError("complete fixture finalizer did not accept exactly 32 cells")
+    return result

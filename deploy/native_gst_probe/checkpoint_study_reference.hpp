@@ -272,7 +272,7 @@ struct HeldFile {
     fd = ::openat(parent, name.c_str(), O_RDONLY | O_CLOEXEC | O_NOFOLLOW);
     if (fd < 0 || ::fstat(fd, &initial) != 0 || !S_ISREG(initial.st_mode) || initial.st_nlink != 1 ||
         initial.st_size <= 0 || static_cast<std::uint64_t>(initial.st_size) > 512U * 1024U * 1024U) {
-      if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+      if (fd >= 0) { ::close(fd); } ::close(parent); fd = parent = -1;
       throw std::runtime_error("study input is not a bounded no-link regular file");
     }
   }
@@ -310,7 +310,7 @@ struct Jsonl {
     io.check(); parent = open_parent(path, name);
     fd = ::openat(parent, name.c_str(), O_CREAT | O_EXCL | O_RDWR | O_CLOEXEC | O_NOFOLLOW, 0600);
     if (fd < 0 || ::fstat(fd, &opened) != 0 || !S_ISREG(opened.st_mode) || opened.st_nlink != 1 || opened.st_uid != ::geteuid()) {
-      if (fd >= 0) ::close(fd); ::close(parent); fd = parent = -1;
+      if (fd >= 0) { ::close(fd); } ::close(parent); fd = parent = -1;
       throw std::runtime_error("study output is not an exclusive owned regular file");
     }
   }
@@ -363,7 +363,7 @@ inline std::string prefix_description(int width, int height) {
   GError* error = nullptr; GstElement* bin = gst_parse_bin_from_description(validation.c_str(), TRUE, &error);
   if (!bin || error) {
     const std::string text = error ? error->message : "unknown parse failure";
-    if (error) g_error_free(error); if (bin) gst_object_unref(bin);
+    if (error) { g_error_free(error); } if (bin) { gst_object_unref(bin); }
     throw std::runtime_error("unsupported fixed study colour prefix: " + text);
   }
   gst_object_unref(bin);
@@ -381,7 +381,7 @@ inline void bus_error(GstBus* bus, bool& eos) {
     if (GST_MESSAGE_TYPE(message) == GST_MESSAGE_EOS) { eos = true; gst_message_unref(message); continue; }
     GError* error = nullptr; gchar* debug = nullptr; gst_message_parse_error(message, &error, &debug);
     const std::string text = error ? error->message : "unknown GStreamer error";
-    if (error) g_error_free(error); g_free(debug); gst_message_unref(message);
+    if (error) { g_error_free(error); } g_free(debug); gst_message_unref(message);
     throw std::runtime_error("study pipeline failed: " + text);
   }
 }
@@ -392,7 +392,7 @@ struct Pipeline {
     GError* error = nullptr; value = gst_parse_launch(text.c_str(), &error);
     if (!value || error) {
       const std::string message = error ? error->message : "pipeline parse failed";
-      if (error) g_error_free(error); if (value) gst_object_unref(value); value = nullptr;
+      if (error) { g_error_free(error); } if (value) { gst_object_unref(value); } value = nullptr;
       throw std::runtime_error(message);
     }
     sink = gst_bin_get_by_name(GST_BIN(value), "study_sink"); source = gst_bin_get_by_name(GST_BIN(value), "study_source");
@@ -400,7 +400,7 @@ struct Pipeline {
   }
   ~Pipeline() {
     if (value) { if (!stopped) gst_element_set_state(value, GST_STATE_NULL); gst_object_unref(value); }
-    if (sink) gst_object_unref(sink); if (source) gst_object_unref(source); if (bus) gst_object_unref(bus);
+    if (sink) { gst_object_unref(sink); } if (source) { gst_object_unref(source); } if (bus) { gst_object_unref(bus); }
   }
   void stop() {
     if (value && !stopped) {
@@ -409,14 +409,15 @@ struct Pipeline {
   }
   void finish() {
     stop(); if (sink) gst_object_unref(sink); sink = nullptr;
-    if (source) gst_object_unref(source); source = nullptr;
-    if (bus) gst_object_unref(bus); bus = nullptr;
-    if (value) gst_object_unref(value); value = nullptr;
+    if (source) { gst_object_unref(source); } source = nullptr;
+    if (bus) { gst_object_unref(bus); } bus = nullptr;
+    if (value) { gst_object_unref(value); } value = nullptr;
   }
 };
 struct Observation {
   CheckpointIoDeadline& io; int width, height; std::mutex mutex; std::deque<ActiveHashes> queue;
   std::exception_ptr failure;
+  Observation(CheckpointIoDeadline& io_, int width_, int height_) : io(io_), width(width_), height(height_) {}
   void fail(std::exception_ptr value) {
     { std::lock_guard<std::mutex> lock(mutex); if (!failure) failure = value; }
     io.abort();
@@ -431,7 +432,7 @@ inline GstPadProbeReturn nv12_probe(GstPad* pad, GstPadProbeInfo* info, gpointer
     std::lock_guard<std::mutex> lock(state.mutex);
     require(state.queue.size() < 4, "study NV12/RGB pairing exceeded bounded streaming queue");
     state.queue.push_back(std::move(hashes));
-    if (caps) gst_caps_unref(caps); return GST_PAD_PROBE_OK;
+    if (caps) { gst_caps_unref(caps); } return GST_PAD_PROBE_OK;
   } catch (...) { if (caps) gst_caps_unref(caps); state.fail(std::current_exception()); return GST_PAD_PROBE_DROP; }
 }
 inline std::string frame_row(std::size_t ordinal, const ActiveHashes& yuv, const ActiveHashes& rgb, int width, int height) {

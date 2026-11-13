@@ -1,0 +1,166 @@
+test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) ... 
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='missing') ... FAIL
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='missing_on') ... FAIL
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='throwing_on') ... FAIL
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='missing') ... FAIL
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='missing_on') ... FAIL
+  test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='throwing_on') ... FAIL
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1553, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    self.assertEqual(facts['secondary'],['cd_'+role+'_'+label])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['cd_native_stdin_missing']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'cd_native_stdin_missing'
+
+- []
++ ['cd_native_stdin_missing']
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='missing_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1543, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    value=self.node(code=code,action='none',native_track_throw=True,fallback_stdin_fault=fault)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1295, in node
+    self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:9
+function child(file,args,options){attempts.push({file,args,options});if(file==='C:/Python314/python.exe'&&test.writer_spawn_throw)throw Error('controlled_writer_spawn');let p=new EventEmitter();p.pid=4294967295-spawned.length;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();let fallback=file==='C:/Python314/python.exe'&&test.writer_track_throw||file.endsWith('wsl.exe')&&test.native_track_throw;p.stdin.end=b=>{sent.push(Buffer.from(b||'').toString('base64'));if(test.fallback_stdin_fault&&fallback)queueMicrotask(()=>p.stdin.emit('error',Error('controlled_unhandled_EPIPE')));if(test.fallback_emit_errors&&fallback)queueMicrotask(()=>{for(let [label,emitter] of [['child',p],['stdin',p.stdin],['stdout',p.stdout],['stderr',p.stderr]])for(let i=0;i<2;i++)emitter.emit('error',Error('controlled_'+label));});if(file==='C:/Python314/python.exe'&&test.writer_close_throw||file.endsWith('wsl.exe')&&test.native_close_throw)throw Error('controlled_stdin_close');if(test.stdin_error)p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');};if(fallback&&test.fallback_stdin_fault==='missing')p.stdin=undefined;else if(fallback&&test.fallback_stdin_fault==='missing_on')p.stdin.on=undefined;else if(fallback&&test.fallback_stdin_fault==='throwing_on')p.stdin.on=()=>{throw Error('controlled_stdin_listener');};if(file==='C:/Python314/python.exe'&&test.writer_track_throw)p.once=()=>{throw Error('controlled_writer_track');};if(file.endsWith('wsl.exe')&&test.native_track_throw)p.once=()=>{throw Error('controlled_native_track');};p.kill=()=>{killed++;throw Error('kill_forbidden');};spawned.push({file,args,options,p});return p;}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+Error: controlled_unhandled_EPIPE
+    at [eval]:9:560
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Emitted 'error' event at:
+    at [eval]:9:547
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='native', fault='throwing_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1543, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    value=self.node(code=code,action='none',native_track_throw=True,fallback_stdin_fault=fault)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1295, in node
+    self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:9
+function child(file,args,options){attempts.push({file,args,options});if(file==='C:/Python314/python.exe'&&test.writer_spawn_throw)throw Error('controlled_writer_spawn');let p=new EventEmitter();p.pid=4294967295-spawned.length;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();let fallback=file==='C:/Python314/python.exe'&&test.writer_track_throw||file.endsWith('wsl.exe')&&test.native_track_throw;p.stdin.end=b=>{sent.push(Buffer.from(b||'').toString('base64'));if(test.fallback_stdin_fault&&fallback)queueMicrotask(()=>p.stdin.emit('error',Error('controlled_unhandled_EPIPE')));if(test.fallback_emit_errors&&fallback)queueMicrotask(()=>{for(let [label,emitter] of [['child',p],['stdin',p.stdin],['stdout',p.stdout],['stderr',p.stderr]])for(let i=0;i<2;i++)emitter.emit('error',Error('controlled_'+label));});if(file==='C:/Python314/python.exe'&&test.writer_close_throw||file.endsWith('wsl.exe')&&test.native_close_throw)throw Error('controlled_stdin_close');if(test.stdin_error)p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');};if(fallback&&test.fallback_stdin_fault==='missing')p.stdin=undefined;else if(fallback&&test.fallback_stdin_fault==='missing_on')p.stdin.on=undefined;else if(fallback&&test.fallback_stdin_fault==='throwing_on')p.stdin.on=()=>{throw Error('controlled_stdin_listener');};if(file==='C:/Python314/python.exe'&&test.writer_track_throw)p.once=()=>{throw Error('controlled_writer_track');};if(file.endsWith('wsl.exe')&&test.native_track_throw)p.once=()=>{throw Error('controlled_native_track');};p.kill=()=>{killed++;throw Error('kill_forbidden');};spawned.push({file,args,options,p});return p;}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+Error: controlled_unhandled_EPIPE
+    at [eval]:9:560
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Emitted 'error' event at:
+    at [eval]:9:547
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='missing')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1553, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    self.assertEqual(facts['secondary'],['cd_'+role+'_'+label])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['cd_writer_stdin_missing']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'cd_writer_stdin_missing'
+
+- []
++ ['cd_writer_stdin_missing']
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='missing_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1535, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    value,errors=self.writer_attempts(writer_track_throw=True,fallback_stdin_fault=fault)
+                 ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1446, in writer_attempts
+    value=self.node(steps=[{'code':code}],**fault)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1295, in node
+    self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:9
+function child(file,args,options){attempts.push({file,args,options});if(file==='C:/Python314/python.exe'&&test.writer_spawn_throw)throw Error('controlled_writer_spawn');let p=new EventEmitter();p.pid=4294967295-spawned.length;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();let fallback=file==='C:/Python314/python.exe'&&test.writer_track_throw||file.endsWith('wsl.exe')&&test.native_track_throw;p.stdin.end=b=>{sent.push(Buffer.from(b||'').toString('base64'));if(test.fallback_stdin_fault&&fallback)queueMicrotask(()=>p.stdin.emit('error',Error('controlled_unhandled_EPIPE')));if(test.fallback_emit_errors&&fallback)queueMicrotask(()=>{for(let [label,emitter] of [['child',p],['stdin',p.stdin],['stdout',p.stdout],['stderr',p.stderr]])for(let i=0;i<2;i++)emitter.emit('error',Error('controlled_'+label));});if(file==='C:/Python314/python.exe'&&test.writer_close_throw||file.endsWith('wsl.exe')&&test.native_close_throw)throw Error('controlled_stdin_close');if(test.stdin_error)p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');};if(fallback&&test.fallback_stdin_fault==='missing')p.stdin=undefined;else if(fallback&&test.fallback_stdin_fault==='missing_on')p.stdin.on=undefined;else if(fallback&&test.fallback_stdin_fault==='throwing_on')p.stdin.on=()=>{throw Error('controlled_stdin_listener');};if(file==='C:/Python314/python.exe'&&test.writer_track_throw)p.once=()=>{throw Error('controlled_writer_track');};if(file.endsWith('wsl.exe')&&test.native_track_throw)p.once=()=>{throw Error('controlled_native_track');};p.kill=()=>{killed++;throw Error('kill_forbidden');};spawned.push({file,args,options,p});return p;}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+Error: controlled_unhandled_EPIPE
+    at [eval]:9:560
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Emitted 'error' event at:
+    at [eval]:9:547
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1
+
+
+======================================================================
+FAIL: test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener (caller_guard_red60.LaterStageCallerTests.test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener) (role='writer', fault='throwing_on')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1535, in test_fallback_skips_eof_without_a_successfully_installed_stdin_error_listener
+    value,errors=self.writer_attempts(writer_track_throw=True,fallback_stdin_fault=fault)
+                 ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1446, in writer_attempts
+    value=self.node(steps=[{'code':code}],**fault)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1295, in node
+    self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : [eval]:9
+function child(file,args,options){attempts.push({file,args,options});if(file==='C:/Python314/python.exe'&&test.writer_spawn_throw)throw Error('controlled_writer_spawn');let p=new EventEmitter();p.pid=4294967295-spawned.length;p.stdout=new Pipe();p.stderr=new Pipe();p.stdin=new EventEmitter();let fallback=file==='C:/Python314/python.exe'&&test.writer_track_throw||file.endsWith('wsl.exe')&&test.native_track_throw;p.stdin.end=b=>{sent.push(Buffer.from(b||'').toString('base64'));if(test.fallback_stdin_fault&&fallback)queueMicrotask(()=>p.stdin.emit('error',Error('controlled_unhandled_EPIPE')));if(test.fallback_emit_errors&&fallback)queueMicrotask(()=>{for(let [label,emitter] of [['child',p],['stdin',p.stdin],['stdout',p.stdout],['stderr',p.stderr]])for(let i=0;i<2;i++)emitter.emit('error',Error('controlled_'+label));});if(file==='C:/Python314/python.exe'&&test.writer_close_throw||file.endsWith('wsl.exe')&&test.native_close_throw)throw Error('controlled_stdin_close');if(test.stdin_error)p.stdin.emit('error',Error('controlled'));p.stdin.emit('finish');p.stdin.emit('close');};if(fallback&&test.fallback_stdin_fault==='missing')p.stdin=undefined;else if(fallback&&test.fallback_stdin_fault==='missing_on')p.stdin.on=undefined;else if(fallback&&test.fallback_stdin_fault==='throwing_on')p.stdin.on=()=>{throw Error('controlled_stdin_listener');};if(file==='C:/Python314/python.exe'&&test.writer_track_throw)p.once=()=>{throw Error('controlled_writer_track');};if(file.endsWith('wsl.exe')&&test.native_track_throw)p.once=()=>{throw Error('controlled_native_track');};p.kill=()=>{killed++;throw Error('kill_forbidden');};spawned.push({file,args,options,p});return p;}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ^
+
+Error: controlled_unhandled_EPIPE
+    at [eval]:9:560
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Emitted 'error' event at:
+    at [eval]:9:547
+    at node:internal/process/task_queues:149:7
+    at AsyncResource.runInAsyncScope (node:async_hooks:213:14)
+    at AsyncResource.runMicrotask (node:internal/process/task_queues:146:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v25.2.1
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.592s
+
+FAILED (failures=6)

@@ -1,0 +1,17 @@
+2,3c2,3
+< # Amendment 7, 6D.3 (and 6D.7 with a different target): move the frozen root to TARGET
+< # with WSL git (Amendment 4 procedure). usage: root_move_v1.sh <target-sha> <out-dir> <expected-changed-receipt-bound-file>
+---
+> # Amendment 8, 6E.3: move the frozen root to C_B'''' with WSL git (Amendment 4 procedure;
+> # recipe: root_move_v1.sh of 6D.3 plus the attempt-4 code closure check). usage: root_move_v2.sh <target-sha> <out-dir> <expected-changed-receipt-bound-file>
+8c8
+< engine=$root/artifacts/qualify_full_benchmark_20261008d/docker-engine-identity.6A2.v1.json
+---
+> engine=$root/artifacts/qualify_full_benchmark_20261008e/docker-engine-identity.6A2.v1.json
+24a25,30
+> # Files pinned (path, bytes, physical identity) by the attempt-4 execution code closure stay untouched.
+> "$python" -c "import json,sys; [print(p) for p in sorted(s['path'] for s in json.load(open(sys.argv[1]))['project_sources'])]" \
+>     artifacts/qualify_full_benchmark_20261008e/q1_control/qualification_execution_code_closure.v1.receipt.json > "$out/attempt4-code-closure-sources.txt"
+> [[ "$(wc -l < "$out/attempt4-code-closure-sources.txt")" == 90 ]]
+> grep -Fxf "$out/attempt4-code-closure-sources.txt" "$out/changed-paths.txt" > "$out/changed-closure-sources.txt" || true
+> [[ ! -s "$out/changed-closure-sources.txt" ]] || { echo "closure-pinned source changes" >&2; exit 6; }

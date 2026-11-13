@@ -24,6 +24,9 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 from analytics_execution_protocol import BRANCHES, PROTOCOL_IDENTITY_SHA256
+from publication_policy_qualification_transaction_validation_v2 import (
+    AUTHORITY_V2_INTERVAL_EMITTERS,
+)
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
     PublicationPhysicalIoV1Error,
@@ -1339,6 +1342,7 @@ def _validate_transaction(root: Path, path_value: Path | str) -> dict[str, Any]:
         "systems",
         "cell_count",
         "hardware_resource_collector",
+        "resource_interval_emitters",
         "receipt_sha256",
     }
     _require(required <= set(value), "qualification transaction receipt fields drifted")
@@ -1365,6 +1369,20 @@ def _validate_transaction(root: Path, path_value: Path | str) -> dict[str, Any]:
         collector_descriptor["path"] == "scripts/collect_metrics.py",
         "qualification hardware resource collector path drifted",
     )
+    emitters = value.get("resource_interval_emitters")
+    _require(
+        type(emitters) is dict and set(emitters) == set(SYSTEMS),
+        "qualification resource interval emitter set drifted",
+    )
+    verified_emitters: dict[str, dict[str, Any]] = {}
+    for system in SYSTEMS:
+        verified_emitters[system], _emitter_path = _verify_project_descriptor(
+            root, emitters[system], label=f"qualification {system} interval emitter"
+        )
+        _require(
+            verified_emitters[system]["path"] == AUTHORITY_V2_INTERVAL_EMITTERS[system],
+            f"qualification {system} interval emitter path drifted",
+        )
     _require(
         type(fragments) is dict and set(fragments) == set(SYSTEMS),
         "qualification transaction fragment set drifted",
@@ -1383,6 +1401,7 @@ def _validate_transaction(root: Path, path_value: Path | str) -> dict[str, Any]:
             value, "receipt_sha256", label="qualification transaction receipt"
         ),
         "hardware_resource_collector": collector_descriptor,
+        "resource_interval_emitters": verified_emitters,
         "fragments": verified_fragments,
     }
 
@@ -3219,7 +3238,11 @@ def load_publication_policy_qualification_execution_closure_v1(
                 (lifecycle_path, "guardian lifecycle snapshot"),
             ):
                 mode, _identity = custody.stat_regular_identity(path, label=label)
-                _require(mode == 0o444, f"{label} is not readonly")
+                _require(
+                    mode == 0o444
+                    or (mode == 0o555 and not custody.permission_modes_enforced),
+                    f"{label} is not readonly",
+                )
             custody.verify()
     except QualificationExecutionClosureV1Error:
         raise

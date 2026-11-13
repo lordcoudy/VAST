@@ -1,0 +1,35 @@
+{
+  "started_utc": "2026-10-11T22:54:50.3465727+00:00",
+  "capture_directory": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\checks-01\\integration-a16-original-control-01",
+  "original_exit_code": 0,
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "campaign_authority": false,
+  "streams": {
+    "original.stderr.raw": {
+      "sha256": "3669c10fbdc200599e51096654929da77e65e392d2e84568ab759a762ac95c20",
+      "bytes": 356
+    },
+    "original.stdout.raw": {
+      "sha256": "ec0fa1953f2ef0d53412f9fa20f8f2d96bfd219ed31a4782df0542031b2736a5",
+      "bytes": 72
+    }
+  },
+  "finished_utc": "2026-10-11T22:55:21.7606781+00:00",
+  "argv": [
+    "C:\\Windows\\System32\\wsl.exe",
+    "--distribution",
+    "Ubuntu",
+    "--user",
+    "s-a-balashov",
+    "--exec",
+    "/usr/bin/env",
+    "HOME=/home/s-a-balashov",
+    "TMPDIR=/var/tmp",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "VAST_REPAIR_CHECK_ROOT=/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "VAST_REPAIR_INTEGRATION_RUN_SUFFIX=01",
+    "/bin/bash",
+    "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/run_integration_lane.sh",
+    "a16f243e7e80f093342ccdddf717d59d6d46f0a8"
+  ]
+}

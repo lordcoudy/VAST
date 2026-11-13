@@ -450,7 +450,12 @@ def measurement_container_custody_v1(engine, engine_socket, argv):
             except BaseException as cleanup_error:
                 if error is None:
                     raise
-                error.add_note("Original container custody failed: " + str(cleanup_error))
+                note = "Original container custody failed: " + str(cleanup_error)
+                note_adder = getattr(error, "add_note", None)
+                if callable(note_adder):
+                    note_adder(note)
+                else:
+                    error.__notes__ = [*getattr(error, "__notes__", ()), note]
     finally:
         owned.close()
 
