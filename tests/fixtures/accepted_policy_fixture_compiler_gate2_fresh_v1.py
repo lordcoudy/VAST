@@ -229,11 +229,12 @@ class Run:
             raw, err = bytes(rows[0]["raw"]), bytes(rows[1]["raw"])
         if rc is None:
             facts["kill"] = stop_owned(p, self.end)
-        for pipe in (p.stdout, p.stderr):
-            try:
-                pipe.close()
-            except BaseException:
-                pass
+        for pipe, row in zip((p.stdout, p.stderr), rows):
+            if row["eof"]:  # a reader still blocked in a read could make close() block
+                try:
+                    pipe.close()
+                except BaseException:
+                    pass
         if causes or rc != 0:
             raise FreshRefusal(causes[0] if causes else "phase_status_nonzero",
                 {"process": facts, "stderr_prefix": err.decode("ascii", "replace")})  # err is already capped at 4,096 B
