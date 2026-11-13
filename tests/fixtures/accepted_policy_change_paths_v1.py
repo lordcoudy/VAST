@@ -32,6 +32,13 @@ def change_directory_v1(project_root: Path) -> Path:
     return directory
 
 
+def retired_route_path_v1(repo_root, relative):
+    """Retired 465-resume routes read the pre-fresh gate2_c bytes (design.md, fresh direct gate 2)."""
+    if relative == "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py":
+        return change_directory_v1(repo_root) / "evidence/retired-development-tests-20261111" / (Path(relative).name + ".retired")
+    return current_path_v1(repo_root, relative)
+
+
 def current_path_v1(project_root: Path, relative: str) -> Path:
     """Open path for a recorded active-form relative path, which stays the identity (R1)."""
     active = "openspec/changes/" + CHANGE + "/"

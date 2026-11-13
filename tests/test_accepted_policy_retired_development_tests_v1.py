@@ -9,10 +9,11 @@ from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1
 
 ROOT = Path(__file__).resolve().parents[1]
 RETIRED = "evidence/retired-development-tests-20261111"
-# Byte-exact operators (design.md R1 and the 2026-11-11 setup/capture finding).
+# Byte-exact operators (design.md R1 and the 2026-11-11 setup/capture finding). gate2_c is pinned at its
+# reviewed fresh-gate-2 bytes (design.md, "Fresh direct gate 2"); its earlier bytes are a retired copy.
 FROZEN = {
     "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py":
-        (130783, "5a6c4b08ce3d381c355cbf72f93057c991b4adcb9d6ca8c43a638acd64f2ecf9"),
+        (141129, "d005a380726e3495ee0558d645b4a385b25aa1b8779f079d6225455be6cc2735"),
     "tests/fixtures/accepted_policy_fixture_compiler_v1.py":
         (103925, "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03"),
     "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py":
@@ -34,7 +35,7 @@ class RetiredDevelopmentTestsV1(unittest.TestCase):
 
     def test_every_retired_copy_matches_its_readme_row(self):
         rows = readme_rows(self.directory)
-        self.assertEqual(len(rows), 7)
+        self.assertEqual(len(rows), 8)
         listed = {name for _, name, _, _ in rows}
         self.assertEqual(listed, {p.name for p in self.directory.glob("*.retired")})
         for original, name, size, digest in rows:

@@ -51,6 +51,22 @@ RESUME_OWNER_ROOT_V1 = Path("/home/s-a-balashov/work/vast-fixture-compiler-gate2
 RESUME_ROOT_V1 = RESUME_OWNER_ROOT_V1 / "r1"
 RESUME_OPERATOR_V1 = "tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py"
 RESUME_INITIAL_CHARGE_V1 = 29323264
+# Fresh direct gate 2 (component-admission-plan.v9.md sections 2 and 5).
+FRESH_PACKET_LIMIT_V1 = 32768
+FRESH_BASE_CHARGE_V1 = RESUME_INITIAL_CHARGE_V1 + 2621440
+FRESH_NOISE_ALLOWANCE_V1 = 751360
+FRESH_FORMS_CAP_V1 = 1345792
+FRESH_PACKET_RESERVE_V1 = 36864
+FRESH_ROOT_PREFIX_V1 = "/home/s-a-balashov/work/vast-fixture-compiler-gate2-"
+FRESH_OPERATOR_V1 = "tests/fixtures/accepted_policy_fixture_compiler_gate2_fresh_v1.py"
+FRESH_PLAN_V1 = "openspec/changes/fix-accepted-policy-preprocessing/evidence/compiler-component-01/component-admission-plan.v9.md"
+FRESH_AUX_CAPS_V1 = {"operator.authority.original.json": 8192, "manifest.original.json": 8192,
+  "RPC01.request.original": 16384, "RPC01.reply.original": 16384, "b2.corrected-index.v1.json": 65536,
+  "phase.pre.original.json": 8192, "phase.export.original.json": 8192, "phase.p0.original.json": 8192,
+  "phase.packet.original.json": 8192, "measurements.original.json": 8192}
+F2_PRODUCER_PLAN_V1 = {"size_bytes": 25355,
+  "sha256": "f024bfccb48e26be34b05b05fbc16082791b134f82967613177ad81a916d2d94",
+  "git_blob": "4194c90dcfbc3dd4b44b71a4ce05c70192967397"}
 RECORD_LIMIT = 524288
 CRASH_DIRECTORY = Path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp/wsl-crashes")
 REVIEW_REPO_ROOT_WINDOWS_V1 = PureWindowsPath(r"C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST")
@@ -644,11 +660,12 @@ def _owner_project_root_v1(root, packet):
   return RESUME_OWNER_ROOT_V1
 
 
-def _resume_namespace_v1(root, stage=None):
+def _resume_namespace_v1(root, stage=None, export=(), opaque=False):
+  # opaque (fresh route): stage output trees are owned by run_c_v1/run_d_v1 and their descriptor checks.
   _require(stage is None or stage in STAGES + ("D",), "resume_namespace_stage")
   stages = () if stage is None else STAGES if stage == "D" else STAGES[:STAGES.index(stage) + 1]
-  directories = {"p0", "outputs"}
-  files = {"gate2.packet.original.json"} | {"p0/" + name for name in (
+  directories = {"p0", "outputs"} | {str(parent) for name in export for parent in Path(name).parents if str(parent) != "."}
+  files = {"gate2.packet.original.json"} | set(export) | {"p0/" + name for name in (
     "p0-control.v1.json", "p0-completion.v1.json", "p0-id.stdout.original", "p0-id.stderr.original",
     "p0-snapshot-info.stdout.original", "p0-snapshot-info.stderr.original",
     "p0-snapshot-ls.stdout.original", "p0-snapshot-ls.stderr.original")}
@@ -683,6 +700,8 @@ def _resume_namespace_v1(root, stage=None):
       files.add("outputs/D/controls/" + phase + ".crashes.original.json")
       files.update("outputs/D/controls/" + phase + "." + kind + "." + channel + ".original"
         for kind in ("dmesg", "journal", "gpu") for channel in ("stdout", "stderr"))
+  opaque_dirs = {"outputs/" + name for name in stages + (("D",) if stage == "D" else ())} if opaque else set()
+  directories |= opaque_dirs
   pending, seen, count = [root], set(), 0
   device = root.stat().st_dev
   while pending:
@@ -699,7 +718,8 @@ def _resume_namespace_v1(root, stage=None):
         seen.add((info.st_dev, info.st_ino))
         if stat.S_ISDIR(info.st_mode):
           _require(relative in directories and path.resolve(strict=True) == path, "resume_namespace_directory")
-          pending.append(path)
+          if relative not in opaque_dirs:
+            pending.append(path)
         else:
           _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and relative in files,
             "resume_namespace_file")
@@ -761,9 +781,7 @@ def _authenticate_resume_v1(root, review, code, plan_raw, boot_id, authority_des
   _resume_aux_v1()
   for key, cap in (("producer_plan", 40960), ("consumer_plan", 40960), ("operator", 32768), ("retention_index", 12288)):
     _resume_desc_v1(context[key], cap)
-  _require(context["producer_plan"] == {"size_bytes": 25355,
-    "sha256": "f024bfccb48e26be34b05b05fbc16082791b134f82967613177ad81a916d2d94",
-    "git_blob": "4194c90dcfbc3dd4b44b71a4ce05c70192967397"} and
+  _require(context["producer_plan"] == F2_PRODUCER_PLAN_V1 and
     context["consumer_plan"] == {"size_bytes": len(plan_raw), "sha256": _sha(plan_raw),
     "git_blob": hashlib.sha1(b"blob " + str(len(plan_raw)).encode() + b"\0" + plan_raw).hexdigest()}, "resume_plan_roles")
   baseline = context["baseline"]
@@ -804,6 +822,117 @@ def _authenticate_resume_v1(root, review, code, plan_raw, boot_id, authority_des
   return quote
 
 
+def _fresh_root_v1(commit):
+  return Path(FRESH_ROOT_PREFIX_V1 + commit + "-01")
+
+
+def _fresh_evidence_paths_v1(root):
+  paths = _resume_evidence_paths_v1()
+  paths["b2_index"] = Path(str(root) + ".operator-originals") / "b2.corrected-index.v1.json"
+  return paths
+
+
+def _fresh_aux_v1(aux):
+  with os.scandir(aux) as rows:
+    for count, row in enumerate(rows, 1):
+      _require(count <= len(FRESH_AUX_CAPS_V1) and row.name in FRESH_AUX_CAPS_V1, "fresh_aux_inventory")
+      info = row.stat(follow_symlinks=False)
+      _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size <= FRESH_AUX_CAPS_V1[row.name],
+        "fresh_aux_form")
+
+
+def _fresh_info_binding_v1(aux, value):
+  _require(type(value) is dict and set(value) == {"request", "reply", "identity"}, "fresh_info_shape")
+  raws = {}
+  for role in ("request", "reply"):
+    desc = value[role]
+    _require(type(desc) is dict and set(desc) == {"size_bytes", "sha256"}, "fresh_info_descriptor")
+    raws[role] = _bound_descriptor(dict(desc, path=str(aux / ("RPC01." + role + ".original"))), cap=16384)
+  _require(0 < len(raws["request"]) + len(raws["reply"]) <= 16384 and raws["request"] ==
+    b"GET /v1.55/info HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\nContent-Length: 0\r\n\r\n",
+    "fresh_info_wire_bound")
+  identity = _resume_info_identity_v1(_http_json_v1(raws["reply"]))
+  _require(component.canonical_json_v1(identity) == component.canonical_json_v1(value["identity"]), "fresh_info_projection")
+
+
+def fresh_charge_v1(*, pre, pre_packet, allocation_bytes):
+  """V9 section 5: the packet's charge from the measured pre-packet interval."""
+  _require(type(allocation_bytes) is int and allocation_bytes >= 0 and
+    allocation_bytes + FRESH_PACKET_RESERVE_V1 <= FRESH_FORMS_CAP_V1, "fresh_allocation_bound")
+  interval = interval_charge_v1(pre, pre_packet, retained_bytes=allocation_bytes)
+  noise = max(0, interval - allocation_bytes)
+  excess = max(0, noise - FRESH_NOISE_ALLOWANCE_V1)
+  charge = FRESH_BASE_CHARGE_V1 + excess
+  _require(charge + C_LIMIT + 4194304 + 2097152 <= SEAL_BYTES, "fresh_c1_liability")
+  return {"allocation_bytes": allocation_bytes, "noise_bytes": noise, "excess_bytes": excess, "initial_charged_bytes": charge}
+
+
+def fresh_post_check_v1(*, pre, post, allocation_bytes, measured_post_allocation_bytes, excess_bytes):
+  """V9 section 5 POST check: the packet write stays in its reserve and later noise in the charged allowance."""
+  _require(type(measured_post_allocation_bytes) is int and type(excess_bytes) is int and excess_bytes >= 0 and
+    type(allocation_bytes) is int and allocation_bytes >= 0 and
+    0 <= measured_post_allocation_bytes <= allocation_bytes + FRESH_PACKET_RESERVE_V1, "fresh_post_allocation")
+  allocated = max(measured_post_allocation_bytes, allocation_bytes + FRESH_PACKET_RESERVE_V1)
+  noise = max(0, interval_charge_v1(pre, post, retained_bytes=allocated) - allocated)
+  _require(max(0, noise - FRESH_NOISE_ALLOWANCE_V1) <= excess_bytes, "fresh_post_noise")
+  return {"allocated_bytes": allocated, "noise_bytes": noise}
+
+
+def _fresh_desc_v1(value, path, cap):
+  _require(type(value) is dict and set(value) == {"path", "size_bytes", "sha256", "git_blob"} and value["path"] == path and
+    type(value["size_bytes"]) is int and 0 < value["size_bytes"] <= cap and _sha_shape(value["sha256"]) and
+    type(value["git_blob"]) is str and re.fullmatch("[0-9a-f]{40}", value["git_blob"]) is not None, "fresh_descriptor")
+  return {key: value[key] for key in ("size_bytes", "sha256", "git_blob")}
+
+
+def _authenticate_fresh_v1(root, review, code, plan_raw, boot_id, authority_descriptor, charged, context, stage):
+  _require(compiler._json_bound(context) <= 8192, "fresh_context_bound")
+  keys = {"schema_version", "project_root", "consumer_commit", "approval_reference", "manifest", "operator", "plan",
+    "f2_producer", "boot_id", "info", "measurements", "allocation_bytes", "noise_bytes", "excess_bytes"}
+  _require(type(context) is dict and set(context) == keys and type(context["schema_version"]) is int and
+    context["schema_version"] == 1 and root == _fresh_root_v1(review["commit"]) and
+    context["project_root"] == str(root) and context["consumer_commit"] == review["commit"] and
+    context["approval_reference"] == review["approval_reference"] and context["boot_id"] == boot_id and
+    type(boot_id) is str and
+    re.fullmatch("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}", boot_id) is not None and
+    context["f2_producer"] == {"commit": RESUME_PRODUCER_COMMIT_V1, "plan_sha256": F2_PRODUCER_PLAN_V1["sha256"]},
+    "fresh_context_roles")
+  _require(not os.path.lexists(RESUME_ROOT_V1), "fresh_resume_root_present")
+  export = tuple(code) + (FRESH_PLAN_V1,)
+  _resume_namespace_v1(root, stage, export, opaque=True)
+  aux = Path(str(root) + ".operator-originals")
+  _fresh_aux_v1(aux)
+  operator = _fresh_desc_v1(context["operator"], FRESH_OPERATOR_V1, 65536)
+  plan = _fresh_desc_v1(context["plan"], FRESH_PLAN_V1, 40960)
+  _require(plan == {"size_bytes": len(plan_raw), "sha256": _sha(plan_raw),
+    "git_blob": hashlib.sha1(b"blob " + str(len(plan_raw)).encode() + b"\0" + plan_raw).hexdigest()}, "fresh_plan_binding")
+  manifest_desc = context["manifest"]
+  _require(type(manifest_desc) is dict and set(manifest_desc) == {"size_bytes", "sha256"}, "fresh_manifest_descriptor")
+  manifest = _json(_bound_descriptor(dict(manifest_desc, path=str(aux / "manifest.original.json")), cap=8192), 8192)
+  files = manifest.get("files") if type(manifest) is dict else None
+  _require(type(manifest) is dict and set(manifest) == {"schema_version", "commit", "files"} and
+    type(manifest["schema_version"]) is int and manifest["schema_version"] == 1 and manifest["commit"] == review["commit"] and
+    type(files) is dict and set(files) == set(export) | {FRESH_OPERATOR_V1}, "fresh_manifest_shape")
+  _require(all(files[path] == code[path] for path in code) and files[FRESH_PLAN_V1] == plan and
+    files[FRESH_OPERATOR_V1] == operator, "fresh_manifest_binding")
+  _require(type(authority_descriptor) is dict and authority_descriptor.get("path") ==
+    str(aux / "operator.authority.original.json"), "fresh_authority_path")
+  raw = _bound_descriptor(authority_descriptor, cap=8192)
+  _require(_sha(raw) == review["evidence_sha256"], "fresh_authority_binding")
+  expected = {"schema_version": 1, "code_commit": review["commit"], "approval_reference": review["approval_reference"],
+    "operator_sha256": operator["sha256"], "context_sha256": _sha(component.canonical_json_v1(context)),
+    "context": context, "external_approval_required": True}
+  _require(component.canonical_json_v1(_json(raw, 8192)) == component.canonical_json_v1(expected), "fresh_authority_shape")
+  _fresh_info_binding_v1(aux, context["info"])
+  measured = context["measurements"]
+  _require(type(measured) is dict and set(measured) == {"pre", "pre_packet"} and all(
+    type(row) is dict and set(row) == {"c_free_bytes", "ext4_used_bytes"} for row in measured.values()), "fresh_measurements")
+  charge = fresh_charge_v1(pre=measured["pre"], pre_packet=measured["pre_packet"], allocation_bytes=context["allocation_bytes"])
+  _require(all(type(context[key]) is int and context[key] == charge[key] for key in
+    ("noise_bytes", "excess_bytes")) and type(charged) is int and charged == charge["initial_charged_bytes"], "fresh_charge")
+  return sum(desc["size_bytes"] for desc in code.values()) + len(plan_raw)
+
+
 def _resume_originals_v1(context, review, p0_descriptor):
   from tests.fixtures import accepted_policy_fixture_compiler_gate2_resume_v1 as resume
   from tests.fixtures import accepted_policy_fixture_compiler_gate2_p0_v1 as p0
@@ -835,8 +964,9 @@ def _resume_originals_v1(context, review, p0_descriptor):
 
 def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evidence, p0_descriptor,
   boot_id, initial_charged_bytes, initial_measurement,
-  operator_authority_descriptor, prior_retention, resume_context=None, _stage=None):
+  operator_authority_descriptor, prior_retention, resume_context=None, _stage=None, fresh_context=None):
   root = Path(project_root)
+  _require(resume_context is None or fresh_context is None, "packet_context_choice")
   _require(root.is_absolute() and root.resolve(strict=True) == root, "packet_root")
   review = component._review(review)
   plan_raw = _bound_descriptor(physical_plan_descriptor, cap=65536)
@@ -861,6 +991,22 @@ def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evi
     _require(account["physical_charge_bytes"] + account["reserved_control_bytes"] +
       account["reserved_rounding_bytes"] + account["reserved_metadata_bytes"] <= component.ACTIVE_F2_LIMIT_V1,
       "resume_active_f2_bound")
+  elif fresh_context is not None:
+    _require(prior_retention is None, "fresh_prior_retention")
+    current_quote = _authenticate_fresh_v1(root, review, code, plan_raw, boot_id,
+      operator_authority_descriptor, initial_charged_bytes, fresh_context, _stage)
+    _require(p0_descriptor.get("path") == str(root / "p0/p0-completion.v1.json"), "fresh_p0_path")
+    _require(type(evidence) is dict and set(evidence)==set(EVIDENCE_NAMES) and all(
+      type(evidence[k]) is dict and evidence[k].get("path")==str(p) for k,p in _fresh_evidence_paths_v1(root).items()),
+      "fresh_evidence_paths")
+    _require(physical_plan_descriptor["path"] == str(root / FRESH_PLAN_V1), "fresh_plan_path")
+    _require(initial_measurement == fresh_context["measurements"]["pre"], "fresh_initial_measurement")
+    admitted = _authenticate_evidence(evidence, dict(review, commit=RESUME_PRODUCER_COMMIT_V1),
+      F2_PRODUCER_PLAN_V1["sha256"])
+    account = admitted["accounting"]
+    _require(account["physical_charge_bytes"] + account["reserved_control_bytes"] +
+      account["reserved_rounding_bytes"] + account["reserved_metadata_bytes"] <= component.ACTIVE_F2_LIMIT_V1,
+      "fresh_active_f2_bound")
   else:
     current_quote, admitted = _legacy_packet_bindings_v1(root, review, code, plan_raw, boot_id,
       operator_authority_descriptor, prior_retention, evidence, initial_measurement, initial_charged_bytes)
@@ -886,7 +1032,10 @@ def build_packet_v1(*, project_root, review, physical_plan_descriptor, code, evi
   if resume_context is not None:
     packet["resume_context"] = resume_context
     packet["resume_originals"] = _resume_originals_v1(resume_context, review, p0_descriptor)
-  _require(compiler._json_bound(packet) <= (PACKET_LIMIT if resume_context is None else RESUME_PACKET_LIMIT_V1), "packet_bound")
+  if fresh_context is not None:
+    packet["fresh_context"] = fresh_context
+  _require(compiler._json_bound(packet) <= (FRESH_PACKET_LIMIT_V1 if fresh_context is not None else
+    PACKET_LIMIT if resume_context is None else RESUME_PACKET_LIMIT_V1), "packet_bound")
   _require(sum(desc["size_bytes"] for desc in code.values()) + len(component.canonical_json_v1(packet)) +
     len(plan_raw) + len(seed_raw) + (0 if resume_context is None else resume_context["operator"]["size_bytes"])
     <= 640 * 1024, "code_packet_allocation")
@@ -932,7 +1081,7 @@ def validate_packet_v1(*, project_root, packet_descriptor, expected_packet_sha25
     boot_id=packet.get("boot_id"), initial_charged_bytes=packet.get("initial_charged_bytes"),
     initial_measurement=packet.get("initial_measurement"),
     operator_authority_descriptor=packet.get("operator_authority"), prior_retention=packet.get("prior_retention"),
-    resume_context=packet.get("resume_context"), _stage=_stage)
+    resume_context=packet.get("resume_context"), _stage=_stage, fresh_context=packet.get("fresh_context"))
   _require(type(packet.get("current_code_forms_quote_bytes")) is int and
     packet == rebuilt, "packet_content_drift")
   return packet
@@ -1821,7 +1970,7 @@ def validated_c1_binding_v1(*, project_root, packet_descriptor, expected_packet_
   root = Path(project_root)
   packet = validate_packet_v1(project_root=root, packet_descriptor=packet_descriptor,
     expected_packet_sha256=expected_packet_sha256, expected_code_commit=expected_code_commit, _stage="D")
-  if packet.get("resume_context") is not None:
+  if packet.get("resume_context") is not None or packet.get("fresh_context") is not None:
     boot = compiler._compiler_proc_read_v1("/proc/sys/kernel/random/boot_id", 64).decode("ascii").strip()
     _require(boot == packet["boot_id"], "resume_boot_drift")
   _, charged, cids, rows, _ = _previous_v1(root, packet, expected_packet_sha256, 6, completion_authorities)

@@ -12,7 +12,7 @@ import unittest
 from contextlib import contextmanager,ExitStack
 from unittest.mock import patch
 from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1
-from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
+from tests.fixtures.accepted_policy_change_paths_v1 import retired_route_path_v1
 
 
 def subject():
@@ -2212,7 +2212,7 @@ class ResumeBoundaries(unittest.TestCase):
                 if actual is not None and (value==fixed or value.startswith(fixed+'/')):
                     relative=value[len(fixed):].lstrip('/')
                     # R1: the operator keeps active paths; this mapping follows the change into its archive.
-                    return current_path_v1(repo,relative) if actual is repo else Path(actual)/relative
+                    return retired_route_path_v1(repo,relative) if actual is repo else Path(actual)/relative
             return path
         def resolve(path,*args,**kwargs):
             actual=translated(path)
@@ -2231,15 +2231,15 @@ class ResumeBoundaries(unittest.TestCase):
         m=subject();repo=Path(__file__).resolve().parents[1]
         for name in m.SOURCE_PATHS:
             with self.subTest(source=name):
-                raw,info=m.read_fixed_v1(current_path_v1(repo,name),131072)
-                self.assertEqual(raw,current_path_v1(repo,name).read_bytes())
+                raw,info=m.read_fixed_v1(retired_route_path_v1(repo,name),131072)
+                self.assertEqual(raw,retired_route_path_v1(repo,name).read_bytes())
                 self.assertEqual(len(raw),info.st_size)
 
     def test_actual_main_verified_closure_p0_api_write_order_and_single_terminal(self):
         m=subject();repo=Path(__file__).resolve().parents[1]
-        sources={name:current_path_v1(repo,name).read_bytes() for name in m.SOURCE_PATHS}
+        sources={name:retired_route_path_v1(repo,name).read_bytes() for name in m.SOURCE_PATHS}
         cur={name:m.source_descriptor_v1(raw) for name,raw in sources.items()}
-        index=json.loads(current_path_v1(repo,m.INDEX).read_bytes());idx=m.source_descriptor_v1(current_path_v1(repo,m.INDEX).read_bytes())
+        index=json.loads(retired_route_path_v1(repo,m.INDEX).read_bytes());idx=m.source_descriptor_v1(retired_route_path_v1(repo,m.INDEX).read_bytes())
         from tests.test_accepted_policy_fixture_compiler_gate2_p0_v1 import ControlledEffects,success_scripts
         from tests.test_accepted_policy_fixture_compiler_gate2_c_v1 import ResumeInfoTests
         effects=ControlledEffects(success_scripts());effects.controlled=False
@@ -2293,13 +2293,16 @@ class ResumeBoundaries(unittest.TestCase):
                 'stdout_sha256':m.sha(raw),'stderr_bytes':0,'stderr_sha256':m.sha(b''),'stdin_closed':True,
                 'stdin_extent_unknown':False,'stdin_bytes':len(payload),'stdin_sha256':m.sha(payload),'unknown_closure':False}
             return raw,facts
+        mirror_dir=tempfile.TemporaryDirectory();self.addCleanup(mirror_dir.cleanup);mirror=Path(mirror_dir.name).resolve()
+        for rel in index['source_slots']+[m.INDEX,m.OLD_INDEX]:  # retired route: the quote reads the pre-fresh gate2_c bytes
+            target=mirror/rel;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(retired_route_path_v1(repo,rel).read_bytes())
         try:
             for name in ('tests','tests.fixtures')+tuple(name for name,_ in m.MODULES):sys.modules.pop(name,None)
             with tempfile.TemporaryDirectory() as directory:
                 def write(path,raw,cap,check,component):
                     order.append(Path(path).name);outputs.append((Path(path).name,raw))
                     return real_write(Path(directory)/Path(path).name,raw,cap,check,component)
-                with patch.object(m,'windows_v1',return_value=True),patch.object(m,'REPO_WIN',repo),\
+                with patch.object(m,'windows_v1',return_value=True),patch.object(m,'REPO_WIN',mirror),\
                      patch.object(m.time,'monotonic_ns',return_value=1),\
                      patch.object(m,'authenticate_v1',return_value=(sources,cur,index,idx,{})),\
                      patch.object(m,'load_verified_v1',side_effect=load),patch.object(m._Run,'process',process),\
@@ -2336,7 +2339,7 @@ class ResumeBoundaries(unittest.TestCase):
 
     def test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects(self):
         m=subject();root=Path(__file__).resolve().parents[1]
-        sources={name:current_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
+        sources={name:retired_route_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
         current={name:m.source_descriptor_v1(raw) for name,raw in sources.items()}
         x={'current':current,'global_deadline_ns':0,'phase_deadline_ns':0,'context':{'boot_id':'unused'}}
         import sys
@@ -2375,7 +2378,7 @@ class ResumeBoundaries(unittest.TestCase):
 
     def test_closed_c_d_route_authenticates_fixed_packet_before_dependency_execution(self):
         m=subject();root=Path(__file__).resolve().parents[1]
-        sources={name:current_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
+        sources={name:retired_route_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
         current={name:m.source_descriptor_v1(raw) for name,raw in sources.items()}
         commit='a'*40
         packet={'code_commit':commit,'code':{p:current[p] for p in m.CODE},'resume_context':{
@@ -2407,7 +2410,7 @@ class ResumeBoundaries(unittest.TestCase):
 
     def test_actual_c_d_bootstrap_uses_packet_bound_canonical_unchanged_d_entry(self):
         m=subject();repo=Path(__file__).resolve().parents[1]
-        current={p:m.source_descriptor_v1(current_path_v1(repo,p).read_bytes()) for p in m.SOURCE_PATHS}
+        current={p:m.source_descriptor_v1(retired_route_path_v1(repo,p).read_bytes()) for p in m.SOURCE_PATHS}
         commit='a'*40
         packet={'schema_version':1,'artifact_kind':'vast_fixture_compiler_gate2_packet_v1',
             'code_commit':commit,'project_root':str(m.ROOT),'code':{p:current[p] for p in m.CODE},
@@ -2472,7 +2475,7 @@ class ResumeBoundaries(unittest.TestCase):
 
     def test_actual_verified_buffers_have_canonical_c_d_child_identity_without_reopen(self):
         m=subject();root=Path(__file__).resolve().parents[1]
-        sources={name:current_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
+        sources={name:retired_route_path_v1(root,name).read_bytes() for name in m.SOURCE_PATHS}
         desc={name:m.source_descriptor_v1(raw) for name,raw in sources.items()}
         import sys
         saved=dict(sys.modules)
@@ -2663,7 +2666,7 @@ class ResumeBoundaries(unittest.TestCase):
     def inventory(self):
         m=subject()
         root=Path(__file__).resolve().parents[1]
-        index=json.loads(current_path_v1(root,m.INDEX).read_bytes())
+        index=json.loads(retired_route_path_v1(root,m.INDEX).read_bytes())
         originals={'schema_version':1,'originals':[{'relative_path':'RPC%02d.%s.original'%(n,role),
             'size_bytes':17,'sha256':'a'*64} for n in range(1,20) for role in ('reply','request')]}
         return m,index,originals

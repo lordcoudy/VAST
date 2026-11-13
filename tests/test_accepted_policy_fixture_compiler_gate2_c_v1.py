@@ -12,6 +12,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1  # noqa: E402
 from tests.fixtures.accepted_policy_change_paths_v1 import current_path_v1
+from tests.fixtures.accepted_policy_change_paths_v1 import retired_route_path_v1
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "scripts"))
 from tests.fixtures import accepted_policy_fixture_compiler_component_v1 as component
@@ -793,7 +794,7 @@ class ResumePacketTests(unittest.TestCase):
             context=copy.deepcopy(self.context)
             context.update(owner_project_root=str(owner),project_root=str(self.root))
             for relative in gate.CODE_PATHS+(gate.RESUME_OPERATOR_V1,):
-                raw=(ROOT/relative).read_bytes()
+                raw=retired_route_path_v1(ROOT,relative).read_bytes()
                 (self.repo/relative).write_bytes(raw)
                 if relative==gate.RESUME_OPERATOR_V1:context['operator']=self.blob(raw)
                 else:self.code[relative]=self.blob(raw)
@@ -825,6 +826,317 @@ class ResumePacketTests(unittest.TestCase):
             self.assertEqual(set(packet['proofs']),set(gate.PROOF_SOURCES))
             print(json.dumps({'resume_packet_geometry':{'root_chars':98,'encoded_bytes':len(encoded),
                 'preencode_bound':gate.compiler._json_bound(packet),'logical_bytes':logical}}))
+
+
+class FreshPacketTests(unittest.TestCase):
+    """Fresh direct gate 2 (design.md 2026-11-12, component-admission-plan.v9.md sections 2 and 5)."""
+    COMMIT = 'e' * 40
+    BOOT = '11111111-2222-3333-4444-555555555555'
+    A = 1_000_000
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        base = Path(self.tmp.name).resolve()
+        self.root = base / ('vast-fixture-compiler-gate2-' + self.COMMIT + '-01')
+        self.aux = Path(str(self.root) + '.operator-originals')
+        self.root.mkdir()
+        self.aux.mkdir()
+        for name, value in (('FRESH_ROOT_PREFIX_V1', str(base / 'vast-fixture-compiler-gate2-')),
+                            ('RESUME_ROOT_V1', base / 'absent465' / 'r1')):
+            effect = patch.object(gate, name, value)
+            effect.start()
+            self.addCleanup(effect.stop)
+        self.code = {}
+        for name in gate.CODE_PATHS:
+            raw = ('# reviewed controlled bytes ' + name + '\n').encode()
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(raw)
+            self.code[name] = ResumePacketTests.blob(raw)
+        plan_raw = b'# fresh plan V9\n'
+        plan = self.root / gate.FRESH_PLAN_V1
+        plan.parent.mkdir(parents=True, exist_ok=True)
+        plan.write_bytes(plan_raw)
+        self.plan_desc = gate._descriptor(plan, plan_raw)
+        operator = dict(ResumePacketTests.blob(b'# fresh operator\n'), path=gate.FRESH_OPERATOR_V1)
+        self.manifest = {'schema_version': 1, 'commit': self.COMMIT, 'files': dict(self.code, **{
+            gate.FRESH_PLAN_V1: ResumePacketTests.blob(plan_raw),
+            gate.FRESH_OPERATOR_V1: {k: operator[k] for k in ('size_bytes', 'sha256', 'git_blob')}})}
+        info, facts, request, reply = ResumeInfoTests.native_shaped_info(self)
+        identity = gate.resume_info_v1(info=info, rpc_facts=facts, request_raw=request, reply_raw=reply)['identity']
+        (self.aux / 'RPC01.request.original').write_bytes(request)
+        (self.aux / 'RPC01.reply.original').write_bytes(reply)
+        p0 = self.root / 'p0/p0-completion.v1.json'
+        p0.parent.mkdir()
+        p0.write_bytes(b'{}')
+        pre = {'c_free_bytes': 100_000_000_000, 'ext4_used_bytes': 300_000_000_000}
+        noise = gate.FRESH_NOISE_ALLOWANCE_V1 + 5
+        pre_packet = {'c_free_bytes': pre['c_free_bytes'] - noise - self.A, 'ext4_used_bytes': pre['ext4_used_bytes'] + self.A}
+        self.context = {'schema_version': 1, 'project_root': str(self.root), 'consumer_commit': self.COMMIT,
+            'approval_reference': 'PR9 fresh implementation approval', 'manifest': None, 'operator': operator,
+            'plan': dict(ResumePacketTests.blob(plan_raw), path=gate.FRESH_PLAN_V1),
+            'f2_producer': {'commit': gate.RESUME_PRODUCER_COMMIT_V1, 'plan_sha256': gate.F2_PRODUCER_PLAN_V1['sha256']},
+            'boot_id': self.BOOT, 'info': {'request': {'size_bytes': len(request), 'sha256': sha(request)},
+                'reply': {'size_bytes': len(reply), 'sha256': sha(reply)}, 'identity': identity},
+            'measurements': {'pre': pre, 'pre_packet': pre_packet}, 'allocation_bytes': self.A,
+            'noise_bytes': noise, 'excess_bytes': 5}
+        self.review = {'commit': self.COMMIT, 'approval_reference': self.context['approval_reference'], 'evidence_sha256': 'a' * 64}
+        self.write_manifest(self.manifest, self.context)
+        self.authority = self.authority_for(self.context)
+        self.evidence = {key: {'path': str(path), 'size_bytes': 0, 'sha256': sha(b'')}
+            for key, path in gate._fresh_evidence_paths_v1(self.root).items()}
+        admitted = {'environment_keys': ['PATH'], 'accounting': {'physical_charge_bytes': 5050368,
+            'reserved_control_bytes': 262144, 'reserved_rounding_bytes': 8192, 'reserved_metadata_bytes': 24576,
+            'last': {'c_free_bytes': 1, 'ext4_used_bytes': 1}}}
+        effect = patch.object(gate, '_authenticate_evidence', return_value=admitted)
+        self.evidence_mock = effect.start()
+        self.addCleanup(effect.stop)
+        effect = patch.object(gate, '_validate_p0')
+        self.p0_mock = effect.start()
+        self.addCleanup(effect.stop)
+        self.kwargs = dict(project_root=self.root, review=self.review, physical_plan_descriptor=self.plan_desc,
+            code=self.code, evidence=self.evidence, p0_descriptor=gate._descriptor(p0, b'{}'), boot_id=self.BOOT,
+            initial_charged_bytes=gate.FRESH_BASE_CHARGE_V1 + 5, initial_measurement=pre,
+            operator_authority_descriptor=self.authority, prior_retention=None, fresh_context=self.context)
+
+    def write_manifest(self, manifest, context):
+        raw = canonical(manifest)
+        (self.aux / 'manifest.original.json').write_bytes(raw)
+        context['manifest'] = {'size_bytes': len(raw), 'sha256': sha(raw)}
+
+    def authority_for(self, context):
+        authority = {'schema_version': 1, 'code_commit': self.COMMIT, 'approval_reference': self.review['approval_reference'],
+            'operator_sha256': context['operator']['sha256'], 'context_sha256': sha(canonical(context)),
+            'context': context, 'external_approval_required': True}
+        raw = canonical(authority)
+        path = self.aux / 'operator.authority.original.json'
+        path.write_bytes(raw)
+        self.review['evidence_sha256'] = sha(raw)
+        return gate._descriptor(path, raw)
+
+    def build(self, **changes):
+        return gate.build_packet_v1(**dict(self.kwargs, **changes))
+
+    def test_fresh_packet_builds_validates_and_keeps_historical_f2(self):
+        packet = self.build()
+        self.assertEqual(packet['fresh_context'], self.context)
+        self.assertNotIn('resume_context', packet)
+        self.assertEqual(packet['initial_charged_bytes'], 31944704 + 5)
+        self.assertEqual(packet['current_code_forms_quote_bytes'],
+            sum(d['size_bytes'] for d in self.code.values()) + self.plan_desc['size_bytes'])
+        self.assertEqual(self.evidence_mock.call_args.args[1]['commit'], gate.RESUME_PRODUCER_COMMIT_V1)
+        self.assertEqual(self.evidence_mock.call_args.args[2], gate.F2_PRODUCER_PLAN_V1['sha256'])
+        self.p0_mock.assert_called_with(self.kwargs['p0_descriptor'], self.root, self.COMMIT, self.BOOT)
+        desc = gate.write_record_v1(self.root / 'gate2.packet.original.json', packet, cap=gate.FRESH_PACKET_LIMIT_V1)
+        self.assertEqual(gate.validate_packet_v1(project_root=self.root, packet_descriptor=desc,
+            expected_packet_sha256=desc['sha256'], expected_code_commit=self.COMMIT), packet)
+        self.assertEqual(gate._owner_project_root_v1(self.root, packet), self.root)
+
+    def test_both_contexts_or_a_prior_retention_refuse(self):
+        for changes, cause in (({'resume_context': {'schema_version': 1}}, 'packet_context_choice'),
+                               ({'prior_retention': {'git_observation': {}}}, 'fresh_prior_retention')):
+            with self.subTest(changes=changes), self.assertRaisesRegex(gate.Gate2Refusal, cause):
+                self.build(**changes)
+
+    def test_every_context_role_drift_refuses(self):
+        mutations = (lambda c: c.update(schema_version=True), lambda c: c.update(extra=0),
+            lambda c: c.update(project_root=str(self.aux)), lambda c: c.update(consumer_commit='f' * 40),
+            lambda c: c.update(approval_reference='other'), lambda c: c.update(boot_id='old-boot'),
+            lambda c: c['f2_producer'].update(commit='e' * 40), lambda c: c['f2_producer'].update(plan_sha256='f' * 64),
+            lambda c: c['operator'].update(path='tests/fixtures/other.py'), lambda c: c['operator'].update(size_bytes=1.0),
+            lambda c: c['plan'].update(sha256='f' * 64), lambda c: c['manifest'].update(sha256='f' * 64),
+            lambda c: c['measurements'].update(post={}), lambda c: c['info'].update(extra=0),
+            lambda c: c['info']['identity'].update(containers=4), lambda c: c.update(allocation_bytes=float(self.A)),
+            lambda c: c.update(noise_bytes=c['noise_bytes'] + 1), lambda c: c.update(excess_bytes=4))
+        for mutate in mutations:
+            context = copy.deepcopy(self.context)
+            mutate(context)
+            authority = self.authority_for(context)
+            with self.subTest(mutation=mutate), self.assertRaises(gate.Gate2Refusal):
+                self.build(fresh_context=context, operator_authority_descriptor=authority)
+
+    def test_each_manifest_equality_and_shape_is_required(self):
+        mutations = (lambda m: m.update(commit='f' * 40), lambda m: m.update(extra=0),
+            lambda m: m['files'][gate.CODE_PATHS[0]].update(sha256='f' * 64),
+            lambda m: m['files'][gate.FRESH_PLAN_V1].update(size_bytes=1),
+            lambda m: m['files'][gate.FRESH_OPERATOR_V1].update(git_blob='f' * 40),
+            lambda m: m['files'].pop(gate.FRESH_OPERATOR_V1), lambda m: m['files'].update({'scripts/extra.py': {}}))
+        for mutate in mutations:
+            manifest, context = copy.deepcopy(self.manifest), copy.deepcopy(self.context)
+            mutate(manifest)
+            self.write_manifest(manifest, context)
+            authority = self.authority_for(context)
+            with self.subTest(mutation=mutate), self.assertRaises(gate.Gate2Refusal):
+                self.build(fresh_context=context, operator_authority_descriptor=authority)
+
+    def test_authority_record_shape_is_exact(self):
+        for change in ({'external_approval_required': False}, {'operator_sha256': 'f' * 64}, {'extra': 0}):
+            authority = {'schema_version': 1, 'code_commit': self.COMMIT, 'approval_reference': self.review['approval_reference'],
+                'operator_sha256': self.context['operator']['sha256'], 'context_sha256': sha(canonical(self.context)),
+                'context': self.context, 'external_approval_required': True}
+            authority.update(change)
+            raw = canonical(authority)
+            path = self.aux / 'operator.authority.original.json'
+            path.write_bytes(raw)
+            self.review['evidence_sha256'] = sha(raw)
+            with self.subTest(change=change), self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_authority_shape'):
+                self.build(operator_authority_descriptor=gate._descriptor(path, raw))
+
+    def test_exported_plan_must_equal_the_bound_plan(self):
+        plan = self.root / gate.FRESH_PLAN_V1
+        plan.write_bytes(b'# another plan' + bytes([10]))
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_plan_binding'):
+            self.build(physical_plan_descriptor=gate._descriptor(plan, plan.read_bytes()))
+
+    def test_initial_charge_must_equal_base_plus_excess(self):
+        for charge in (gate.FRESH_BASE_CHARGE_V1 + 4, gate.FRESH_BASE_CHARGE_V1 + 6, float(gate.FRESH_BASE_CHARGE_V1 + 5)):
+            with self.subTest(charge=charge), self.assertRaises(gate.Gate2Refusal):
+                self.build(initial_charged_bytes=charge)
+
+    def test_charge_formula_boundaries(self):
+        pre = {'c_free_bytes': 10**11, 'ext4_used_bytes': 3 * 10**11}
+        def at(noise, allocation=self.A):
+            return gate.fresh_charge_v1(pre=pre, pre_packet={'c_free_bytes': pre['c_free_bytes'] - allocation - noise,
+                'ext4_used_bytes': pre['ext4_used_bytes'] + allocation}, allocation_bytes=allocation)
+        self.assertEqual(at(gate.FRESH_NOISE_ALLOWANCE_V1)['excess_bytes'], 0)
+        self.assertEqual(at(gate.FRESH_NOISE_ALLOWANCE_V1 + 1)['excess_bytes'], 1)
+        self.assertEqual(at(0)['initial_charged_bytes'], 31944704)
+        self.assertEqual(at(0, gate.FRESH_FORMS_CAP_V1 - 36864)['allocation_bytes'], 1308928)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_allocation_bound'):
+            at(0, gate.FRESH_FORMS_CAP_V1 - 36864 + 1)
+        room = gate.SEAL_BYTES - 31944704 - 73400320
+        self.assertEqual(at(gate.FRESH_NOISE_ALLOWANCE_V1 + room)['excess_bytes'], room)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_c1_liability'):
+            at(gate.FRESH_NOISE_ALLOWANCE_V1 + room + 1)
+
+    def test_post_check_boundaries(self):
+        pre = {'c_free_bytes': 10**11, 'ext4_used_bytes': 3 * 10**11}
+        alloc = self.A + 36864
+        def post(noise, measured=alloc, excess=5):
+            return gate.fresh_post_check_v1(pre=pre, post={'c_free_bytes': pre['c_free_bytes'] - alloc - noise,
+                'ext4_used_bytes': pre['ext4_used_bytes'] + alloc}, allocation_bytes=self.A,
+                measured_post_allocation_bytes=measured, excess_bytes=excess)
+        self.assertEqual(post(gate.FRESH_NOISE_ALLOWANCE_V1 + 5)['noise_bytes'], gate.FRESH_NOISE_ALLOWANCE_V1 + 5)
+        self.assertEqual(post(0, measured=self.A)['allocated_bytes'], alloc)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_post_noise'):
+            post(gate.FRESH_NOISE_ALLOWANCE_V1 + 6)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_post_allocation'):
+            post(0, measured=alloc + 1)
+
+    def test_moved_evidence_p0_or_plan_path_refuses(self):
+        for key in self.evidence:
+            evidence = copy.deepcopy(self.evidence)
+            evidence[key]['path'] += '.moved'
+            with self.subTest(key=key), self.assertRaises(gate.Gate2Refusal):
+                self.build(evidence=evidence)
+        (self.root.parent / 'plan.md').write_bytes((self.root / gate.FRESH_PLAN_V1).read_bytes())
+        for changes in ({'p0_descriptor': dict(self.kwargs['p0_descriptor'], path=str(self.root / 'p0-completion.v1.json'))},
+                        {'physical_plan_descriptor': dict(self.plan_desc, path=str(self.root.parent / 'plan.md'))}):
+            with self.subTest(changes=list(changes)), self.assertRaises(gate.Gate2Refusal):
+                self.build(**changes)
+
+    def test_packet_over_its_cap_refuses(self):
+        size = len(canonical(self.build()))
+        with patch.object(gate, 'FRESH_PACKET_LIMIT_V1', size - 1), self.assertRaisesRegex(gate.Gate2Refusal, 'packet_bound'):
+            self.build()
+
+    def test_wrong_root_present_resume_root_and_unowned_names_refuse(self):
+        with patch.object(gate, 'FRESH_ROOT_PREFIX_V1', str(self.root.parent / 'other-')), self.assertRaises(gate.Gate2Refusal):
+            self.build()
+        gate.RESUME_ROOT_V1.mkdir(parents=True)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_resume_root_present'):
+            self.build()
+        gate.RESUME_ROOT_V1.rmdir()
+        for path in (self.root / 'unknown', self.aux / 'unknown'):
+            path.write_bytes(b'x')
+            with self.subTest(path=path.name), self.assertRaises(gate.Gate2Refusal):
+                self.build()
+            path.unlink()
+
+    def test_revalidation_refuses_code_aux_or_packet_drift(self):
+        packet = self.build()
+        desc = gate.write_record_v1(self.root / 'gate2.packet.original.json', packet, cap=gate.FRESH_PACKET_LIMIT_V1)
+        for path in (self.root / gate.CODE_PATHS[2], self.aux / 'manifest.original.json', self.aux / 'RPC01.reply.original'):
+            raw = path.read_bytes()
+            path.write_bytes(raw + b'x')
+            with self.subTest(path=path.name), self.assertRaises(gate.Gate2Refusal):
+                gate.validate_packet_v1(project_root=self.root, packet_descriptor=desc,
+                    expected_packet_sha256=desc['sha256'], expected_code_commit=self.COMMIT)
+            path.write_bytes(raw)
+
+    def written(self):
+        packet = self.build()
+        return packet, gate.write_record_v1(self.root / 'gate2.packet.original.json', packet, cap=gate.FRESH_PACKET_LIMIT_V1)
+
+    def validate(self, desc, stage):
+        return gate.validate_packet_v1(project_root=self.root, packet_descriptor=desc,
+            expected_packet_sha256=desc['sha256'], expected_code_commit=self.COMMIT, _stage=stage)
+
+    def test_stage_trees_are_opaque_but_future_or_stray_stage_entries_refuse(self):
+        packet, desc = self.written()
+        tree = self.root / 'outputs/C1/engine.compiler-originals'
+        tree.mkdir(parents=True)
+        for name in ('owner.intent.original.json', 'owner.cid.original.json', 'RPC01.request.original', '.engine.pending-x'):
+            (tree / name).write_bytes(b'{}')
+        self.assertEqual(self.validate(desc, 'C1'), packet)
+        (self.root / 'outputs/C2').mkdir()
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'resume_namespace_directory'):
+            self.validate(desc, 'C1')
+        self.assertEqual(self.validate(desc, 'C2'), packet)
+        (self.root / 'outputs/D').mkdir()
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'resume_namespace_directory'):
+            self.validate(desc, 'C6')
+        self.assertEqual(self.validate(desc, 'D'), packet)
+        (self.root / 'outputs/stray').write_bytes(b'x')
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'resume_namespace_file'):
+            self.validate(desc, 'D')
+
+    def test_rewritten_packet_content_refuses_on_revalidation(self):
+        packet, _ = self.written()
+        for change in ({'current_code_forms_quote_bytes': packet['current_code_forms_quote_bytes'] + 1}, {'extra': 0}):
+            path = self.root / 'gate2.packet.original.json'
+            path.unlink()
+            desc = gate.write_record_v1(path, dict(packet, **change), cap=gate.FRESH_PACKET_LIMIT_V1)
+            with self.subTest(change=list(change)), self.assertRaisesRegex(gate.Gate2Refusal, 'packet_content_drift'):
+                self.validate(desc, None)
+
+    def test_cause_specific_refusals(self):
+        for mutate, cause in ((lambda c, m: c.update(boot_id='not-a-uuid'), 'fresh_context_roles'),
+                              (lambda c, m: m.update(schema_version=2), 'fresh_manifest_shape'),
+                              (lambda c, m: m['files'].pop(gate.CODE_PATHS[3]), 'fresh_manifest_shape'),
+                              (lambda c, m: m['files'].pop(gate.FRESH_PLAN_V1), 'fresh_manifest_shape')):
+            context, manifest = copy.deepcopy(self.context), copy.deepcopy(self.manifest)
+            mutate(context, manifest)
+            self.write_manifest(manifest, context)
+            authority = self.authority_for(context)
+            with self.subTest(cause=cause), self.assertRaisesRegex(gate.Gate2Refusal, cause):
+                self.build(fresh_context=context, operator_authority_descriptor=authority, boot_id=context['boot_id'])
+        self.write_manifest(self.manifest, self.context)
+        self.assertEqual(self.authority_for(self.context), self.authority)
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_initial_measurement'):
+            self.build(initial_measurement={'c_free_bytes': 1, 'ext4_used_bytes': 1})
+        with self.assertRaisesRegex(gate.Gate2Refusal, 'fresh_post_allocation'):
+            gate.fresh_post_check_v1(pre={'c_free_bytes': 1, 'ext4_used_bytes': 1}, post={'c_free_bytes': 1, 'ext4_used_bytes': 1},
+                allocation_bytes=1.0, measured_post_allocation_bytes=0, excess_bytes=0)
+
+    def test_d_binding_with_the_fresh_boot_reaches_the_chain(self):
+        packet = {'fresh_context': self.context, 'boot_id': self.BOOT}
+        with patch.object(gate, 'validate_packet_v1', return_value=packet), \
+             patch.object(gate.compiler, '_compiler_proc_read_v1', return_value=(self.BOOT + '\n').encode()), \
+             patch.object(gate, '_previous_v1', side_effect=RuntimeError('chain reached')):
+            with self.assertRaisesRegex(RuntimeError, 'chain reached'):
+                gate.validated_c1_binding_v1(project_root=self.root, packet_descriptor={}, expected_packet_sha256='a' * 64,
+                    expected_code_commit=self.COMMIT, completion_authorities={})
+
+    def test_d_binding_checks_the_fresh_boot(self):
+        packet = {'fresh_context': self.context, 'boot_id': self.BOOT}
+        with patch.object(gate, 'validate_packet_v1', return_value=packet), \
+             patch.object(gate.compiler, '_compiler_proc_read_v1', return_value=b'99999999-2222-3333-4444-555555555555\n'), \
+             patch.object(gate, '_previous_v1', side_effect=AssertionError('chain replay before boot check')):
+            with self.assertRaisesRegex(gate.Gate2Refusal, 'resume_boot_drift'):
+                gate.validated_c1_binding_v1(project_root=self.root, packet_descriptor={}, expected_packet_sha256='a' * 64,
+                    expected_code_commit=self.COMMIT, completion_authorities={})
 
 
 class BoundTests(unittest.TestCase):
