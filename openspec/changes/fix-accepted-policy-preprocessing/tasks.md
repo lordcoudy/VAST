@@ -983,6 +983,13 @@ states are unchanged; the spec counts become 11/90.
 4. **Packet:** start the uid-1000 keepalive, then one guarded packet operation. Retain its originals in
    `evidence/compiler-component-01/gate2-fresh-01/`. Then an independent review of
    the packet and P0, and an approval naming the packet hash.
+   - Attempt 01 (approved `ac8dedeb`, 2026-11-16): PRE refused `read_short_or_grown`
+     before any write, because procfs reports `boot_id` with size 0. Originals in
+     `gate2-fresh-01/packet-attempt-01/`; the attempt is consumed. The human chose a
+     second attempt. Disposition: a dedicated bounded `boot_id` reader with an
+     unmocked `/proc` test; review, CI and approval of the fix commit, a new
+     re-admission, and attempt 02 under that commit's own fresh root, retained in
+     `gate2-fresh-01/packet-attempt-02/`.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then

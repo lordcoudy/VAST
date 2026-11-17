@@ -352,8 +352,19 @@ def _measure():
     return {"c_free_bytes": c.f_bavail * c.f_frsize, "ext4_used_bytes": (ext4.f_blocks - ext4.f_bfree) * ext4.f_frsize}
 
 
-def _boot():
-    return read_once("/proc/sys/kernel/random/boot_id", 64).decode("ascii").strip()
+BOOT_ID_PATH = "/proc/sys/kernel/random/boot_id"
+
+
+def _boot(path=BOOT_ID_PATH):
+    """procfs reports st_size 0, so read_once cannot bind the length; one bounded read must be exactly one UUID line."""
+    fd = os.open(path, os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0))
+    try:
+        raw = os.read(fd, 65)
+    finally:
+        os.close(fd)
+    need(re.fullmatch(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\n", raw) is not None,
+        "boot_id_invalid")
+    return raw[:-1].decode("ascii")
 
 
 def allocation_v1(*roots):

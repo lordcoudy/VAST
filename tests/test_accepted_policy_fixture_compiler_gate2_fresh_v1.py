@@ -68,6 +68,27 @@ class FreshOperatorTests(unittest.TestCase):
         with self.assertRaisesRegex(fresh.FreshRefusal, "read_kind_bound"):
             fresh.read_once(str(link), 1024)
 
+    def test_boot_id_reads_the_real_procfs_file(self):
+        # Unmocked: procfs reports st_size 0, which made read_once refuse packet attempt 01.
+        self.assertEqual(os.stat(fresh.BOOT_ID_PATH).st_size, 0)
+        with self.assertRaisesRegex(fresh.FreshRefusal, "read_short_or_grown"):
+            fresh.read_once(fresh.BOOT_ID_PATH, 64)
+        boot = fresh._boot()
+        self.assertRegex(boot, r"\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\Z")
+        self.assertEqual(fresh._boot(), boot)
+        good = "967a9ef0-0000-4000-8000-000000000000\n"
+        for body in ("", good.strip(), good.upper(), good + "x", good * 2, "x" * 65):
+            path = self.base / "boot_id"
+            path.write_text(body)
+            with self.subTest(body=body), self.assertRaisesRegex(fresh.FreshRefusal, "boot_id_invalid"):
+                fresh._boot(str(path))
+        path.write_text(good)
+        self.assertEqual(fresh._boot(str(path)), good.strip())
+        link = self.base / "boot_link"
+        link.symlink_to(path)
+        with self.assertRaises(OSError):
+            fresh._boot(str(link))
+
     def test_boot_executes_only_the_verified_bytes(self):
         copy_path = self.base / "operator.py"
         source = Path(fresh.__file__).read_bytes()
