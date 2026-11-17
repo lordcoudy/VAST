@@ -1020,6 +1020,10 @@ states are unchanged; the spec counts become 11/90.
      pre-flight including the C/D control inputs, re-admission and manifest; packet
      attempt 04, its review and approval; then C1–C6 and D under the new root, with
      originals in `gate2-fresh-01/outputs-04/<stage>/`.
+   - A2 approved at `7e22f7ef` and `c00f62bd`; implementation `e95a31db` reviewed,
+     CI green and approved. Attempt 04 (2026-11-17) completed with no guard breach:
+     packet 17,937 B `fd4c6a8f…`, allocation 738,816 B, noise and excess 0. Originals
+     in `gate2-fresh-01/packet-attempt-04/`. Next: packet review and approval.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
