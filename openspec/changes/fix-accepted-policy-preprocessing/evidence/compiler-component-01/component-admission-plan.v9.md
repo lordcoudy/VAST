@@ -324,3 +324,18 @@ go to `gate2-fresh-01/packet-attempt-03/`. The attempt-01 and attempt-02 remnant
 stay in place and are charged into whole 1.5, outside the new X ledger. The ledger
 of section 5 is not reset: its guard row funds 8 new invocations under X, and the
 two used attempt guards are not among them.
+
+## 9. Amendment A2, 2026-11-17: absent WSL crash directory
+
+C1 under packet `e7686254...` refused before any container because the pinned crash
+directory `%TEMP%\wsl-crashes` no longer exists. A2 (design.md, "Amendment A2") makes
+the C and D crash listings record a missing directory as `{"directory_present":false}`
+instead of refusing; any other error still refuses, and any change of that state or
+of the `wsl-crash-*` rows between a stage's snapshots still stops the chain.
+
+Attempt 04 then follows sections 3 and 6 under a new reviewed commit X with its own
+fresh root. Its pre-flight also checks the C and D control inputs (the crash
+directory state, `dmesg`, `journalctl`, `nvidia-smi`). Its originals go to
+`gate2-fresh-01/packet-attempt-04/`, and its C and D originals to
+`gate2-fresh-01/outputs-04/<stage>/`. The attempt-03 remnants, including
+`outputs/C1`, stay in place and are charged into whole 1.5, outside the new X ledger.

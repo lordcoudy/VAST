@@ -2615,3 +2615,62 @@ root. V9's cumulative ledger is not reset: the guard row (8 × 65,536 B) funds 8
 new invocations under X, and the two used attempt guards are not among them.
 Attempt 03 is one invocation under V9 sections 3 and 6; its failure stops the
 chain again, and any further attempt is the human's decision.
+
+### Amendment A2, 2026-11-17: absent WSL crash directory (attempt 04 and the C/D chain)
+
+Attempt 03 (`6741b6cd`) built packet `e7686254…`, which was reviewed and approved (PR #9
+comment 6947341404). C1 then refused `c_stage_stopped`/`FileNotFoundError` before any
+container (comment 6947488533). The human chose "Amendment A2".
+
+**Finding.** Both `gate2_c._crash_listing_v1` (`gate2_c:1702-1714`) and
+`gate2_d._crash_listing_v1` (`gate2_d_v1:349-370`) call `os.scandir(CRASH_DIRECTORY)`
+on `/mnt/c/Users/s-a-balashov/AppData/Local/Temp/wsl-crashes`. The directory existed
+in the B era and has since been removed by something outside VAST; nothing in WSL
+recreates it until a crash is dumped. A missing directory raises, so every C and D
+snapshot refuses. The listing exists only to detect a WSL crash between a stage's
+before and after snapshots: C compares the two descriptors (`crash_listing_drift`,
+`gate2_c:1804-1805`) and D compares their SHA256 (`crashes_unchanged`).
+
+**Corrected behaviour (`gate2_c` and `gate2_d`).** In both listing functions:
+- If `CRASH_DIRECTORY` does not exist (`FileNotFoundError` from `scandir` of that exact
+  path), the listing is the canonical record `{"directory_present":false}`, written and
+  bounded exactly as a listing is today.
+- If it exists, the listing is unchanged: the sorted `[name, size, mtime_ns]` rows of
+  regular `wsl-crash-*` entries, with the existing bounds and refusals.
+- Every other error still refuses: the path is a non-directory or a symlink
+  (`NotADirectoryError`, or `lstat` not a directory), a permission error, a bound or a
+  shape refusal.
+
+So the comparison rules are unchanged and still fail closed: the directory appearing
+(for example a crash dump created it), disappearing (for example Temp cleanup), or
+gaining, losing or changing a `wsl-crash-*` file between a stage's snapshots changes
+the bytes, and the stage stops with `crash_listing_drift` or `crashes_unchanged` false.
+The absent state is never treated as a pass on its own; it only replaces a refusal
+for a fact the snapshots still compare. The pinned path, caps, D control categories
+and file names are unchanged.
+
+**Implementation scope** (after this amendment is approved):
+- `gate2_c._crash_listing_v1` and `gate2_d._crash_listing_v1`: the absent branch, with
+  an explicit `lstat` that refuses a non-directory or symlink at the pinned path.
+- `gate2_c`'s `FROZEN` pin moves again to its new bytes; the A1 bytes (142,335 B,
+  `7c46383f…`) stay in Git history. `gate2_d` has no byte pin.
+- Tests in both modules: the absent directory yields exactly
+  `{"directory_present":false}`; absent before and after compares equal; absent to
+  present, present to absent, and a new crash file each fail the comparison; a file or
+  symlink at the pinned path refuses; the existing present-directory tests are
+  unchanged.
+
+**Before attempt 04:**
+- independent Claude-subagent review of the implementation commit, required CI and a
+  recorded delegated agent approval naming attempt 04 and its X;
+- the keepalive, then a read-only pre-flight that now also covers the C and D control
+  inputs: the crash directory's state at the pinned path, `/usr/bin/dmesg` with
+  `dmesg_restrict` 0, `/usr/bin/journalctl` and `/usr/lib/wsl/lib/nvidia-smi`;
+- a fresh re-admission and a manifest recorded in PR #9;
+- one packet attempt 04 under V9 sections 3 and 6, then an independent packet review
+  and an approval naming the packet hash, which admits C1–C6 and D under the new root.
+
+**Remnants.** Attempt 03's root, `.operator-originals`, `.guard` and `outputs/C1` stay in
+place and are charged into whole 1.5, like the attempt-01 and attempt-02 remnants,
+outside the new X ledger. The ledger is not reset; the guard row funds 8 new
+invocations under the new X. C1 under packet `e7686254…` is consumed and never rerun.
