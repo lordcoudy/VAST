@@ -1,0 +1,44 @@
+EEE
+======================================================================
+ERROR: test_actual_guarded_source_reads_cover_complete_large_regular_files (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_guarded_source_reads_cover_complete_large_regular_files) (source='tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 32, in test_actual_guarded_source_reads_cover_complete_large_regular_files
+    raw,info=m.read_fixed_v1(repo/name,131072)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 97, in read_fixed_v1
+    need(len(raw) == pre.st_size and epoch_v1(os.fstat(stream.fileno())) == epoch_v1(opened)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 35, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: read_drift
+
+======================================================================
+ERROR: test_actual_guarded_source_reads_cover_complete_large_regular_files (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_guarded_source_reads_cover_complete_large_regular_files) (source='tests/fixtures/accepted_policy_fixture_compiler_v1.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 32, in test_actual_guarded_source_reads_cover_complete_large_regular_files
+    raw,info=m.read_fixed_v1(repo/name,131072)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 97, in read_fixed_v1
+    need(len(raw) == pre.st_size and epoch_v1(os.fstat(stream.fileno())) == epoch_v1(opened)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 35, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: read_drift
+
+======================================================================
+ERROR: test_actual_guarded_source_reads_cover_complete_large_regular_files (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_guarded_source_reads_cover_complete_large_regular_files) (source='tests/fixtures/accepted_policy_fixture_compiler_gate2_p0_v1.py')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 32, in test_actual_guarded_source_reads_cover_complete_large_regular_files
+    raw,info=m.read_fixed_v1(repo/name,131072)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 97, in read_fixed_v1
+    need(len(raw) == pre.st_size and epoch_v1(os.fstat(stream.fileno())) == epoch_v1(opened)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 35, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: read_drift
+
+----------------------------------------------------------------------
+Ran 1 test in 0.102s
+
+FAILED (errors=3)

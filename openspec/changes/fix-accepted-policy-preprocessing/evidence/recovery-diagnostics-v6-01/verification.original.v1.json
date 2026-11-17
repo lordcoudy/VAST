@@ -1,0 +1,55 @@
+{
+  "accounting": {
+    "added_bytes_including_control": 1595037,
+    "aggregate_bytes": 15526791,
+    "control_bytes": 13401,
+    "limit_bytes": 16777216,
+    "receipt_bytes": 3015,
+    "residual_bytes": 1250425,
+    "retention_directory_other_bytes": 1578621,
+    "source_bytes": 13931754
+  },
+  "archive_format_disposition": "Root directed TAR.GZ instead of ZIP after ordinary full-path ZIP alone exceeded remaining allowance. Full original relative paths and every regular member are retained; no compact-ID indirection.",
+  "artifacts": {
+    "diagnostic-cohort.original.v1.tar.gz": {
+      "bytes": 1005529,
+      "sha256": "1f030c72abb90c4d9f693682885e0642d0b93e7d8f2d083cf2a0b3f34eb27520"
+    },
+    "diagnostic-cohort.original.v1.tar.gz.sha256": {
+      "bytes": 103,
+      "sha256": "be1e49dc87c16be893bae71390fde40ab2f22f3e728633b5dbe06309da24e2db"
+    },
+    "members.original.v1.json": {
+      "bytes": 572989,
+      "sha256": "b58b0768b6519442a8aad72ffc5179c655078c5565f494cf81ec232d12e6b0b6"
+    }
+  },
+  "author": "/root/audit_s3_delivery",
+  "control": {
+    "bytes": 13401,
+    "path": "E:\\STUDY\\VAST\\tmp\\completion-implementation-20261015\\d7-retention-01\\retain_frozen_d7.v1.py",
+    "sha256": "d962cfb72a1d779acca45464bb5521ec06bb726aaa8ea419bd6d3f04c09c4d51"
+  },
+  "fixture": true,
+  "full_archive_readback_equal": true,
+  "historical_disposition": "All old candidates/failed runs are retained. Candidate8f and internal RED acceptance=true witnesses are historical BLOCK, never live authority.",
+  "kind": "D7_retention_verification.v1",
+  "limits": "16MiB aggregate includes original frozen tree and every new archive/catalog/digest/receipt/control byte; no temporary archive or copy exists.",
+  "no_intermediate_archive_or_copy": true,
+  "originals_retained_in_place": true,
+  "recorded_utc": "2026-10-15T00:02:34.133438+00:00",
+  "recovery_acceptance": false,
+  "regular_member_count": 3810,
+  "review_report_sha256": "a41beb6ace994c53cc786e5fd1ab916b51ff38ccc760f9f5e9cd05a0c90edcf2",
+  "scope": "Reversible evidence retention only. No stage/CI/git mutation or backing/restore/image/capacity/package/qualification/final acceptance.",
+  "source_before_after_equal": true,
+  "source_directory_set_after_sha256": "6f5ac2df5b0f7b29200e9ef8c657bac8f0a267294141e44726e7f27354f93e3d",
+  "source_directory_set_before_sha256": "6f5ac2df5b0f7b29200e9ef8c657bac8f0a267294141e44726e7f27354f93e3d",
+  "source_file_identities_before_after_equal": true,
+  "source_root": "E:\\STUDY\\VAST\\tmp\\completion-implementation-20261015\\diagnostic-v6-01",
+  "source_tree_after_sha256": "567804140dcff4ad37968cef5a1dcb51e8e58545500c59f536a21383e68d9521",
+  "source_tree_before_sha256": "567804140dcff4ad37968cef5a1dcb51e8e58545500c59f536a21383e68d9521",
+  "successful": true,
+  "target_root": "C:\\Users\\s-a-balashov\\.codex\\worktrees\\fix-accepted-policy-preprocessing\\VAST\\openspec\\changes\\fix-accepted-policy-preprocessing\\evidence\\recovery-diagnostics-v6-01",
+  "zero_byte_member_count": 982
+}

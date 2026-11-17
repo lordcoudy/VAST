@@ -1,0 +1,41 @@
+test_expired_mapping_has_no_new_terminal_document_after_ready (w.WriterTests.test_expired_mapping_has_no_new_terminal_document_after_ready) ... FAIL
+test_floor_denial_has_no_new_terminal_document_or_target (w.WriterTests.test_floor_denial_has_no_new_terminal_document_or_target) ... FAIL
+
+======================================================================
+FAIL: test_expired_mapping_has_no_new_terminal_document_after_ready (w.WriterTests.test_expired_mapping_has_no_new_terminal_document_after_ready)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 359, in test_expired_mapping_has_no_new_terminal_document_after_ready
+    self.assertEqual(lines, [{'ready': True, 'schema_version': 1}])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [{'re[27 chars]': 1}, {'cause': 'writer_deadline', 'completed[82 chars]rue}] != [{'re[27 chars]': 1}]
+
+First list contains 1 additional elements.
+First extra element 1:
+{'cause': 'writer_deadline', 'completed': False, 'external_terminal_required': True, 'known': {}, 'omitted_or_unknown': True}
+
+- [{'ready': True, 'schema_version': 1},
+?                                      ^
+
++ [{'ready': True, 'schema_version': 1}]
+?                                      ^
+
+-  {'cause': 'writer_deadline',
+-   'completed': False,
+-   'external_terminal_required': True,
+-   'known': {},
+-   'omitted_or_unknown': True}]
+
+======================================================================
+FAIL: test_floor_denial_has_no_new_terminal_document_or_target (w.WriterTests.test_floor_denial_has_no_new_terminal_document_or_target)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 364, in test_floor_denial_has_no_new_terminal_document_or_target
+    self.assertEqual(code, 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.041s
+
+FAILED (failures=2)

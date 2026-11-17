@@ -1,0 +1,35 @@
+test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit (caller.LaterStageCallerTests.test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit) ... FAIL
+test_extension_installs_only_after_retention_and_binds_the_exact_core (caller.LaterStageCallerTests.test_extension_installs_only_after_retention_and_binds_the_exact_core) ... FAIL
+test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers (caller.LaterStageCallerTests.test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers) ... FAIL
+
+======================================================================
+FAIL: test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit (caller.LaterStageCallerTests.test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1147, in test_extension_has_a_separate_four_kibibyte_writer_and_six_frame_limit
+    self.assertIn('4096', CD_EXTENSION)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '4096' not found in ''
+
+======================================================================
+FAIL: test_extension_installs_only_after_retention_and_binds_the_exact_core (caller.LaterStageCallerTests.test_extension_installs_only_after_retention_and_binds_the_exact_core)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1136, in test_extension_installs_only_after_retention_and_binds_the_exact_core
+    self.assertIn('retention_complete', CD_EXTENSION)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'retention_complete' not found in ''
+
+======================================================================
+FAIL: test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers (caller.LaterStageCallerTests.test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1141, in test_extension_owns_fixed_stage_clocks_and_never_uses_setup_phase_helpers
+    self.assertIn('150000', CD_EXTENSION)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '150000' not found in ''
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.003s
+
+FAILED (failures=3)

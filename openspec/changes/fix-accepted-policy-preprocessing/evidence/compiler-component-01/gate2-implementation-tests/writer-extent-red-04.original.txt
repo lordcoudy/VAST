@@ -1,0 +1,25 @@
+..FF
+======================================================================
+FAIL: test_shared_reply_reports_unknown_extent_after_partial_underlying_write (tests.test_accepted_policy_fixture_compiler_gate2_writer_v1.OriginalWriterExtentTests.test_shared_reply_reports_unknown_extent_after_partial_underlying_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 116, in test_shared_reply_reports_unknown_extent_after_partial_underlying_write
+    self.check_transport_partial_write("reply")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 101, in check_transport_partial_write
+    self.assertTrue(row[role + "_write_extent_unknown"], row)
+AssertionError: False is not true : {'number': 1, 'complete': False, 'status': None, 'request_persisted': True, 'reply_persisted': False, 'request_close_completed': True, 'reply_close_completed': False, 'request_bytes': 83, 'reply_observed_bytes': 38, 'request_send_complete': True, 'causes': ['docker_reply_flush_OSError', 'docker_reply_close_OSError'], 'request_written_bytes': 83, 'request_persisted_bytes': 83, 'reply_written_bytes': 38, 'reply_persisted_bytes': 0, 'request_write_extent_unknown': False, 'reply_write_extent_unknown': False, 'request_persistence_failed': False, 'reply_persistence_failed': True, 'reply_retained_bytes': 38, 'reply_eof': False, 'peer': {'pid': 40, 'uid': 0, 'gid': 0}, 'epoch_before': ((1, 2, 0, 0, 49584, 17),), 'epoch_after': None, 'socket_closed': True, 'upgraded': False}
+
+======================================================================
+FAIL: test_shared_request_reports_unknown_extent_after_partial_underlying_write (tests.test_accepted_policy_fixture_compiler_gate2_writer_v1.OriginalWriterExtentTests.test_shared_request_reports_unknown_extent_after_partial_underlying_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 113, in test_shared_request_reports_unknown_extent_after_partial_underlying_write
+    self.check_transport_partial_write("request")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 101, in check_transport_partial_write
+    self.assertTrue(row[role + "_write_extent_unknown"], row)
+AssertionError: False is not true : {'number': 1, 'complete': False, 'status': None, 'request_persisted': False, 'reply_persisted': False, 'request_close_completed': False, 'reply_close_completed': False, 'request_bytes': 83, 'reply_observed_bytes': 0, 'request_send_complete': False, 'causes': ['docker_request_flush_OSError', 'docker_request_close_OSError'], 'request_written_bytes': 83, 'request_persisted_bytes': 0, 'reply_written_bytes': 0, 'reply_persisted_bytes': 0, 'request_write_extent_unknown': False, 'reply_write_extent_unknown': False, 'request_persistence_failed': True, 'reply_persistence_failed': False, 'reply_retained_bytes': 0, 'reply_eof': False, 'peer': None, 'epoch_before': None, 'epoch_after': None, 'socket_closed': False, 'upgraded': False}
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.008s
+
+FAILED (failures=2)

@@ -1,0 +1,33 @@
+CONTROLLED PRE-GUARD FACTORY ONLY: the single provider-availability check is removed in memory; no source file rewritten.
+test_provider_error_or_unknown_content_cannot_start_writer_or_advance (caller.LaterStageCallerTests.test_provider_error_or_unknown_content_cannot_start_writer_or_advance) ... 
+  test_provider_error_or_unknown_content_cannot_start_writer_or_advance (caller.LaterStageCallerTests.test_provider_error_or_unknown_content_cannot_start_writer_or_advance) (change='isError:true') ... FAIL
+  test_provider_error_or_unknown_content_cannot_start_writer_or_advance (caller.LaterStageCallerTests.test_provider_error_or_unknown_content_cannot_start_writer_or_advance) (change="type:'unknown'") ... FAIL
+
+======================================================================
+FAIL: test_provider_error_or_unknown_content_cannot_start_writer_or_advance (caller.LaterStageCallerTests.test_provider_error_or_unknown_content_cannot_start_writer_or_advance) (change='isError:true')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1389, in test_provider_error_or_unknown_content_cannot_start_writer_or_advance
+    self.assertEqual(value['error'],'cd_selected_provider')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cd_original_deadline' != 'cd_selected_provider'
+- cd_original_deadline
++ cd_selected_provider
+
+
+======================================================================
+FAIL: test_provider_error_or_unknown_content_cannot_start_writer_or_advance (caller.LaterStageCallerTests.test_provider_error_or_unknown_content_cannot_start_writer_or_advance) (change="type:'unknown'")
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1389, in test_provider_error_or_unknown_content_cannot_start_writer_or_advance
+    self.assertEqual(value['error'],'cd_selected_provider')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 'cd_original_deadline' != 'cd_selected_provider'
+- cd_original_deadline
++ cd_selected_provider
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.178s
+
+FAILED (failures=2)

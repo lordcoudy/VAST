@@ -1,4 +1,27 @@
-<!-- CURRENT FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
+<!-- CURRENT COMPLETION PLAN 2026-10-15 -->
+## Current baseline integration - 15 October 2026
+
+PR #8 is merged into master as `ead12cec4a2460f27e836583f1f712b31e14b36f` after independent review and exact-head checks. Its S3 archive and main specifications are preserved in this repair integration. PR #9 remains Draft; integrating software does not accept qualification, Q4, capacity or publication results.
+
+The `fix-accepted-policy-preprocessing` integration amendment at `7dde1c752fae80e3a97aeacae25a166ba82cf25d` passed independent review and required planning CI38638596703; delegated agent specification approval is PR9comment6179328823. Original index/worktree evidence survives separate reviewed commits82fbd/2fac. Entire actual master-to-integrated implementation review, affected input renewal, genuine3840/3968/126016 consumers and29/20/42 refusals, current checks/conformance and same-PR archive/final approval remain open. The stopped PR #7 remains closed/unmerged with attempts1-4 failed, attempt5 unstarted and nine unchecked qualification/completion tasks; its change stays unarchived.
+
+Whole-chain physical capacity remains unqualified, with C:40GiB and every applicable filesystem floor retained. The user selected historical-image S3 upload and local deletion as the remedy. An existing S3 archive contains all227images and its inventory/index/current projections match; empty-engine recovery is still unproved after failed cold03. All227images remain local. A34-image candidate manifest is subject to recovery, fresh dependency/reference review and explicit human confirmation of that exact image list/action; no executable deletion allowlist exists. Failed cold roots, both TARs, runtimes, models/data and every original receipt remain protected.
+
+The complete A-K roadmap remains pending: baseline repair; new reviewed qualification; Q4 and sizing; frozen5600arms/2800durablepairs; independent raw analysis; proxy/direct-resource studies; session-held-out four-task corpus/model accuracy; formal210arms; indexed reproducibility release. Earlier dated statements about readiness, capacities, running status or source commits are historical snapshots, not current launch authority. A fresh Q1 belongs to `qualify-repaired-full-benchmark` after repair completion.
+<!-- END CURRENT COMPLETION PLAN -->
+
+<!-- CURRENT FULL CAMPAIGN 2026-10-11: failed qualification closeout -->
+## Current Progress - 11 October 2026
+
+The user chose to close [PR #7](https://github.com/lordcoudy/VAST/pull/7) unmerged, keep the accepted-policy repair separate, then qualify under a new change. Qualification attempts 1-4 remain FAILED, attempt 5 remains UNSTARTED, and qualification/Q4/capacity/full-run eligibility is false. Code and evidence remain on `codex/qualify-full-benchmark`; master does not contain that implementation. This stopped change is not a completed successful archive or merge.
+
+Current software/input baseline: `d1a78805dd41f9f946e3f6c4ca673bfeced228b5`; prior documentation head: `c9e5a825a9603a28883fe701b49bb4a658a0503b`; runtime root: `E:/STUDY/VAST/tmp/qfb-root-20261007a`. Tasks 63/72 are historically complete; 6.2, 7.1-7.6 and 8.1-8.2 remain unchecked, including the full conformance/final acceptance gap. Attempt-4 owner 37/37 and cold closure 37/8 succeeded, then indices/promotions failed. G8 failed; G9 passed a nonqualifying assessment of those historical pilots, not a fresh qualification.
+
+Hosted CI on `c9e5a825` [38046578045](https://github.com/lordcoudy/VAST/actions/runs/38046578045) succeeded. Prior `d1a78805` checks: ext4 3,244 run, zero failures/errors, 88 approved skips; integration 9/9. Originals are retained in the change's `physical-v12-ci-c5` and `physical-v11-g9-a9diag` evidence directories. The approved software/check results do not fix stage 2's validator/count defects.
+
+Read-only host observations on 11 October: AC sleep/hibernate disabled; Windows Update paused until 26 October, 15:01 Moscow; zero containers, matching VAST workers and GPU compute jobs; required volumes above 20 GiB. These observations must be repeated before any future launch. The next planning change is `fix-accepted-policy-preprocessing`; the next Q1 will need a new reviewed qualification change and current renewed inputs. The 7 October block below is a historical snapshot.
+
+<!-- HISTORICAL FULL CAMPAIGN 2026-10-07: qualify-full-benchmark -->
 ## Текущий прогресс — 7 октября 2026
 
 **Q1 технически подготовлена и не запущена; ожидается отдельная команда пользователя.** Активное изменение — `qualify-full-benchmark`, ветка `codex/qualify-full-benchmark`, [Draft PR #7](https://github.com/lordcoudy/VAST/pull/7). В основной checkout `E:/STUDY/VAST` это изменение ещё не слито; действующие документы находятся в `C:/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST`. Источник обновления: `last_run.txt`, сохранённые receipts и read-only проверка хоста **7 октября, 11:48 МСК**.

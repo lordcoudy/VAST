@@ -1,0 +1,4 @@
+17c17
+< spec = importlib.util.spec_from_file_location("qfb_pins", HERE / "rebind_host_identity_pins_qfb_v1.py")
+---
+> spec = importlib.util.spec_from_file_location("qfb_pins", HERE / "rebind_host_identity_pins_qfb_v2.py")

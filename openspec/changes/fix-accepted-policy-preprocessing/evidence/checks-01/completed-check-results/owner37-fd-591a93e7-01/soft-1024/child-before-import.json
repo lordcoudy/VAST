@@ -1,0 +1,32 @@
+{
+  "fds": {
+    "count": 3,
+    "rows": [
+      {
+        "fd": 0,
+        "target": "pipe:[2923163]"
+      },
+      {
+        "fd": 1,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stdout.log"
+      },
+      {
+        "fd": 2,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stderr.log"
+      }
+    ]
+  },
+  "identity": {
+    "cwd": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45",
+    "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "gid": 1000,
+    "monotonic_ns": 344574899113502,
+    "nofile": [
+      1024,
+      1048576
+    ],
+    "pid": 276503,
+    "tmpdir": "/var/tmp",
+    "uid": 1000
+  }
+}

@@ -1,0 +1,962 @@
+{
+ "allowlist_entries": 85,
+ "allowlist_sha256_image": "2bea911a3be01c2a26e4b78d191c4e4670f60d712315ac244188f478db11e8bc",
+ "compile": [
+  {
+   "entry": "deploy/savant/publication/validate_runtime_source_closure_v3.py",
+   "image_path": null,
+   "root_sha256": "f42c86eb73ce3b35d23fe9ee7ef97effcdf27f3b1fda7834d95a86192fef3c43",
+   "status": "not_packaged"
+  },
+  {
+   "entry": "scripts/analytics_execution_endpoint.py",
+   "image_path": "/opt/vast/checkpoint/analytics_execution_endpoint.py",
+   "image_sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+   "matches_root": true,
+   "root_sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/analytics_execution_protocol.py",
+   "image_path": "/opt/vast/checkpoint/analytics_execution_protocol.py",
+   "image_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+   "matches_root": true,
+   "root_sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/analytics_execution_worker.py",
+   "image_path": "/opt/vast/checkpoint/analytics_execution_worker.py",
+   "image_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+   "matches_root": true,
+   "root_sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/analytics_model_contract.py",
+   "image_path": "/opt/vast/checkpoint/analytics_model_contract.py",
+   "image_sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+   "matches_root": true,
+   "root_sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_publication_dispatch.py",
+   "image_path": "/opt/vast/checkpoint/backend_publication_dispatch.py",
+   "image_sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+   "matches_root": true,
+   "root_sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_publication_launcher_invocation_v3.py",
+   "image_path": "/opt/vast/checkpoint/backend_publication_launcher_invocation_v3.py",
+   "image_sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+   "matches_root": true,
+   "root_sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_publication_output_receipt.py",
+   "image_path": "/opt/vast/checkpoint/backend_publication_output_receipt.py",
+   "image_sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+   "matches_root": true,
+   "root_sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_publication_runtime_authority.py",
+   "image_path": "/opt/vast/checkpoint/backend_publication_runtime_authority.py",
+   "image_sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+   "matches_root": true,
+   "root_sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_runtime_grant.py",
+   "image_path": "/opt/vast/checkpoint/backend_runtime_grant.py",
+   "image_sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+   "matches_root": true,
+   "root_sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/backend_runtime_qualification_v3.py",
+   "image_path": "/opt/vast/checkpoint/backend_runtime_qualification_v3.py",
+   "image_sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+   "matches_root": true,
+   "root_sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/benchmark_contract.py",
+   "image_path": "/opt/vast/checkpoint/benchmark_contract.py",
+   "image_sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+   "matches_root": true,
+   "root_sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/canonical_systems_study_plan_v1.py",
+   "image_path": "/opt/vast/checkpoint/canonical_systems_study_plan_v1.py",
+   "image_sha256": "af9cd0b22dabe5dcf9f1e6c8260e1fb9334ef9c140f4685d4f61b49e7345dfe8",
+   "matches_root": true,
+   "root_sha256": "af9cd0b22dabe5dcf9f1e6c8260e1fb9334ef9c140f4685d4f61b49e7345dfe8",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_acceptance_metadata_binding.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_acceptance_metadata_binding.py",
+   "image_sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+   "matches_root": true,
+   "root_sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_admission.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_admission.py",
+   "image_sha256": "83accf22d62cb4872931e0034b02a46e84900bfa1633c26a3fd1fde7c10e3718",
+   "matches_root": true,
+   "root_sha256": "83accf22d62cb4872931e0034b02a46e84900bfa1633c26a3fd1fde7c10e3718",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_deepstream_protocol_adapter.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_deepstream_protocol_adapter.py",
+   "image_sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf",
+   "matches_root": true,
+   "root_sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_deepstream_protocol_bridge.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_deepstream_protocol_bridge.py",
+   "image_sha256": "ce0b86066b367fb5114a0de03a16d1b71d4be9e8c39626f4a9d4c48467ff694b",
+   "matches_root": true,
+   "root_sha256": "ce0b86066b367fb5114a0de03a16d1b71d4be9e8c39626f4a9d4c48467ff694b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_deepstream_qualification_fragment_v1.py",
+   "image_sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+   "matches_root": true,
+   "root_sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_deepstream_resource_runtime_v3.py",
+   "image_sha256": "3f287f504a62e3140b4dc4ba772057423bbfd05adda837a9b81f09fda2642b35",
+   "matches_root": true,
+   "root_sha256": "3f287f504a62e3140b4dc4ba772057423bbfd05adda837a9b81f09fda2642b35",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_deepstream_sdk_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_deepstream_sdk_runtime.py",
+   "image_sha256": "5e5bcf48e8adb77d5d60232929930581aeeaadb58015204679ca304cfd2f1498",
+   "matches_root": true,
+   "root_sha256": "5e5bcf48e8adb77d5d60232929930581aeeaadb58015204679ca304cfd2f1498",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_gstreamer_analytics_bridge.py",
+   "image_sha256": "f0fd3f776af5e0819566e7cbf13db4305a1dba23b6daf3019d4f530007acacb8",
+   "matches_root": true,
+   "root_sha256": "f0fd3f776af5e0819566e7cbf13db4305a1dba23b6daf3019d4f530007acacb8",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_gstreamer_analytics_sidecar.py",
+   "image_sha256": "2450cd59bca86e1251ec25672ff4805d122af4408fa68fb804dc712eef68bbfc",
+   "matches_root": true,
+   "root_sha256": "2450cd59bca86e1251ec25672ff4805d122af4408fa68fb804dc712eef68bbfc",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_gstreamer_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+   "image_sha256": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "matches_root": true,
+   "root_sha256": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_model_parity.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_model_parity.py",
+   "image_sha256": "f29b52e4b6f97da51e2f68a0a629233fc413f4387d1fc6b26ef5409fbae93b05",
+   "matches_root": true,
+   "root_sha256": "f29b52e4b6f97da51e2f68a0a629233fc413f4387d1fc6b26ef5409fbae93b05",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_model_parity_acceptance.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_model_parity_acceptance.py",
+   "image_sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+   "matches_root": true,
+   "root_sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_model_parity_acceptance_v4.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_model_parity_acceptance_v4.py",
+   "image_sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+   "matches_root": true,
+   "root_sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_model_parity_v4.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_model_parity_v4.py",
+   "image_sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+   "matches_root": true,
+   "root_sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_native_policy_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_native_policy_runtime.py",
+   "image_sha256": "7275411b8ecf0d40ebc8dc459594875f2cc74378fb8923429e0e7406f34fb30d",
+   "matches_root": true,
+   "root_sha256": "7275411b8ecf0d40ebc8dc459594875f2cc74378fb8923429e0e7406f34fb30d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_publication_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_publication_runtime.py",
+   "image_sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+   "matches_root": true,
+   "root_sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_qualification_pilot_acceptance_v1.py",
+   "image_sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+   "matches_root": true,
+   "root_sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_runtime.py",
+   "image_sha256": "077aaff2659cc4dd3ce724bdb567133b8dc831d2431d315b865e6e39dd72b3d6",
+   "matches_root": true,
+   "root_sha256": "077aaff2659cc4dd3ce724bdb567133b8dc831d2431d315b865e6e39dd72b3d6",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_runtime_plan.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_runtime_plan.py",
+   "image_sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963",
+   "matches_root": true,
+   "root_sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_container_runtime_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_container_runtime_v3.py",
+   "image_sha256": "bdc1b8f0ec2b3d9a2f60146e2d922d118848ec992e6f751b2592b11785d15cae",
+   "matches_root": true,
+   "root_sha256": "bdc1b8f0ec2b3d9a2f60146e2d922d118848ec992e6f751b2592b11785d15cae",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_ingress.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_ingress.py",
+   "image_sha256": "cc8ab6173bc21a26c9a6eadac6679bff7b80fd6f8bf2cb46b53ad685f56e7fbf",
+   "matches_root": true,
+   "root_sha256": "cc8ab6173bc21a26c9a6eadac6679bff7b80fd6f8bf2cb46b53ad685f56e7fbf",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_launcher.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_launcher.py",
+   "image_sha256": "73dc0bfb5a30f34afe3a444183f6ef269558264683468e8909427404fd514b86",
+   "matches_root": true,
+   "root_sha256": "73dc0bfb5a30f34afe3a444183f6ef269558264683468e8909427404fd514b86",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_native_module.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_native_module.py",
+   "image_sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+   "matches_root": true,
+   "root_sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_protocol_adapter_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_protocol_adapter_v3.py",
+   "image_sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d",
+   "matches_root": true,
+   "root_sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_protocol_bridge.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_protocol_bridge.py",
+   "image_sha256": "0f8ef082eba3d7d0eda798ca70d89b6ddab6ba046215a884d05b73452c3275b3",
+   "matches_root": true,
+   "root_sha256": "0f8ef082eba3d7d0eda798ca70d89b6ddab6ba046215a884d05b73452c3275b3",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_publication_specs_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_publication_specs_v3.py",
+   "image_sha256": "e9b19da939a7de8de28f8fcc270ca1b12de787be5be0d2e4078cca37280daf37",
+   "matches_root": true,
+   "root_sha256": "e9b19da939a7de8de28f8fcc270ca1b12de787be5be0d2e4078cca37280daf37",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_pyfunc_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_pyfunc_v3.py",
+   "image_sha256": "c835fe15852d79551c4ac953492268a5c04d5651a0756f5bdc6786f30c2308a4",
+   "matches_root": true,
+   "root_sha256": "c835fe15852d79551c4ac953492268a5c04d5651a0756f5bdc6786f30c2308a4",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_resource_runtime_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_resource_runtime_v3.py",
+   "image_sha256": "17b5efcfcbf3e0cda58e839a74ef0b917ac59d0b6d118a6e7873acfdf266bf63",
+   "matches_root": true,
+   "root_sha256": "17b5efcfcbf3e0cda58e839a74ef0b917ac59d0b6d118a6e7873acfdf266bf63",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_runtime.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_runtime.py",
+   "image_sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555",
+   "matches_root": true,
+   "root_sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/checkpoint_savant_sdk_runtime_v3.py",
+   "image_path": "/opt/vast/checkpoint/checkpoint_savant_sdk_runtime_v3.py",
+   "image_sha256": "e982c02f9a31e4cf223fed0d47625ddaf7cbed4a5a3487f484f77eea7cd9866d",
+   "matches_root": true,
+   "root_sha256": "e982c02f9a31e4cf223fed0d47625ddaf7cbed4a5a3487f484f77eea7cd9866d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/extract_kpp_legacy_iss.py",
+   "image_path": "/opt/vast/checkpoint/extract_kpp_legacy_iss.py",
+   "image_sha256": "dd24e80076a87db63e41c078d07c04aa32ddbd30f179796b90d59f8a7d2588e1",
+   "matches_root": true,
+   "root_sha256": "dd24e80076a87db63e41c078d07c04aa32ddbd30f179796b90d59f8a7d2588e1",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/formal_aw_heft_reference.py",
+   "image_path": "/opt/vast/checkpoint/formal_aw_heft_reference.py",
+   "image_sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+   "matches_root": true,
+   "root_sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/freeze_kpp_frozen_reconstruction_v1.py",
+   "image_path": "/opt/vast/checkpoint/freeze_kpp_frozen_reconstruction_v1.py",
+   "image_sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+   "matches_root": true,
+   "root_sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/freeze_kpp_iss_publication_v3.py",
+   "image_path": "/opt/vast/checkpoint/freeze_kpp_iss_publication_v3.py",
+   "image_sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+   "matches_root": true,
+   "root_sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+   "image_path": "/opt/vast/checkpoint/freeze_kpp_legacy_iss_v2_transcodes.py",
+   "image_sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+   "matches_root": true,
+   "root_sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/full_resource_contract.py",
+   "image_path": "/opt/vast/checkpoint/full_resource_contract.py",
+   "image_sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+   "matches_root": true,
+   "root_sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/kpp_frozen_reconstruction_v1_dataset.py",
+   "image_path": "/opt/vast/checkpoint/kpp_frozen_reconstruction_v1_dataset.py",
+   "image_sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+   "matches_root": true,
+   "root_sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/kpp_iss_publication_v3_dataset.py",
+   "image_path": "/opt/vast/checkpoint/kpp_iss_publication_v3_dataset.py",
+   "image_sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+   "matches_root": true,
+   "root_sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/kpp_legacy_iss_v2_manifest.py",
+   "image_path": "/opt/vast/checkpoint/kpp_legacy_iss_v2_manifest.py",
+   "image_sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+   "matches_root": true,
+   "root_sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/materialize_runtime_build_context_v3.py",
+   "image_path": null,
+   "root_sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01",
+   "status": "not_packaged"
+  },
+  {
+   "entry": "scripts/model_parity_grant.py",
+   "image_path": "/opt/vast/checkpoint/model_parity_grant.py",
+   "image_sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+   "matches_root": true,
+   "root_sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/non_decreasing_wall_clock_v1.py",
+   "image_path": "/opt/vast/checkpoint/non_decreasing_wall_clock_v1.py",
+   "image_sha256": "9ed77bc0a98395a494d7effe451db9a491dc138bc8dceecd1722975a6c83fff4",
+   "matches_root": true,
+   "root_sha256": "9ed77bc0a98395a494d7effe451db9a491dc138bc8dceecd1722975a6c83fff4",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_acceptance_evidence.py",
+   "image_path": "/opt/vast/checkpoint/publication_acceptance_evidence.py",
+   "image_sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+   "matches_root": true,
+   "root_sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_child_evidence_materializer_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_child_evidence_materializer_v1.py",
+   "image_sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+   "matches_root": true,
+   "root_sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_gstreamer_component_authority_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_gstreamer_component_authority_v1.py",
+   "image_sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+   "matches_root": true,
+   "root_sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+   "image_sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+   "matches_root": true,
+   "root_sha256": "e488da96ba0f52589c8c594fd1ac7f1a3e397bed09416bd9c4d63a556dc8bf5b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_guardian_component_preprocessing_contract_v1.py",
+   "image_sha256": "e446ccd814ace3f2ccf0fd1252aa888d8f9bed0eb9d7c4192a9658e2127a6065",
+   "matches_root": true,
+   "root_sha256": "e446ccd814ace3f2ccf0fd1252aa888d8f9bed0eb9d7c4192a9658e2127a6065",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_guardian_operational_recorder_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_guardian_operational_recorder_v1.py",
+   "image_sha256": "661ca6f273138f4c419388cdafdf849e75244cbb67e9010844f1e0f7023cbecb",
+   "matches_root": true,
+   "root_sha256": "661ca6f273138f4c419388cdafdf849e75244cbb67e9010844f1e0f7023cbecb",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_guardian_preprocessing_contract_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_guardian_preprocessing_contract_v1.py",
+   "image_sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+   "matches_root": true,
+   "root_sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_guardian_runtime_expectations_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_guardian_runtime_expectations_v1.py",
+   "image_sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+   "matches_root": true,
+   "root_sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_capture_plan_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_capture_plan_v1.py",
+   "image_sha256": "5ce6be2bfd0cab885117858a66931c4bce271b939f68a254eb467f1d126a3820",
+   "matches_root": true,
+   "root_sha256": "5ce6be2bfd0cab885117858a66931c4bce271b939f68a254eb467f1d126a3820",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_container_custody_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_container_custody_v1.py",
+   "image_sha256": "9ffb01fdb85c300e0d19e377609f714707d270362b072d30611e5bc1de8c6552",
+   "matches_root": true,
+   "root_sha256": "9ffb01fdb85c300e0d19e377609f714707d270362b072d30611e5bc1de8c6552",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_process_custody_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_process_custody_v1.py",
+   "image_sha256": "e58d031073476d79d7bc939d3a15214342a754b67f291a10db526c70f9834790",
+   "matches_root": true,
+   "root_sha256": "e58d031073476d79d7bc939d3a15214342a754b67f291a10db526c70f9834790",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_request_domain_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_request_domain_v1.py",
+   "image_sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6",
+   "matches_root": true,
+   "root_sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_request_reconciliation_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_request_reconciliation_v1.py",
+   "image_sha256": "7a09048560b19d69122a4df92abd076514b7a9072d0ea3e4fd5ac2ddbe9c5197",
+   "matches_root": true,
+   "root_sha256": "7a09048560b19d69122a4df92abd076514b7a9072d0ea3e4fd5ac2ddbe9c5197",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_operational_runtime_context_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_operational_runtime_context_v1.py",
+   "image_sha256": "a86cfd0fa1d9fac54a380351ac415cef16d90716810d74a822c75c0491ba848b",
+   "matches_root": true,
+   "root_sha256": "a86cfd0fa1d9fac54a380351ac415cef16d90716810d74a822c75c0491ba848b",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_owned_staging_cleanup_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_owned_staging_cleanup_v1.py",
+   "image_sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+   "matches_root": true,
+   "root_sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_physical_io_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_physical_io_v1.py",
+   "image_sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+   "matches_root": true,
+   "root_sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_policy_contract.py",
+   "image_path": "/opt/vast/checkpoint/publication_policy_contract.py",
+   "image_sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+   "matches_root": true,
+   "root_sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_policy_frozen_replay_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_policy_frozen_replay_v1.py",
+   "image_sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+   "matches_root": true,
+   "root_sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_policy_projection_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_policy_projection_v1.py",
+   "image_sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+   "matches_root": true,
+   "root_sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_policy_qualification.py",
+   "image_path": "/opt/vast/checkpoint/publication_policy_qualification.py",
+   "image_sha256": "f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde",
+   "matches_root": true,
+   "root_sha256": "f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_policy_qualification_execution_closure_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_policy_qualification_execution_closure_v1.py",
+   "image_sha256": "01178244ed2c4c5358d6c9f752ab0cadcc9029ec2eb0993127cef86f2b635caa",
+   "matches_root": true,
+   "root_sha256": "01178244ed2c4c5358d6c9f752ab0cadcc9029ec2eb0993127cef86f2b635caa",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/publication_qualification_image_refreeze_v1.py",
+   "image_path": "/opt/vast/checkpoint/publication_qualification_image_refreeze_v1.py",
+   "image_sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+   "matches_root": true,
+   "root_sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/resource_interval_contract.py",
+   "image_path": "/opt/vast/checkpoint/resource_interval_contract.py",
+   "image_sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+   "matches_root": true,
+   "root_sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a",
+   "status": "compiled"
+  },
+  {
+   "entry": "scripts/topology_contract.py",
+   "image_path": "/opt/vast/checkpoint/topology_contract.py",
+   "image_sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+   "matches_root": true,
+   "root_sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a",
+   "status": "compiled"
+  }
+ ],
+ "cwd": "/opt/savant",
+ "executable": "/usr/bin/python3",
+ "imports": [
+  {
+   "module": "analytics_execution_endpoint",
+   "returncode": 0
+  },
+  {
+   "module": "analytics_execution_protocol",
+   "returncode": 0
+  },
+  {
+   "module": "analytics_execution_worker",
+   "returncode": 0
+  },
+  {
+   "module": "analytics_model_contract",
+   "returncode": 0
+  },
+  {
+   "module": "backend_publication_dispatch",
+   "returncode": 0
+  },
+  {
+   "module": "backend_publication_launcher_invocation_v3",
+   "returncode": 0
+  },
+  {
+   "module": "backend_publication_output_receipt",
+   "returncode": 0
+  },
+  {
+   "module": "backend_publication_runtime_authority",
+   "returncode": 0
+  },
+  {
+   "module": "backend_runtime_grant",
+   "returncode": 0
+  },
+  {
+   "module": "backend_runtime_qualification_v3",
+   "returncode": 0
+  },
+  {
+   "module": "benchmark_contract",
+   "returncode": 0
+  },
+  {
+   "module": "canonical_systems_study_plan_v1",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_acceptance_metadata_binding",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_admission",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_deepstream_protocol_adapter",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_deepstream_protocol_bridge",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_deepstream_qualification_fragment_v1",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_deepstream_resource_runtime_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_deepstream_sdk_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_gstreamer_analytics_bridge",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_gstreamer_analytics_sidecar",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_gstreamer_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_model_parity",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_model_parity_acceptance",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_model_parity_acceptance_v4",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_model_parity_v4",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_native_policy_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_publication_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_qualification_pilot_acceptance_v1",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_runtime_plan",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_container_runtime_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_ingress",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_launcher",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_native_module",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_protocol_adapter_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_protocol_bridge",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_publication_specs_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_pyfunc_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_resource_runtime_v3",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_runtime",
+   "returncode": 0
+  },
+  {
+   "module": "checkpoint_savant_sdk_runtime_v3",
+   "returncode": 0
+  },
+  {
+   "module": "extract_kpp_legacy_iss",
+   "returncode": 0
+  },
+  {
+   "module": "formal_aw_heft_reference",
+   "returncode": 0
+  },
+  {
+   "module": "freeze_kpp_frozen_reconstruction_v1",
+   "returncode": 0
+  },
+  {
+   "module": "freeze_kpp_iss_publication_v3",
+   "returncode": 0
+  },
+  {
+   "module": "freeze_kpp_legacy_iss_v2_transcodes",
+   "returncode": 0
+  },
+  {
+   "module": "full_resource_contract",
+   "returncode": 0
+  },
+  {
+   "module": "kpp_frozen_reconstruction_v1_dataset",
+   "returncode": 0
+  },
+  {
+   "module": "kpp_iss_publication_v3_dataset",
+   "returncode": 0
+  },
+  {
+   "module": "kpp_legacy_iss_v2_manifest",
+   "returncode": 0
+  },
+  {
+   "module": "model_parity_grant",
+   "returncode": 0
+  },
+  {
+   "module": "non_decreasing_wall_clock_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_acceptance_evidence",
+   "returncode": 0
+  },
+  {
+   "module": "publication_child_evidence_materializer_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_gstreamer_component_authority_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_guardian_accepted_policy_preprocessing_contract_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_guardian_component_preprocessing_contract_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_guardian_operational_recorder_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_guardian_preprocessing_contract_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_guardian_runtime_expectations_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_capture_plan_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_container_custody_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_process_custody_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_request_domain_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_request_reconciliation_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_operational_runtime_context_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_owned_staging_cleanup_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_physical_io_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_policy_contract",
+   "returncode": 0
+  },
+  {
+   "module": "publication_policy_frozen_replay_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_policy_projection_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_policy_qualification",
+   "returncode": 0
+  },
+  {
+   "module": "publication_policy_qualification_execution_closure_v1",
+   "returncode": 0
+  },
+  {
+   "module": "publication_qualification_image_refreeze_v1",
+   "returncode": 0
+  },
+  {
+   "module": "resource_interval_contract",
+   "returncode": 0
+  },
+  {
+   "module": "topology_contract",
+   "returncode": 0
+  }
+ ],
+ "python": "3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]",
+ "pythonpath": "/opt/vast/checkpoint:/opt/savant",
+ "summary": {
+  "compiled": 77,
+  "import_failures": {},
+  "imported_ok": 77,
+  "modules": 77,
+  "not_packaged": [
+   "deploy/savant/publication/validate_runtime_source_closure_v3.py",
+   "scripts/materialize_runtime_build_context_v3.py"
+  ],
+  "python_entries": 79,
+  "sha_mismatch_vs_root": [],
+  "syntax_errors": []
+ },
+ "system": "savant"
+}

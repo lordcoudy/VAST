@@ -1,0 +1,15 @@
+test_high_bit_writer_ready_is_rejected_before_ack_or_dependent_write (caller.LaterStageCallerTests.test_high_bit_writer_ready_is_rejected_before_ack_or_dependent_write) ... FAIL
+
+======================================================================
+FAIL: test_high_bit_writer_ready_is_rejected_before_ack_or_dependent_write (caller.LaterStageCallerTests.test_high_bit_writer_ready_is_rejected_before_ack_or_dependent_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1452, in test_high_bit_writer_ready_is_rejected_before_ack_or_dependent_write
+    self.assertEqual(base64.b64decode(value['sent'][-1]),b'')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'{"remaining_ms":150000,"selected_base64":[69498 chars]))\n' != b''
+
+----------------------------------------------------------------------
+Ran 1 test in 0.162s
+
+FAILED (failures=1)

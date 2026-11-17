@@ -1,0 +1,11 @@
+test_256_complete_source_records_fit_but_257_refuse (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_256_complete_source_records_fit_but_257_refuse) ... ok
+test_complete_small_descriptor_fields_and_hash_remain_unchanged (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_complete_small_descriptor_fields_and_hash_remain_unchanged) ... ok
+test_escaping_and_non_ascii_module_identities_refuse (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_escaping_and_non_ascii_module_identities_refuse) ... ok
+test_selected_source_path_over_512_bytes_refuses (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_selected_source_path_over_512_bytes_refuses) ... ok
+test_source_change_during_hashing_refuses (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_source_change_during_hashing_refuses) ... ok
+test_source_over_two_mib_refuses_without_full_payload_copy (tests.test_accepted_policy_fixture_metadata_v1.FixtureMetadataTests.test_source_over_two_mib_refuses_without_full_payload_copy) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.049s
+
+OK

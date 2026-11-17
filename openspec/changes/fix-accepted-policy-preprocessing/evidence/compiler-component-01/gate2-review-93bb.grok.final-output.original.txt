@@ -1,0 +1,30 @@
+**CLEAR_WITH_NOTES** for exact commit `93bb04b647a9015f47ad3743551cb416b1695376`.
+
+HEAD was that commit before the reads and is still that commit. `f83de10a4ea72ba59ee899130bb9f26bf6bcb70c` is an ancestor. The diff is four files, `+108/−16`: `component-admission-plan.v8.md`, the stored f83 review record and JSON, and one trailing blank line in `grok-excerpt-plan-review.scope.md`. `proposal.md`, `design.md`, and `tasks.md` are unchanged. The pre-existing untracked rehearsal files were not touched. This review did not edit anything, run tests, or run Docker, `ctr`, or WSL.
+
+The unchanged F2, N3, C1–C6, cc1, and ledger-seal scope keeps the prior `f83de10a` **CLEAR_WITH_NOTES**. This review does not approve implementation or a physical P0, C, or D run. `gate2-review-f83.v1.json` records that parent review with `code_or_physical_approval: false` and `delegated_approval: false`.
+
+## Bounds that hold
+
+The P0 actor is three fixed `C:/Windows/System32/wsl.exe -d Ubuntu -u root --cd / --exec` invocations: `/usr/bin/id -u` must return 0, then `ctr` `info` and `ls` for `sha256:583abc9004877e79fd0f5d47e4c7cff085b8538fdcbff0c070e044bdb0b43c1a` (`component-admission-plan.v8.md:151-157`). That digest is the V7 top-layer pin (`component-admission-plan.v7.md:36`, command at `:56`), the probe `chain_id` (`accepted_policy_fixture_compiler_probe_v1.py:45`), and the historical committed row (`p0-info.original.json:2-3`, `p0-ls.head60.original.txt:58`). The text admits no shell, helper, alternate executable, arbitrary command, or default-user change. The result is agent-observed root proof. The C/D runner stays UID/GID 1000 (`v8.md:159-169`). Lines 173–174 still require both independent reviews, exact-head CI, and recorded delegated AGENT approval before C/D.
+
+The fresh root stays 1,048,576 B: code and packet ≤640 KiB and P0 originals ≤384 KiB (`v8.md:140-142`). Stream caps are 16 B, 64 KiB, and 256 KiB of stdout plus ≤16 KiB combined stderr = 344,080 B. Counted once inside 393,216 B, the control remainder is 49,136 B. Timeout, overflow, nonzero status, unknown closure, and incomplete capture stop continuation (`v8.md:162-168`). Historical `info` is 1,158 B, inside the 64 KiB cap. `id -u` output `0\n` fits in 16 B.
+
+D stays inside the same 2,097,152 B ledger row (`v8.md:258`). Pre-copy refuse is now 524,288 B, tighter than the previous 983,040 B, and the compiler’s 16 MiB ELF ceiling is unchanged (`v8.md:222-224`). Child liability 1,048,576 + ELF copy ≤524,288 + controls ≤524,288 = 2,097,152. Controls add as 2×192 KiB + 2×16 KiB + 96 KiB = 524,288 (`v8.md:233-240`). The deadline is 7 s work + one TERM/1 s + one KILL/1 s + 1 s observation = 10 s, with forced, late, or unknown closure failing (`v8.md:230-232`). Ledger total 536,178,688, seal 536,870,912, and unallocated 692,224 are unchanged (`v8.md:249-261`).
+
+## Prior notes
+
+1. B1 hashes for the reached `crti`/`crtn`/loader/`libc_nonshared.a`/`libgcc.a` objects stay authoritative. This diff does not change the F2 allowlist.
+2. The 13 member sizes stay planning pins. A capture mismatch still stops. This diff does not add a stat original.
+3. The setrlimit disposition is not absorbed. The stored note required `resource.setrlimit` FSIZE 1,048,576 bytes and forbade bash `ulimit` block units (`gate2-review-f83.v1.json:21`, grok record line 31; B2 `README.md:74-75`). The new paragraph says set CORE 1/1 and FSIZE 1 MiB, then record `getrlimit` (`v8.md:224-227`). It dropped “reviewed pre-exec seam.” Pass is still exact `D_REPLY`, rc 0, and `ok\n` (`v8.md:233-235`). A wrong ulimit unit can still produce that output unless the proof is an equality stop.
+
+## Implementation hazards
+
+- Treat the proof pipe as a pass only when recorded `rlim_cur` and `rlim_max` are CORE 1/1 and FSIZE 1,048,576 bytes, and the recorded UID/GID is 1000. “Records” at `v8.md:225-227` is not that predicate. Tests at `v8.md:282-283` have to pin it.
+- Pass P0 commands as a token argv after `--exec`. The commands are prose (`v8.md:151-157`). `sh -c` would violate “No shell.”
+- The 30 s deadline is exactly 3×10 s (`v8.md:162-163`). WSL spawn overhead has no separate margin. A timeout stops the plan. The same sentence does not reap a still-running root `wsl.exe` or `ctr`. “Without guessed cleanup” must not be read as leaving that root child running; any unknown closure stops.
+- The 49,136 B P0 control remainder is implicit. A second copy of the capped streams can exceed 384 KiB while each cap still holds. Originals and control records share the 384 KiB once.
+- The retained `snapshots ls` original is a 9,235 B head-60, not a full listing. A live listing over 256 KiB stops. That cap is fail-closed and is not demonstrated against a full `ctr` listing.
+- The ≤1 KiB proof pipe and ≤4 KiB D stdout/stderr sit inside the 96 KiB remainder (`v8.md:225-236`), leaving 93,184 B for the other D records. They are not an extra budget on top of 512 KiB.
+- The fixed D environment names `PATH`, `LANG`, `LC_ALL`, `HOME`, `TMPDIR`, `TMP`, and `TEMP` (`v8.md:227-229`). Implementation has to replace the environment so loader hooks such as `LD_PRELOAD` are absent, which the paragraph states only as “without inherited loader hooks.”
+2026-10-16T11:48:11.678256Z  WARN Resident session actor exited unexpectedly; reaping as DeadFailed session_id=01a1446f-ef6a-70d1-b5a3-edc2a08d69a3

@@ -1,0 +1,15 @@
+command: canonical WSL Python3.12.3 controlled tracked capture unittest
+exit_code: 1
+..........F.....
+======================================================================
+FAIL: test_post_meter_funded_capacity_and_capture_forms_are_independently_checked (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_post_meter_funded_capacity_and_capture_forms_are_independently_checked)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 270, in test_post_meter_funded_capacity_and_capture_forms_are_independently_checked
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+AssertionError: CaptureRefusal not raised
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 16 tests in 0.036s
+System.Management.Automation.RemoteException
+FAILED (failures=1)

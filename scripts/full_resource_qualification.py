@@ -619,7 +619,9 @@ def _default_pilot_validator(
                 "analytics_function_types": len(BRANCHES),
             },
             "topology": {
-                "contract_version": 1,
+                # Checkpoint scenarios declare topology v2 (explicit CPU postprocess),
+                # as in the policy pilot validator.
+                "contract_version": 2,
                 "kind": pilot["topology_kind"],
                 "routing_mode": "all_branches_per_stream",
                 "required_branches": list(BRANCHES),
@@ -1109,7 +1111,10 @@ def _write_immutable_json(
             or observed_payload != payload
             or observed_identity != identity
             or stat_identity != identity
-            or observed_mode != 0o444
+            or not (
+                observed_mode == 0o444
+                or (observed_mode == 0o555 and not holder.permission_modes_enforced)
+            )
         ):
             raise FullResourceQualificationError(
                 f"immutable qualification output collision: {path.name}"
@@ -1179,7 +1184,14 @@ def _cold_read_promoted_json(
         raise FullResourceQualificationError(
             f"{label} cold validation failed"
         ) from error
-    if payload is None or identity != stat_identity or mode != 0o444:
+    if (
+        payload is None
+        or identity != stat_identity
+        or not (
+            mode == 0o444
+            or (mode == 0o555 and not custody.permission_modes_enforced)
+        )
+    ):
         raise FullResourceQualificationError(
             f"{label} is not one readonly immutable file"
         )

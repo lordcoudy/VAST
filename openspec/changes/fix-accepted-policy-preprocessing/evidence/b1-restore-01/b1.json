@@ -1,0 +1,194 @@
+{
+  "archive": {
+    "blobs": 50,
+    "content_bytes": 10469582904,
+    "index_annotations": {
+      "containerd.io/distribution.source.nvcr.io": "nvidia/deepstream"
+    },
+    "members": 55,
+    "sha256": "a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1",
+    "size": 10469630464
+  },
+  "cause": "interrupted",
+  "commands": [
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "version",
+        "--format",
+        "{{.Server.Version}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.214,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 7,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "info",
+        "--format",
+        "{{.ID}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 1.567,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 37,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "image",
+        "inspect",
+        "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+        "--format",
+        "{{json .Id}} {{json .RepoDigests}}"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.214,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 176,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "version"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.064,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 229,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/ctr",
+        "--address",
+        "/run/containerd/containerd.sock",
+        "--namespace",
+        "moby",
+        "images",
+        "ls",
+        "-q"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 0.008,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 0,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 0
+    },
+    {
+      "argv": [
+        "/usr/bin/docker",
+        "-H",
+        "unix:///run/vast-pr9-desktop-api.sock",
+        "image",
+        "save",
+        "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+      ],
+      "ceiling_exceeded": false,
+      "rc": 0,
+      "seconds": 114.877,
+      "stderr": "",
+      "stderr_overflow": false,
+      "stdout_bytes": 0,
+      "stdout_overflow": false,
+      "timed_out": false,
+      "write_error": null,
+      "written": 10469630464
+    }
+  ],
+  "facts": {
+    "signal": "SIGTERM"
+  },
+  "import_started": true,
+  "late_signals": [],
+  "native_containers_before": [
+    [
+      "4df593e12ca362e69f0594b2035197335f335d3ceae3c71894b31db9f197a09f",
+      "exited"
+    ],
+    [
+      "90f8ebb69bd83cbb02067a831cc2ace5efe78fc6b568a665bd93333d7b4b6e87",
+      "exited"
+    ],
+    [
+      "9b5c396109909a8a091a0fc6bb6529f887233df77ab314435ce85ab05e22fbc5",
+      "exited"
+    ]
+  ],
+  "native_references_before": [],
+  "native_state": "unknown: the import began; containerd may have kept, still be processing, or later release partial content",
+  "outcome": "refused",
+  "provider": "nvcr.io/nvidia/deepstream@sha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759",
+  "retained": "the archive and this record are retained; the helper never prunes, removes, overwrites or retries (containerd may release a failed import's unreferenced content when ctr's lease ends)",
+  "schema": "vast.pr9.b1-restore.v1",
+  "seconds": 151.924,
+  "stages": [
+    {
+      "at": 2.143,
+      "desktop_engine": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+      "native_engine": "1e493309-3767-45fb-9078-05b838bdfd80",
+      "stage": "preflight"
+    },
+    {
+      "at": 2.144,
+      "path": "/var/lib/vast-pr9-b1",
+      "stage": "archive_dir_created"
+    },
+    {
+      "at": 2.144,
+      "path": "/var/lib/vast-pr9-b1/deepstream-c11befa8.docker-save.tar",
+      "stage": "archive_created"
+    },
+    {
+      "at": 118.481,
+      "bytes": 10469630464,
+      "stage": "saved"
+    },
+    {
+      "at": 149.977,
+      "blobs": 50,
+      "members": 55,
+      "sha256": "a55b6e0c5c522b09aa1c5f521789424609455d49678dd0042c6c3472d00aa9b1",
+      "size": 10469630464,
+      "stage": "verified"
+    }
+  ]
+}

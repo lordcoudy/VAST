@@ -431,7 +431,7 @@ def _write_failure_channel(capture, path, raw):
     try:
         info = os.fstat(fd)
         _require(stat.S_ISREG(info.st_mode) and info.st_nlink == 1 and info.st_size == 0
-            and stat.S_IMODE(info.st_mode) == 0o444 and (info.st_dev, info.st_ino) == identity
+            and capture.custody._mode_matches(stat.S_IMODE(info.st_mode), 0o444) and (info.st_dev, info.st_ino) == identity
             and info.st_uid == capture.controller["uid"] and info.st_gid == capture.controller["gid"]
             and _epoch(info) == _epoch(_path(path).lstat()), "empty failed original channel custody drifted")
         observed, observed_identity = capture.custody.adopt_exact_durable_identity(
@@ -546,7 +546,12 @@ def capture_original_engine_processes_v1(*, project_root, output_dir, operation_
                 except BaseException as finish_error:
                     if error is None:
                         raise
-                    error.add_note("Original process capture finalization failed: " + str(finish_error))
+                    note = "Original process capture finalization failed: " + str(finish_error)
+                    note_adder = getattr(error, "add_note", None)
+                    if callable(note_adder):
+                        note_adder(note)
+                    else:
+                        error.__notes__ = [*getattr(error, "__notes__", ()), note]
         finally:
             _capture.reset(token)
             capture.close()

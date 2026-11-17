@@ -125,7 +125,12 @@ class SelectionContracts(unittest.TestCase):
 
     def test_all_original_platform_and_retired_skip_ids_remain_nonexecution(self):
         rows=json.loads((ROOT/self.api.MANIFEST).read_bytes())['allowed_portable_skips']
-        self.assertEqual(len(rows),88)
+        import hashlib
+        # R1 (2026-11-11): the seven retired D27 dictionary-caller rows left with their module.
+        self.assertEqual(len(rows),95)
+        digest=lambda value:hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode('ascii')).hexdigest()
+        self.assertEqual(digest(rows[:88]),'3fc8d60a8259068730cb707c460b7631c7836b4b267f0df0d7f60af0c9500370')
+        self.assertEqual(digest(rows[88:]),'296c60269af6041124c211e7160174de35d9aef1cc8215ec175f3e920f2c267d')
         cases=[]
         for row in rows:
             case=self._case(row['test_id'])
@@ -134,7 +139,7 @@ class SelectionContracts(unittest.TestCase):
             cases.append(case)
         self.manifest(skips=rows)
         suite,report=self.api.select_portable_suite_v1(unittest.TestSuite(cases),project_root=self.root)
-        self.assertEqual(suite.countTestCases(),88)
+        self.assertEqual(suite.countTestCases(),95)
         self.assertEqual(report['counts']['integration'],0)
         audit=self.api.validate_portable_skips_v1(rows,report)
         self.assertEqual(audit,sorted(rows,key=lambda row:row['test_id']))

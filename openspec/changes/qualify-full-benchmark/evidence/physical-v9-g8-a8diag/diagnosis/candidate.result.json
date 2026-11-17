@@ -1,0 +1,166 @@
+{
+ "cells": {
+  "deepstream/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2048,
+   "excluded_dropped": 1610
+  },
+  "deepstream/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2168,
+   "excluded_dropped": 1567
+  },
+  "deepstream/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2072,
+   "excluded_dropped": 1621
+  },
+  "deepstream/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2156,
+   "excluded_dropped": 1578
+  },
+  "deepstream/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 1
+  },
+  "deepstream/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 0
+  },
+  "deepstream/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 1
+  },
+  "deepstream/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 0
+  },
+  "savant/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 1808,
+   "excluded_dropped": 1736
+  },
+  "savant/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2144,
+   "excluded_dropped": 1572
+  },
+  "savant/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 1844,
+   "excluded_dropped": 1734
+  },
+  "savant/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2128,
+   "excluded_dropped": 1592
+  },
+  "savant/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 0
+  },
+  "savant/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 0
+  },
+  "savant/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 1
+  },
+  "savant/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272,
+   "excluded_dropped": 1
+  },
+  "openvino_gva/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2232,
+   "excluded_dropped": 1417
+  },
+  "openvino_gva/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2180,
+   "excluded_dropped": 1211
+  },
+  "openvino_gva/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2080,
+   "excluded_dropped": 1628
+  },
+  "openvino_gva/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 1544,
+   "excluded_dropped": 1720
+  },
+  "openvino_gva/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4284,
+   "excluded_dropped": 12
+  },
+  "openvino_gva/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300,
+   "excluded_dropped": 0
+  },
+  "openvino_gva/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4296,
+   "excluded_dropped": 1
+  },
+  "openvino_gva/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4296,
+   "excluded_dropped": 2
+  },
+  "gstreamer_custom/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2216,
+   "excluded_dropped": 1462
+  },
+  "gstreamer_custom/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2212,
+   "excluded_dropped": 1196
+  },
+  "gstreamer_custom/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2136,
+   "excluded_dropped": 1605
+  },
+  "gstreamer_custom/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 1476,
+   "excluded_dropped": 1779
+  },
+  "gstreamer_custom/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4300,
+   "excluded_dropped": 0
+  },
+  "gstreamer_custom/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300,
+   "excluded_dropped": 0
+  },
+  "gstreamer_custom/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4296,
+   "excluded_dropped": 0
+  },
+  "gstreamer_custom/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4296,
+   "excluded_dropped": 1
+  }
+ },
+ "accepted": 32,
+ "refused": 0
+}

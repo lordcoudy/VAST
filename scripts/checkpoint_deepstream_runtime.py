@@ -325,7 +325,9 @@ def _baseline_processes(
         stream_id = int(source["stream_id"])
         for branch in ANALYTICS_BRANCHES:
             processes.append({
-                "process_id": f"deepstream-stream-{stream_id}-branch-{branch}",
+                # Worker id in operational capture: at most 30 of the 37 allowed
+                # characters (publication_operational_request_domain_v1.py).
+                "process_id": f"stream-{stream_id}-branch-{branch}",
                 "process_isolation": "os_process",
                 "stream_id": stream_id,
                 "branch": branch,

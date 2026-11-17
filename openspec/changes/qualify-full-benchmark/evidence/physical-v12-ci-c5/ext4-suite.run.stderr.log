@@ -1,0 +1,43 @@
+backend Q4 two-phase executor rejected: Q4 executor CLI argv arity drifted
+[deepstream-sdk-runtime][wall-clock] max_clamp_ns=0
+usage: run_ci_checks.py [-h] {manifest,assess} ...
+run_ci_checks.py: error: argument command: invalid choice: 'run' (choose from 'manifest', 'assess')
+usage: run_ci_checks.py [-h] {plan,preflight} ...
+run_ci_checks.py: error: argument command: invalid choice: 'run' (choose from 'plan', 'preflight')
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/home/s-a-balashov/work/vast-qfb-ci-20261009-d1a78805/scripts/ci_external_test_observer_v1.py", line 50, in child_trace_handler
+    raise RuntimeError("existing SIGUSR1 disposition conflicts with CI observation")
+RuntimeError: existing SIGUSR1 disposition conflicts with CI observation
+Traceback (most recent call last):
+Traceback (most recent call last):
+usage: run_ci_checks.py [-h] --project-root PROJECT_ROOT --underbody-archive
+                        UNDERBODY_ARCHIVE --front-archive FRONT_ARCHIVE
+                        --output-dir OUTPUT_DIR --expected-underbody-sha256
+                        EXPECTED_UNDERBODY_SHA256 --expected-front-sha256
+                        EXPECTED_FRONT_SHA256 --ffmpeg FFMPEG
+                        --expected-ffmpeg-sha256 EXPECTED_FFMPEG_SHA256
+                        --expected-ffmpeg-version-sha256
+                        EXPECTED_FFMPEG_VERSION_SHA256 --ffprobe FFPROBE
+                        --expected-ffprobe-sha256 EXPECTED_FFPROBE_SHA256
+                        --expected-ffprobe-version-sha256
+                        EXPECTED_FFPROBE_VERSION_SHA256
+run_ci_checks.py: error: the following arguments are required: --project-root, --underbody-archive, --front-archive, --output-dir, --expected-underbody-sha256, --expected-front-sha256, --ffmpeg, --expected-ffmpeg-sha256, --expected-ffmpeg-version-sha256, --ffprobe, --expected-ffprobe-sha256, --expected-ffprobe-version-sha256
+usage: run_ci_checks.py [-h] --project-root PROJECT_ROOT --extraction-receipt
+                        EXTRACTION_RECEIPT
+                        --expected-extraction-receipt-file-sha256
+                        EXPECTED_EXTRACTION_RECEIPT_FILE_SHA256
+                        --underbody-avi UNDERBODY_AVI --front-avi FRONT_AVI
+                        --output-dir OUTPUT_DIR --ffmpeg FFMPEG
+                        --expected-ffmpeg-sha256 EXPECTED_FFMPEG_SHA256
+                        --expected-ffmpeg-version-sha256
+                        EXPECTED_FFMPEG_VERSION_SHA256 --ffprobe FFPROBE
+                        --expected-ffprobe-sha256 EXPECTED_FFPROBE_SHA256
+                        --expected-ffprobe-version-sha256
+                        EXPECTED_FFPROBE_VERSION_SHA256
+run_ci_checks.py: error: the following arguments are required: --project-root, --extraction-receipt, --expected-extraction-receipt-file-sha256, --underbody-avi, --front-avi, --output-dir, --ffmpeg, --expected-ffmpeg-sha256, --expected-ffmpeg-version-sha256, --ffprobe, --expected-ffprobe-sha256, --expected-ffprobe-version-sha256
+[vast-gui] "GET /api/config HTTP/1.1" 200 -
+[vast-gui] "POST /api/runs/dry-run HTTP/1.1" 200 -

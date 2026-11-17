@@ -1,0 +1,15 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+F
+======================================================================
+FAIL: test_unknown_or_unusable_original_clock_refuses_before_import_source_or_spawn (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_unknown_or_unusable_original_clock_refuses_before_import_source_or_spawn) (bad='nan')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 872, in test_unknown_or_unusable_original_clock_refuses_before_import_source_or_spawn
+    self.assertEqual(value['spawned'],0);self.assertFalse(value['sourceCalls']);self.assertTrue(value['error'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 1.182s
+
+FAILED (failures=1)

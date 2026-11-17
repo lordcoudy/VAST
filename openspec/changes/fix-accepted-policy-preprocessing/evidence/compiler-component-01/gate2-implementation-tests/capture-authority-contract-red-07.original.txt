@@ -1,0 +1,79 @@
+command: canonical WSL Python3.12.3 controlled tracked capture unittest
+exit_code: 1
+........EE.EEE.E..................
+======================================================================
+ERROR: test_authority_commit_approval_source_helper_and_context_mutations_refuse (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_authority_commit_approval_source_helper_and_context_mutations_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 542, in test_authority_commit_approval_source_helper_and_context_mutations_refuse
+    payload=self.post_payload(); authority_path=self.aux/"operator.authority.original.json"
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_fixed_post_meter_measures_actual_blocks_and_reserves_capture_copy_forms (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_fixed_post_meter_measures_actual_blocks_and_reserves_capture_copy_forms)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 516, in test_fixed_post_meter_measures_actual_blocks_and_reserves_capture_copy_forms
+    payload=self.post_payload(); result=self.execute(capture.POST_METER,payload)
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_post_meter_floors_packet_hash_drift_and_unfunded_growth_refuse (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_post_meter_floors_packet_hash_drift_and_unfunded_growth_refuse)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 533, in test_post_meter_floors_packet_hash_drift_and_unfunded_growth_refuse
+    payload=self.post_payload(); self.c_free=1
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_post_meter_rejects_unfunded_copied_forms_before_emitting (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_post_meter_rejects_unfunded_copied_forms_before_emitting)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 529, in test_post_meter_rejects_unfunded_copied_forms_before_emitting
+    payload=self.post_payload(); payload["outside_preexisting_quote"]=460000
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_post_meter_uses_larger_physical_allocation_not_only_logical_size (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_post_meter_uses_larger_physical_allocation_not_only_logical_size)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 523, in test_post_meter_uses_larger_physical_allocation_not_only_logical_size
+    payload=self.post_payload()
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+======================================================================
+ERROR: test_setup_actual_authority_schema_replaces_source_sha_as_packet_evidence (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.LiteralMeterTests.test_setup_actual_authority_schema_replaces_source_sha_as_packet_evidence)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 537, in test_setup_actual_authority_schema_replaces_source_sha_as_packet_evidence
+    payload=self.post_payload()
+            ^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 480, in post_payload
+    authority=setup.authority_record_v1(code_commit=COMMIT,approval_reference=APPROVAL,operator_sha256=operator_sha,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_setup_v1' has no attribute 'authority_record_v1'
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 34 tests in 0.124s
+System.Management.Automation.RemoteException
+FAILED (errors=6)

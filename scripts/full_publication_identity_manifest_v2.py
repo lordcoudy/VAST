@@ -122,6 +122,99 @@ def _descriptor_registry(
     return add, paths, identities
 
 
+_POLICY_RECEIPT_KINDS = frozenset({"vast_publication_policy_qualification_receipt"})
+_BACKEND_RECEIPT_KINDS = frozenset(
+    {
+        "vast_backend_runtime_qualification_receipt",
+        "vast_backend_runtime_qualification_v3_receipt",
+    }
+)
+
+
+def _reject_declared_foreign_kinds(
+    custody: PhysicalRootCustodyV1, manifest: Mapping[str, Any]
+) -> None:
+    """Refuse declared foreign kinds before the private candidate is written.
+
+    The physical identity loader still performs the complete validation; this
+    read-only gate only keeps component, study and unknown kinds from causing
+    any file creation.
+    """
+
+    bindings = manifest["bindings"]
+    policy = bindings["policy_qualification"]
+    resource = bindings["resource_qualification"]
+    backend = bindings["backend_runtime_qualification"]
+    checks = [
+        (
+            "model parity receipt",
+            bindings["analytics_model_parity"]["receipt"],
+            frozenset(
+                {
+                    "vast_checkpoint_model_parity_acceptance_receipt",
+                    "vast_checkpoint_model_parity_acceptance_receipt_v4",
+                }
+            ),
+        ),
+        ("policy qualification receipt", policy["receipt"], _POLICY_RECEIPT_KINDS),
+        (
+            "policy capability manifest",
+            policy["outputs"]["capability_manifest"],
+            frozenset({"vast_publication_policy_capability_manifest"}),
+        ),
+        (
+            "policy calibration mapping",
+            policy["outputs"]["calibration_mapping"],
+            frozenset({"vast_publication_policy_calibration_mapping"}),
+        ),
+        (
+            "resource qualification receipt",
+            resource["receipt"],
+            frozenset({"vast_pre_run_full_resource_capability_qualification_receipt"}),
+        ),
+        (
+            "resource capability manifest",
+            resource["outputs"]["capability_manifest"],
+            frozenset({"vast_pre_run_full_resource_capability_manifest"}),
+        ),
+        (
+            "backend qualification binding index",
+            backend["binding_index"],
+            frozenset(
+                {
+                    "vast_backend_runtime_qualification_binding_index",
+                    "vast_backend_runtime_qualification_v3_binding_index",
+                }
+            ),
+        ),
+        *(
+            (
+                f"backend qualification receipt {system}",
+                backend["receipts"][system],
+                _BACKEND_RECEIPT_KINDS,
+            )
+            for system in SYSTEMS
+        ),
+    ]
+    for label, descriptor, allowed in checks:
+        try:
+            _observed, payload = custody.read_descriptor(
+                descriptor["path"],
+                label=label,
+                maximum=64 * 1024 * 1024,
+                capture=True,
+            )
+            value = json.loads(payload or b"")
+        except (PublicationPhysicalIoV1Error, UnicodeError, ValueError):
+            continue
+        if type(value) is dict and "artifact_kind" in value:
+            if value["artifact_kind"] not in allowed:
+                raise FullPublicationIdentityManifestV2Error(
+                    f"{label} declares a foreign artifact kind: "
+                    f"{value['artifact_kind']!r}"
+                )
+
+
 def _mapping(value: Any, fields: set[str], label: str) -> Mapping[str, Any]:
     if type(value) is not dict or set(value) != fields:
         raise FullPublicationIdentityManifestV2Error(f"{label} fields drifted")
@@ -296,6 +389,7 @@ def _build_full_publication_identity_manifest_v2_with_custody(
             },
         },
     }
+    _reject_declared_foreign_kinds(custody, manifest)
     payload = _canonical_bytes(manifest)
     bound_paths = [root / item for item in sorted(registered_paths)]
     temporary: Path | None = None

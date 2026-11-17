@@ -10,6 +10,8 @@ import tempfile
 import threading
 import time
 import unittest
+from collections.abc import Iterator
+from contextlib import contextmanager
 from pathlib import Path
 from unittest import mock
 
@@ -25,6 +27,45 @@ RESOURCES = ("cpu", "gpu")
 CODECS = ("h264", "h265")
 TOPOLOGIES = ("independent_processes", "shared_video_dag")
 BRANCHES = ("plate_number", "vehicle_type", "damage", "foreign_object")
+
+
+# Amendment 6 (E): drvfs without metadata reports a read-only 0444 leaf as
+# 0555; only custody that does not enforce POSIX modes may accept it.
+READONLY_MODE_CASES = (
+    (0o555, False, True),
+    (0o555, True, False),
+    (0o777, False, False),
+    (0o777, True, False),
+    (0o666, False, False),
+    (0o644, False, False),
+)
+
+
+@contextmanager
+def reported_readonly_mode(
+    custody_type: type, mode: int, *, enforced: bool, labels: set[str]
+) -> Iterator[list[str]]:
+    """Report ``mode`` for labelled leaves and pin POSIX-mode enforcement."""
+
+    stat_regular_identity = custody_type.stat_regular_identity
+    seen: list[str] = []
+
+    def reported(custody, value, *, label):
+        observed, identity = stat_regular_identity(custody, value, label=label)
+        if label in labels:
+            seen.append(label)
+            return mode, identity
+        return observed, identity
+
+    with mock.patch.object(
+        custody_type, "stat_regular_identity", reported
+    ), mock.patch.object(
+        custody_type,
+        "permission_modes_enforced",
+        new_callable=mock.PropertyMock,
+        return_value=enforced,
+    ):
+        yield seen
 
 
 def _sha(path: Path) -> str:
@@ -769,6 +810,59 @@ class FullResourceQualificationTests(unittest.TestCase):
                         (receipt_path.stat().st_dev, receipt_path.stat().st_ino),
                         published_identity,
                     )
+
+    def test_immutable_output_modes_accept_0555_only_without_mode_enforcement(
+        self,
+    ) -> None:
+        value = {"stable": True}
+        payload = target._canonical_bytes(value) + b"\n"
+        label = "test promoted output"
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            for case, (mode, enforced, accepted) in enumerate(READONLY_MODE_CASES):
+                path = root / f"holder-{case}.json"
+                holder_label = f"immutable full-resource output {path.name}"
+                with (
+                    self.subTest(site="writer", mode=oct(mode), enforced=enforced),
+                    reported_readonly_mode(
+                        target.PhysicalRootCustodyV1,
+                        mode,
+                        enforced=enforced,
+                        labels={holder_label},
+                    ) as seen,
+                ):
+                    if accepted:
+                        descriptor = target._write_immutable_json(path, value)
+                        self.assertIn(holder_label, seen)
+                        self.assertEqual(descriptor["sha256"], _sha(path))
+                    else:
+                        with self.assertRaises(target.FullResourceQualificationError):
+                            target._write_immutable_json(path, value)
+
+                cold = root / f"cold-{case}.json"
+                cold.write_bytes(payload)
+                cold.chmod(0o444)
+                with (
+                    self.subTest(site="cold", mode=oct(mode), enforced=enforced),
+                    target.PhysicalRootCustodyV1.open(
+                        root, label="test promoted root"
+                    ) as custody,
+                    reported_readonly_mode(
+                        target.PhysicalRootCustodyV1,
+                        mode,
+                        enforced=enforced,
+                        labels={label},
+                    ) as seen,
+                ):
+                    if accepted:
+                        observed, _ = target._cold_read_promoted_json(
+                            custody, cold, label=label
+                        )
+                        self.assertIn(label, seen)
+                        self.assertEqual(observed, value)
+                    else:
+                        with self.assertRaises(target.FullResourceQualificationError):
+                            target._cold_read_promoted_json(custody, cold, label=label)
 
 
 if __name__ == "__main__":

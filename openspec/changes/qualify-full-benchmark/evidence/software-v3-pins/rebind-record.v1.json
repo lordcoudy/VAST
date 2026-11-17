@@ -1,0 +1,72 @@
+{
+ "artifact_kind": "qfb_task_5_4_pin_rebind_record_v1",
+ "base_head": "57520b2d25c5923bab9e3c96f88156c3969a3fab",
+ "build_commit": "3a7f799d",
+ "change": "qualify-full-benchmark",
+ "decisions": [
+  {
+   "decision": "The portable unit test test_gstreamer_current_runtime_is_exactly_refrozen read the tracked decision28 freeze. A byte copy of the NEW GStreamer freeze (sha256 96a1a3d47a9e711407707a8dc20cf9c73e5b6a8daa99b427b0a86b6392e29f70, 6976 bytes) is tracked (git add -f) at artifacts/qualify_full_benchmark_20261007a/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json; the test path (two concatenated literals), sha256 literal and size literal 7001->6976 are rebound by the plan. A separate directory avoids colliding with the ignored build-root original runtime_images/gstreamer_custom.runtime.freeze.json. The decision28 copy itself stays tracked as history (no remaining references in scripts/tests/.ci).",
+   "id": "D1-gstreamer-tracked-copy"
+  },
+  {
+   "decision": "B2: 11 NEW byte copies under .ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261007a/model_parity_v4/{bindings/*.json,runtime_probes/*.json} (same subset as g, checked against the new bindings/index.json), force-added (artifacts/ is git-ignored). The 11 additional-origins.v1.json entries are rewritten from the NEW originals' facts (fixture_path, original_path, original_project_root=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a, lstat epoch, size, sha256); no fixture bytes were string-edited. Old g fixture copies are removed (git rm): after the rebind nothing in scripts/tests/.ci/deploy references them.",
+   "id": "D2-ci-fixtures"
+  },
+  {
+   "decision": "Repo scan (all tracked files) found old values only in the 8 pin files, the B2 fixture set and historical receipts/docs (configs/*fix-benchmark-20260927f*, configs/*fix-benchmark-20260928g*, docs/, progress.md, BENCHMARK_RECOVERY_PLAN.md, artifacts/, openspec/), which are not pins and are left unchanged. No deepstream/savant script pins any g value.",
+   "id": "D3-no-other-pin-sites"
+  },
+  {
+   "decision": "Three 64-hex literals in pin files are in no old or new receipt and are not mechanically rebindable: scripts/checkpoint_openvino_gva_qualification_fragment_v3.py:100 OPENVINO_GVA_EMBEDDED_SET_SHA256=abc2c68d... (stale since 95127526, 2026-09-21; g also left it; new patch openvino embedded_set_sha256 is 0d277622...), and tests/test_publication_runtime_frozen_identity_constants_v1.py:220/223 (frozen Savant attempt14 builder, independent). Left unchanged; flagged for reviewer.",
+   "id": "D4-stale-literals-not-rebound"
+  }
+ ],
+ "new_sources": {
+  "artifacts": "artifacts/qualify_full_benchmark_20261007a",
+  "build_root": "/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a",
+  "configs": "configs/*qfb-20261007a* (copied byte-equal, sha256 verified by the tool)"
+ },
+ "old_sources": {
+  "chain_g": "/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec/artifacts/fix_benchmark_preparations_20260928g",
+  "configs_g": "configs/*fix-benchmark-20260928g* (tracked)",
+  "gstreamer_runtime_pin": "artifacts/benchmark_recovery_20260930/decision28-selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json (tracked)"
+ },
+ "sequence": [
+  "inventory.v1.json (pin files at 3a7f799d bytes)",
+  "host-pin-rebind.plan.v1.json",
+  "host-pin-rebind.plan-review.v1.json + host-pin-rebind.planned.patch (AST check, changed lines == planned lines)",
+  "host-pin-rebind.plan-vs-inventory.v1.json (coverage both ways: ok)",
+  "apply with plan sha256 f091a8d22000ee904f6d00583c4798e85d2ae47324af18f692402f16adc6d6c5 -> host-pin-rebind.applied.v1.json",
+  "ci-fixtures.plan.v1.json / ci-fixtures.applied.v1.json (B2)",
+  "closure-diff.3a7f799d-vs-pins.u0.diff (99 changed lines == 99 planned lines)"
+ ],
+ "task": "5.4",
+ "tests": {
+  "dependent": {
+   "log": "tests/dependent.ext4-clone.unittest.log + tests/dependent-native-diagnostic.ext4-clone.unittest.log",
+   "result": "152 + 10 tests OK (skipped=3 drvfs-only); the one loader error in the first log is a sys.path artefact, rerun with scripts on PYTHONPATH: OK"
+  },
+  "environment": "ext4 clone ~/qfb-pin-test-20261007 of /mnt/e/STUDY/VAST at 57520b2d + staged patch (sha256 48f6f7d8c207863fb7ed11f063dbd3353d2800c0231b9580d4bac29aea3e0ca1) applied with --index; git-ignored inputs copied from the build root (tests/ext4-clone.copied-*.sha256); PYTHONPATH=.:tests[:scripts] (as run_ci_checks discovery); python full-publication-cp312-v1",
+  "ext4_clone_subtrees": {
+   ".ci": "ffc50e3bbb483b91fdebc7cd60148ea500aa51f2",
+   "artifacts": "c303579116f6562047128a241d1cd683c37deb85",
+   "configs": "8a22865795e7f6b157c591b2b568f2dff800f679",
+   "deploy": "1ddf3cc11fc061c7efeb90d3755f07b788670e9a",
+   "scripts": "2db784573f04e0e76c4e844c5a5002841c9c78e7",
+   "tests": "02f544abf310750e1e600d7ae0963eb77b33842a"
+  },
+  "extra": {
+   "log": "tests/extra-corpus-ci.ext4-clone.unittest.log",
+   "result": "2 errors: real-corpus integration tests (data/videos corpus not copied), unrelated to pins"
+  },
+  "focused": {
+   "log": "tests/focused.ext4-clone.unittest.log",
+   "result": "Ran 200, OK (skipped=3: live preflight needs VAST_LIVE_PREFLIGHT+docker; OpenVINO live docker; real KPP AVI)"
+  },
+  "origin_fixture_tests": "No test reads .ci/fixtures/additional-origins.v1.json (git grep); the fixture subset is consumed by tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py:unit_fragment_project (GREEN in focused).",
+  "pr_worktree": {
+   "log": "tests/focused.pr-worktree-no-ignored-inputs.unittest.log",
+   "result": "9 errors, all FileNotFoundError for git-ignored models/ or artifacts/qualify_full_benchmark_20261007a (inputs absent in the PR worktree); no assertion failures"
+  }
+ }
+}

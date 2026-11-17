@@ -1,0 +1,59 @@
+{
+  "scope": "review06_failed_startup_public_provenance",
+  "original_full_guard_tool_return": {
+    "chunk_id": "b27903",
+    "wall_time_seconds": 3.2986326,
+    "exit_code": 0,
+    "original_token_count": 432,
+    "output": "{\"scope\":\"readonly_linux_guard_with_separate_native_channels\",\"exit_code\":0,\"stdout\":\"{\\\"allocation_units\\\":{\\\"c\\\":4096,\\\"e\\\":4096,\\\"temporary\\\":4096},\\\"boot_id\\\":\\\"df4955d9-4762-42b4-a55b-0106ba3786f8\\\",\\\"free_bytes\\\":{\\\"c\\\":234580320256,\\\"e\\\":259151142912,\\\"temporary\\\":880664944640},\\\"observed_utc\\\":\\\"2026-10-28T09:09:04.071501+00:00\\\",\\\"root_device\\\":\\\"/dev/sdf\\\",\\\"root_mounts\\\":[[\\\"/dev/sdf\\\",\\\"/\\\",\\\"ext4\\\",\\\"rw,relatime,discard,errors=remount-ro,data=ordered\\\",\\\"0\\\",\\\"0\\\"]],\\\"root_uuid\\\":\\\"c3d3247e-154c-43c0-a9fe-2b91d6db7666\\\",\\\"temporary_same_device_as_root\\\":true,\\\"vm_memory_bytes\\\":{\\\"MemTotal\\\":25196363776,\\\"SwapTotal\\\":6442450944},\\\"wslconfig_sha256\\\":\\\"6efea9e209212784c22240a6019c17cee3bd31011840250c76c3bb31e2c7eea1\\\",\\\"wslconfig_size\\\":21}\",\"stderr\":\"w\\u0000s\\u0000l\\u0000:\\u0000 \\u0000A\\u0000 \\u0000l\\u0000o\\u0000c\\u0000a\\u0000l\\u0000h\\u0000o\\u0000s\\u0000t\\u0000 \\u0000p\\u0000r\\u0000o\\u0000x\\u0000y\\u0000 \\u0000c\\u0000o\\u0000n\\u0000f\\u0000i\\u0000g\\u0000u\\u0000r\\u0000a\\u0000t\\u0000i\\u0000o\\u0000n\\u0000 \\u0000w\\u0000a\\u0000s\\u0000 \\u0000d\\u0000e\\u0000t\\u0000e\\u0000c\\u0000t\\u0000e\\u0000d\\u0000 \\u0000b\\u0000u\\u0000t\\u0000 \\u0000n\\u0000o\\u0000t\\u0000 \\u0000m\\u0000i\\u0000r\\u0000r\\u0000o\\u0000r\\u0000e\\u0000d\\u0000 \\u0000i\\u0000n\\u0000t\\u0000o\\u0000 \\u0000W\\u0000S\\u0000L\\u0000.\\u0000 \\u0000W\\u0000S\\u0000L\\u0000 \\u0000i\\u0000n\\u0000 \\u0000N\\u0000A\\u0000T\\u0000 \\u0000m\\u0000o\\u0000d\\u0000e\\u0000 \\u0000d\\u0000o\\u0000e\\u0000s\\u0000 \\u0000n\\u0000o\\u0000t\\u0000 \\u0000s\\u0000u\\u0000p\\u0000p\\u0000o\\u0000r\\u0000t\\u0000 \\u0000l\\u0000o\\u0000c\\u0000a\\u0000l\\u0000h\\u0000o\\u0000s\\u0000t\\u0000 \\u0000p\\u0000r\\u0000o\\u0000x\\u0000i\\u0000e\\u0000s\\u0000.\\u0000\\n\\u0000\\n\\u0000\",\"counts\":{\"stdout\":616,\"stderr\":258}}\r\n"
+  },
+  "original_credential_metadata_tool_return": {
+    "chunk_id": "730e45",
+    "wall_time_seconds": 3.2244752,
+    "exit_code": 0,
+    "original_token_count": 49,
+    "output": "{\"observed_utc\":\"2026-10-28T09:09:03.9380681+00:00\",\"credential_metadata_available\":true,\"expires_utc\":\"2026-10-28T12:45:05.6613319+00:00\",\"fresh_for_900_seconds\":true,\"auth_file_bytes\":1764}\r\n"
+  },
+  "entry_checks_original_return": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  scope: 'review06_preentry_only',\n  actual_command_ascii_bytes: 2858,\n  functions_sources_binding_valid: true,\n  namespace_unused: true,\n  model_not_started: true\n}"
+      }
+    ],
+    "isError": false
+  },
+  "external_persistence_original_return": {
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  scope: 'review06_external_record_local_persistence_only',\n  record_bytes: 4907,\n  record_sha256: '8749bd9bdec25cdc14ff775971540119d7b554e8f4d87a69f089ffc762d1c1f3',\n  facts: {\n    attempted: true,\n    created: true,\n    written_prefix_bytes: 4907,\n    write_extent_unknown: false,\n    fsync_attempted: true,\n    fsync_completed: true,\n    close_attempted: true,\n    close_completed: true,\n    complete: true\n  },\n  primary_cause: null,\n  secondary_causes: [],\n  external_collection_ended: true,\n  completion_unknown: false,\n  model_or_product_accepted: false\n}"
+      }
+    ],
+    "isError": false
+  },
+  "startup_family_diagnostic_invocation": "& 'C:/Python314/python.exe' -I -B -S -c 'import json,re,stat\nfrom pathlib import Path\nroot=Path(r\"C:\\Users\\s-a-balashov\\.gm2\")\nfamilies={\"argument\":(\"unexpected argument\",\"invalid value\",\"usage:\"),\"permission\":(\"access is denied\",\"permission denied\",\"os error 5\",\"os error 13\"),\"readonly\":(\"read-only\",\"read only\",\"readonly\"),\"session\":(\"session\",\"resume\",\"history\"),\"log\":(\"log file\",\"logging\",\"logger\",\"logs\"),\"config\":(\"config\",\"settings\"),\"auth\":(\"auth\",\"login\",\"token\",\"credential\",\"401\",\"403\",\"unauthorized\"),\"database\":(\"database\",\"sqlite\",\"lock\"),\"network\":(\"connect\",\"certificate\",\"tls\",\"proxy\",\"network\"),\"create_write\":(\"create\",\"write\",\"writing\",\"persist\"),\"startup\":(\"initializ\",\"startup\",\"launch\")}\nrows=[]\nfor name,size in ((\"stdout\",77),(\"stderr\",55)):\n p=root/(name+\".private\");s=p.lstat()\n assert stat.S_ISREG(s.st_mode) and s.st_nlink==1 and not(getattr(s,\"st_file_attributes\",0)&0x400) and s.st_size==size\n with p.open(\"rb\") as f:\n  raw=f.read(size+1);assert len(raw)==size and f.read(1)==b\"\"\n t=raw.decode(\"utf8\").lower()\n rows.append({\"channel\":name,\"bytes\":size,\"families\":{k:any(x in t for x in vals) for k,vals in families.items()},\"os_error_numbers\":[int(x) for x in re.findall(r\"os error ([0-9]{1,3})\",t)],\"json_like\":t.lstrip().startswith((\"{\",\"[\"))})\nprint(json.dumps({\"scope\":\"private_startup_known_family_diagnostic_only\",\"channels\":rows,\"raw_text_or_hash_emitted\":False,\"grok_rerun\":False},separators=(\",\",\":\")))'",
+  "startup_family_diagnostic_original_return": {
+    "chunk_id": "ca316d",
+    "wall_time_seconds": 2.0291598,
+    "exit_code": 0,
+    "original_token_count": 162,
+    "output": "{\"scope\":\"private_startup_known_family_diagnostic_only\",\"channels\":[{\"channel\":\"stdout\",\"bytes\":77,\"families\":{\"argument\":false,\"permission\":false,\"readonly\":false,\"session\":true,\"log\":false,\"config\":false,\"auth\":false,\"database\":false,\"network\":false,\"create_write\":true,\"startup\":false},\"os_error_numbers\":[],\"json_like\":true},{\"channel\":\"stderr\",\"bytes\":55,\"families\":{\"argument\":false,\"permission\":false,\"readonly\":false,\"session\":true,\"log\":false,\"config\":false,\"auth\":false,\"database\":false,\"network\":false,\"create_write\":true,\"startup\":false},\"os_error_numbers\":[],\"json_like\":false}],\"raw_text_or_hash_emitted\":false,\"grok_rerun\":false}\r\n"
+  },
+  "known_public_error_diagnostic_invocation": "& 'C:/Python314/python.exe' -I -B -S -c 'import json,stat\nfrom pathlib import Path\np=Path(r\"C:\\Users\\s-a-balashov\\.gm2\")\nexpected=\"Couldn''t create session: Session does not exist\"\nout={}\nfor channel,n in ((\"stdout\",77),(\"stderr\",55)):\n f=p/(channel+\".private\");s=f.lstat()\n assert stat.S_ISREG(s.st_mode) and s.st_nlink==1 and not(getattr(s,\"st_file_attributes\",0)&0x400) and s.st_size==n\n with f.open(\"rb\") as h:\n  b=h.read(n+1);assert len(b)==n and h.read(1)==b\"\"\n t=b.decode(\"utf8\")\n out[channel]=(json.loads(t).get(\"error\")==expected) if channel==\"stdout\" else t.rstrip(\"\\r\\n\")==\"Error: \"+expected\nprint(json.dumps({\"scope\":\"known_public_headless_error_exact_match_only\",\"source\":\"2bdd1d6a/headless.rs514-536,1065-1069\",\"known_error_matches\":out,\"raw_text_or_hash_emitted\":False,\"grok_rerun\":False},separators=(\",\",\":\")))'",
+  "known_public_error_diagnostic_original_return": {
+    "chunk_id": "fd20b1",
+    "wall_time_seconds": 2.1173985,
+    "exit_code": 0,
+    "original_token_count": 53,
+    "output": "{\"scope\":\"known_public_headless_error_exact_match_only\",\"source\":\"2bdd1d6a/headless.rs514-536,1065-1069\",\"known_error_matches\":{\"stdout\":false,\"stderr\":true},\"raw_text_or_hash_emitted\":false,\"grok_rerun\":false}\r\n"
+  },
+  "api_constants": {
+    "max_output_tokens": 24000,
+    "initial_yield_time_ms": 10000,
+    "polls_performed": 0
+  },
+  "private_raw_text_or_hash_published": false,
+  "grok_rerun": false,
+  "whole_chain_accepted": false
+}

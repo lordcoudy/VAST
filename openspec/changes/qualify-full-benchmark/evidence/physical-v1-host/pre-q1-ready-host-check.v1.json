@@ -1,0 +1,42 @@
+{
+  "checked_at_utc": "2026-10-07T08:48:46Z",
+  "checked_at_moscow": "2026-10-07T11:48:46+03:00",
+  "change": "qualify-full-benchmark",
+  "execution_commit": "1112af0b53cae995984708390cf9d04c18da3c0d",
+  "q1_started": false,
+  "q1_launch_authorized": false,
+  "mode": "Read-only snapshot; no Q1 step, control directory, or runtime namespace created",
+  "passed": true,
+  "docker": {
+    "server_version": "29.8.1",
+    "name": "docker-desktop",
+    "socket": "/run/docker.sock",
+    "socket_canonical": true,
+    "pinned_image_ids_required": 10,
+    "pinned_image_ids_present": 10,
+    "containers": 0
+  },
+  "host": {
+    "boot_id": "76a20248-f55d-4340-9d07-d0fd7a8faa99",
+    "uid": 1000,
+    "python": "3.12.3",
+    "tracked_source_clean": true,
+    "receipt_hashes": "pass",
+    "fresh_q1_namespaces": true,
+    "gpu_compute_jobs": 0,
+    "foreign_vast_or_ci_processes": 0,
+    "ac_sleep_seconds": 0,
+    "ac_hibernate_seconds": 0,
+    "windows_update_paused_until_utc": "2026-10-26T12:01:19Z",
+    "free_bytes": {
+      "wsl_root": 758682943488,
+      "c": 96593649664,
+      "e": 362137710592,
+      "var_tmp": 758682943488
+    }
+  },
+  "ext4_skip_user_confirmed_approved": true,
+  "before_launch": "Recheck current host and capture task 6.2 with the runbook after explicit user start authorization",
+  "original_tool_exit_code": 0,
+  "original_tool_output": "w\u0000s\u0000l\u0000:\u0000 \u0000A\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000y\u0000 \u0000c\u0000o\u0000n\u0000f\u0000i\u0000g\u0000u\u0000r\u0000a\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000a\u0000s\u0000 \u0000d\u0000e\u0000t\u0000e\u0000c\u0000t\u0000e\u0000d\u0000 \u0000b\u0000u\u0000t\u0000 \u0000n\u0000o\u0000t\u0000 \u0000m\u0000i\u0000r\u0000r\u0000o\u0000r\u0000e\u0000d\u0000 \u0000i\u0000n\u0000t\u0000o\u0000 \u0000W\u0000S\u0000L\u0000.\u0000 \u0000W\u0000S\u0000L\u0000 \u0000i\u0000n\u0000 \u0000N\u0000A\u0000T\u0000 \u0000m\u0000o\u0000d\u0000e\u0000 \u0000d\u0000o\u0000e\u0000s\u0000 \u0000n\u0000o\u0000t\u0000 \u0000s\u0000u\u0000p\u0000p\u0000o\u0000r\u0000t\u0000 \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000p\u0000r\u0000o\u0000x\u0000i\u0000e\u0000s\u0000.\u0000\r\u0000\n\u0000checked_at_utc=2026-10-07T08:48:46Z boot_id=76a20248-f55d-4340-9d07-d0fd7a8faa99\nroot_commit_source_uid=PASS\npython_ext4=PASS\nServer=29.8.1 Name=docker-desktop Root=/var/lib/docker OS=Docker Desktop\nall_receipt_hashes=PASS\nsha256:1449e2074c2f5d7cf1a77ec271254f515495f1ac92ceab50abb90575003af6d3\nsha256:289e2360650c6dc37e237095207a8f62e1b9451a0efc63195045ef314d524e28\nsha256:3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6\nsha256:3f9c5205694b298d4144f18fb4903181962233daff7c6604c288e6f4ac1a2204\nsha256:65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf\nsha256:764b5e9d14201663bd4b0922a9fb52038244279a18f51a5ed09012f4328f229e\nsha256:955712fba0b1c992decc78dcbeee3fb2e530eef2f6fcd43f267a378caa1f9a6c\nsha256:c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759\nsha256:c9a022f5123425ddf83e7110c91e54aca5ae4930b5fccf83eb395fb9f0582886\nsha256:f557d81f4c721c1086d9a8421b66d5d06e255732067f22938fc229de1c839757\npinned_image_ids=10/10 PASS\ncontainers=0\nforeign_vast_processes=0\nNVIDIA GeForce RTX 3060, 3749 MiB, 12288 MiB, 1 %\ngpu_compute_jobs=0\nfree_bytes / 758682943488 PASS\nfree_bytes /mnt/c 96593649664 PASS\nfree_bytes /mnt/e 362137710592 PASS\nfree_bytes /var/tmp 758682943488 PASS\nfresh_q1_namespaces=PASS\nbash_syntax=PASS\nread_only_preflight=PASS\nq1_started=false\n"
+}

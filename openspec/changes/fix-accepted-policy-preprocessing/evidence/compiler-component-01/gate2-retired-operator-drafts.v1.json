@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "artifact_kind": "vast_gate2_retired_operator_development_inventory_v1",
+  "classification": "Retired, nonexecuted development history; retained inputs to whole1.5 capacity accounting, not runtime proof inputs or deployed helpers.",
+  "physical_execution": false,
+  "whole_1_5_complete": false,
+  "runtime_authority": false,
+  "retention": "Preserve every listed file byte-exact. No deletion, rewrite, offload or cleanup is authorized.",
+  "files": [
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-setup-e162.capture.py",
+      "size_bytes": 27019,
+      "sha256": "9a75d52581f572e3641464928d06e485e2ad67c594bb44a277491bc87c1016af"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-setup-e162.operator.py",
+      "size_bytes": 33877,
+      "sha256": "bef73a5b32740f7ca76f986cdcf94a85de56a7840a283f297eced27cf64cf569"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-setup-e162.operator.review-bef73a5b.py",
+      "size_bytes": 33877,
+      "sha256": "bef73a5b32740f7ca76f986cdcf94a85de56a7840a283f297eced27cf64cf569"
+    },
+    {
+      "path": "C:/Users/s-a-balashov/AppData/Local/Temp/vast-gate2-setup-e162.operator.review-ceee0194.py",
+      "size_bytes": 27100,
+      "sha256": "ceee019495734d66e0a41b76c489ef1ec7524d4e9acce27e11c0fc6ee09dc0dd"
+    }
+  ],
+  "raw_bytes_total": 121873,
+  "conservative_windows_data_and_metadata_quote_bytes": 147456,
+  "distinct_form_rule": "The two bef source files remain distinct allocations despite equal hashes. No capture.review-9a75d525.py duplicate was created.",
+  "independent_disposition": {
+    "reviewer": "/root/gate2_v8_review",
+    "verdict": "Retiring the drafts and removing unnecessary runtime dependencies is faithful to V8.",
+    "basis": "V8 section2 covers actual F2 recovery/index/supplement forms and copies; section3 makes reviewed Git bytes and external approval the runtime authority; section6 carries remnants into whole1.5.",
+    "limitations": "Read-only accounting interpretation, not exact-commit source approval, CI acceptance, human review or physical approval."
+  },
+  "continuing_obligations": "Quote actual deployed helper working/Git/runtime forms and F2/capture/report copies within the finite component ledger. Fresh physical floors include all existing disk occupancy. Whole1.5 must inventory retained development, CI and test history separately; it remains incomplete."
+}

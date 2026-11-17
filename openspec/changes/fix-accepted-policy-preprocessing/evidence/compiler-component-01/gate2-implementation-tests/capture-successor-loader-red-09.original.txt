@@ -1,0 +1,48 @@
+EFF.
+======================================================================
+ERROR: test_windows_bootstrap_executes_authenticated_bytes_without_reopening_changed_path (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.ReviewedSourceTests.test_windows_bootstrap_executes_authenticated_bytes_without_reopening_changed_path)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 197, in test_windows_bootstrap_executes_authenticated_bytes_without_reopening_changed_path
+    module,observation=capture.authenticate_retention_v1(COMMIT)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 446, in authenticate_retention_v1
+    module=_load_authenticated_component_v1()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_capture_v1.py", line 423, in _load_authenticated_component_v1
+    spec.loader.exec_module(module)
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/tmp/tmpka1jwspy/repo/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 1, in <module>
+    raise RuntimeError('unreviewed source reopened')
+RuntimeError: unreviewed source reopened
+
+======================================================================
+FAIL: test_pre_native_git_observation_float_sizes_refuse_before_capture (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_native_git_observation_float_sizes_refuse_before_capture) (key='component')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 491, in test_pre_native_git_observation_float_sizes_refuse_before_capture
+    with self.assertRaises(capture.CaptureRefusal): capture.run_capture_v1(COMMIT,APPROVAL)
+AssertionError: CaptureRefusal not raised
+
+======================================================================
+FAIL: test_pre_native_git_observation_float_sizes_refuse_before_capture (tests.test_accepted_policy_fixture_compiler_gate2_capture_v1.OrchestrationTests.test_pre_native_git_observation_float_sizes_refuse_before_capture)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_capture_v1.py", line 492, in test_pre_native_git_observation_float_sizes_refuse_before_capture
+    self.assertEqual(list(self.output.iterdir()),[])
+AssertionError: Lists differ: [PosixPath('/tmp/tmpg_4q1bw4/repo/capture-[358 chars]on')] != []
+
+First list contains 3 additional elements.
+First extra element 0:
+PosixPath('/tmp/tmpg_4q1bw4/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.driver.stdout.original')
+
++ []
+- [PosixPath('/tmp/tmpg_4q1bw4/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.driver.stdout.original'),
+-  PosixPath('/tmp/tmpg_4q1bw4/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.driver.stderr.original'),
+-  PosixPath('/tmp/tmpg_4q1bw4/repo/capture-outputs/vast-gate2-setup-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.capture.status.original.json')]
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.045s
+
+FAILED (failures=2, errors=1)

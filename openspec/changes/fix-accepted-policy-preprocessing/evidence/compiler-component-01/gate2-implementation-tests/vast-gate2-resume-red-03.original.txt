@@ -1,0 +1,28 @@
+.....E
+======================================================================
+ERROR: test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 26, in test_windows_positive_loader_executes_only_pure_dependencies_and_no_initializer
+    modules = m.load_verified_v1(sources,descriptors,Path('/controlled'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 193, in load_verified_v1
+    module.__file__, module.__package__ = str(Path(repo)/relative), name.rpartition('.')[0]
+                                              ~~~~~~~~~~^~~~~~~~~
+  File "/usr/lib/python3.12/pathlib.py", line 721, in __truediv__
+    return self.joinpath(key)
+           ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 717, in joinpath
+    return self.with_segments(self, *pathsegments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 385, in with_segments
+    return type(self)(*pathsegments)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/pathlib.py", line 1436, in __new__
+    raise NotImplementedError(
+NotImplementedError: cannot instantiate 'WindowsPath' on your system
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.018s
+
+FAILED (errors=1)

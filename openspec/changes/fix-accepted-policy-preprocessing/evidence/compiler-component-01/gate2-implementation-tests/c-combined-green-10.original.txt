@@ -1,0 +1,7 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1 tests.test_accepted_policy_fixture_compiler_recovery_v1 tests.test_accepted_policy_fixture_compiler_component_v1 tests.test_accepted_policy_fixture_compiler_owner_v1 tests.test_accepted_policy_fixture_compiler_publisher_v1 tests.test_accepted_policy_fixture_compiler_transport_v1 tests.test_accepted_policy_fixture_compiler_probe_v1
+exit_code: 0
+............................................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 188 tests in 7.116s
+System.Management.Automation.RemoteException
+OK

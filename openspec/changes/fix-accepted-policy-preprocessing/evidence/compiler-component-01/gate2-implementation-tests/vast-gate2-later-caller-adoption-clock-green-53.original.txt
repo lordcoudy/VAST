@@ -1,0 +1,10 @@
+test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried (caller.LaterStageCallerTests.test_synchronous_writer_spawn_failure_is_one_attempt_and_never_retried) ... ok
+test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts (caller.LaterStageCallerTests.test_known_writer_child_survives_tracking_fault_with_single_eof_and_ordered_close_facts) ... ok
+test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot (caller.LaterStageCallerTests.test_known_native_child_is_adopted_before_track_and_never_respawned_or_sent_boot) ... ok
+test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance (caller.LaterStageCallerTests.test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance) ... ok
+test_post_proof_clock_at_end_never_advances_or_starts_next_stage (caller.LaterStageCallerTests.test_post_proof_clock_at_end_never_advances_or_starts_next_stage) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.646s
+
+OK

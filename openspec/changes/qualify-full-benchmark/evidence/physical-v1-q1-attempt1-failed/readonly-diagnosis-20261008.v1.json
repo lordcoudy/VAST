@@ -1,0 +1,53 @@
+{
+ "deepstream": {
+  "refs_id_ok": {
+   "vast/deepstream-publication-runtime-v3:materialized": true,
+   "vast/deepstream-publication-runtime-v3:materialized-determinism-a": true,
+   "vast/deepstream-publication-runtime-v3:materialized-determinism-b": true
+  },
+  "projection_ok": true,
+  "n_proj": 1
+ },
+ "savant": {
+  "refs_id_ok": {
+   "vast/savant-publication-runtime-v3:materialized": true,
+   "vast/savant-publication-runtime-v3:materialized-determinism-a": true,
+   "vast/savant-publication-runtime-v3:materialized-determinism-b": true
+  },
+  "projection_ok": true,
+  "n_proj": 1
+ },
+ "openvino_gva": {
+  "refs_id_ok": {
+   "vast/openvino-gva-publication-runtime-v3:materialized": true,
+   "vast/openvino-gva-publication-runtime-v3:materialized-determinism-a": true,
+   "vast/openvino-gva-publication-runtime-v3:materialized-determinism-b": true
+  },
+  "projection_ok": true,
+  "n_proj": 1
+ },
+ "gstreamer_custom": {
+  "refs_id_ok": {
+   "vast/gstreamer-custom-publication-runtime-v3:materialized": true,
+   "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-a": true,
+   "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-b": true
+  },
+  "projection_ok": true,
+  "n_proj": 1
+ },
+ "engine": {
+  "platform": "Docker Desktop 4.93.0 (240920)",
+  "server": "29.8.1",
+  "api": "1.56",
+  "client": "29.7.2",
+  "daemon_id": "aa8f3d33-e1dc-4ed2-ad06-488b46b332d0",
+  "name": "docker-desktop",
+  "driver": "overlayfs",
+  "driver_status": [
+   [
+    "driver-type",
+    "io.containerd.snapshotter.v1"
+   ]
+  ]
+ }
+}

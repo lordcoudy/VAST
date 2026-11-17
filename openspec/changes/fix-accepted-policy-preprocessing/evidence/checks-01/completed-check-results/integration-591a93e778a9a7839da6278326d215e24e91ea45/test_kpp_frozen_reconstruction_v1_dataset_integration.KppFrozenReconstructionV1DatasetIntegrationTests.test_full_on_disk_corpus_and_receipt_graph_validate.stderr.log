@@ -1,0 +1,25 @@
+test_full_on_disk_corpus_and_receipt_graph_validate (tests.test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate) ... ERROR
+
+======================================================================
+ERROR: test_full_on_disk_corpus_and_receipt_graph_validate (tests.test_kpp_frozen_reconstruction_v1_dataset_integration.KppFrozenReconstructionV1DatasetIntegrationTests.test_full_on_disk_corpus_and_receipt_graph_validate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/kpp_frozen_reconstruction_v1_dataset.py", line 363, in validate_kpp_frozen_reconstruction_v1_manifest_entry
+    _validate_tree(corpus, SOURCE_RECEIPTS)
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/freeze_kpp_frozen_reconstruction_v1.py", line 419, in _validate_tree
+    raise ReconstructionFreezeError("reconstruction root is not plain")
+freeze_kpp_frozen_reconstruction_v1.ReconstructionFreezeError: reconstruction root is not plain
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py", line 70, in test_full_on_disk_corpus_and_receipt_graph_validate
+    gate.validate_kpp_frozen_reconstruction_v1_manifest_entry(
+  File "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45/scripts/kpp_frozen_reconstruction_v1_dataset.py", line 365, in validate_kpp_frozen_reconstruction_v1_manifest_entry
+    raise KppFrozenReconstructionV1DatasetError(str(exc)) from exc
+kpp_frozen_reconstruction_v1_dataset.KppFrozenReconstructionV1DatasetError: reconstruction root is not plain
+
+----------------------------------------------------------------------
+Ran 1 test in 0.051s
+
+FAILED (errors=1)

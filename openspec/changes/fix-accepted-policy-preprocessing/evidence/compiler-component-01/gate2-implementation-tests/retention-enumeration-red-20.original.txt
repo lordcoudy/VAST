@@ -1,0 +1,23 @@
+.........F..
+======================================================================
+FAIL: test_unknown_inventory_refuses_without_enumerating_unbounded_directory (tests.test_accepted_policy_fixture_compiler_gate2_retention_v1.NativeRetentionTests.test_unknown_inventory_refuses_without_enumerating_unbounded_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 237, in test_unknown_inventory_refuses_without_enumerating_unbounded_directory
+    with self.assertRaises(component.ComponentRecipeError): self.verify()
+                                                            ^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 127, in verify
+    return component.verify_prior_retention_v1(self.repo, git_observation=self.observation)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 221, in verify_prior_retention_v1
+    for directory, dirs, files in os.walk(root, followlinks=False):
+  File "<frozen os>", line 373, in walk
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_retention_v1.py", line 234, in __next__
+    if len(consumed)>1: raise AssertionError("unbounded inventory enumeration")
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: unbounded inventory enumeration
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.100s
+
+FAILED (failures=1)

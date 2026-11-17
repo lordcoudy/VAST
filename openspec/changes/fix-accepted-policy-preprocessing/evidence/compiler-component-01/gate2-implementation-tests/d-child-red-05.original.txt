@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_stdin_close_exception_remains_unknown_without_recovered_close_claim (tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1.ChildTests.test_stdin_close_exception_remains_unknown_without_recovered_close_claim)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py", line 260, in test_stdin_close_exception_remains_unknown_without_recovered_close_claim
+    self.assertFalse(result['stdin_closed'])
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

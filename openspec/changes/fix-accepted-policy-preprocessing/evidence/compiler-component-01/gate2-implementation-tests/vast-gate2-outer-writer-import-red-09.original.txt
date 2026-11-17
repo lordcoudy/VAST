@@ -1,0 +1,31 @@
+test_failed_stdlib_import_after_ready_has_no_traceback_fallback (w.WriterTests.test_failed_stdlib_import_after_ready_has_no_traceback_fallback) ... ERROR
+
+======================================================================
+ERROR: test_failed_stdlib_import_after_ready_has_no_traceback_fallback (w.WriterTests.test_failed_stdlib_import_after_ready_has_no_traceback_fallback)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 627, in test_failed_stdlib_import_after_ready_has_no_traceback_fallback
+    code, lines, opened = self.invoke(import_failure='ctypes')
+                          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 320, in invoke
+    exec(compile(source or WRITER_SOURCE, '<fixed-inline-outer-writer>', 'exec'),
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         {'__name__': '__main__'})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<fixed-inline-outer-writer>", line 7, in <module>
+  File "C:\Python314\Lib\unittest\mock.py", line 1176, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\unittest\mock.py", line 1180, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Python314\Lib\unittest\mock.py", line 1247, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 271, in imported
+    raise ImportError('controlled_missing_stdlib')
+ImportError: controlled_missing_stdlib
+
+----------------------------------------------------------------------
+Ran 1 test in 0.013s
+
+FAILED (errors=1)

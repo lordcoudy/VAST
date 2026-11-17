@@ -1,0 +1,52 @@
+D(e) triage: step 13-15 test modules with TMPDIR on drvfs (Amendment 6)
+=======================================================================
+
+Run: d-e-drvfs.original.log (HEAD 0253856c + uncommitted 6C.2 changes, WSL,
+CPython 3.12.3, TMPDIR=/mnt/e/STUDY/VAST/tmp/claude-drvfs-tests-20261008,
+9p drvfs without metadata; PhysicalRootCustodyV1.permission_modes_enforced is
+False there). Modules: test_publication_policy_qualification_execution_closure_v1,
+test_full_resource_qualification_index_v1, test_publication_policy_qualification,
+test_full_resource_qualification, test_publication_operational_process_custody_v1.
+Result: Ran 80 tests, 37 test methods reported ok, failures=2, errors=45
+(unittest counts each failing subtest separately), rc=1. The temporary
+directory was removed after the run.
+
+Production checks: none rejected. All 47 failure/error records fall into two classes:
+
+1. 45 errors - OSError [Errno 95] Operation not supported on AF_UNIX bind
+   in test fixtures (drvfs does not support Unix-domain socket nodes):
+   - 17 in test_publication_policy_qualification_execution_closure_v1
+     (Fixture._materialize, tests line 672 `endpoint.bind(...)`), counting subtests;
+   - 28 in test_publication_operational_process_custody_v1
+     (ProcessCustodyTests.setUp, tests line 53 `self.sock.bind(...)`).
+   Test environment limitation, not a production check. On drvfs these two
+   modules therefore never reach the step-13 cold load or the process custody
+   code. Coverage for those paths:
+   - fix A: empty-channel-drvfs-probe.original.log - nonqualifying probe of the
+     production _write_failure_channel path on a real /mnt/e temporary root
+     (no sockets): HEAD copy rejects with "empty failed original channel custody
+     drifted" (leaf reported 0o555, same message as attempt 2); working tree
+     with fix A accepts (descriptor size 0, adopt + held re-verification pass);
+     ext4 control accepts with 0o444 and enforcement on.
+   - fix E step 13: unit test with patched stat mode / enforcement flag
+     (green.original.log); no real drvfs run of the closure cold load here.
+
+2. 2 failures - expected test-only "exactly 0444" assertions (not changed):
+   - tests/test_publication_policy_qualification.py:607 (HEAD :566)
+     test_promotion_writes_receipt_last_and_is_immutable: 0o555 != 0o444;
+     the production promotion and cold validation before it completed.
+     The following receipt-mode assert (HEAD :569) is not reached.
+   - tests/test_full_resource_qualification.py:552 (HEAD :511)
+     test_promotion_writes_receipt_last_is_idempotent_and_rejects_collisions:
+     0o555 != 0o444; :553 (HEAD :512) not reached.
+   - tests/test_publication_operational_process_custody_v1.py:296 is not
+     reached (setUp socket error, class 1).
+
+Passed on drvfs with real 0555 leaves (production rule exercised natively):
+all of test_full_resource_qualification_index_v1 (incl. _commit_index both
+sites), the rest of test_publication_policy_qualification and
+test_full_resource_qualification (incl. _write_immutable_json and
+_cold_read_promoted_json paths).
+
+Line numbers above refer to the working tree; HEAD numbers are given where the
+new helper/imports at the top of the test module shifted them.

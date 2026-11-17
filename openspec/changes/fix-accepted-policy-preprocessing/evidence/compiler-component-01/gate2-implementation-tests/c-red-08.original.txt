@@ -1,0 +1,24 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+.....F.E............
+======================================================================
+ERROR: test_crash_guard_pins_the_actual_wsl_crashes_directory (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_crash_guard_pins_the_actual_wsl_crashes_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 181, in test_crash_guard_pins_the_actual_wsl_crashes_directory
+    self.assertEqual(str(gate.CRASH_DIRECTORY), "/mnt/c/Users/s-a-balashov/AppData/Local/Temp/wsl-crashes")
+                         ^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute 'CRASH_DIRECTORY'
+System.Management.Automation.RemoteException
+======================================================================
+FAIL: test_c5_cannot_claim_cutoff_before_actual_minimum_elapsed_time (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_c5_cannot_claim_cutoff_before_actual_minimum_elapsed_time)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 178, in test_c5_cannot_claim_cutoff_before_actual_minimum_elapsed_time
+    self.assertFalse(gate.evaluate_c_v1("C5", owner, seen)["passed"])
+AssertionError: True is not false
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 20 tests in 0.540s
+System.Management.Automation.RemoteException
+FAILED (failures=1, errors=1)

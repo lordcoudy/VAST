@@ -1,0 +1,11 @@
+test_c1_requires_typed_external_receipt_and_approval_before_stage_import_or_spawn (caller_delivery_green65.LaterStageCallerTests.test_c1_requires_typed_external_receipt_and_approval_before_stage_import_or_spawn) ... ok
+test_c1_external_context_and_actual_saved_setup_packet_are_both_required (caller_delivery_green65.LaterStageCallerTests.test_c1_external_context_and_actual_saved_setup_packet_are_both_required) ... ok
+test_later_stage_requires_exact_frozen_external_hash_without_replacement (caller_delivery_green65.LaterStageCallerTests.test_later_stage_requires_exact_frozen_external_hash_without_replacement) ... ok
+test_valid_external_is_canonically_frozen_and_later_uses_only_its_hash (caller_delivery_green65.LaterStageCallerTests.test_valid_external_is_canonically_frozen_and_later_uses_only_its_hash) ... ok
+test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry (caller_delivery_green65.LaterStageCallerTests.test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry) ... CONTROLLED_AUTHENTIC_LATER_SIX_FRAME_GEOMETRY [{"complete_bytes": 3394, "poststdout_failure": false, "stage": "C1", "stderr": 0, "stdout": 725}, {"complete_bytes": 3698, "poststdout_failure": true, "stage": "C1", "stderr": 388, "stdout": 725}, {"complete_bytes": 2998, "poststdout_failure": false, "stage": "C6", "stderr": 0, "stdout": 725}, {"complete_bytes": 3302, "poststdout_failure": true, "stage": "C6", "stderr": 388, "stdout": 725}, {"complete_bytes": 2926, "poststdout_failure": false, "stage": "D", "stderr": 0, "stdout": 568}, {"complete_bytes": 3234, "poststdout_failure": true, "stage": "D", "stderr": 388, "stdout": 568}]
+ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 3.809s
+
+OK

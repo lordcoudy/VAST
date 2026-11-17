@@ -1,0 +1,26 @@
+{
+ "policy_index": {
+  "status": "refused",
+  "chain": [
+   "PolicyQualificationIndexV2Error: completed qualification index requires an execution closure receipt"
+  ],
+  "where": [
+   "diag_a8_index_run3.py:31",
+   "diag_a8_index_run3.py:44",
+   "publication_policy_qualification_index_v2.py:761"
+  ]
+ },
+ "resource_index": {
+  "status": "refused",
+  "chain": [
+   "FullResourceQualificationIndexV1Error: deepstream/cpu binding material identity drifted"
+  ],
+  "where": [
+   "diag_a8_index_run3.py:31",
+   "diag_a8_index_run3.py:46",
+   "full_resource_qualification_index_v1.py:617",
+   "full_resource_qualification_index_v1.py:326",
+   "full_resource_qualification_index_v1.py:196"
+  ]
+ }
+}

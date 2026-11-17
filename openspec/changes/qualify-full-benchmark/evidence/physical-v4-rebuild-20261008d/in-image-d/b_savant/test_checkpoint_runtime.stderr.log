@@ -1,0 +1,20 @@
+test_checkpoint_runtime (unittest.loader._FailedTest) ... ERROR
+
+======================================================================
+ERROR: test_checkpoint_runtime (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_checkpoint_runtime
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/unittest/loader.py", line 154, in loadTestsFromName
+    module = __import__(module_name)
+  File "/work/root/tests/test_checkpoint_runtime.py", line 59, in <module>
+    from run_experiments import load_config
+  File "/work/root/scripts/run_experiments.py", line 23, in <module>
+    import psutil
+ModuleNotFoundError: No module named 'psutil'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

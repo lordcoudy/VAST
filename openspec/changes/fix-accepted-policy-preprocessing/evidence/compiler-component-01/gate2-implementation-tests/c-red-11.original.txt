@@ -1,0 +1,15 @@
+command: python3 -B -m unittest tests.test_accepted_policy_fixture_compiler_gate2_c_v1
+exit_code: 1
+............F.........
+======================================================================
+FAIL: test_nonzero_wait_cause_does_not_accept_wrong_wait_status_or_error (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ComparisonTests.test_nonzero_wait_cause_does_not_accept_wrong_wait_status_or_error)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 186, in test_nonzero_wait_cause_does_not_accept_wrong_wait_status_or_error
+    self.assertFalse(gate.evaluate_c_v1("C2", owner, seen)["passed"])
+AssertionError: True is not false
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 22 tests in 0.540s
+System.Management.Automation.RemoteException
+FAILED (failures=1)

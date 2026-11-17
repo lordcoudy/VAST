@@ -397,7 +397,6 @@ class SourceCoordinator {
     }
     if (!failed_.load()) write_status("DRAINED", now_ms());
     retire_owned_descriptors(true);
-    std::cerr << "[checkpoint-source][wall-clock] max_clamp_ns=" << vast::NonDecreasingWallClock::process().max_clamp_ns() << '\n';
     return failed_.load() ? 1 : 0;
   }
 
@@ -874,10 +873,13 @@ class SourceCoordinator {
 }  // namespace
 
 int main(int argc, char** argv) {
+  // Declared outside the try block: the clamp line follows any fatal line.
+  std::optional<vast::WallClockExitLine> wall_clock_exit;
   try {
     bool handled = false;
     const int inventory_status = vast::study::dispatch_au_inventory_cli(argc, argv, handled);
     if (handled) return inventory_status;
+    wall_clock_exit.emplace(std::cerr, "checkpoint-source");
     gst_init(&argc, &argv);
     SourceCoordinator coordinator(parse_args(argc, argv));
     return coordinator.run();

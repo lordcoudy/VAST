@@ -1,0 +1,155 @@
+test_original_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_original_malformed_authority_allocates_nothing) ... ERROR
+test_original_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_original_missing_authority_allocates_nothing) ... FAIL
+test_outer_v1_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v1_malformed_authority_allocates_nothing) ... ERROR
+test_outer_v1_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v1_missing_authority_allocates_nothing) ... FAIL
+test_outer_v2_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v2_malformed_authority_allocates_nothing) ... ERROR
+test_outer_v2_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v2_missing_authority_allocates_nothing) ... FAIL
+
+======================================================================
+ERROR: test_original_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_original_malformed_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 62, in test_original_malformed_authority_allocates_nothing
+    self.refusal(original, malformed=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 301, in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 105, in __init__
+    self.gen = func(*args, **kwds)
+               ^^^^^^^^^^^^^^^^^^^
+TypeError: prepare_original_fixture_engine_v1() got an unexpected keyword argument 'compiler_qualification'
+
+======================================================================
+ERROR: test_outer_v1_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v1_malformed_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 68, in test_outer_v1_malformed_authority_allocates_nothing
+    self.refusal(physical_v1, malformed=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 301, in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 105, in __init__
+    self.gen = func(*args, **kwds)
+               ^^^^^^^^^^^^^^^^^^^
+TypeError: prepared_complete_fixture_inputs_v1() got an unexpected keyword argument 'compiler_qualification'
+
+======================================================================
+ERROR: test_outer_v2_malformed_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v2_malformed_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 74, in test_outer_v2_malformed_authority_allocates_nothing
+    self.refusal(physical_v2, malformed=True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+         ^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 301, in helper
+    return _GeneratorContextManager(func, args, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/contextlib.py", line 105, in __init__
+    self.gen = func(*args, **kwds)
+               ^^^^^^^^^^^^^^^^^^^
+TypeError: prepared_complete_fixture_inputs_v2() got an unexpected keyword argument 'compiler_qualification'
+
+======================================================================
+FAIL: test_original_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_original_missing_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_original_custody_fixture_v1.py", line 153, in prepare_original_fixture_engine_v1
+    compiler = shutil.which("cc")
+               ^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: unadmitted external operation
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 59, in test_original_missing_authority_allocates_nothing
+    self.refusal(original, malformed=False)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 56, in refusal
+    self.assertFalse(output.exists(), "authority refusal allocated fixture output")
+AssertionError: True is not false : authority refusal allocated fixture output
+
+======================================================================
+FAIL: test_outer_v1_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v1_missing_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_physical_fixture_v1.py", line 58, in prepared_complete_fixture_inputs_v1
+    native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: unadmitted native temporary root
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 65, in test_outer_v1_missing_authority_allocates_nothing
+    self.refusal(physical_v1, malformed=False)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 56, in refusal
+    self.assertFalse(output.exists(), "authority refusal allocated fixture output")
+AssertionError: True is not false : authority refusal allocated fixture output
+
+======================================================================
+FAIL: test_outer_v2_missing_authority_allocates_nothing (tests.test_accepted_policy_fixture_authority_v1.FixtureAuthorityTests.test_outer_v2_missing_authority_allocates_nothing)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 53, in refusal
+    with prepare(**arguments):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_physical_fixture_v2.py", line 113, in prepared_complete_fixture_inputs_v2
+    native_socket_root = Path(tempfile.mkdtemp(prefix=socket_prefix.removeprefix(".") + "-", dir="/var/tmp"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: unadmitted native temporary root
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 71, in test_outer_v2_missing_authority_allocates_nothing
+    self.refusal(physical_v2, malformed=False)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_authority_v1.py", line 56, in refusal
+    self.assertFalse(output.exists(), "authority refusal allocated fixture output")
+AssertionError: True is not false : authority refusal allocated fixture output
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.041s
+
+FAILED (failures=3, errors=3)

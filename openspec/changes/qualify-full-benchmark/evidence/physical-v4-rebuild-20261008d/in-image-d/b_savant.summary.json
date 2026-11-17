@@ -1,0 +1,161 @@
+{
+ "cwd": "/work/root",
+ "modules": {
+  "test_checkpoint_deepstream_container_runtime_v3": {
+   "elapsed_s": 0.11,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 7 tests in 0.007s",
+    "OK"
+   ]
+  },
+  "test_checkpoint_gstreamer_analytics_bridge": {
+   "elapsed_s": 0.31,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 10 tests in 0.188s",
+    "OK"
+   ]
+  },
+  "test_checkpoint_model_parity": {
+   "elapsed_s": 11.0,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 51 tests in 10.268s",
+    "OK (skipped=15)"
+   ]
+  },
+  "test_checkpoint_native_policy_runtime": {
+   "elapsed_s": 1.05,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 19 tests in 0.227s",
+    "OK"
+   ]
+  },
+  "test_checkpoint_publication_runtime": {
+   "elapsed_s": 0.86,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 16 tests in 0.032s",
+    "OK"
+   ]
+  },
+  "test_checkpoint_runtime": {
+   "elapsed_s": 0.86,
+   "returncode": 1,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 1 test in 0.000s",
+    "FAILED (errors=1)"
+   ]
+  },
+  "test_checkpoint_runtime_inherited_fds": {
+   "elapsed_s": 0.75,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 4 tests in 0.012s",
+    "OK"
+   ]
+  },
+  "test_checkpoint_savant_container_runtime_v3": {
+   "elapsed_s": 0.12,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 6 tests in 0.008s",
+    "OK"
+   ]
+  },
+  "test_extract_kpp_legacy_iss": {
+   "elapsed_s": 0.15,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 16 tests in 0.016s",
+    "OK (skipped=6)"
+   ]
+  },
+  "test_full_resource_qualification": {
+   "elapsed_s": 2.21,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 15 tests in 1.419s",
+    "OK"
+   ]
+  },
+  "test_full_resource_qualification_index_v1": {
+   "elapsed_s": 2.09,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 7 tests in 1.276s",
+    "OK"
+   ]
+  },
+  "test_publication_operational_container_custody_v1": {
+   "elapsed_s": 1.14,
+   "returncode": 1,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 13 tests in 0.353s",
+    "FAILED (failures=1, errors=10)"
+   ]
+  },
+  "test_publication_operational_process_custody_v1": {
+   "elapsed_s": 0.91,
+   "returncode": 1,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 1 test in 0.000s",
+    "FAILED (errors=1)"
+   ]
+  },
+  "test_publication_operational_runtime_context_v1": {
+   "elapsed_s": 1.01,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 7 tests in 0.152s",
+    "OK"
+   ]
+  },
+  "test_publication_policy_qualification": {
+   "elapsed_s": 2.53,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 16 tests in 1.736s",
+    "OK"
+   ]
+  },
+  "test_publication_policy_qualification_execution_closure_v1": {
+   "elapsed_s": 0.35,
+   "returncode": 1,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 14 tests in 0.183s",
+    "FAILED (errors=17)"
+   ]
+  },
+  "test_runtime_image_python310_compat_v1": {
+   "elapsed_s": 94.82,
+   "returncode": 0,
+   "tail": [
+    "----------------------------------------------------------------------",
+    "Ran 5 tests in 94.731s",
+    "OK (skipped=1)"
+   ]
+  }
+ },
+ "python": "3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]",
+ "pythonpath": "/work/root/scripts:/work/root/tests:/work/root:/opt/savant",
+ "system": "savant"
+}

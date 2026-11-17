@@ -29,6 +29,15 @@ def _require(ok, message):
         raise ValueError(message)
 
 
+def _add_note(error, note):
+    """Attach a note; Python 3.10 runtime images lack ``BaseException.add_note``."""
+    note_adder = getattr(error, "add_note", None)
+    if callable(note_adder):
+        note_adder(note)
+    else:
+        error.__notes__ = [*getattr(error, "__notes__", ()), note]
+
+
 def operational_output_dir_v1(request, raw):
     """Resolve a frozen path rule without changing original input/grant JSON."""
     capture = raw[CAPTURE_KEY]
@@ -151,12 +160,12 @@ def operational_runtime_scratch_v1(raw, *, prefix, dir, request=None):
                 # commits the retained bytes before owned staging is removed.
                 project_root = root if request is None else request.project_root
                 _materialize_operational_file_v1(project_root, source, target, record_original_transfer=False)
-                error.add_note(f"Original failed operational evidence retained at {target}")
+                _add_note(error, f"Original failed operational evidence retained at {target}")
             cleanup()
         except BaseException as custody_error:
             # Keep the original private stage if its evidence cannot be moved;
             # never mask the original process failure with a cleanup failure.
-            error.add_note(f"Failed evidence custody requires inspection at {name}: {custody_error}")
+            _add_note(error, f"Failed evidence custody requires inspection at {name}: {custody_error}")
         raise
     else:
         cleanup()

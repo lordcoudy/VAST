@@ -95,6 +95,13 @@ def _exact(value: Any, fields: set[str], label: str) -> Mapping[str, Any]:
     return value
 
 
+def validate_full_publication_identity_manifest_header_v1(manifest: Any) -> Mapping[str, Any]:
+    """Validate the exact manifest header; shared by the loader and side-effect-free preflights."""
+    top = _exact(manifest, {"schema_version", "artifact_kind", "bindings"}, "identity artifact manifest")
+    _require(top["schema_version"] == SCHEMA_VERSION and top["artifact_kind"] == MANIFEST_KIND, "identity artifact manifest schema/kind drift")
+    return top
+
+
 def _is_reparse_or_link(path: Path) -> bool:
     try:
         info = path.lstat()
@@ -674,12 +681,11 @@ def _validate_policy(
         _require(_valid_sha(receipt.get(field)), f"policy qualification receipt {field} is invalid")
     coverage = _exact(receipt["coverage"], {"binding_count", "pilot_cell_count", "accepted_sample_count", "minimum_samples_per_branch_cell"}, "policy qualification coverage")
     _require(
-        coverage == {
-            "binding_count": 32,
-            "pilot_cell_count": 32,
-            "accepted_sample_count": 3840,
-            "minimum_samples_per_branch_cell": 30,
-        },
+        all(type(count) is int for count in coverage.values())
+        and coverage["binding_count"] == 32
+        and coverage["pilot_cell_count"] == 32
+        and coverage["minimum_samples_per_branch_cell"] == 30
+        and coverage["accepted_sample_count"] >= 3840,
         "policy qualification coverage is incomplete",
     )
     embedded = _exact(receipt["outputs"], {"capability_manifest", "calibration_mapping"}, "policy receipt outputs")
@@ -701,6 +707,29 @@ def _validate_policy(
     _require(calibration.get("aggregation_rule") == "median_of_balanced_native_codec_topology_cells_v1" and calibration.get("minimum_samples_per_branch_cell") == 30, "policy calibration acceptance rule drift")
     calibrations = calibration.get("calibrations")
     _require(isinstance(calibrations, Mapping) and set(calibrations) == set(SYSTEMS), "policy calibration system coverage drift")
+    from publication_policy_contract import PolicyContractError, select_static_hybrid_map
+
+    measured_samples = 0
+    balanced_minimum = len(CODECS) * len(TOPOLOGIES) * coverage["minimum_samples_per_branch_cell"]
+    for system in SYSTEMS:
+        # The identity format has no pilot/index descriptor. Validate the bound
+        # calibration and capability here without claiming a fresh pilot replay.
+        try:
+            select_static_hybrid_map(system, calibrations[system], capability)
+        except (PolicyContractError, AttributeError, KeyError, TypeError) as error:
+            raise IdentityArtifactError(f"policy calibration/capability binding is invalid: {error}") from error
+        for branch in BRANCHES:
+            for resource in RESOURCES:
+                count = calibrations[system]["costs"][branch][resource]["samples"]
+                _require(
+                    type(count) is int and count >= balanced_minimum,
+                    f"policy calibration {system}/{branch}/{resource} sample coverage drift",
+                )
+                measured_samples += count
+    _require(
+        measured_samples == coverage["accepted_sample_count"],
+        "policy calibration/receipt accepted sample total drift",
+    )
     return (
         {"receipt": receipt_record, "outputs": {"capability_manifest": capability_record, "calibration_mapping": calibration_record}},
         receipt,
@@ -1831,8 +1860,7 @@ def _load_full_publication_identity_artifacts_with_custody(
         manifest_path_resolved,
         "identity artifact manifest",
     )
-    top = _exact(manifest, {"schema_version", "artifact_kind", "bindings"}, "identity artifact manifest")
-    _require(top["schema_version"] == SCHEMA_VERSION and top["artifact_kind"] == MANIFEST_KIND, "identity artifact manifest schema/kind drift")
+    top = validate_full_publication_identity_manifest_header_v1(manifest)
     bindings = _exact(top["bindings"], {
         "analytics_model_parity", "analytics_execution_layer", "policy_qualification",
         "resource_qualification", "backend_runtime_qualification",
@@ -1939,4 +1967,5 @@ __all__ = [
     "MANIFEST_KIND",
     "SCHEMA_VERSION",
     "load_full_publication_identity_artifacts",
+    "validate_full_publication_identity_manifest_header_v1",
 ]

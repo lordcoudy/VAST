@@ -1,0 +1,13 @@
+.F
+======================================================================
+FAIL: test_post_child_external_ledger_denial_is_sticky_without_receipt (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_post_child_external_ledger_denial_is_sticky_without_receipt)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 632, in test_post_child_external_ledger_denial_is_sticky_without_receipt
+    self.assertFalse((self.root/'outputs/D/controls/d.result.original.json').exists())
+AssertionError: True is not false
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.049s
+
+FAILED (failures=1)

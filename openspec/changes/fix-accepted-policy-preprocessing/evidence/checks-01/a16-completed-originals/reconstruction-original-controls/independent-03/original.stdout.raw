@@ -1,0 +1,300 @@
+{
+  "actual_copy_outer_original_result": {
+    "campaign_authority": false,
+    "command": [
+      "/bin/bash",
+      "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/run_reconstruction_input_copy_v2.sh",
+      "--source-commit",
+      "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+      "--plan",
+      "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/reconstruction-inputs.copy-plan.a16f243e7e80f093342ccdddf717d59d6d46f0a8.v2.json",
+      "--reviewed-plan-sha256",
+      "f5e5ac4e73a5232389237d38bb5c194a1c4a9add240368db1b8b6927c1e1633a",
+      "--reviewed-helper-sha256",
+      "d6e3fc1286fabb9127cae9417de0b6f05689c6d3e1c90951dd0149cbe4bbfbf6"
+    ],
+    "finished_utc": "2026-10-11T22:32:31.325775+00:00",
+    "helper_plan_hashes_unchanged": true,
+    "original_exit_code": 0,
+    "source_code_modified": false,
+    "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "started_utc": "2026-10-11T22:31:46.960335+00:00",
+    "streams": {
+      "original.stderr.raw": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "original.stdout.raw": {
+        "bytes": 234,
+        "sha256": "42647660fcf672616b349a3548c72e0cb76873c43b4c77c4c5adcd3487c131c1"
+      }
+    }
+  },
+  "artifact_kind": "vast_reconstruction_independent_read_only_proof_a16_v1",
+  "authority_source_sha256": {
+    "scripts/extract_kpp_legacy_iss.py": "dd24e80076a87db63e41c078d07c04aa32ddbd30f179796b90d59f8a7d2588e1",
+    "scripts/freeze_kpp_frozen_reconstruction_v1.py": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1",
+    "scripts/freeze_kpp_iss_publication_v3.py": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa",
+    "scripts/freeze_kpp_legacy_iss_v2_transcodes.py": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33",
+    "scripts/kpp_frozen_reconstruction_v1_dataset.py": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d"
+  },
+  "campaign_authority": false,
+  "code_closure_receipt_file_sha256": "7eb06189ccbd194a626bb60722262e3a5d8e4fbbfa32efe30aefe85a1dc4a444",
+  "code_closure_receipt_semantic_sha256": "5c70c1265e3eaf0fb7742c39d391c5c756c5131495e29a3ac9da084b6727c6ac",
+  "copy_recipe_controls": {
+    "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/reconstruction-inputs-copy-v2-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "original_recipe_rc_file": 0,
+    "utc_controls": {
+      "finished.txt": "2026-10-11T22:32:30Z",
+      "started.txt": "2026-10-11T22:31:47Z"
+    }
+  },
+  "destination_inventory": [
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_front_gate.mp4",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757923561872417,
+        "st_dev": 2128,
+        "st_ino": 965851,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757923561872417,
+        "st_nlink": 1,
+        "st_size": 63131711
+      },
+      "sha256": "08991b572d2d990a07536c9a4a7eed7780b27127c0e38abe7b607ba97dd59273",
+      "size_bytes": 63131711
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h264/iss_v2_underbody.mp4",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757927378137272,
+        "st_dev": 2128,
+        "st_ino": 965852,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757927378137272,
+        "st_nlink": 1,
+        "st_size": 1079445865
+      },
+      "sha256": "b7e5165549172266a5617ff7bbca6e5b888775b0a2490e27b7cbe17640e3b102",
+      "size_bytes": 1079445865
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_front_gate.mp4",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757931054397092,
+        "st_dev": 2128,
+        "st_ino": 965853,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757931054397092,
+        "st_nlink": 1,
+        "st_size": 14910770
+      },
+      "sha256": "fa400ecc8b84afc8144fac1da522ef3e9e321c7feb89a5086ac1a1e3ccbe7728",
+      "size_bytes": 14910770
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/h265/iss_v2_underbody.mp4",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757931850453469,
+        "st_dev": 2128,
+        "st_ino": 965854,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757931850453469,
+        "st_nlink": 1,
+        "st_size": 223684192
+      },
+      "sha256": "5368c94a26659c529106724427fc6c3e60fe6788d56699da14c93bc4222e7839",
+      "size_bytes": 223684192
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_authorization_receipt.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932614507576,
+        "st_dev": 2128,
+        "st_ino": 965855,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932614507576,
+        "st_nlink": 1,
+        "st_size": 2431
+      },
+      "sha256": "9eec424ef1112efc46283d9dd644782d3e6f67184f32cda7eada73c8bbfec803",
+      "size_bytes": 2431
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932638509275,
+        "st_dev": 2128,
+        "st_ino": 965856,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932638509275,
+        "st_nlink": 1,
+        "st_size": 5751
+      },
+      "sha256": "043cb90be4a16bbc0d636236a6a2c5d2c63f187d94aadf8358c9871bf8e6751a",
+      "size_bytes": 5751
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/iss_v2_underbody_metadata.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932714514657,
+        "st_dev": 2128,
+        "st_ino": 965857,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932714514657,
+        "st_nlink": 1,
+        "st_size": 12731945
+      },
+      "sha256": "d23872d4b4706ef7d804f917a72407f82326eb3cdd5d39d347913f20cc65b0d4",
+      "size_bytes": 12731945
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_authorization_receipt.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932790520040,
+        "st_dev": 2128,
+        "st_ino": 965858,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932790520040,
+        "st_nlink": 1,
+        "st_size": 3300
+      },
+      "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee",
+      "size_bytes": 3300
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_publication_v3_manifest.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932822522307,
+        "st_dev": 2128,
+        "st_ino": 965859,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932822522307,
+        "st_nlink": 1,
+        "st_size": 7225
+      },
+      "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24",
+      "size_bytes": 7225
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_extraction_receipt.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932854524574,
+        "st_dev": 2128,
+        "st_ino": 965860,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932854524574,
+        "st_nlink": 1,
+        "st_size": 2495
+      },
+      "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05",
+      "size_bytes": 2495
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_materialization_receipt.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932886526840,
+        "st_dev": 2128,
+        "st_ino": 965861,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932886526840,
+        "st_nlink": 1,
+        "st_size": 28131
+      },
+      "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33",
+      "size_bytes": 28131
+    },
+    {
+      "path": "data/videos/kpp/kpp_frozen_reconstruction_v1/receipts/kpp_iss_v2_transcode_receipt.json",
+      "physical_epoch": {
+        "st_ctime_ns": 1791757932914528823,
+        "st_dev": 2128,
+        "st_ino": 965862,
+        "st_mode": 33152,
+        "st_mtime_ns": 1791757932914528823,
+        "st_nlink": 1,
+        "st_size": 7092
+      },
+      "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470",
+      "size_bytes": 7092
+    }
+  ],
+  "focused_actual_tests": 212,
+  "focused_recipe_controls": {
+    "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/focused-a16f243e7e80f093342ccdddf717d59d6d46f0a8-01",
+    "original_recipe_rc_file": 0,
+    "utc_controls": {
+      "finished.txt": "2026-10-11T22:26:09Z",
+      "started.txt": "2026-10-11T22:23:56Z"
+    }
+  },
+  "focused_skips": [
+    "test_live_fix_benchmark_preflight_matches_runtime_materializer (tests.test_publication_runtime_frozen_identity_constants_v1.PublicationRuntimeFrozenIdentityConstantsV1Tests.test_live_fix_benchmark_preflight_matches_runtime_materializer) ... skipped 'requires VAST_LIVE_PREFLIGHT=1, live WSL Docker and OMZ proxy models'"
+  ],
+  "limits": [
+    "Comparison success is based on actual recipe RC/report controls; its outer tool completion was not emitted.",
+    "This independent proof is not the failed independent original, an integration execution, hosted CI, or Q1.",
+    "No historical corpus, frozen source, receipt, manifest, CI policy, or authority is rewritten."
+  ],
+  "passed": true,
+  "retained_source_inventory_count": 24,
+  "retained_sources_byte_and_epoch_unchanged": true,
+  "reviewed_helper_plan_wrapper_sha256": {
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/copy_reconstruction_inputs_v2.py": "d6e3fc1286fabb9127cae9417de0b6f05689c6d3e1c90951dd0149cbe4bbfbf6",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/reconstruction-inputs.copy-plan.a16f243e7e80f093342ccdddf717d59d6d46f0a8.v2.json": "f5e5ac4e73a5232389237d38bb5c194a1c4a9add240368db1b8b6927c1e1633a",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/run_reconstruction_input_copy_v2.sh": "31bbb99e0ed4a4aa3593abb1e9e97a24dc78ef1c5896d80c0b1566813f40df58"
+  },
+  "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "source_comparison": {
+    "all_five_native_worker_source_dependency_context_hashes_equal": true,
+    "artifact_kind": "vast_final_repair_source_input_comparison_v1",
+    "build_commit": "aca94dd0a57566d5a9ecc27d8dac1ca71ca0e795",
+    "campaign_authority": false,
+    "guardian_source_count": 67,
+    "host_only_changed_closure_sources": [
+      {
+        "build_sha256": "db68a2cadd2b5a099c98da14a1eeadec0e74e89f78b0d6668507dee206439b79",
+        "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+        "source_sha256": "df93915ff613d7067e16857d1eb5f45feee7beca9ddb59a58bb5bbb326969442"
+      },
+      {
+        "build_sha256": "66ad27fe0450e683ff994279b4e122c32fe9fd9b830f6c4bd6cda2c77a86540e",
+        "path": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+        "source_sha256": "61a994a78219979657d948e6af61e5d0dd1ea273eed950cb3d17f109d040fa97"
+      }
+    ],
+    "limits": [
+      "Build and image execution evidence remains bound to the earlier build commit.",
+      "This comparison is not a Q1 execution or a completed downstream acceptance."
+    ],
+    "passed": true,
+    "qualification_full_source_count": 93,
+    "runtime_build_input_count": 128,
+    "runtime_package_inputs_byte_identical": true,
+    "runtime_python_counts": {
+      "deepstream": 73,
+      "gstreamer_custom": 68,
+      "openvino_gva": 68,
+      "savant": 81
+    },
+    "source_commit": "a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "source_unchanged": true
+  },
+  "source_comparison_recipe_controls": {
+    "directory": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8/artifacts/accepted_policy_repair_20261011a/checks-01/final-source-inputs-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+    "original_recipe_rc_file": 0,
+    "utc_controls": {
+      "finished.txt": "2026-10-11T22:26:32Z",
+      "started.txt": "2026-10-11T22:26:24Z"
+    }
+  },
+  "source_root": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-a16f243e7e80f093342ccdddf717d59d6d46f0a8",
+  "stock_full_reconstruction_gate_passed": true,
+  "stock_raw_gate_source_sha256": {
+    "scripts/ci_external_test_observer_v1.py": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59",
+    "scripts/ci_test_selection_v1.py": "0a9309c4ceeae153e2eb288ceb7586b2e76c2edf7b5f9bc3ed646b032fe8ff6b",
+    "scripts/ci_userns_profile_v1.py": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43",
+    "scripts/run_ci_checks.py": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"
+  },
+  "stock_raw_tracked_file_count": 12115
+}

@@ -1,0 +1,20 @@
+F
+======================================================================
+FAIL: test_counterfeit_package_marker_is_rejected_without_getattr_or_project_execution (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_counterfeit_package_marker_is_rejected_without_getattr_or_project_execution)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 29, in test_counterfeit_package_marker_is_rejected_without_getattr_or_project_execution
+    self.assertEqual(seen,[])
+AssertionError: Lists differ: ['__gate2_package__'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'__gate2_package__'
+
+- ['__gate2_package__']
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.022s
+
+FAILED (failures=1)

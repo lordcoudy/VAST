@@ -1,0 +1,48 @@
+EEF
+======================================================================
+ERROR: test_owned_process_thread_start_failure_preserves_pid_and_one_stdin_close (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_owned_process_thread_start_failure_preserves_pid_and_one_stdin_close)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1049, in test_owned_process_thread_start_failure_preserves_pid_and_one_stdin_close
+    with self.assertRaises(m.ResumeRefusal) as caught:m._Run(1).process(['controlled'],b'not-sent',100,100)
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 289, in process
+    threading.Thread(target=drain,args=(pipe,row,limit),daemon=True).start()
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1042, in start
+    if len(starts)==fail_at:raise RuntimeError('thread_start_failed')
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: thread_start_failed
+
+======================================================================
+ERROR: test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1078, in test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal
+    with self.assertRaises(m.ResumeRefusal) as caught:m._Run(1).process(['controlled'],b'',100,100,ready=lambda _: {})
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 328, in process
+    facts.update({'pid':p.pid,'returncode':(rc:=p.poll()),
+                                                ^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1073, in poll
+    raise OSError('controlled_poll_failed')
+OSError: controlled_poll_failed
+
+======================================================================
+FAIL: test_failed_send_keeps_unknown_status_without_a_new_poll (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_failed_send_keeps_unknown_status_without_a_new_poll)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1161, in test_failed_send_keeps_unknown_status_without_a_new_poll
+    self.assertEqual(polls,[])
+AssertionError: Lists differ: [None] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+None
+
+- [None]
++ []
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.032s
+
+FAILED (failures=1, errors=2)

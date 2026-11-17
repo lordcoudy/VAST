@@ -1,0 +1,20 @@
+F
+======================================================================
+FAIL: test_writer_requires_unbuffered_file_before_claiming_known_write_extent (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.FailureFactsTests.test_writer_requires_unbuffered_file_before_claiming_known_write_extent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 261, in test_writer_requires_unbuffered_file_before_claiming_known_write_extent
+    self.assertEqual(opened,[("xb",{"buffering":0})])
+AssertionError: Lists differ: [('xb', {})] != [('xb', {'buffering': 0})]
+
+First differing element 0:
+('xb', {})
+('xb', {'buffering': 0})
+
+- [('xb', {})]
++ [('xb', {'buffering': 0})]
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+FAILED (failures=1)

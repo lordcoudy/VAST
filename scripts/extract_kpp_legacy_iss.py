@@ -56,6 +56,15 @@ class ExtractionError(RuntimeError):
     pass
 
 
+def _add_note(error: BaseException, note: str) -> None:
+    """Attach a note; Python 3.10 runtime images lack ``BaseException.add_note``."""
+    note_adder = getattr(error, "add_note", None)
+    if callable(note_adder):
+        note_adder(note)
+    else:
+        error.__notes__ = [*getattr(error, "__notes__", ()), note]
+
+
 Runner = Callable[[tuple[str, ...]], None]
 Prober = Callable[[Path], dict[str, object]]
 VersionReader = Callable[[Path], bytes]
@@ -1210,15 +1219,17 @@ def _create_windows_private_working_directory_with_custody(
                             f"rollback for candidate {name} could not be confirmed"
                         )
                     rollback_error = ExtractionError(message)
-                    rollback_error.add_note(
-                        f"original validation failure: {validation_exc}"
+                    _add_note(
+                        rollback_error,
+                        f"original validation failure: {validation_exc}",
                     )
                     if disposition_exc is not None:
-                        rollback_error.add_note(
-                            f"delete-pending failure: {disposition_exc}"
+                        _add_note(
+                            rollback_error,
+                            f"delete-pending failure: {disposition_exc}",
                         )
                     if close_exc is not None:
-                        rollback_error.add_note(f"handle close failure: {close_exc}")
+                        _add_note(rollback_error, f"handle close failure: {close_exc}")
                     raise rollback_error from validation_exc
                 raise
         raise ExtractionError("could not allocate a unique private extraction directory")

@@ -1,0 +1,14 @@
+E....................
+======================================================================
+ERROR: test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 43, in test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects
+    c=sys.modules['tests.fixtures.'+Path(m.CODE[0]).stem]
+      ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1'
+
+----------------------------------------------------------------------
+Ran 21 tests in 0.260s
+
+FAILED (errors=1)

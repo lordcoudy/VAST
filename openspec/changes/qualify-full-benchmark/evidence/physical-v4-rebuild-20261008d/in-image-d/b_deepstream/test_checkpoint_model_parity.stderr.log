@@ -1,0 +1,58 @@
+test_calibration_and_evaluation_sample_ids_must_be_disjoint (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_calibration_minimum_and_numeric_tolerances_are_enforced (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_complete_common_source_contract_passes (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_image_command_cannot_pull_or_run (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_lineage_preprocessing_and_toolchain_drift_fail_closed (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_non_finite_tolerance_is_rejected (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_openvino_gpu_execution_evidence_is_not_cuda (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_repository_state_is_honestly_blocked (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_symlinked_model_artifact_is_not_accepted (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_verified_equivalent_derivations_can_replace_a_local_source (test_checkpoint_model_parity.AssessmentTests) ... skipped 'schema-v1 fixture retained only as migration history'
+test_calibration_and_evaluation_corpora_are_disjoint_v2 (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_claimed_aggregate_fields_are_rejected_not_trusted (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_claimed_tensor_hash_is_checked_against_materialized_bytes (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_complete_raw_evidence_is_recomputed_and_passes (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_duplicate_yaml_keys_and_toolchain_argv_drift_are_rejected (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_exact_sample_order_and_hashes_are_required (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_image_command_is_read_only_inspect (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_non_finite_json_and_duplicate_keys_fail_closed (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_numeric_tolerance_and_top1_are_computed_from_raw_values (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_openvino_gpu_probe_cannot_satisfy_nvidia_cuda (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_policy_calibration_is_separate_and_requires_30_per_resource (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_relative_error_floor_is_tied_to_the_absolute_logit_tolerance (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_symlinked_model_artifact_is_not_accepted_v2 (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_symlinked_v2_manifest_is_rejected (test_checkpoint_model_parity.AssessmentV3Tests) ... ok
+test_accepts_plain_manifest_through_temporary_directory_short_alias (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_cli_exposes_only_manifest_and_assess (test_checkpoint_model_parity.ManifestContractTests) ... usage: python3 -m unittest [-h] {manifest,assess} ...
+python3 -m unittest: error: argument command: invalid choice: 'run' (choose from 'manifest', 'assess')
+ok
+test_deep_yaml_recursion_is_contract_error_and_cli_exit_78 (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_default_v3_manifest_remains_blocked_on_all_32_evidence_refs (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_manifest_ancestor_custody_blocks_parent_rename_aba (test_checkpoint_model_parity.ManifestContractTests) ... skipped 'Windows share-mode custody only'
+test_manifest_custody_blocks_same_size_in_place_rewrite_with_restored_mtime (test_checkpoint_model_parity.ManifestContractTests) ... skipped 'Windows share-mode custody only'
+test_manifest_identity_is_deterministic_and_tamper_evident (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_manifest_rejects_same_size_rewrite_before_native_custody (test_checkpoint_model_parity.ManifestContractTests) ... skipped 'Windows pre-custody drift only'
+test_posix_same_size_byte_drift_with_restored_mtime_is_detected (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_post_read_rewrite_is_blocked_or_detected_before_return (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_preprocessing_projection_accepts_frozen_v3_and_v4_by_binding_hash (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_preprocessing_projection_rejects_v4_schema_and_contract_drift (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_rejects_fake_openvino_gpu_matrix_binding (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_rejects_hardlinked_manifest_as_non_unique (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_rejects_nonregular_missing_and_path_substituted_manifest (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_rejects_symlink_or_reparse_parent_component (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_rejects_symlinked_manifest (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_resolve_runtime_error_is_contract_error_and_cli_exit_78 (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_unhashable_yaml_keys_are_contract_errors_and_cli_exit_78 (test_checkpoint_model_parity.ManifestContractTests) ... ok
+test_windows_cross_view_ignores_only_ctime_and_each_view_binds_it (test_checkpoint_model_parity.ManifestContractTests) ... skipped 'Windows ctime views only'
+test_windows_same_view_callsites_reject_ctime_only_drift (test_checkpoint_model_parity.ManifestContractTests) ... skipped 'Windows path-view ctime only'
+test_base_provenance_and_worker_runtime_identities_are_distinct (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+test_each_slot_requires_raw_bundles_and_resource_calibration (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+test_four_opaque_slots_reference_sources_without_repeating_them (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+test_source_registry_is_pinned_once_with_actual_onnx_metadata (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+test_unmaterialized_manifest_still_has_exact_32_missing_evidence_refs (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+test_worker_runtime_relabel_and_implementation_drift_fail_closed (test_checkpoint_model_parity.SchemaV3RedTests) ... ok
+
+----------------------------------------------------------------------
+Ran 51 tests in 10.112s
+
+OK (skipped=15)

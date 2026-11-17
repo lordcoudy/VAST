@@ -1,0 +1,29 @@
+EEF
+======================================================================
+ERROR: test_authentic_b3_to_current_gap_holds_before_directory_or_rpc (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_authentic_b3_to_current_gap_holds_before_directory_or_rpc)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 459, in test_authentic_b3_to_current_gap_holds_before_directory_or_rpc
+    recovery.recover_stopped_b1_v1(**arguments)
+TypeError: recover_stopped_b1_v1() got an unexpected keyword argument 'b3_result_path'
+
+======================================================================
+ERROR: test_control_close_after_original_deadline_cannot_pass_or_start_failure_file (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_control_close_after_original_deadline_cannot_pass_or_start_failure_file)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 497, in test_control_close_after_original_deadline_cannot_pass_or_start_failure_file
+    recovery.recover_stopped_b1_v1(**arguments)
+TypeError: recover_stopped_b1_v1() got an unexpected keyword argument 'b3_result_path'
+
+======================================================================
+FAIL: test_output_must_share_root_filesystem_and_four_kib_fragment (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_output_must_share_root_filesystem_and_four_kib_fragment)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 539, in test_output_must_share_root_filesystem_and_four_kib_fragment
+    self.assertTrue(callable(getattr(recovery, "_output_filesystem_v1", None)), "output filesystem binding absent")
+AssertionError: False is not true : output filesystem binding absent
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.037s
+
+FAILED (failures=1, errors=2)

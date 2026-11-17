@@ -1,0 +1,31 @@
+E
+======================================================================
+ERROR: test_guarded_dependency_read_and_close_failure_preserves_read_refusal (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_guarded_dependency_read_and_close_failure_preserves_read_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 99, in read_fixed_v1
+    need(len(raw) == pre.st_size and epoch_v1(os.fstat(file.fileno())) == epoch_v1(post)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 37, in need
+    raise ResumeRefusal(cause,facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: read_drift
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 78, in test_guarded_dependency_read_and_close_failure_preserves_read_refusal
+    with self.assertRaises(m.ResumeRefusal) as caught:m.read_fixed_v1(path,100)
+                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 95, in read_fixed_v1
+    with file:
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 71, in __exit__
+    def __exit__(self,*args):self.close()
+                             ^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 74, in close
+    def close(self):close(self.fd);raise OSError('controlled close')
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: controlled close
+
+----------------------------------------------------------------------
+Ran 1 test in 0.030s
+
+FAILED (errors=1)

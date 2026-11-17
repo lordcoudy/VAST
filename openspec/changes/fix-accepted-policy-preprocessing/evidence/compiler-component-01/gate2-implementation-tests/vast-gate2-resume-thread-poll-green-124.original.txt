@@ -1,0 +1,21 @@
+.F.
+======================================================================
+FAIL: test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 1082, in test_poll_failure_keeps_last_observed_status_and_never_repolls_after_refusal
+    self.assertEqual(closes,[1]);self.assertEqual(facts['stdin_closed'],not close_failure)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [1, 1] != [1]
+
+First list contains 1 additional elements.
+First extra element 1:
+1
+
+- [1, 1]
++ [1]
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.028s
+
+FAILED (failures=1)

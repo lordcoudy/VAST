@@ -212,6 +212,60 @@ class NativeDiagnosticDelegationTests(unittest.TestCase):
         result = diagnostic.execute_native_diagnostic_operation_v1(**self.kwargs)
         self.assertFalse(result["receipt"]["accepted"])
 
+    def test_held_savant_and_openvino_originals_delegate_to_their_stock_runtime(self):
+        for system in ("savant", "openvino_gva"):
+            with self.subTest(system=system):
+                self.setUp()
+                self.cell.system = system
+                self.patches()
+                runner = mock.Mock(side_effect=self.runtime)
+                registry = {**diagnostic.pilot.NATIVE_RUNTIME_REGISTRY, system: runner}
+                with mock.patch.object(diagnostic.pilot, "NATIVE_RUNTIME_REGISTRY", registry):
+                    result = diagnostic.execute_native_diagnostic_operation_v1(**self.kwargs)
+                runner.assert_called_once_with(self.request)
+                # The gstreamer stock runner is patched to the same recorder;
+                # one event proves it was not also invoked.
+                self.assertEqual(self.events.count("runtime"), 1)
+                self.assertLess(self.events.index("capture_exit"), self.events.index("finalizer"))
+                self.assertFalse(result["receipt"]["accepted"])
+
+    def test_owner_maps_stock_arguments_to_the_held_runner_exactly(self):
+        import publication_qualification_operational_owner_v1 as owner
+        bootstrap = self.root / "bootstrap"
+        bootstrap.mkdir()
+        cell = next(cell for cell in diagnostic.pilot.qualification_pilot_cells_v2() if cell.system == "savant"
+                    and cell.resource == "cpu" and cell.codec == "h264" and cell.topology_kind == "independent_processes")
+        stock = {name: self.root / ("stock-" + name) for name in owner.STOCK_ARGUMENTS}
+        stock.update(bootstrap_dir=bootstrap, bootstrap_mapping_path=bootstrap / "mapping.json",
+                     bootstrap_receipt_path=bootstrap / "receipt.json")
+        operation = {"operation_id": "savant-original-savant-cpu-h264-independent-processes", "arm_id": cell.arm_id}
+        plan = self.root / "capture-plan/index.json"
+        with mock.patch.object(diagnostic, "execute_native_diagnostic_operation_v1", return_value={"fixture_only": True}) as run:
+            self.assertEqual(owner._stock_held_operation_v1(project_root=self.root, capture_plan_path=plan,
+                operation=operation, stock_arguments=stock), {"fixture_only": True})
+        run.assert_called_once_with(project_root=self.root, capture_plan_path=plan,
+            operation_id=operation["operation_id"],
+            runtime_bundle_path=bootstrap / "qualification-runtime-inputs-v2/savant/cpu/h264/independent_processes.json",
+            candidate_index_path=stock["candidate_index_path"],
+            preprocessing_contract_path=stock["preprocessing_contract_path"],
+            preprocessing_receipt_path=stock["preprocessing_contract_receipt_path"],
+            runtime_materialization_receipt_path=stock["runtime_input_materialization_receipt_path"],
+            guardian_authority_path=stock["guardian_service_authority_path"],
+            transaction_receipt_path=stock["transaction_receipt_path"],
+            bootstrap_mapping_path=stock["bootstrap_mapping_path"],
+            bootstrap_receipt_path=stock["bootstrap_receipt_path"])
+        for changes in ({"bootstrap_dir": self.root / "foreign-bootstrap"}, {"operation": {**operation, "arm_id": "foreign"}}):
+            with self.subTest(changes=sorted(changes)):
+                arguments = dict(project_root=self.root, capture_plan_path=plan, operation=operation, stock_arguments=stock)
+                if "bootstrap_dir" in changes:
+                    arguments["stock_arguments"] = {**stock, **changes}
+                else:
+                    arguments.update(changes)
+                with mock.patch.object(diagnostic, "execute_native_diagnostic_operation_v1") as run:
+                    with self.assertRaises(ValueError):
+                        owner._stock_held_operation_v1(**arguments)
+                run.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,38 @@
+CONTROLLED_NODE_RUNTIME /mnt/c/Program Files/nodejs/node.exe v25.2.1
+FFFF
+======================================================================
+FAIL: test_held_source_tamper_or_close_error_prevents_any_child (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_held_source_tamper_or_close_error_prevents_any_child) (fault='source_tamper')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 279, in test_held_source_tamper_or_close_error_prevents_any_child
+    self.assertEqual(value['spawned'],0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_held_source_tamper_or_close_error_prevents_any_child (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_held_source_tamper_or_close_error_prevents_any_child) (fault='source_close')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 279, in test_held_source_tamper_or_close_error_prevents_any_child
+    self.assertEqual(value['spawned'],0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_held_source_tamper_or_close_error_prevents_any_child (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_held_source_tamper_or_close_error_prevents_any_child) (fault='source_race')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 279, in test_held_source_tamper_or_close_error_prevents_any_child
+    self.assertEqual(value['spawned'],0)
+AssertionError: 1 != 0
+
+======================================================================
+FAIL: test_held_source_tamper_or_close_error_prevents_any_child (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeNodeCaller.test_held_source_tamper_or_close_error_prevents_any_child) (fault='source_special')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 279, in test_held_source_tamper_or_close_error_prevents_any_child
+    self.assertEqual(value['spawned'],0)
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.885s
+
+FAILED (failures=4)

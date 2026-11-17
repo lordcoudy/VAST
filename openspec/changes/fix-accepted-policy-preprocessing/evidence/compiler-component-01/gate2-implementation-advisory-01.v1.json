@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "scope": "advisory reviews of dirty implementation before first implementation commit",
+  "planning_commit": "93bb04b647a9015f47ad3743551cb416b1695376",
+  "formal_commit_approval": false,
+  "physical_execution": false,
+  "reviews": [
+    {
+      "reviewer": "separate Codex agent /root/gate2_v8_review",
+      "verdict": "BLOCK",
+      "scope": "D and native guard dirty snapshot",
+      "findings": [
+        "Wrong crash path Temp instead of Temp/wsl-crashes.",
+        "Posthoc control accounting omitted prospective rounded liabilities.",
+        "Final receipt failure escaped without full outer facts; writer could drop distinct close failure.",
+        "Native guard write failure could later claim persistence success."
+      ],
+      "disposition": "Corrections implemented with controlled negative tests; independent dirty-snapshot re-review CLEAR. Subsequent D completion-authority forwarding remains subject to formal exact-commit review."
+    },
+    {
+      "reviewer": "separate Codex agent /root/gate2_f2_design_readiness",
+      "verdict": "BLOCK",
+      "scope": "Original Grok P0 and C/compiler integration; not its own F2 module",
+      "source_sha256": {
+        "p0": "0f676f8e5bfce971e8c43d1b01421c0749651acd9bf1fabe6824cf99f868d4c7",
+        "p0_tests": "ebdf8de542f0e83e68e0abc315786d7bd25488863c16bf7959145d6afeb9efe9",
+        "c": "58fbdaefa19eac3c533c72ee951ad0650e7ef249594973895da888939d377192"
+      },
+      "findings": [
+        "P0 final close could pass after absolute deadline.",
+        "P0 read/poll exceptions lost known prefixes and closure facts.",
+        "P0 clock started after initial validation/directory creation.",
+        "P0 native launcher labeled all real receipts controlled.",
+        "P0 snapshot JSON accepted duplicate/nonfinite values.",
+        "P0 inclusive inode/copy forms were omitted.",
+        "C peer list expectation disagreed with actual transport dictionary.",
+        "C3 operational attribution does not directly bind all native PIDs to one cgroup.",
+        "C prior result replay trusted recorded charge instead of recomputing a conservative lower bound."
+      ],
+      "disposition": "Native P0 correction completed by the same Grok CLI session, then independently integrated with strict JSON, entry-time and pure-original validation fixes (34 controlled tests). C native-schema and prior-ledger corrections completed. C3 attribution remains explicitly operational and requires physical evidence review; no direct PID observation is invented. Formal exact-commit review remains required."
+    }
+  ],
+  "other_author_findings": [
+    "Native tuple-valued socket epochs must be represented as bounded JSON arrays in enclosing C/D records.",
+    "INITIAL AUTHOR INTERPRETATION, subsequently withdrawn: B3-to-F2 readiness gap was charged continuously and treated as a physical HOLD. Raw observations and independent correction are preserved below and in gate2-readiness-01.v1.json."
+  ],
+  "remaining_gates": [
+    "Integrated controlled regression and Python 3.10 syntax check.",
+    "Exact committed-source independent reviews and required CI.",
+    "Explicit delegated agent implementation approval before physical use.",
+    "Fresh physical originals and independent evidence review; task 2.10 remains unchecked."
+  ],
+  "dispositions_after_advisory": [
+    {
+      "finding": "D pre-persistence physical-acceptance flag",
+      "decision": "Corrected; finalization requires externally completed receipt, ledger, floors, aggregate and final deadline. Inner raw receipt cannot qualify.",
+      "controlled_tests": "d-core-green-06.original.txt;58tests"
+    },
+    {
+      "finding": "C3 PID binding",
+      "decision": "Do not equate CPU dump host PID with RLIMIT_CORE Process namespace PID. Actual B2 shows1120 versus12 (and1126 versus18); audit pid1120 matches host CPU PID. Require optional audit-to-host PID consistency and positive core namespace PID/name/pair, keeping absent namespace mapping explicit.",
+      "evidence": "Retained B2 raw dmesg originals; C agent read-only comparison. Author proposed equality was rejected before implementation."
+    },
+    {
+      "finding": "F2 control deadline and historical gap",
+      "decision": "Deadline/reservation/post-close/final-read refusal corrections completed; F2 regression150PASS and independent advisory CLEAR. Historical continuous-gap enforcement was removed before physical use because it added a rule absent from approved V7/V8; per-operation accounting remains mandatory."
+    },
+    {
+      "finding": "Historical and idle gap interpretation",
+      "reviewer": "separate Codex agent /root/gate2_owner_readiness",
+      "decision": "Root added continuous B3-to-planning and idle interstage charge was withdrawn. V7 charges over each operation; V8 carries B11890688B and new finite operation intervals. Fresh entry/end measurements must include all component allocations, persistence tails and retained-copy liabilities; old charged ledger is never reset.",
+      "evidence": "V7 sections2/5; V8 sections1/5; accepted B1-to-B2 idle1926148096B excluded from fixed B charge; detailed correction in gate2-readiness-01.v1.json."
+    },
+    {
+      "finding": "C result/footer is not proof of successful enclosing invocation",
+      "reviewer": "separate Codex agent /root/gate2_f2_design_readiness",
+      "decision": "A final footer could survive an invocation that subsequently failed close/measurement. Require externally approved completion_authorities for exactly every prior C stage. The fixed enclosing record binds code/packet/result/accounting/previous completion; its write and close use the same original150s deadline and existing tail. Neither leftover bytes nor the helper's return grant approval. Independent actual invocation/status/EOF/completed persistence review supplies each descriptor. Concept independently reviewed CLEAR by /root/gate2_v8_review; final focused recheck RESOLVED by /root/gate2_f2_design_readiness at C source4d0323c40d5fcb8973faae71107a290b607c6a232c98c6370101897a7d84fbb9 and testse8d278b58322c5b54dca060a32d948009c12ce7d67a748afaaf07ebb92bbf17b."
+    },
+    {
+      "finding": "C refusal file after budget/floor denial",
+      "reviewer": "separate Codex agent /root/gate2_f2_design_readiness",
+      "decision": "Sticky budget/floor/control denial causes no fresh refusal-file allocation. Other failures remeasure and reserve actual data/metadata/copies/control/SizeRw before a bounded refusal original. Full owner/error facts remain in the returned exception. Controlled RED/GREEN retained; same final focused source-hash recheck RESOLVED both P1 findings without edits/tests/native actions."
+    }
+  ],
+  "review_status": {
+    "D": "62controlledPASS after immutable external completion-map forwarding; prior accounting/finalization advisory CLEAR; formal exact-commit review pending",
+    "F2": "deadline/reservation/filesystem/native-clock corrections complete150controlledPASS; independent advisory CLEAR; formal exact-commit review pending",
+    "C": "native transport schema, ledger and completion authority corrections implemented; independent focused recheck resolved both P1 findings at4d0323c4; final combined regression and formal exact-commit review pending",
+    "P0": "Grok CLI second slice20controlledPASS; final pure validator/strict JSON/pre-write cap/entry-time integration34controlledPASS; formal exact-commit review pending"
+  },
+  "subsequent_operator_gate": {
+    "core_commit": "e16273e4a3f450fd16c6d2079b22c05de389eb10",
+    "core_review_record": "https://github.com/lordcoudy/VAST/pull/9#issuecomment-6217523594",
+    "core_verdicts": "Two independent CLEAR_WITH_NOTES after Grok's preserved original BLOCK and targeted operational-boundary re-review; no source change or physical success invented.",
+    "operator_candidates_executed": false,
+    "candidate_reviews": [
+      {"sha256": "ceee019495734d66e0a41b76c489ef1ec7524d4e9acce27e11c0fc6ee09dc0dd", "verdict": "BLOCK", "findings": "Late export/F2/P0 dispatch windows; bytecode suppression absent; project floor absent."},
+      {"sha256": "bef73a5b32740f7ca76f986cdcf94a85de56a7840a283f297eced27cf64cf569", "verdict": "BLOCK", "findings": "Deadline admission must be rechecked after boot/statvfs observations; substantive operator/capture code requires same-PR Git, controlled tests, exact review and CI."}
+    ],
+    "workflow_correction": "Root initially treated wrappers as operator command text. Independent review identified substantive implementation, so finalized helpers/tests must be committed in this same PR and obtain exact-commit review/CI before use; Temp location or PR SHA cannot bypass this.",
+    "requirements_amendment": false,
+    "unchanged_requirements": "Original actors/root argv/F2-P0 clocks, caps, runtime10CODE_PATHS, C/D outcomes,512MiB seal and floors remain mandatory.",
+    "status": "Tracked setup/capture helpers frozen;433 integrated controlled tests pass. Exact-commit reviews/required CI/approval pending; no physical approval.",
+    "accounting_interpretation": {
+      "reviewer": "/root/gate2_v8_review",
+      "decision": "Actual deployed helper working/Git/runtime forms and F2/capture/report copies require finite component quotes. Historical controlled-test/CI/source-test/development forms remain retained for whole1.5, not retroactively charged to F2.",
+      "retired_candidates": "Four actual Temp drafts remain byte-exact retained and nonexecuted. Removing unnecessary runtime reads/proof dependencies is faithful to V8 sections2/3/6. No fifth duplicate was created; no history, occupied-space floor or actual runtime charge is removed.",
+      "inventory": "gate2-retired-operator-drafts.v1.json; all four sizes/SHA256 independently rechecked by root before commit.",
+      "reservation_boundary": "Old B-code1MiB and fresh export/P0-code1MiB remain earmarked; neither is spare operator capacity. F2's512KiB outside reserve is an implementation subreserve within unchanged8MiB/512MiB aggregates, not a cap waiver.",
+      "approval_boundary": "Read-only accounting interpretation only. Final implemented exact-commit review, required CI and explicit delegated AGENT approval remain pending."
+    },
+    "final_advisory_recheck": {
+      "reviewer": "/root/gate2_v8_review",
+      "verdict": "ADVISORY CLEAR; no formal commit or physical approval",
+      "setup_sha256": "fe7e2ffc8a854456e4ed7d1cc032558ccefe6cefb18b7eb3b765bbe2d5753077",
+      "capture_sha256": "0aa45af74336821943dc198c7a218de1b3be3a8c866b22d412d597c31a0c4d4b",
+      "resolved_findings": [
+        "Recheck original deadline and floors after observations/imports before fresh work.",
+        "Authenticate both actual helper Git blobs; bind packet to actual authority record and independently verify helper/context/commit/approval fields.",
+        "Preserve failed native Git and returned P0 status/EOF/ordered causes/write/closure facts, including oversized actual-schema fields and explicit unknown remainder.",
+        "Preserve initiating and distinct secondary writer failures with unbuffered writes and truthful unknown extent.",
+        "Fund prospective64KiB outer capture before F2; cap combined failed raw prefixes and newline-inclusive32KiB diagnostic encoding rather than relying on normal-only32KiB output."
+      ],
+      "core_writer_correction": "Actual BufferedWriter/RawIO fault tests reproduced unknown-extent misreporting in C/F2 JSON and shared HTTP originals. Four buffering=0 open corrections, four new tests,109 affected-slice PASS; the old e162 formal verdict is historical and cannot authorize use across the newly found defect.",
+      "historical_scope_correction": "The failed-Git12KiB serializer advisory applied to earlier capture184e5c33. Capture7eb0b167 already used393216 at its later read; the final implementation instead uses the independently reviewed funded bounded protocol."
+    },
+    "hosted_core_ci": {
+      "run_id": 38911635009,
+      "commit": "e16273e4a3f450fd16c6d2079b22c05de389eb10",
+      "cpu_job_id": 117008653813,
+      "cpu_conclusion": "failure",
+      "annotation": "The hosted runner lost communication with the server.",
+      "underlying_cause": "Unverified; no CPU build/test success inferred.",
+      "host_job_id": 117008652872,
+      "host_conclusion": "success",
+      "originals": "hosted-ci-e162-38911635009-01/",
+      "cpu_log_availability": "API BlobNotFound; no CPU artifact published.",
+      "restarted": false,
+      "next_gate": "Required checks must pass on the new implemented commit; this historical failure cannot be approved away."
+    }
+  }
+}

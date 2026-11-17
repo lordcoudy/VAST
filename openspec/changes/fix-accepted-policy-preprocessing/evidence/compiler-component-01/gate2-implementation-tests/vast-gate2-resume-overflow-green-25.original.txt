@@ -1,0 +1,31 @@
+.E...............E
+======================================================================
+ERROR: test_actual_verified_buffers_have_canonical_c_d_child_identity_without_reopen (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_verified_buffers_have_canonical_c_d_child_identity_without_reopen)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 54, in test_actual_verified_buffers_have_canonical_c_d_child_identity_without_reopen
+    modules=m.load_verified_v1(sources,desc,root)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 119, in load_verified_v1
+    need(type(raw) is bytes and 0 < len(raw) <= cap
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 45, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: source_binding
+
+======================================================================
+ERROR: test_windows_positive_loader_executes_fixed_authenticated_closure_without_initializer (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_windows_positive_loader_executes_fixed_authenticated_closure_without_initializer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 250, in test_windows_positive_loader_executes_fixed_authenticated_closure_without_initializer
+    modules = m.load_verified_v1(sources,descriptors,Path('/controlled'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 119, in load_verified_v1
+    need(type(raw) is bytes and 0 < len(raw) <= cap
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_resume_v1.py", line 45, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: source_binding
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.151s
+
+FAILED (errors=2)

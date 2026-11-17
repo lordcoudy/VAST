@@ -1,0 +1,19 @@
+F...
+======================================================================
+FAIL: test_fixed_orchestrator_preserves_complete_provider_objects_and_exact_args (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRootCaller.test_fixed_orchestrator_preserves_complete_provider_objects_and_exact_args)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 355, in test_fixed_orchestrator_preserves_complete_provider_objects_and_exact_args
+    value=self.js('(async()=>{'+body+'})().catch(e=>{console.error(e);process.exitCode=1;});')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 314, in js
+    self.assertEqual(r.returncode,0,r.stderr.decode(errors='replace'))
+AssertionError: 1 != 0 : Error: provider_terminal
+    at gate2Run ([eval]:32:50)
+    at async [eval]:40:13
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.965s
+
+FAILED (failures=1)

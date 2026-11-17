@@ -80,6 +80,15 @@ def _require(condition: bool, message: str) -> None:
         raise ContractError(message)
 
 
+def _add_note(error: BaseException, note: str) -> None:
+    """Attach a note; Python 3.10 runtime images lack ``BaseException.add_note``."""
+    note_adder = getattr(error, "add_note", None)
+    if callable(note_adder):
+        note_adder(note)
+    else:
+        error.__notes__ = [*getattr(error, "__notes__", ()), note]
+
+
 def canonical_consumer_fds_json(consumers: Mapping[str, int]) -> str:
     """The canonical consumer FD map parsed by native parse_consumer_fds: compact, ASCII, insertion order."""
     return json.dumps(dict(consumers), separators=(",", ":"), ensure_ascii=True)
@@ -1402,9 +1411,9 @@ def run_worker_processes(
         if errors:
             if primary is None:
                 primary = errors.pop(0)
-                for error in errors: primary.add_note(str(error)[:1024])
+                for error in errors: _add_note(primary, str(error)[:1024])
                 raise primary
-            for error in errors: primary.add_note("owned descriptor retirement: " + str(error)[:1024])
+            for error in errors: _add_note(primary, "owned descriptor retirement: " + str(error)[:1024])
 
     try:
         if source_spec_values:
@@ -1469,7 +1478,7 @@ def run_worker_processes(
                 if source_spec_values:
                     fds.append(admission_delivery_fds[spec.worker_id][0])
                     admission_delivery_fds[spec.worker_id] = (-1, admission_delivery_fds[spec.worker_id][1])
-                close_all(fds, () if policy_child_endpoint is None else (policy_child_endpoint,), primary=sys.exception())
+                close_all(fds, () if policy_child_endpoint is None else (policy_child_endpoint,), primary=sys.exc_info()[1])
             domain = f"{socket.gethostname()}:pid-{process.pid}:worker-{spec.worker_id}"
             bindings.append(
                 WorkerBinding(
@@ -1539,7 +1548,7 @@ def run_worker_processes(
                 for worker_id in consumers:
                     fds.append(admission_delivery_fds[worker_id][1])
                     admission_delivery_fds[worker_id] = (-1, -1)
-                close_all(fds, primary=sys.exception())
+                close_all(fds, primary=sys.exc_info()[1])
             source_bindings.append(
                 SourceBinding(
                     source_process_id=spec.source_process_id,
@@ -1561,7 +1570,7 @@ def run_worker_processes(
                 {**processes, **source_processes}, deadline=cleanup_deadline
             )
         except Exception as cleanup_error:
-            error.add_note(f"owned child cleanup: {cleanup_error}"[:4096])
+            _add_note(error, f"owned child cleanup: {cleanup_error}"[:4096])
         join_stderr_threads(max(0.0, cleanup_deadline - time.monotonic()))
         raise
 
@@ -1591,7 +1600,7 @@ def run_worker_processes(
         close_all((*read_fds.values(), *source_read_fds.values(), *source_ack_write_fds.values(),
             *status_read_fds.values(), *control_write_fds.values()), policy_endpoints.values(), primary=error)
         try: _terminate_processes({**processes, **source_processes}, deadline=cleanup_deadline)
-        except BaseException as cleanup: error.add_note(str(cleanup)[:4096])
+        except BaseException as cleanup: _add_note(error, str(cleanup)[:4096])
         join_stderr_threads(max(0.0, cleanup_deadline-time.monotonic()))
         raise
 
@@ -1986,7 +1995,7 @@ def run_worker_processes(
                 all_processes, deadline=cleanup_deadline
             )
         except Exception as cleanup_error:
-            error.add_note(f"owned child cleanup: {cleanup_error}"[:4096])
+            _add_note(error, f"owned child cleanup: {cleanup_error}"[:4096])
         join_stderr_threads(max(0.0, cleanup_deadline - time.monotonic()))
         final_stderr_context = stderr_failure_context(
             all_processes,
@@ -1997,7 +2006,7 @@ def run_worker_processes(
         if isinstance(error, ContractError) and final_stderr_context:
             enriched = ContractError(f"{error}{final_stderr_context}")
             for note in getattr(error, "__notes__", ()):
-                enriched.add_note(note)
+                _add_note(enriched, note)
             raise enriched from error
         raise
 

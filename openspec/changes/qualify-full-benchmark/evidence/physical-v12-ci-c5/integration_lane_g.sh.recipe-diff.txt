@@ -1,0 +1,16 @@
+2c2
+< # Amendment 7, task 6D.8: nine physical integration tests on C_Q1''' in the root (precedent 5.6).
+---
+> # Amendment 9, task 6F.5: nine physical integration tests on C_Q1''''' in the root (recipe: integration_lane_e.sh of 6D.8).
+6c6
+< OUT=$N/integration_lane
+---
+> OUT=$N/integration_lane_g
+11c11
+< [[ "$(git rev-parse HEAD)" == 0aeb955bdf49d35ddb429c6a8e83d897608b00aa ]] || exit 64
+---
+> [[ "$(git rev-parse HEAD)" == d1a78805dd41f9f946e3f6c4ca673bfeced228b5 ]] || exit 64
+13c13
+< cp $IDS $N/integration-test-ids.txt
+---
+> cmp $IDS $N/integration-test-ids.txt

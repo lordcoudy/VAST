@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "reviewed_commit": "f83de10a4ea72ba59ee899130bb9f26bf6bcb70c",
+  "scope": "planning only",
+  "code_or_physical_approval": false,
+  "reviewers": [
+    {
+      "reviewer": "separate Codex reviewer /root/gate2_v8_review",
+      "verdict": "CLEAR",
+      "evidence": "independent task final response; source and B originals inspected; HEAD checked before/after",
+      "cc1_disposition": "direct version remains unavailable; metadata/banner cannot be represented as direct measurement"
+    },
+    {
+      "reviewer": "Grok CLI 1.0.60 default configured model",
+      "session_id": "01a1446f-ef6a-70d1-b5a3-edc2a08d69a3",
+      "verdict": "CLEAR_WITH_NOTES",
+      "evidence": "gate2-review-f83.grok.final-response.original.txt",
+      "dispositions": [
+        "Existing B1 hashes remain authoritative for reached crti/crtn/loader/libc_nonshared/libgcc.a; do not recover extra paths or widen F2.",
+        "13 member sizes are planning pins, not captured source-stat acceptance; actual capture mismatch stops.",
+        "D uses resource.setrlimit byte units, never bash ulimit block units."
+      ]
+    }
+  ],
+  "required_ci": {
+    "run_id": 38892918550,
+    "observed_status": "in_progress; host diagnostics passed"
+  },
+  "delegated_approval": false,
+  "next_revision": "Root-P0 actor and D phase/control budget changes need their own exact-commit review/CI before code."
+}

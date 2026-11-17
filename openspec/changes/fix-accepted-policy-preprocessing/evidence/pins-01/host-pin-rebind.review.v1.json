@@ -1,0 +1,3554 @@
+{
+ "current_source_inventory_sha256": "e5e5052a8e37ba939047ec8c0ce1628c54c6c35ee433b44ef9ff70c489398dee",
+ "current_sources": [
+  {
+   "path": ".ci/fixtures/additional-origins.v1.json",
+   "sha256": "17ece17e81d2208cf56e065a47fc11cecca9ec84e5901f299ccf71b19e7125e4"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_authorization_receipt.json",
+   "sha256": "9eec424ef1112efc46283d9dd644782d3e6f67184f32cda7eada73c8bbfec803"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_frozen_reconstruction_v1/kpp_frozen_reconstruction_v1_manifest.json",
+   "sha256": "043cb90be4a16bbc0d636236a6a2c5d2c63f187d94aadf8358c9871bf8e6751a"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/kpp_iss_publication_v3_authorization_receipt.json",
+   "sha256": "eee7a49472077ff83bd9a9f3cc67a462c4441b0c841bc64d75859271333732ee"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/kpp_iss_publication_v3_manifest.json",
+   "sha256": "9a9cf3e08be159bfd4bdeda1d9323b13102980322bde03d9b061e749c1d3fa24"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/iss_v2_underbody_metadata.json.gz",
+   "sha256": "62e833612264253f59ec3b87b9593da69a0fd83aa297ac5e8f6ed989a222c0ff"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_extraction_receipt.json",
+   "sha256": "f160ce153804f92dd02068ad48547b396636bd2cb7dfc8fb39114210f23a0e05"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_materialization_receipt.json",
+   "sha256": "dd0d2aa38da1281a750806858b555b994a9dcf3c9bcd35e8379dbc9d339f2b33"
+  },
+  {
+   "path": ".ci/fixtures/corpus_metadata_v1/data/videos/kpp/kpp_iss_publication_v3/receipts/kpp_iss_v2_transcode_receipt.json",
+   "sha256": "f78406237d539224a25c38bf40f913f18069e120e8e66e9d11270ff88ceb5470"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/damage.openvino_cpu.json",
+   "sha256": "3476e618336c998672915b96bef1fcb07484cfcc7b0d1775aefc20e18da5961e"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+   "sha256": "e26d41631a1ba92ad493d9a75c80f7a46736c3391efc4b84ba5980d6383e3733"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+   "sha256": "78f61d2d5c0a29cd760aaf77026a7ea8556ff6ed8592c310c79da83eb590f58a"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+   "sha256": "2866a754c38ee3d0645eb2aa71e64e25a5efe51b3b4146a4c4e642956af7b518"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/index.json",
+   "sha256": "45ce0c4a43cf7de91a9fd14902fe0047bb35fb78f5d2e2dc8d70062bc43b0d30"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+   "sha256": "443de143f6a3b38eae7294ed6c1b38408c743b758f709de1a04063cb7b1a122f"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+   "sha256": "bfc531a7c3ca1f020cd01776dbd2084cefbffbb131980914a808ab5e9ffa4cfb"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+   "sha256": "f92be63e67f1cc147e70a34a54258d219ec436b9ca5dd362e682134d32446ee7"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+   "sha256": "b9c37f22bf38f4757a991dddd7e51de27aa904210d29082193fd7b5f08987aa3"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+   "sha256": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874"
+  },
+  {
+   "path": ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008e/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+   "sha256": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/daemon.info.stdout.bin",
+   "sha256": "4fc97e33301bc90e11b8560974d7de8a4348f3056a69730ef4823f883893fb88"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/damage.running_inspect.json",
+   "sha256": "e2b93751a3c003edcaf5093fdb1cdd5f3a879923f88e13bdd7382cc11bb5d6c6"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/foreign_object.running_inspect.json",
+   "sha256": "5db2e25859569177302077c278de00b0637cedc67e0d15160ff921743d587d9f"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/plate_number.running_inspect.json",
+   "sha256": "5913a4d12b268001523d471ab48ea597ea109229db00c22fa0943d92c8cfdb9b"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.damage.json",
+   "sha256": "b9687d94bd84081d01d887a988d02c5d2315a78050cc595a4ff31582d895e75b"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.foreign_object.json",
+   "sha256": "17918e28385b3a7f463fc34f2f26b9bb13d12a8cd7b226f17c2e5de6c6cd03ad"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.plate_number.json",
+   "sha256": "657212b2fef54650e664994c66d26005df514dd9cd7d7d3f637ce2b8d085146d"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/so_peercred_diagnostic.vehicle_type.json",
+   "sha256": "b5ceb31b11c89802275e018a260b6994a8d7ad7743c77c34c062af40097345d8"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/peercred/vehicle_type.running_inspect.json",
+   "sha256": "4dd5b6c8e868b33b046e8d16ad297d5b862481e47eb97420f7289ad3b174d4cd"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/damage.inspect.stdout.bin",
+   "sha256": "26bd6480b2d42b5763da880673f9dfdcf82fcba21a2b786ec85d02582dbd5e6a"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/foreign_object.inspect.stdout.bin",
+   "sha256": "9d078a307fc5f2f5685794782de654c595ddbd824e51bf7d55280f9a1e10d613"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/plate_number.inspect.stdout.bin",
+   "sha256": "e8ff8e3fe8700c9315b083ba85426aa8b69c37663f11fea3d63973a57ca7314b"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/v2_mount/vehicle_type.inspect.stdout.bin",
+   "sha256": "744d152b32db1544a1c982572d6ec5188f880f9038811d17fbc030590d3745aa"
+  },
+  {
+   "path": ".ci/fixtures/kpp_docker29_replay_v1/zero_mount/probe.inspect.stdout.bin",
+   "sha256": "310d38ce48f77f9bbcbdb94a30f7d951dd97b7640db6c22d0d5dc82cfb59fc69"
+  },
+  {
+   "path": ".ci/fixtures/origin-manifest.v1.json",
+   "sha256": "6e14bd04cc172000858ec9dce213520cd01f62575ece7f7e3340d83d3077a28c"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.openvino_cpu.json",
+   "sha256": "7f1b6e3f428497d381b2350a0d0faccc7722d82bcf54589fd17d5af75a828f0c"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/damage.tensorrt_cuda.json",
+   "sha256": "e686a877f3f9e6162ddbf2e0d12dc2d8565d7da1c772bbc94304c719d9712ea3"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.openvino_cpu.json",
+   "sha256": "1149880ddf9d75a725a0a94618130f8bbf019fe27214126ea40725b648d2ec3d"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/foreign_object.tensorrt_cuda.json",
+   "sha256": "99d42bc819bd9db5716a3a4429c1c706b9631ed58510835fd49cb08f89b64f73"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/index.json",
+   "sha256": "8ff3d495b80024eca2067a43239fc984961629465288d307d7f8f4de32c31e87"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.openvino_cpu.json",
+   "sha256": "dddd24afb8ff3740b04973145233f4a48250d7f64e1acf3e5f11d5a113b43b49"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/plate_number.tensorrt_cuda.json",
+   "sha256": "34b8d578ac0b615ff79be2ae4ae7dc59f91f2320e54d91f703cc068dfc8b7acd"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.openvino_cpu.json",
+   "sha256": "1981a6ca515e0138b47153bdc0e60799eb65e1662963cac43dc6b53fe5377e0a"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/bindings/vehicle_type.tensorrt_cuda.json",
+   "sha256": "670f1a97b51d9460915e468292c139c3b49d3a731e95c2391e2c7203ddb93417"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/cpu_runtime_probe.json",
+   "sha256": "e6008e33e137d315f1672adb2e241004e2ea08f1220467dcbf089a566060ddfb"
+  },
+  {
+   "path": ".ci/fixtures/publication_worker_manifest_v1/gpu_runtime_probe.json",
+   "sha256": "24986e7aadd93ab9bb72704c5a83d568bc0e4fd70154803e303b3bda5aa4a752"
+  },
+  {
+   "path": ".ci/integration-test-selection.v1.json",
+   "sha256": "09e9268069e88b957f9ae54a827960bc18ee13a00d4319994d108d3cb81a0805"
+  },
+  {
+   "path": ".ci/model-assets.v1.json",
+   "sha256": "225db21da5943a34d35c41e61c4fcda9623dd4e5eb973d7975d450ff421edab7"
+  },
+  {
+   "path": ".ci/requirements.txt",
+   "sha256": "9972a44ffd57d27ff351d2ffc168043d688af6042a4c4a59f4f6c21a77adecef"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.accepted-policy-repair-20261011a.json",
+   "sha256": "562ce48d1c2a10c53ec670a06896fda9aee4cacc9e64814fdf70ea5fc35df7b1"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260924.json",
+   "sha256": "665588a868fedcc892a0ec8612d86ca473237330affe02f9d61d3f19bc46e927"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260925.json",
+   "sha256": "f5651aac2d76f0a0469e6639d1d1726f11ade30537f69c7d588d530b970a8da1"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260925b.json",
+   "sha256": "5714bac01a61dcc91fa8731fc50909fb108ec7458b21848801d3cd43f66ed9a4"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926.json",
+   "sha256": "8657a98929e42d35880a96974378d477fea8c13f325ae19a8210bb5b5c8434b0"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926b.json",
+   "sha256": "cbbf3f2fc30ac2b61a8e78bb9593b5956528be34e594857c7385e12b44029fb0"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926c.json",
+   "sha256": "05c90d6ac738549253d3dca2201b2d06536b208560bcd1e174507ad345f66d67"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926d.json",
+   "sha256": "ca2764eba4101a1892374784bf720bd37a6457d6a4c69fdb9e7bf9e84d6c33e1"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926e-retry1.json",
+   "sha256": "d2c23b05ba69b85b6dbd5e32185a32d24b4c28e27eb7bfc94043ca5bb0018b52"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260926f.json",
+   "sha256": "7eb5974c6e6f150345dc9581fb99cbbb535492cf3927a069b3d064facc6648bc"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260927b.json",
+   "sha256": "c1c4063aea61e259b646f307c53f3c90f6144dedb58e201169b859d9f5b98cf7"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.fix-benchmark-20260928g.json",
+   "sha256": "9cd1b4e7fee54c97d81618862dc20bf3b8689efd2127c499262a3974f65be18c"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.qfb-20261007a.json",
+   "sha256": "87449b87d863ff8cf526ee01716827ed5b9d2400ff4ecac086b3f7835904472d"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json",
+   "sha256": "be0cf24db5f3b964f7dd3552dc33db8230c01811f6ec8ca80e48e8076a04500d"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008d.json",
+   "sha256": "2079f480ceacc83308b4d964c0ddf75559e898e2f07997f47d01fdc717a42316"
+  },
+  {
+   "path": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008e.json",
+   "sha256": "788908832d73678b94c9c8e6cdf67858091e3f456e3de998cbe8d1463f5bc605"
+  },
+  {
+   "path": "configs/analytics_execution_layer.v4.json",
+   "sha256": "49bea93e40be5ff535363a0533730e6aff1492be14b4fa6ed84fae271be2c10c"
+  },
+  {
+   "path": "configs/analytics_execution_layer.yaml",
+   "sha256": "d9bec961f22395c005ac6866633aeeb8b9a829fd39bd776776a3b0cd84526033"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.acceptance_receipt.json",
+   "sha256": "26da3401dac32a2ded7b012fa0af74ad99d783aa531feadedf936196fefc1c0b"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.assessment.json",
+   "sha256": "e0b5200f662662d9b212e0bcfa50e904a9d8f023ca418ee9abdbd50c237a0152"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.acceptance_receipt.json",
+   "sha256": "c8f141e99e83b581040eceaaa52cb9e848492e6eedb1775185d936cd4777b117"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.assessment.json",
+   "sha256": "deb6837f0ab2a62f571c6cdced9ca56ddc43a6151a59711586cf3d422621c29b"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.transaction_bound.acceptance_receipt.json",
+   "sha256": "71c299daf9f7b8f2c90177c01a042ee2a0a5e9ded1ac6f874e6b76f538524a61"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.transaction_bound.assessment.json",
+   "sha256": "a3f9c96237889c1db8c84b38706f4953951d2e4baacf3d218e0d297c836fc2bd"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.policy_calibration_v2.yaml",
+   "sha256": "c2104fb6db3a32ef842c53d86812c6c5d11f33a507381322495d560aec522bf4"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.accepted.yaml",
+   "sha256": "a570b8cc4bcc66119930f01239ed0fb2de7accd449b769d5a4b0511d70fb72b6"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.accepted-policy-repair-20261011a.accepted.acceptance_receipt.json",
+   "sha256": "394acefdaafbe202e2efea62f36a6da393f62555950fccd466772f5d5edc9e64"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.accepted-policy-repair-20261011a.accepted.assessment.json",
+   "sha256": "eb8b4d5265ae807e85db8e74e21ec591b7e337e9803b5964d5a46edf0d65655d"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.accepted-policy-repair-20261011a.accepted.yaml",
+   "sha256": "fed63c1b9c5d985099efb4668d6f96363f71b74c0fa200d9372ff69986a4b662"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.accepted-policy-repair-20261011a.yaml",
+   "sha256": "93a0884909665637b5b7a97dcf66c94f1b21264cdd8c1a5cbfb374def99fb390"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260921.accepted.acceptance_receipt.json",
+   "sha256": "897e287685321966cfb014c1a727596f4be54e726413b4c51707e16295cbac2e"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260921.accepted.assessment.json",
+   "sha256": "158ea7b3b76f2849350a3c15cc61cf05c7e3f2faf5d81fc3176dc7c129eba9e2"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.acceptance_receipt.json",
+   "sha256": "cba6c501ae1522b8e0569cc2db6c251ee43b96d237ef9dc544810ee66dee8051"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.assessment.json",
+   "sha256": "880c07163505ac81bd46c998ace14f7f5efd6682c8b11a48b1f19ce76d11e055"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.accepted.yaml",
+   "sha256": "483f0e93dc2721f39f82941509fb1bf5708f44ce8c9f10203e782ee3950c8ac3"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260924.yaml",
+   "sha256": "02213179b1d3bde25795d04a710fe353ac8de80b9c28bd779dd1620aa6abb2b8"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925.accepted.acceptance_receipt.json",
+   "sha256": "09f2bfac055411b1427594a311c8ee49cffdefa2fe3164c40a1e9f02a0df157c"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925.accepted.assessment.json",
+   "sha256": "19f29a2958d734af112e1814231e683cf9a67ef61b114f297167d3c86995519f"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925.accepted.yaml",
+   "sha256": "2461f4d4394c8ba3d038e2e201f4d6e252503d3fa34de5486f5551356af47dcb"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925.yaml",
+   "sha256": "fc30aa855fb36c9768bd6e7564c466739988e8c5a7287cae4a6afdd796ba0a07"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925b.accepted.acceptance_receipt.json",
+   "sha256": "133cdf14095ba7775eb45313ee0abdd0bd22b9e34a110f9d47de32fa3a4b064f"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925b.accepted.assessment.json",
+   "sha256": "e051cb20f2c81b92c9d57911434fe4fbbbbf226c23b4047193dc1627f89d42fd"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925b.accepted.yaml",
+   "sha256": "92a846f4fdfd4fca108308977813f4db0343febbf2c0595463f9f558c006abfa"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260925b.yaml",
+   "sha256": "1f1055c77e4c379735f8c397fa1d25121bc9164438589248dd4c26831dfda920"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926.accepted.acceptance_receipt.json",
+   "sha256": "52a33a838f4a637ed699b65c6a113bcb9b66a52eec282c3a5468a633ba64b1c8"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926.accepted.assessment.json",
+   "sha256": "b5a787b2dae6bf6342d6fc7e765d5a44aca3494a9bbdaeeff24ac1dbe9956695"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926.accepted.yaml",
+   "sha256": "2475bda876762d980f9a73698765821d11a0a956920ca6f30d7952002c88ffa4"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926.yaml",
+   "sha256": "bc2f806a05d2982dcd58317e951bb5af62656b43b3ef6a30f30124792a87ee57"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926b.accepted.acceptance_receipt.json",
+   "sha256": "d6a5b75914c97350a30a63ad685cb615b9f865f2c1027e80ea37ccac8974362c"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926b.accepted.assessment.json",
+   "sha256": "4a4467899c30edfe361f1c889110b07f1fa6f1ca01da6bc901eb3dc354ec63c2"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926b.accepted.yaml",
+   "sha256": "65d3507ff7086b43b2295644672e03ed8ae636708d52a5628e9e41aba359bb3d"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926b.yaml",
+   "sha256": "2bc91ea1aa988bea23bbb83f0e8b5d85f03c77a25e8c1aa21bbd8bf1221b56e4"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926c.accepted.acceptance_receipt.json",
+   "sha256": "9169964aec0ea36787a484dda8928ad98702f4dd35250b58a2571125269f2e90"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926c.accepted.assessment.json",
+   "sha256": "f39f7af38fa2e7c9a5cd6602c39aac177d5f4bcf54f3ae7f6cbd6cd1dbbd61fa"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926c.accepted.yaml",
+   "sha256": "ade45d05eea61da50e1c4ff1f5ce09a849900167e13a3e59b0594530067ece72"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926c.yaml",
+   "sha256": "6144fde07e91c1f87ad8ee164143f41598720825d60b9d2d7f4690c02c03e871"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926d.accepted.acceptance_receipt.json",
+   "sha256": "61c1d2437d2cc249724aed927717971518fdf14713e558d5a08e01d88aa1b167"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926d.accepted.assessment.json",
+   "sha256": "05ba1230a4523646b2b1f8c8dc424dc1020225112cdfc04bd83a5eaa49e03fb0"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926d.accepted.yaml",
+   "sha256": "db8fa7c32c871b509fc5a34b21f694ff4131dbf1590c367dca8ce3acae795bb0"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926d.yaml",
+   "sha256": "ae1fca46fff6e737ec5ebab7d5917471fe4900c04e09919eaffc7c38fafc34f2"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926e-retry1.accepted.acceptance_receipt.json",
+   "sha256": "b51a1c8410641637fd13d250d17fcc681f1f75086f59a63045fd3985934f2b74"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926e-retry1.accepted.assessment.json",
+   "sha256": "b321f04eb1adc48929355eead1b5fd816bdec96ec5d8a356df34a2cff527f781"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926e-retry1.accepted.yaml",
+   "sha256": "36c0ea1558a3a7b26dae1891bb0a8fba473254e5452ee898c144cfff829fc077"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926e-retry1.yaml",
+   "sha256": "638fe2c324bef563f42f1580887c5066faed4c8d1eac01c96cd0ffc41c56d7ef"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926f.accepted.acceptance_receipt.json",
+   "sha256": "79875464a28d7b4d713ff98b7de92edfb112f082b984389264e70ddf56681f35"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926f.accepted.assessment.json",
+   "sha256": "640013f38261d49a10c1ddd19600022e167e35c614732afaad9b959492ca2d1a"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926f.accepted.yaml",
+   "sha256": "a686076a61ad898a1cae54ccd97a1b41b344a9c8095325957759f33390a87c19"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260926f.yaml",
+   "sha256": "dcb4258815db15b5fed041db517a199959d4bbd8bfbf1feead6df9faf3446039"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927b.accepted.acceptance_receipt.json",
+   "sha256": "fe695e6c7d020dbe349d1ecac3b047a22f65aa1cfe25474fdc0aee23d8b1d3ac"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927b.accepted.assessment.json",
+   "sha256": "364a6e5c6dd997d6591901cc19fb7e753ed62c5032b3808c9bda623b3b543e80"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927b.accepted.yaml",
+   "sha256": "908f247f3ec0a0927b8ee7bd7cd3c6e25bd8031c748d6229a27320f001c053d9"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927b.yaml",
+   "sha256": "57626ad1f567c00b71aa7056bb231bfccb408d50754f19bc2711742000e1c36c"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927f.accepted.acceptance_receipt.json",
+   "sha256": "4fadd576e4fd77be902f0dca26858555c04feb0113576b661255d0521ae2538e"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927f.accepted.assessment.json",
+   "sha256": "85dc2a011869d1f4955587e8e002ca8770029d3956c391d64b4979d053060510"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927f.accepted.yaml",
+   "sha256": "14c5ff75a78efa967808c32da7a8c70d260fe39644699bf7b0bdf025778b69ab"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260927f.yaml",
+   "sha256": "72fc3186c32159a7c82dea417cbd1408cb5159fbf8a491f5ac25e6d113d177b3"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.acceptance_receipt.json",
+   "sha256": "6f50d92e74ab7750f262d2697b0fceeb979d4f221eda90a0223cce4d5ff7a169"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.assessment.json",
+   "sha256": "7b0faca95399f3317f893e52780a44aeeec151e1aae94639f931f28cbea9b421"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.accepted.yaml",
+   "sha256": "36511595d6c37685f97add9e51f9105e901aac36fa1ee1a141a623f02cfbb6b5"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.fix-benchmark-20260928g.yaml",
+   "sha256": "e040cd816b46d6d98bd6bf18fa45b6d57d5f8326819fbbecfc38b7b1f61f9bca"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.acceptance_receipt.json",
+   "sha256": "fcf9a7dec2573a1a2f8770036b998ba95b67eedfefb76d51d3ffbc11f7abee15"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.assessment.json",
+   "sha256": "02376a0c240b1d0fcd2fb2726e2e22e4314a4e47b48a1db7f5b18e872db0f4fe"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.accepted.yaml",
+   "sha256": "134ef507ff5e2b845840d547c947070fd0af78e0039063e3930c249c3f3eebb1"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261007a.yaml",
+   "sha256": "43492f27a8d8b13d3c846811496f18c5f276bcf6af2df32a7cd0f61bea248f18"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "sha256": "24f8e5c7ae5c8b57c530c9552a539d533b34933af6be3ed282a0b3cdb5ae850c"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json",
+   "sha256": "91e665b883daf2530d788c20859710b63e52b76b642018065efa97d5d2494657"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "sha256": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml",
+   "sha256": "3ec0ec678a191fd9213889ab7b96ba081f2227da6366f6e5bc1bce1cb468bcca"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json",
+   "sha256": "0c0c786dbb39b4c92a224b12a7a1008427d2d3793a60d9675d60eec508112691"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.assessment.json",
+   "sha256": "939215769022d4ba391fe8d7ab017a7214f683dfc350a81d66a50eef05913232"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml",
+   "sha256": "bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.yaml",
+   "sha256": "ec9b28d40b50841fec712b237b851e92cb363e06f2d5f043c58ccf4946f9252e"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.acceptance_receipt.json",
+   "sha256": "de62d6f97b966c38d3a1f6394394e087c488837ac17b2fa303a429572df3cb6a"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.assessment.json",
+   "sha256": "aea90088d3c60f35a5925004ed420ca094ad72bf68209022d02f1240fdfbefa1"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.accepted.yaml",
+   "sha256": "c125e54be4a3ec701c8840285fc0cafbf7549de29db27fd3029f1abbd2d26dbe"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008e.yaml",
+   "sha256": "eed38afdc1ba212c37350d70cb0b09322eee73b8be5950075de9174d34600add"
+  },
+  {
+   "path": "configs/checkpoint_analytics_model_parity.yaml",
+   "sha256": "09b749d53c3a4842b3a376730f1403866962cba0ecd77e8f41f5a366bd7f009b"
+  },
+  {
+   "path": "configs/checkpoint_analytics_models_openvino.yaml",
+   "sha256": "48de16da0ea290518053349556671ff08c309fa01b6d502845f233b7e136eeca"
+  },
+  {
+   "path": "configs/datasets.yaml",
+   "sha256": "6f16a46c6a92c6aecd51cf669e4c5731f182a58b6a0f40dac7eff9b26d9d6086"
+  },
+  {
+   "path": "configs/experiments.yaml",
+   "sha256": "318819a9d79e57f5c2110c7819a889a2eb078ce13283fbba1d5d11593c26e48f"
+  },
+  {
+   "path": "configs/hosts.example.yaml",
+   "sha256": "23d1e0bae98f58f219a0eb371ce0eaca6845b3d739d560bbc23b463c8c9111c2"
+  },
+  {
+   "path": "configs/kpp_legacy_iss_v2_secondary_sensitivity_decision.json",
+   "sha256": "b6d551eda006897d24e76946ed7d6be3e2b7b04eeb4341770dad79264408af72"
+  },
+  {
+   "path": "configs/publication_image_build_v1.json",
+   "sha256": "c13f12001048471e20400e5a0bb37df5efa01e6c936772ae9aaea5de548a6b22"
+  },
+  {
+   "path": "configs/publication_qualification_image_refreeze_v1.json",
+   "sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7"
+  },
+  {
+   "path": "deploy/analytics_execution/Dockerfile.openvino",
+   "sha256": "f90a3f763ee07cdced97af3716fb7d3a24a3c8b1b15cb0e94b0c15fe8616159b"
+  },
+  {
+   "path": "deploy/analytics_execution/Dockerfile.tensorrt",
+   "sha256": "c8dc088959e4b43303420931aab7834e67063beb80de613934e11b758e03db82"
+  },
+  {
+   "path": "deploy/analytics_execution/README.md",
+   "sha256": "b9dcb854d764095e79c6be91885f842cc6d5aa5a649ca3e7eae313f4605c4988"
+  },
+  {
+   "path": "deploy/analytics_execution/openvino_worker.py",
+   "sha256": "ab7b50ef7143485594bf7426225a464b7d0299490ad7c3b75195b150547c53da"
+  },
+  {
+   "path": "deploy/analytics_execution/publication/openvino-dependency-allowlist.txt",
+   "sha256": "c6de183e6bbb3d3cea16cfeea98d22d64d1e034ae87a568111284f474c002d1a"
+  },
+  {
+   "path": "deploy/analytics_execution/publication/openvino-source-allowlist.txt",
+   "sha256": "b1a42fda639e43e61d1d3ab20161f9a294754d9157b0b54be23de02a5e62e3e4"
+  },
+  {
+   "path": "deploy/analytics_execution/publication/tensorrt-dependency-allowlist.txt",
+   "sha256": "c05e67bd428175b99aa15e9325d1e7f6f6e5258e1857c0da15509ddda76383f6"
+  },
+  {
+   "path": "deploy/analytics_execution/publication/tensorrt-source-allowlist.txt",
+   "sha256": "6fefe6f415200d4a10025e3efb9e28fc22737dee84ca7cb5e40be660b8667722"
+  },
+  {
+   "path": "deploy/analytics_execution/tensorrt_backend.cpp",
+   "sha256": "859b3380f54a458cf8742c0713ec0cad9dfea649a75183ca4d8938420ede2d88"
+  },
+  {
+   "path": "deploy/analytics_execution/tensorrt_worker.py",
+   "sha256": "8032150efc66e91c79aba37de98834f50238708aa9050cb8230d2a1ed96966d1"
+  },
+  {
+   "path": "deploy/custom_cpp_cuda_qt/adaptive_scheduler_app.cu",
+   "sha256": "2b5318e048a6cb926578e4e6c364dd04cfded6a97d4e550da06b7e85aa60f8d8"
+  },
+  {
+   "path": "deploy/custom_cpp_cuda_qt/policy_trace_format.hpp",
+   "sha256": "ccb932083f7231d7f02be42ee4a613881f43a671e4edf8a3f75e14e3b2f1c23e"
+  },
+  {
+   "path": "deploy/custom_cpp_cuda_qt/weighted_proxy_policy.hpp",
+   "sha256": "01a25493a1fadd92ac9dde09ddb360f527bb001d7eefb73b2e642ee1c556e676"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/Dockerfile",
+   "sha256": "a4dea11619f111b3bb8b81b567a88a07fcd42775b6175990076ca15cf5b013d0"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/Dockerfile.runtime",
+   "sha256": "b901eed6cdb8a8bf2d0cefcfca6c1a1c20059aacc32f6a6e92eb47191c62af0d"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/README.md",
+   "sha256": "3d27bf2f4692b7f51b47af5a1ec6540045b77dfa91ab3f72917009a6ca364b00"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/deepstream_checkpoint_capability_probe.py",
+   "sha256": "45510059c62a1330e65ec77cd59006cc415c9727a8132bbd0dd1028cff6c7d45"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/requirements.lock",
+   "sha256": "3a72778f6b2bbb4f81fc3fa63330d5da557e38a655da6f86f0daf5d8242ebdcb"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/runtime-dependency-allowlist.txt",
+   "sha256": "c63c495e89b109abca372f1b43047ed989f0e5a95779b9004e47ce657635f3c2"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/runtime-source-allowlist.txt",
+   "sha256": "b48b8809cac6924a271a4feba9f0c0630d20cfe9d284eda3868d25a658361553"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/validate_runtime_source_closure_v3.py",
+   "sha256": "226da0240004ec5bbaa20828d31049f4d1b53a9fce51d1c4c3c9ea9ba2f803ce"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/vast_deepstream_checkpoint_runtime",
+   "sha256": "074d1a300f9f4c33249e83d951acdd6bd840231f3c9affa0d83f017cd3dde68c"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.cpp",
+   "sha256": "2cd4e9952e61fec325cdead99ea3e9d8d115750e8993c3e8d9c4fc1dabc25de1"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/vast_deepstream_meta_bridge.h",
+   "sha256": "e286c79b814ed9b46594ed415a1b0c33534d9619ed30d3e5275d6b1157c50aae"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/vast_deepstream_publication_runtime_v3",
+   "sha256": "c28e664a6915ab8f13e7ca8109fde8d12d79658c64b8d3ce3c18f5dcc88639b3"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/PyYAML-6.0.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+   "sha256": "ec031d5d2feb36d1d1a24380e4db6d43695f3748343d99434e6f5f9156aaa2ed"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/numpy-1.26.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+   "sha256": "ffa75af20b44f8dba823498024771d5ac50620e6915abac414251bd971b4529f"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/pandas-2.2.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+   "sha256": "86976a1c5b25ae3f8ccae3a5306e443569ee3c3faf444dfd0f41cda24667ad57"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+   "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/pytz-2026.3.post1-py2.py3-none-any.whl",
+   "sha256": "dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/six-1.17.0-py2.py3-none-any.whl",
+   "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+  },
+  {
+   "path": "deploy/deepstream/checkpoint/wheels/tzdata-2026.3-py2.py3-none-any.whl",
+   "sha256": "dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931"
+  },
+  {
+   "path": "deploy/gstreamer_adaptivescheduler/gstadaptivescheduler.c",
+   "sha256": "833f35287c2e0bbb0310930822b4181c66eaa090dceef62533c0ccf989457487"
+  },
+  {
+   "path": "deploy/gstreamer_analytics_terminal/checkpoint_analytics_model_provenance.hpp",
+   "sha256": "7a4b2800774c25d59808637f10fbfad778394debf16d80618157df84a5e614ab"
+  },
+  {
+   "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsqueue.cpp",
+   "sha256": "f21bbdd2494edc08fa626e5c102bfc1d995e81946ddc7f3ae101505bc45b0ae1"
+  },
+  {
+   "path": "deploy/gstreamer_analytics_terminal/gstvastanalyticsterminal.cpp",
+   "sha256": "b9548761c572aaa4e3878deecba24f312ed35536e95cf220e36425cab67f75e7"
+  },
+  {
+   "path": "deploy/gstreamer_analytics_terminal/gstvastcheckpointprefixqueue.cpp",
+   "sha256": "452414e01a9406cf69d1d95dcd054cbb9cc23a5cff0aaede9a51175d349d2924"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/Dockerfile",
+   "sha256": "a9227721e40c72e21c2e4c2f327dcdf2d93caa4a01d8701df7771b593844bc48"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/requirements.lock",
+   "sha256": "e5ac36aa2ad9cbd78636a2a317d4c19ac04392124e7f70ad8936f0a6472642ef"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/runtime-build-context-allowlist.txt",
+   "sha256": "c90fd7e4b347fdf086924d1bf419d0e03c3335a1e901bcd402b628a5379872bc"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/runtime-dependency-allowlist.txt",
+   "sha256": "f4655c4dbd7eee1da21267a9e3f08cbddc4a18d8e69fda2a8a0fcc4898119072"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/runtime-source-allowlist.txt",
+   "sha256": "5f62b899627d59336e87f95f0d4aefd3398c447482160fe792f1f952ae97bd57"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/validate_runtime_source_closure_v3.py",
+   "sha256": "a71457f0d8a9d49acc208714d08714b67912d200056fdf72e62b5f7f88431d9a"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/vast_gstreamer_custom_publication_runtime_v3",
+   "sha256": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/wheels/numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+   "sha256": "3cdec01fa790a186d430433fdd4d4ffb70eed6f0eeb4bf05c8dbe2dce0a9bcb8"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/wheels/pandas-3.0.5-cp312-cp312-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+   "sha256": "d373ce03ffd84010ed9839fa73672a9c8256990532e158440c0085db7d914b34"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/wheels/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+   "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/wheels/pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+   "sha256": "ba1cc08a7ccde2d2ec775841541641e4548226580ab850948cbfda66a1befcdc"
+  },
+  {
+   "path": "deploy/gstreamer_custom/publication/wheels/six-1.17.0-py2.py3-none-any.whl",
+   "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+  },
+  {
+   "path": "deploy/native_gst_probe/Dockerfile.deepstream",
+   "sha256": "941bb2ea2ade36cf55136a71caed6c65ea44f48f5dde1262be7573b94f79d428"
+  },
+  {
+   "path": "deploy/native_gst_probe/Dockerfile.openvino",
+   "sha256": "7740f862a6d4613501f3751b4f1c9aa1a4ca9135b02b9a8122d13ce0dea9e896"
+  },
+  {
+   "path": "deploy/native_gst_probe/Dockerfile.savant",
+   "sha256": "404fb413c4ae358afa7cd00cb52b295f9dea4e38b5bfb920370e11f85fe7a268"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_admission_transport.hpp",
+   "sha256": "5e68cff5a2ae47a7716cc2f10147be9af60e2529321fc7654f7ecfbf67c0cc1d"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_analytics_execution_client.hpp",
+   "sha256": "8726658c59213c82aad1d8ac42499ba9ae0cf156d2c00bdfbae14b1f96dbb5dc"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_analytics_terminal_transport.hpp",
+   "sha256": "1133706b13443ada600105f3b6897a82e7cf2d3493b04937b58fe4f4a24bf98d"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_gstreamer_analytics_bridge.hpp",
+   "sha256": "18f53922dc6af25d4e24c1c35a11603122d80c04261bfe67c5db149e300e44a6"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_native_policy_client.hpp",
+   "sha256": "29e04b00ccddaae63ea118dfc0a174d860c9b5b3b0983b3cf5b464366a9a3cfc"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_resource_interval_emitter.hpp",
+   "sha256": "6eb7c3b5f6cd31820727b6cd0808707873b9b01a45547a5549b8dde9b7b728b6"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_runtime_emitter.hpp",
+   "sha256": "0ebf100e247cbe7881c6d1b18268076066dfdafa5119823660c5323001175d2b"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_source_coordinator.cpp",
+   "sha256": "e0a90332c678252652d2d3f14c6a5669807315fe28a26e6c4925339949e77c49"
+  },
+  {
+   "path": "deploy/native_gst_probe/checkpoint_study_reference.hpp",
+   "sha256": "2434fbc02ae9b4a6e3ccbe2ad82361e151ce2a7ff53a996bd56ff75c77d51298"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/deepstream-dependency-allowlist.txt",
+   "sha256": "ea34504be944777a79047b36626552642921aa10ad0c8c2c6707fa50fda3f887"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/deepstream-source-allowlist.txt",
+   "sha256": "97aaf5e9880bd84cd8cebb1eebf89e1835dce59b0223e1aa9404fc0cb6ea4336"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/openvino-dependency-allowlist.txt",
+   "sha256": "56987dcbda19e589653eb5cceac8e482f0896b5cd89bd4bb92e6ba8d1aeffcff"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/openvino-source-allowlist.txt",
+   "sha256": "d6325ef592b00ed30e8231df1427e7532cc97904a3ce7e24ffa334bf4dcc45d4"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/savant-dependency-allowlist.txt",
+   "sha256": "24de33ad711ca197a08e9f6d527e36d406f18318dc2cd53d5420c3855691a86c"
+  },
+  {
+   "path": "deploy/native_gst_probe/publication/savant-source-allowlist.txt",
+   "sha256": "8a96c12ce3d8928226e1bbb2674c53738ad9d8701dbcdbb3a228ced24892933c"
+  },
+  {
+   "path": "deploy/native_gst_probe/vast_native_gst_probe.cpp",
+   "sha256": "a79f59a18cac64eb928c9c8f254ba339dc8d39d12e541b02317bdda1a7a23a8e"
+  },
+  {
+   "path": "deploy/openvino/checkpoint/contract.json",
+   "sha256": "95d10080a04d9b5010c4c37acd6bfa73cf0e65cf09b99c493ebc1ece6102a568"
+  },
+  {
+   "path": "deploy/openvino/checkpoint/openvino_gva_gst_adapter.py",
+   "sha256": "b42d2d94bebc13a33b7eb6705f931a015f3998f1f66c8be964b202f3c8d421ab"
+  },
+  {
+   "path": "deploy/openvino/checkpoint/probe_openvino_devices.py",
+   "sha256": "a8f1c975f23f098a0d9e8e2cd7f535721b7335d7ec2dd9cd16dbdf0e5ee8b0bd"
+  },
+  {
+   "path": "deploy/openvino_gva/publication/Dockerfile",
+   "sha256": "fc9bb6486e18e8242b86be901d461f7a7f270d8cf93d8f63d0644253c134db52"
+  },
+  {
+   "path": "deploy/openvino_gva/publication/runtime-build-context-allowlist.txt",
+   "sha256": "d169204f89573eede568ec1c401e3ae3157a3774be39ac0815b6463e4f329d82"
+  },
+  {
+   "path": "deploy/openvino_gva/publication/runtime-source-allowlist.txt",
+   "sha256": "a285cc9976006aed6b4401fe7e85b72a9c2884a5d842c8d726d1710b4e5e7291"
+  },
+  {
+   "path": "deploy/openvino_gva/publication/validate_runtime_source_closure_v3.py",
+   "sha256": "fe98fc9893b56e1a6f8c02e87a84f1f6921a772042528b9842bc0eb8a1113d74"
+  },
+  {
+   "path": "deploy/openvino_gva/publication/vast_openvino_gva_publication_runtime_v3",
+   "sha256": "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae"
+  },
+  {
+   "path": "deploy/savant/canonical_distributed_module.yml",
+   "sha256": "d33892d6886702cf4b67d8f822d3d4255bc0b323b67a0706de300a3ca308d6e1"
+  },
+  {
+   "path": "deploy/savant/canonical_heterogeneous_module.yml",
+   "sha256": "2037010bb05b2f34a48e0469c8336e9b65fbf2f30481fa13561cb4954ca83d63"
+  },
+  {
+   "path": "deploy/savant/checkpoint/README.md",
+   "sha256": "0229fed9395160598c101491cb70d63c6e5ab6834f871d7f71ea7e242c9809ba"
+  },
+  {
+   "path": "deploy/savant/checkpoint/savant_checkpoint_capability_probe.py",
+   "sha256": "44c1668d64d9b789c5f985083c48876df82f1efeee1c4db2f00eef1d12026d9a"
+  },
+  {
+   "path": "deploy/savant/module.yml",
+   "sha256": "79e013f0f33128097c55c17731f5cfa5810a5b89b1591a9162e16de2529eca07"
+  },
+  {
+   "path": "deploy/savant/native_probe.py",
+   "sha256": "fb47ab715c919671bf59c535e9bc94b4e869a6a84f81cb8338ab15f6f70ff657"
+  },
+  {
+   "path": "deploy/savant/publication/Dockerfile",
+   "sha256": "450fab7764c615175ff89166e1df9bf8cb2e2b764e195c2d6e3bd9e794af4734"
+  },
+  {
+   "path": "deploy/savant/publication/gstvastcheckpointbranchqueue.cpp",
+   "sha256": "6458a085aa9311b520e8ab64f20a9056950a3930928ce413971627ccd0a6dff8"
+  },
+  {
+   "path": "deploy/savant/publication/runtime-source-allowlist.txt",
+   "sha256": "8feba58da0374cc55d4be00265a639bd37a18be11f86625caf6e3d08b13622f4"
+  },
+  {
+   "path": "deploy/savant/publication/savant_publication_runtime_v3.py",
+   "sha256": "26cd00dd8b3f06f1805eb6b936f49bae72718fd61eb2c1c6cda233a45a94ff99"
+  },
+  {
+   "path": "deploy/savant/publication/validate_runtime_source_closure_v3.py",
+   "sha256": "f42c86eb73ce3b35d23fe9ee7ef97effcdf27f3b1fda7834d95a86192fef3c43"
+  },
+  {
+   "path": "deploy/savant/publication/vast_savant_checkpoint_runtime",
+   "sha256": "4705c34256980b51636950978d292b91d8cf688aa7e26b3248c2bb553435b6b6"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_artifact_bytes_observation_v4.cpp",
+   "sha256": "ff56ca8cc84a89eee2307580e8f0810690daf375672dea3a01f4deed2ec03f95"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_artifact_bytes_observation_v4.hpp",
+   "sha256": "293e1050d74c36c7a57caf06f37a11f910491f927f2b1bbf36ad52c18e84faa3"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_contract_v4.cpp",
+   "sha256": "1f1352dade3b31f68dc5ff7c55a598b36c5399416d4855e71e5ab99ca5097396"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_contract_v4.hpp",
+   "sha256": "c260f579fb52f89795e4c896f7dfd4f7bc4ad972158466f57160602e5fa052d6"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_prepared_handles_observation_bridge_v4.hpp",
+   "sha256": "21a07897ad90436dec65a584d4cb173398250dc7044f3bfb3ec5567e922193c3"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_prepared_handles_v4.cpp",
+   "sha256": "8c3b2573510e34ce319d6354278753a7bc9a3b20acc27286d2c7f0ae5d71a37a"
+  },
+  {
+   "path": "deploy/windows_replay_broker/replay_broker_prepared_handles_v4.hpp",
+   "sha256": "fc47921b9c6e9d0aa2821908ff04ddc7f07e8f225323edfa9c3a3aa32933a260"
+  },
+  {
+   "path": "scripts/analytics_execution_bindings.py",
+   "sha256": "d356f9a945bde5e1d6a6753b89e551a14371aa27e84886014f3c2807d98b2ff2"
+  },
+  {
+   "path": "scripts/analytics_execution_capability.py",
+   "sha256": "5622726cb4a261b42509678c1ec6fd6c065923515a4d25ee6cb5b5f2d0824279"
+  },
+  {
+   "path": "scripts/analytics_execution_endpoint.py",
+   "sha256": "acf5861d59efac7026ea89f28e1b4d550bd1254e8cdbea4df41eb874c7b5466b"
+  },
+  {
+   "path": "scripts/analytics_execution_evidence.py",
+   "sha256": "36a4d7af21cbd36a6bda4ce5fe3c60480948f1895a8fd95bec3f0765700787f3"
+  },
+  {
+   "path": "scripts/analytics_execution_protocol.py",
+   "sha256": "283fa34b91e4fbf5953f78509f7da3a38f92731c696878774104f193576831d9"
+  },
+  {
+   "path": "scripts/analytics_execution_worker.py",
+   "sha256": "04b59f3c5a1fa94d764f3b0e71fcb2cd0d7b0e2ad915573529019e2d2f32f00d"
+  },
+  {
+   "path": "scripts/analytics_model_contract.py",
+   "sha256": "fdf779ce50ada84e5adbaad75c95455618f5ce3ece7c3fc759fe56e635d38c62"
+  },
+  {
+   "path": "scripts/analyze_component_latency_v1.py",
+   "sha256": "4023c5846098a2055961fed2899038eeb2317854a6bd89ba4142c682ffd260b4"
+  },
+  {
+   "path": "scripts/analyze_results.py",
+   "sha256": "0c2681a767d6beee8f9a0ae8a364b7af5a3798c4d35acecc886798409075255d"
+  },
+  {
+   "path": "scripts/backend_pair_archive_sizing_receipts_v1.py",
+   "sha256": "52168497e207d8b510dfcd51fa3160f328dcc8a1a4ffcb2efb4e6dd4fe7f866c"
+  },
+  {
+   "path": "scripts/backend_publication_dispatch.py",
+   "sha256": "f065d22176edcd37cbf7ba68983119d3871362f9d01ee6a112976941d7c405d0"
+  },
+  {
+   "path": "scripts/backend_publication_dispatch_v3.py",
+   "sha256": "b755230a19c8ab3e46dbe49aa2fa3e7054a79a7e7e4e98f91ceed560fada2740"
+  },
+  {
+   "path": "scripts/backend_publication_launcher_invocation_v3.py",
+   "sha256": "ac10258c97fcdd58da02236f7a36974b2ba5060ce2f935955db05b5a9f422ba5"
+  },
+  {
+   "path": "scripts/backend_publication_launcher_runtime_authority.py",
+   "sha256": "0939236116671c1744ef4dee2194e399e1c06d5e83a4f2c62a16c06ff251f37d"
+  },
+  {
+   "path": "scripts/backend_publication_output_receipt.py",
+   "sha256": "159e307319d8e6f41e1684cd9ba871097de54747bd9013cb7b71e370e1b0cec5"
+  },
+  {
+   "path": "scripts/backend_publication_output_transaction_production_v3.py",
+   "sha256": "028b7bab8f2e860dc59eda9f2727e8f56230d353c69ab07d4943b4487cce5dee"
+  },
+  {
+   "path": "scripts/backend_publication_output_transaction_v3.py",
+   "sha256": "5df9d564a4c175c1c07d4a311453a83e21b01815928622d535e31f5615cdab43"
+  },
+  {
+   "path": "scripts/backend_publication_process_supervisor_v3.py",
+   "sha256": "99f772665d0d271b24d98f2393a50a0f9e0bbfe5c2840e5ccce65d89a84ed13e"
+  },
+  {
+   "path": "scripts/backend_publication_runtime_authority.py",
+   "sha256": "ba633140e27fe78cb6bfec97093f60e476f2bd8c43f50a0998a6b80532ffb56c"
+  },
+  {
+   "path": "scripts/backend_publication_runtime_authority_v2.py",
+   "sha256": "fb901dc9b603c8d94ab1a9e2a4f2a40452154de1039791809af81054128a4cfd"
+  },
+  {
+   "path": "scripts/backend_q4_two_phase_executor_v1.py",
+   "sha256": "5f7468e510a909413ed23d96c46c94eb5610c7963b46b6b363cea9fc44133349"
+  },
+  {
+   "path": "scripts/backend_q4_two_phase_source_registry_v1.py",
+   "sha256": "bc7b61275fe09900da0d677afa3b0bab0eb195cc615f30f2e22701220faf1da7"
+  },
+  {
+   "path": "scripts/backend_runtime_grant.py",
+   "sha256": "c90c726c00f14d5a198304ec8b74fecff8d1a4a21c41afd266073b80733b4c9f"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification.py",
+   "sha256": "b7f06881ed3c4dfb81ea0468df828dcedd82bb8d92b35778f6872e2021e300f5"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification_v2.py",
+   "sha256": "658208e4b1f428bda85683d49b7844bd6e0517096a596bbd3b26753ed9cba8d6"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification_v3.py",
+   "sha256": "c4fbd3e2afa99d5ca83130622857bbbaa3ceb0d60796d3d5a761345a32f764a4"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification_v4_catalog.py",
+   "sha256": "0a170621eb5f793e66f0446f65938ced396204eeb57bbc337b5fd3b70cc691e7"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification_v4_input_index.py",
+   "sha256": "30fcfc716d85b9e79fda2e250e2247f4f2effc4323a415672382cdc3780b5105"
+  },
+  {
+   "path": "scripts/backend_runtime_qualification_v4_persistence.py",
+   "sha256": "43e5c2b8a71df17252c569b04b0d9e0e6a0d019f823389502accd5b64c6b91b2"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_handle_abi_authority_v1.py",
+   "sha256": "8bed92778257388e059bb588adc3cf7fcc874cccdac2d8cb75a870397585aa8e"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_runner_authority_v2.py",
+   "sha256": "8ad3ba1922da552d8c9f801fe3eddbcf602d38d900d5864872ec7b0963b91444"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_runner_authority_v3.py",
+   "sha256": "b0ad61d2b4bec93fe4d35251a4d9320b79472d9ebe80ce1bbd262d5a5a9f9fd6"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_runner_invocation_protocol_v3.py",
+   "sha256": "73215d29c11103306f8714d994895379cee5bb1f1b07f4d92891ea5cbe422aaa"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_runner_invocation_protocol_v4.py",
+   "sha256": "e93b7b41079d2ba611b4116a049e7515c57f3b4412b40df02178dadff622f87f"
+  },
+  {
+   "path": "scripts/backend_runtime_replay_runner_invocation_v2.py",
+   "sha256": "725a81e329f39e99f510127839ea22259621f3dd08dbca0515863e1908d85d0c"
+  },
+  {
+   "path": "scripts/backend_runtime_validation_records.py",
+   "sha256": "b0b4e2aebca04857e1c958ef9fcc182844bb2e68d4800196c723eef91efb983d"
+  },
+  {
+   "path": "scripts/backend_runtime_validation_records_v2.py",
+   "sha256": "23f7fe26a30a648078689c0180a5f0f44260676531c83e60eff8366c7a1fff52"
+  },
+  {
+   "path": "scripts/backend_runtime_validation_runner_authority.py",
+   "sha256": "4d2b7f85fadc515aaeabb6829ddaba600ac9427a0cf3f897a8221fbbfba1111c"
+  },
+  {
+   "path": "scripts/backend_runtime_validator_authority.py",
+   "sha256": "8e76d3efb6cd9e9ad91422325dd781f204b294fd1d9480caced9b75812e10603"
+  },
+  {
+   "path": "scripts/backend_runtime_validator_authority_v4.py",
+   "sha256": "471b380fa82020e9888e09b61688f8eb713bad4c4da21a4c1ecff05324551af4"
+  },
+  {
+   "path": "scripts/benchmark_adapters.py",
+   "sha256": "6a965b159b36a08a80f69908c0572365283fcc65b2c482279c6a3f8c42b1dfe3"
+  },
+  {
+   "path": "scripts/benchmark_contract.py",
+   "sha256": "04cd9c75a7c405e960bdb7e4f2dea9759d839a333d43f79bd9b2b4aacaace17b"
+  },
+  {
+   "path": "scripts/benchmark_preparation_evidence_v1.py",
+   "sha256": "ffd982925a97875e8edc0698ce1689d5a6668c29c795d9619b88d07be1b92a57"
+  },
+  {
+   "path": "scripts/build_analytics_worker_images_publication_v1.sh",
+   "sha256": "10f4823d09fae2b075b53ff6eeef7d100b49cb4ac0f49bd0f8d41deaf26fe459"
+  },
+  {
+   "path": "scripts/build_deepstream_publication_runtime_v3.sh",
+   "sha256": "a21f29f455c803154713f7825795fbf821d6abc8bb645e3552aa6dd1049e6d3a"
+  },
+  {
+   "path": "scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+   "sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c"
+  },
+  {
+   "path": "scripts/build_native_probe_images.sh",
+   "sha256": "c7fc2e46a3957058ace9b37206d7597c02ad73544eaa5c3ebf4c8da0f537becd"
+  },
+  {
+   "path": "scripts/build_native_probe_images_publication_v1.sh",
+   "sha256": "499afb11fa7ba675bfc1bba7cce7597336f6e768c8701cdabc2de384e511c503"
+  },
+  {
+   "path": "scripts/build_openvino_gva_publication_runtime_v3.sh",
+   "sha256": "0a0e51e5271768be52f1937c7d65cfa2e23f25ac51707ec224f2d160bee43401"
+  },
+  {
+   "path": "scripts/build_publication_runtime_images_after_refreeze_v1.py",
+   "sha256": "78cba98af399779f49cc840f87d9591aa70784b88f2f3f366d746870eeed903f"
+  },
+  {
+   "path": "scripts/build_savant_publication_runtime_v3.sh",
+   "sha256": "9ff46e6aabea8ddb082255b504cdfce1a8d400b743ff11460866ab2d2214b437"
+  },
+  {
+   "path": "scripts/canonical_systems_study_plan_v1.py",
+   "sha256": "af9cd0b22dabe5dcf9f1e6c8260e1fb9334ef9c140f4685d4f61b49e7345dfe8"
+  },
+  {
+   "path": "scripts/check_dataset.py",
+   "sha256": "5f60775ae051baad6efbd3f0c3316c870a6129d093e03dd5f18974327b2f47f7"
+  },
+  {
+   "path": "scripts/check_system.py",
+   "sha256": "57232b17147ceadf576039ba7a0845aa6e616e0258cefd4bb9ebb4266d69c544"
+  },
+  {
+   "path": "scripts/checkpoint_acceptance_metadata_binding.py",
+   "sha256": "9429cc4843d085e54daa7023b8bab9a5e9361a20204d20ba4e2dad0f1c2a3908"
+  },
+  {
+   "path": "scripts/checkpoint_admission.py",
+   "sha256": "83accf22d62cb4872931e0034b02a46e84900bfa1633c26a3fd1fde7c10e3718"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_container_runtime_v3.py",
+   "sha256": "cdfd615aded0c1f9c784677e52ecb6ef543b02eec9d74244429c51adc87cff34"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_launcher.py",
+   "sha256": "6e26f956dbe88b79e8fb974e1b4228d147eef8e0c4cfcbc0d90ed43dbdb57cac"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_protocol_adapter.py",
+   "sha256": "8cff10050e05ed554b386ec6648693eaa069823bd68cac15ac7b2211e0638cbf"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_protocol_bridge.py",
+   "sha256": "ce0b86066b367fb5114a0de03a16d1b71d4be9e8c39626f4a9d4c48467ff694b"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_publication_launcher.py",
+   "sha256": "1a86b6934c56ae6f7e73ce0beaf4312be5a8e51a8afd5e560062203a61fae056"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_publication_launcher_v3.py",
+   "sha256": "900a96ce5dbe39cf54ad22aef098aa950a12b001df897bfa4c71e238f826aa95"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_publication_runtime_v3.py",
+   "sha256": "d3c1753df6d7ddcf40e3971066a5dfc9d4f71572c5bd3f18961460903b5aef0a"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_qualification_fragment_v1.py",
+   "sha256": "2e1a9778481288a6dc9f0b3fe881454e329a3d377758130086166a2923d8b9fe"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_resource_runtime_v3.py",
+   "sha256": "3f287f504a62e3140b4dc4ba772057423bbfd05adda837a9b81f09fda2642b35"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_runtime.py",
+   "sha256": "2ef4571c2926f6f76664235809350252c0f44090c4ddeaafdf3bc2b8bc47861b"
+  },
+  {
+   "path": "scripts/checkpoint_deepstream_sdk_runtime.py",
+   "sha256": "5e5bcf48e8adb77d5d60232929930581aeeaadb58015204679ca304cfd2f1498"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_analytics_bridge.py",
+   "sha256": "f0fd3f776af5e0819566e7cbf13db4305a1dba23b6daf3019d4f530007acacb8"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_analytics_sidecar.py",
+   "sha256": "2450cd59bca86e1251ec25672ff4805d122af4408fa68fb804dc712eef68bbfc"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_custom_container_coordinator_v3.py",
+   "sha256": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_custom_publication_launcher.py",
+   "sha256": "5fbb859e4d4f8fa7e48e99438c5a79bc6708d1a5c65fa7bfce3fb5ea2c1ffc48"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_custom_publication_launcher_v3.py",
+   "sha256": "b6b14afbde02aa9dd2360420bb18e7a30be83048fdfe0884307489dcfcff0574"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "sha256": "7d981f9cbd6d3e1d32d341c1a0721f067b3bda160a82dc0e91f63f4992f83468"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_publication_plan.py",
+   "sha256": "324ec24afed5ddc76001e385b0ad7faff34d52a2c7542cc42ca8233132801911"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "sha256": "db68a2cadd2b5a099c98da14a1eeadec0e74e89f78b0d6668507dee206439b79"
+  },
+  {
+   "path": "scripts/checkpoint_gstreamer_runtime.py",
+   "sha256": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity.py",
+   "sha256": "f29b52e4b6f97da51e2f68a0a629233fc413f4387d1fc6b26ef5409fbae93b05"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity_acceptance.py",
+   "sha256": "660071f68ae3378f704c497aab78ffa3b2c6d20a976ca52402ebe2c7b4bbeea4"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity_acceptance_v4.py",
+   "sha256": "cda34465993fccd9acff9833b4db52292e7e58fce5286eda44ceb62dcab71cda"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity_materializer.py",
+   "sha256": "4500e300527cdb1e5897cd63d7e7debad29075791bf0c962ba390f6f650ee4f7"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity_materializer_v4.py",
+   "sha256": "46078e8d9d073ab963c7c20636e674f34d4e04743a16ad231a9e086a26a5ea70"
+  },
+  {
+   "path": "scripts/checkpoint_model_parity_v4.py",
+   "sha256": "34474de61e19a8f3b1167ff8b52f11f33514e1d9483220abf693456ec840cf9c"
+  },
+  {
+   "path": "scripts/checkpoint_native_policy_runtime.py",
+   "sha256": "7275411b8ecf0d40ebc8dc459594875f2cc74378fb8923429e0e7406f34fb30d"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_execution_bridge.py",
+   "sha256": "f39aafb554d1942a85a4ff6b5efde0b36d02846720befdc8c132c86b0d0e9ded"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_container_coordinator_v3.py",
+   "sha256": "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_container_smoke.py",
+   "sha256": "870523be4f0b4ad9749fd23bc01866fc2ed33e090d1350c41b1e7fac3e1cbd6a"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_launcher.py",
+   "sha256": "adf34a7b68218824c153762f572797ef9f2dbf1f64c868f004a7dfd102f92903"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_publication_launcher.py",
+   "sha256": "d928495928b6dad9ace044245565b55298312e86346eca5f026f87d9a2ccd100"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_publication_launcher_v3.py",
+   "sha256": "2b30e441a28b50fbd0746ae801da71dae0e63e733ff93256213238d604df0469"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "sha256": "66ad27fe0450e683ff994279b4e122c32fe9fd9b830f6c4bd6cda2c77a86540e"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "sha256": "bfabfdbdd0adaa53500b0cd8d6517bc0a40772376c955fd88851fe43683f12cc"
+  },
+  {
+   "path": "scripts/checkpoint_openvino_runtime.py",
+   "sha256": "e59b495bd8683082b78fd4492d5287234a478748261b44d83ffd08508db5dc9b"
+  },
+  {
+   "path": "scripts/checkpoint_publication_launcher_adapter_v3.py",
+   "sha256": "ddb0779a0142962fbdd5dbada6127f748d854204b4b1939734ee64eddb60e12d"
+  },
+  {
+   "path": "scripts/checkpoint_publication_launcher_guard.py",
+   "sha256": "fdf7ce2d93a518dc3cd2b01b7236535800939f62581f31bb8718e30eb5143ab1"
+  },
+  {
+   "path": "scripts/checkpoint_publication_launcher_guard_v3.py",
+   "sha256": "29dcbd607858118ad7e5e4a221a58034ac07ea4f819bede4831d23852f41a97f"
+  },
+  {
+   "path": "scripts/checkpoint_publication_runtime.py",
+   "sha256": "8d389885bf48aedfcdcc65519db41ee2a962da3e77c2ca224c477b8d7742b055"
+  },
+  {
+   "path": "scripts/checkpoint_qualification_pilot_acceptance_v1.py",
+   "sha256": "5de1c97482b5de0584847b727861b5a59868ddf001ff0c79c7331c8283a3d1a2"
+  },
+  {
+   "path": "scripts/checkpoint_runtime.py",
+   "sha256": "077aaff2659cc4dd3ce724bdb567133b8dc831d2431d315b865e6e39dd72b3d6"
+  },
+  {
+   "path": "scripts/checkpoint_runtime_plan.py",
+   "sha256": "a9bcd4ae99c229e5fecb94cec3b3668f16ec8527bfa6167f8574b50967bf1963"
+  },
+  {
+   "path": "scripts/checkpoint_savant_container_runtime_v3.py",
+   "sha256": "bdc1b8f0ec2b3d9a2f60146e2d922d118848ec992e6f751b2592b11785d15cae"
+  },
+  {
+   "path": "scripts/checkpoint_savant_ingress.py",
+   "sha256": "cc8ab6173bc21a26c9a6eadac6679bff7b80fd6f8bf2cb46b53ad685f56e7fbf"
+  },
+  {
+   "path": "scripts/checkpoint_savant_launcher.py",
+   "sha256": "73dc0bfb5a30f34afe3a444183f6ef269558264683468e8909427404fd514b86"
+  },
+  {
+   "path": "scripts/checkpoint_savant_native_module.py",
+   "sha256": "66acc570993ec071db8323fc2763744fb8ae5359b673aff2ba213ea9814ab68b"
+  },
+  {
+   "path": "scripts/checkpoint_savant_protocol_adapter_v3.py",
+   "sha256": "a82f3196a91c8ca27cb0a91c5923dc6b40ade18dde190111c89b1d5b86f0b61d"
+  },
+  {
+   "path": "scripts/checkpoint_savant_protocol_bridge.py",
+   "sha256": "0f8ef082eba3d7d0eda798ca70d89b6ddab6ba046215a884d05b73452c3275b3"
+  },
+  {
+   "path": "scripts/checkpoint_savant_publication_launcher.py",
+   "sha256": "d9c4e77555782a4930485450a6060547fd06f5e929f7b163d869bfd6e626b1dc"
+  },
+  {
+   "path": "scripts/checkpoint_savant_publication_launcher_v3.py",
+   "sha256": "2cf7cac4e3999f2243955731528cfa79a99d0344ef1e08fce1219ea7eb8c9fd2"
+  },
+  {
+   "path": "scripts/checkpoint_savant_publication_runtime_v3.py",
+   "sha256": "1bb0a25726543870d4e7705c1148ebaa1028fb6ab7d05e0ab2cc3b85eac8bba7"
+  },
+  {
+   "path": "scripts/checkpoint_savant_publication_specs_v3.py",
+   "sha256": "e9b19da939a7de8de28f8fcc270ca1b12de787be5be0d2e4078cca37280daf37"
+  },
+  {
+   "path": "scripts/checkpoint_savant_pyfunc_v3.py",
+   "sha256": "c835fe15852d79551c4ac953492268a5c04d5651a0756f5bdc6786f30c2308a4"
+  },
+  {
+   "path": "scripts/checkpoint_savant_qualification_fragment_v3.py",
+   "sha256": "79bf05a46af44b80c14e10b4964cfaf05344794cc4917068ce7a5b592f65eb02"
+  },
+  {
+   "path": "scripts/checkpoint_savant_resource_runtime_v3.py",
+   "sha256": "17b5efcfcbf3e0cda58e839a74ef0b917ac59d0b6d118a6e7873acfdf266bf63"
+  },
+  {
+   "path": "scripts/checkpoint_savant_runtime.py",
+   "sha256": "58cc0fab1411e1ab291e89b2fc4c53d8faa8766014e8bdbe279a0faa33bd4555"
+  },
+  {
+   "path": "scripts/checkpoint_savant_runtime_image_materialization_v3.py",
+   "sha256": "43c308b4a9f3ac11e310f4ee3a734053c96280d080bfc9f24ce242edd651c2c1"
+  },
+  {
+   "path": "scripts/checkpoint_savant_sdk_runtime_v3.py",
+   "sha256": "e982c02f9a31e4cf223fed0d47625ddaf7cbed4a5a3487f484f77eea7cd9866d"
+  },
+  {
+   "path": "scripts/checkpoint_source_runtime_closure_authority_v1.py",
+   "sha256": "4af1d39af34848cac4f3bd48e9ae5c80735e8277ff16533d3730af1eb122987a"
+  },
+  {
+   "path": "scripts/ci_external_test_observer_v1.py",
+   "sha256": "000ded0c9bd442983b54d224ce3041818af6e35e2e0d4f9c9b382b74db499c59"
+  },
+  {
+   "path": "scripts/ci_namespace_diagnostic_v1.py",
+   "sha256": "bc69cdd5db314b7421d87fdaeb3a88d9411ae0f2e29713f75bc8909dfe8b0292"
+  },
+  {
+   "path": "scripts/ci_test_selection_v1.py",
+   "sha256": "0a9309c4ceeae153e2eb288ceb7586b2e76c2edf7b5f9bc3ed646b032fe8ff6b"
+  },
+  {
+   "path": "scripts/ci_userns_profile_v1.py",
+   "sha256": "5bd7622130c41d8bef03d2da87f87c987738478a5b77412857fd85f24c73cf43"
+  },
+  {
+   "path": "scripts/collect_metrics.py",
+   "sha256": "f2db6624aa56970dd09cd8cf3dcb97c5c55ab47f3c20c54cf5c26cc2263d70dc"
+  },
+  {
+   "path": "scripts/custom_app_emitter.py",
+   "sha256": "52c1c5528f92931b315d7f0fb6bd462a2045cdb665fe8b487c8e552c202a8c3d"
+  },
+  {
+   "path": "scripts/distributed_executor.py",
+   "sha256": "1924f2cca59af39174d041c661e023a1829cc1cba0a0f3ee4427fdc774505b0e"
+  },
+  {
+   "path": "scripts/emit_runtime_frames_csv.py",
+   "sha256": "e495245e5ad7058e4a4ba996462214b127e1cbbaf073e922d5f0ec186517f5f1"
+  },
+  {
+   "path": "scripts/extract_kpp_legacy_iss.py",
+   "sha256": "dd24e80076a87db63e41c078d07c04aa32ddbd30f179796b90d59f8a7d2588e1"
+  },
+  {
+   "path": "scripts/formal_aw_heft_reference.py",
+   "sha256": "812c18bdd6fe648d8939de8e00e0dd864cba84d4e96b1f6bcbc753f932d4fa34"
+  },
+  {
+   "path": "scripts/freeze_kpp_frozen_reconstruction_v1.py",
+   "sha256": "44c3cbf660aac5db5a29556e7cbc717acc01acd26f115c4c5591d3ded7f2d4f1"
+  },
+  {
+   "path": "scripts/freeze_kpp_iss_publication_v3.py",
+   "sha256": "73cb1726532df1c4fdd4249673c471cceb035906f78bf68e250f1706c08dcffa"
+  },
+  {
+   "path": "scripts/freeze_kpp_legacy_iss_v2_transcodes.py",
+   "sha256": "d4ab7bf4497e48d4e04f4cd49f0b97606a46457ac516fabfc456dd09a3f64c33"
+  },
+  {
+   "path": "scripts/full_publication_entrypoint.py",
+   "sha256": "c81536e91ed3290949eedd60c343fea69e99ed75822f5ff42fad5ca8d8c559cf"
+  },
+  {
+   "path": "scripts/full_publication_identity_artifacts.py",
+   "sha256": "4bc5e36a7acd158e19274f206150d5073d19703338d05a4782f4c76333cb03e1"
+  },
+  {
+   "path": "scripts/full_publication_identity_manifest_v2.py",
+   "sha256": "ce53478b462c5b61dbd2dd29f9fb63bbc9023ccd2c344c2b6fce6a1760a91c50"
+  },
+  {
+   "path": "scripts/full_publication_results.py",
+   "sha256": "d634eb9e2faacbc826aa9b9f35292e159d12af545eec784d7e0fc2e9cdefb054"
+  },
+  {
+   "path": "scripts/full_publication_runner.py",
+   "sha256": "c94cd21aa12a23d48bf03b887a287e31fa02f796202fcac8f25a165d04d4a05e"
+  },
+  {
+   "path": "scripts/full_publication_runtime.py",
+   "sha256": "e9027470592b94b3a4435cf7ac035c2f46a22b24929e99b0209ac06ddf553285"
+  },
+  {
+   "path": "scripts/full_publication_supervisor.py",
+   "sha256": "1a778ff491f27164aecf56efbc59d97fdd3252c669ab31abc8d76b5d620cd642"
+  },
+  {
+   "path": "scripts/full_publication_wsl_user_service_v1.py",
+   "sha256": "96622102977d3e6af91912aa1313e1bcb3ec4043b6b1c430a0796f996fde698d"
+  },
+  {
+   "path": "scripts/full_resource_contract.py",
+   "sha256": "2eb73e379287e65776049e3a98c530a5c3a0e9e81749a7a9f2ae8d4c80b52a7c"
+  },
+  {
+   "path": "scripts/full_resource_qualification.py",
+   "sha256": "2eb8058c88b85898048e9d09f9f8efffc0d0ee30b6f915a02d2bd7e4fd2a5a57"
+  },
+  {
+   "path": "scripts/full_resource_qualification_index_v1.py",
+   "sha256": "5e935475ae49fe5c813c25e5daf5fc84033df4a18ea35e32fc9fa05944bf81f9"
+  },
+  {
+   "path": "scripts/generate_vast_report_artifacts.py",
+   "sha256": "7d9418e38d1938806e11303efb48be026095d3c88a717ca53a778508ae0a9836"
+  },
+  {
+   "path": "scripts/install_openvino_dlstreamer.sh",
+   "sha256": "d9b16302e8f3b92beb52831a439a460bfcae45dee2a812cb949c510d07e30881"
+  },
+  {
+   "path": "scripts/kpp_dataset_contract.py",
+   "sha256": "f63b863b5bfb0a7cfdcc74a89212fd1633489aeb8a1e63444e5a8959d5e4f834"
+  },
+  {
+   "path": "scripts/kpp_frozen_reconstruction_v1_dataset.py",
+   "sha256": "d4d0dfe352249316c9c5b72136bea326947b77b7952ce1ff5add5ab502bad19d"
+  },
+  {
+   "path": "scripts/kpp_iss_publication_v3_dataset.py",
+   "sha256": "6ad62418f36f5e0dcfee55d43c117a9faa7e82f82c3388f53b1e7bf85049909d"
+  },
+  {
+   "path": "scripts/kpp_legacy_iss_v2_manifest.py",
+   "sha256": "c5a2c67a6a5f1293f0b5939980534d87f7089dd221542c88eed4bf95650cfc42"
+  },
+  {
+   "path": "scripts/kpp_legacy_iss_v2_offline_image_intake.py",
+   "sha256": "d5488bd321fe408db44f362821a95c8d4f51886ebc3d655656251650ca05b2e9"
+  },
+  {
+   "path": "scripts/kpp_legacy_iss_v2_secondary_sensitivity_decision.py",
+   "sha256": "c87b87b44ead9bcd54a8bb3aa5d274b9b6dc2a78477ac735963daba965890fbc"
+  },
+  {
+   "path": "scripts/kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+   "sha256": "cd98fef7d1f6cacfd886743f95f7124b93706b5377be9443461f5152f6f9e894"
+  },
+  {
+   "path": "scripts/kpp_legacy_iss_v2_secondary_sensitivity_pilot.py",
+   "sha256": "4caf71ce00fe4b65593bfdeac583ca6fdb84dee430249ff0dae1ddb9b2e446f4"
+  },
+  {
+   "path": "scripts/materialize_kpp_legacy_iss_v2.py",
+   "sha256": "d5e58ff400e5ebb77bdfb655089809813bc7568f72faa9b5c02334a2edfa49b9"
+  },
+  {
+   "path": "scripts/materialize_kpp_legacy_iss_v2_model_corpus.py",
+   "sha256": "858de91e7754af9de24bbd80688c98e7a9339d07665c781ee635bf3924c758c0"
+  },
+  {
+   "path": "scripts/materialize_runtime_build_context_v3.py",
+   "sha256": "db4cdb5f42268e2f1eb2c75c1bb44fa25d1e30f8938e4809cd1477b1ced88d01"
+  },
+  {
+   "path": "scripts/model_parity_grant.py",
+   "sha256": "bb5598b8917e0662d7cb933196be43c332c4fec6363691d971b64ae1a53127bb"
+  },
+  {
+   "path": "scripts/mount_publication_evidence_wsl.sh",
+   "sha256": "4dbc31d87b6cf573bfdeb0f8d68a678238918a234e251abf8b35057e3b8d350d"
+  },
+  {
+   "path": "scripts/mount_publication_runtime_wsl.sh",
+   "sha256": "5f68ab843ba5022b78242ce50de708f9b387bc817ee3a81cc2cc6f37096a0e6c"
+  },
+  {
+   "path": "scripts/mount_publication_sockets_wsl.sh",
+   "sha256": "d0947035fff72ae926a0d18140b71ebe1054f900184de167cecb2863acbcbe2f"
+  },
+  {
+   "path": "scripts/non_decreasing_wall_clock_v1.py",
+   "sha256": "9ed77bc0a98395a494d7effe451db9a491dc138bc8dceecd1722975a6c83fff4"
+  },
+  {
+   "path": "scripts/normalize_kpp_iss_metadata.py",
+   "sha256": "2182ad4114d7d5241f01b86127b85f80c325a7a12b84598f0b290c1c2748e4cc"
+  },
+  {
+   "path": "scripts/prepare_assets.sh",
+   "sha256": "d384dc0edaeeddddd7ae81beec18f83054e31a78698dcf55ba918d07cda9e50d"
+  },
+  {
+   "path": "scripts/prepare_benchmark_dataset.py",
+   "sha256": "8875a51d949d623ee5af6f8b1581c77f41174e2048ec2f843b24d4f1a6a0caa3"
+  },
+  {
+   "path": "scripts/prepare_ci_model_assets.py",
+   "sha256": "2f87df4f6d98239190c17b42bb7f43188fc2a12604f7b0f6aa0246f7df15b36c"
+  },
+  {
+   "path": "scripts/production_arm_evidence_finalizer_v1.py",
+   "sha256": "e360b386f94712c0737b56f0a224b7979bbab1865e7cbffaebcc72462209f193"
+  },
+  {
+   "path": "scripts/production_parent_artifact_pin_store_v1.py",
+   "sha256": "509eccf336a4c9dfe8bf1b51dfb9e18985ece898c5dc1165c4322b9978e15f42"
+  },
+  {
+   "path": "scripts/publication_acceptance_evidence.py",
+   "sha256": "fdd2491e874e21b02586f13d6a4f0c1c34ca3b78ce837ede1779ac7d964ea8d6"
+  },
+  {
+   "path": "scripts/publication_archive.py",
+   "sha256": "1f666e45f866ede2b95c72a49115388ba31936158dfde817799fc185c67e1ee3"
+  },
+  {
+   "path": "scripts/publication_article_statistics_v1.py",
+   "sha256": "2363c9e843db4535677adf20f046098a2f432539501242ad132bbd9edc84c9aa"
+  },
+  {
+   "path": "scripts/publication_benchmark_native_diagnostic_v1.py",
+   "sha256": "30f26ddf30dc2d5489485f67b644e7832c8dd504d74020fd12808cc266ab1edc"
+  },
+  {
+   "path": "scripts/publication_child_evidence_materializer_v1.py",
+   "sha256": "056654b0a019720164bc478a83f584ab4f4121b5c8570e44d2358dbfa6a71bc9"
+  },
+  {
+   "path": "scripts/publication_cloud_transaction.py",
+   "sha256": "14babe0d147e636a1db9b54e034186a0d9d969de9a315c4878c4200ebc12fd5a"
+  },
+  {
+   "path": "scripts/publication_gstreamer_component_authority_v1.py",
+   "sha256": "9f0e0e56a238ad26f8ab525bc9f3bc0ebdd0e136b7bc0f8853ab3a0745342c6f"
+  },
+  {
+   "path": "scripts/publication_gstreamer_component_cli_v1.py",
+   "sha256": "4cce487a0f224a90b14c9c83a2fd47b1712d20d1631ec3a67766ed6f515b426b"
+  },
+  {
+   "path": "scripts/publication_gstreamer_component_inputs_v1.py",
+   "sha256": "c9168e1fcc19084a5a3c8c3c9f23488d846d48f75489cd54008d0fc2a9134fa0"
+  },
+  {
+   "path": "scripts/publication_gstreamer_component_runtime_v1.py",
+   "sha256": "aecd556db7f1485eec79ea2971362e88da2d5a49fd3ea797cb5ad7d787b72014"
+  },
+  {
+   "path": "scripts/publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+   "sha256": "3b649aea69120fbf3968a55802ac6ed9695625bdfa2c9f729b058dc7b04283a1"
+  },
+  {
+   "path": "scripts/publication_guardian_component_preprocessing_contract_v1.py",
+   "sha256": "e446ccd814ace3f2ccf0fd1252aa888d8f9bed0eb9d7c4192a9658e2127a6065"
+  },
+  {
+   "path": "scripts/publication_guardian_operational_recorder_v1.py",
+   "sha256": "661ca6f273138f4c419388cdafdf849e75244cbb67e9010844f1e0f7023cbecb"
+  },
+  {
+   "path": "scripts/publication_guardian_preprocessing_contract_v1.py",
+   "sha256": "19dfff21eae9ad8cc3781b2fe47bdb6d9eb55c430962983d2f7553e04a5c529d"
+  },
+  {
+   "path": "scripts/publication_guardian_runtime_expectations_v1.py",
+   "sha256": "6ef8cca85130ea16c4b90dd9cdc1001955abaa73763e2436da8a3660ba84fa4f"
+  },
+  {
+   "path": "scripts/publication_image_build_v1.py",
+   "sha256": "7a8d6cf67de32515cf330073f3933b7af4216e552c5d606e8a17df500cf7938a"
+  },
+  {
+   "path": "scripts/publication_immutable_directory_v1.py",
+   "sha256": "3154cae593782ca64adf7318d615c7c5185ff1d8b06098647e50f00940edcd42"
+  },
+  {
+   "path": "scripts/publication_matrix.py",
+   "sha256": "a27b792da2c4cf11c843b7d015019d83fa87f4d2c60c02d3f0d77bd918cbee21"
+  },
+  {
+   "path": "scripts/publication_operational_capture_plan_v1.py",
+   "sha256": "5ce6be2bfd0cab885117858a66931c4bce271b939f68a254eb467f1d126a3820"
+  },
+  {
+   "path": "scripts/publication_operational_container_custody_v1.py",
+   "sha256": "9ffb01fdb85c300e0d19e377609f714707d270362b072d30611e5bc1de8c6552"
+  },
+  {
+   "path": "scripts/publication_operational_process_custody_v1.py",
+   "sha256": "e58d031073476d79d7bc939d3a15214342a754b67f291a10db526c70f9834790"
+  },
+  {
+   "path": "scripts/publication_operational_request_domain_v1.py",
+   "sha256": "dab192de70bb82e56871b73b87f0337acf66a219b8460359634582a8bb5f8da6"
+  },
+  {
+   "path": "scripts/publication_operational_request_reconciliation_v1.py",
+   "sha256": "7a09048560b19d69122a4df92abd076514b7a9072d0ea3e4fd5ac2ddbe9c5197"
+  },
+  {
+   "path": "scripts/publication_operational_runtime_context_v1.py",
+   "sha256": "a86cfd0fa1d9fac54a380351ac415cef16d90716810d74a822c75c0491ba848b"
+  },
+  {
+   "path": "scripts/publication_operational_stock_operations_v1.py",
+   "sha256": "fc38bcaa2dd36b714697d436aac8ebf0ad3906bfb81f30b1d524237317d60667"
+  },
+  {
+   "path": "scripts/publication_owned_staging_cleanup_v1.py",
+   "sha256": "d601fb4460bc44b27cb2d38fd70e73a388fb137c95139fa10d4eefca944def92"
+  },
+  {
+   "path": "scripts/publication_physical_io_v1.py",
+   "sha256": "bc8a28239d86f1913a66757a497d9d5398dd1b17757c6f17725ae72bc01961ed"
+  },
+  {
+   "path": "scripts/publication_policy_contract.py",
+   "sha256": "276c15284c46b99ae32ae99653cc10f9f65e09d49d69498322c906614d1ba8a1"
+  },
+  {
+   "path": "scripts/publication_policy_frozen_replay_v1.py",
+   "sha256": "df03b7706ec354aab21714c09c9d0d95e7aa5a7124aefac574637f07e3d5d051"
+  },
+  {
+   "path": "scripts/publication_policy_projection_v1.py",
+   "sha256": "449eb645a6014cabfeb0e016edb476454b61368cdefbc71543459facacfa0cb9"
+  },
+  {
+   "path": "scripts/publication_policy_qualification.py",
+   "sha256": "f4478804491922c3e25ab414ba8f000c1964b46633f9dfb3a5bc87212748dbde"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_bootstrap_v2.py",
+   "sha256": "1f248748d16ead95def536bf7d2815e7b79a8754696c8a37aba51018ba8a75f6"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_execution_closure_v1.py",
+   "sha256": "01178244ed2c4c5358d6c9f752ab0cadcc9029ec2eb0993127cef86f2b635caa"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_execution_code_closure_v1.py",
+   "sha256": "fa89690897cf58ffd8e8b8b62aad0da1e399fdd2b260157bae768157d3481dc0"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_fragment_validation_v2.py",
+   "sha256": "895c8bbf9b23fe269193f3e7ac8dec8a6d09ff6289d22ed72ef337e801704958"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_fragments_from_authority_v2.py",
+   "sha256": "536810b21bacb13e67a15f3bdf4dd7f1501baa0fd43d4f65ce3d8487692c9b65"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_index_v2.py",
+   "sha256": "482692d54dc7af5952e5094fc92d2ff8f87c3f4f1ad0688186ef8d3b1619b982"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_pilot_executor_v2.py",
+   "sha256": "d20e2be291abad639eec03c07d66444f925205f5b8d81c6a71e3452838e06a5c"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_pilot_validation_v2.py",
+   "sha256": "48fbc62494cdc40bd5f925cee6ff16dad02269feacf1803d263a9d165523f246"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_runtime_inputs_v2.py",
+   "sha256": "a4358e759a24cbf49652cecbbb7a30199476d0c3539be5e1c9dd87b972aeb2f8"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_transaction_v2.py",
+   "sha256": "1df619a893c79744e37f313238f07510f42120752013fcad67e5083d518a5cba"
+  },
+  {
+   "path": "scripts/publication_policy_qualification_transaction_validation_v2.py",
+   "sha256": "d65bb5a4677e1cbb94631512b665c2b0721b2d6620efb0a681ae573a755de663"
+  },
+  {
+   "path": "scripts/publication_q4_authority_plan_pipeline_v1.py",
+   "sha256": "a6a5982d70bd9d2cd1302e801f186f5edcaf97c3aa861667f476e0546b81cf2e"
+  },
+  {
+   "path": "scripts/publication_q4_authority_source_material_v1.py",
+   "sha256": "850f6016ca950f721685d3ee53d44146e6992bb532b8c31026f70bdb20e06d8a"
+  },
+  {
+   "path": "scripts/publication_q4_authority_source_request_v1.py",
+   "sha256": "685e46b450f9293b8a7a13f27efdf5f5ac4f67a2682431300f617dffee3c6e1f"
+  },
+  {
+   "path": "scripts/publication_q4_evidence_runner_v4.py",
+   "sha256": "87f838333fe2f9631f82d18da4b64b1ed95870ce21589e4e55d793b6da2c4380"
+  },
+  {
+   "path": "scripts/publication_q4_evidence_validator_v4.py",
+   "sha256": "d45abf6c9d894cf5c85a4ec7f3d8ae37640b550a7d2ee19c9f1d7155fbc85dfd"
+  },
+  {
+   "path": "scripts/publication_q4_runtime_contract_v4.py",
+   "sha256": "66686812b05449e53e445f7ceb86565467023d41fd91060ff8f3bc9d1cf3d354"
+  },
+  {
+   "path": "scripts/publication_q4_runtime_registry_materializer_v4.py",
+   "sha256": "c5681a3cb2106da411573151638d1b67521d3103a7bed7465e1a67373da1cc17"
+  },
+  {
+   "path": "scripts/publication_qualification_image_refreeze_v1.py",
+   "sha256": "38757bd592fed2c137325f0f4b320812145ac64a2a78550a85e549bf0a0cbb8a"
+  },
+  {
+   "path": "scripts/publication_qualification_operational_owner_v1.py",
+   "sha256": "7f169a307873e785c408097cf6efb357e216639eefaec5137718ef16422a8907"
+  },
+  {
+   "path": "scripts/publication_qualification_promotion_v2.py",
+   "sha256": "a1cfff5ad725d9f32c81ba65640dfc7b2e74fcc376442f5b4544a0d42b688588"
+  },
+  {
+   "path": "scripts/reduce_canonical_systems_study_v1.py",
+   "sha256": "da3adfcf276e8774b79347f7b227d85b904b5c635d27e0d7a08ac6313bd8a40e"
+  },
+  {
+   "path": "scripts/refreeze_publication_qualification_images_v1.sh",
+   "sha256": "17d6e8cdc02f00e231b9a1eb4e7f9f4f1cd17195588d891a338f10fd0242a4ad"
+  },
+  {
+   "path": "scripts/resource_interval_contract.py",
+   "sha256": "c004770b75f07ca929877c1034eb34bdef00f0fdb9b37d2dfeef0f70ff4d1f7a"
+  },
+  {
+   "path": "scripts/rtp_trace.py",
+   "sha256": "47f94ac962938a2ece2fd4493ec432b893a46e676cc66ac639756bda07498f35"
+  },
+  {
+   "path": "scripts/run_canonical_systems_study_v1.py",
+   "sha256": "714607dc5ec0e6e14050b6bee92124e6f955ce3193b4533d3547a3166ad37c87"
+  },
+  {
+   "path": "scripts/run_ci_checks.py",
+   "sha256": "ce375eca51164a76ab6a88cf02b92804077f08c6b8401d68b48e293020c27a2c"
+  },
+  {
+   "path": "scripts/run_ci_host_diagnostics.py",
+   "sha256": "d71dc7dbed53be1a10db8a27af5cce43158c2114f95670fe1d0b4c6a3aa99875"
+  },
+  {
+   "path": "scripts/run_deepstream_kpp_sdk_pilot_v3.sh",
+   "sha256": "cf37a341886b82f105e46d2ec6a40106b9312fef6d3799e8ecc5acd52ef786f2"
+  },
+  {
+   "path": "scripts/run_experiments.py",
+   "sha256": "8bd2140fa7357f57033464b960c6d5be89647788de19f18f24f70c90eab4a811"
+  },
+  {
+   "path": "scripts/run_openvino_container_chunks.py",
+   "sha256": "3f7dff8f4d7998e4c785126f8b32e099dd5e86dd6edcf200cdc8c8134761dd9b"
+  },
+  {
+   "path": "scripts/run_system_template.sh",
+   "sha256": "3f4f64632114a31999817b79f0eeb787eafac974740f8fa9b4229e86d3ccfa16"
+  },
+  {
+   "path": "scripts/seafile_artifact_store.py",
+   "sha256": "00076c9b485bd3ca60c6ae95728acc043bde5f037308aecab61c2d7f71571a0c"
+  },
+  {
+   "path": "scripts/seafile_capacity_attestation_v1.py",
+   "sha256": "084bc9bce9caea87866cb72dacfa6d6530ea69e97955a20fb0771b7f0bb9bf51"
+  },
+  {
+   "path": "scripts/seafile_destination_provision_v1.py",
+   "sha256": "892b1fe54e180b321f3c247ac601fd0c37df8b2f673330fe03306aaba4ef5684"
+  },
+  {
+   "path": "scripts/seafile_operator_capacity_attestation_v2.py",
+   "sha256": "fe0d4f3731038f2c7b7f2c09b3487a6e7999c89f33defc5770db194a7d4037cd"
+  },
+  {
+   "path": "scripts/setup_target.py",
+   "sha256": "098c5f771af92bb11322e1a49ef2bd3a89b1ddeb24b93fe3ab3dc2d9d9943525"
+  },
+  {
+   "path": "scripts/setup_target.sh",
+   "sha256": "3e2c23b07cfb85b533de0dc8b2189747225ae42a0a19db92587afdff42ace042"
+  },
+  {
+   "path": "scripts/setup_target_windows.ps1",
+   "sha256": "176768a9d802a1915b5c74c885013450669549f72dd9296acb63b61f5e1852f3"
+  },
+  {
+   "path": "scripts/topology_contract.py",
+   "sha256": "b7ec477419946c1cd0102ffb0eaacca5e54ed04cb5e60f9d0802a9c46c72ef2a"
+  },
+  {
+   "path": "scripts/train_ql_heft.py",
+   "sha256": "4fbb537d6cbb6a822154fbfb1a346eb9c64b58ecdf9ea57dc8296538bd9043c7"
+  },
+  {
+   "path": "scripts/validate_strict_telemetry_fix.py",
+   "sha256": "008948d56e80d8f34915e788094e3065611e9a1a74f8b4e9595e9b543ea9816c"
+  },
+  {
+   "path": "scripts/vast_gui.py",
+   "sha256": "0c82fec5030d885737c6117a85e9f3f02a17361948208057f4cf1ed33bcc454f"
+  },
+  {
+   "path": "tests/cpp/checkpoint_admission_transport_test.cpp",
+   "sha256": "c7066461bc4bb0d65eeaf8f618b286eac1f7871a751ba09773eb874db525dbff"
+  },
+  {
+   "path": "tests/cpp/checkpoint_analytics_execution_client_canonical_probe.cpp",
+   "sha256": "1d466e1a4eb8e3ada848f610fc6956b1a0bd02e1c1cf8c402bdf3801fd64fa44"
+  },
+  {
+   "path": "tests/cpp/checkpoint_analytics_execution_client_test.cpp",
+   "sha256": "99d02a40f1a6e94572e43b280cf69bf2d3065418f831dbf580d23b1ae352f884"
+  },
+  {
+   "path": "tests/cpp/checkpoint_analytics_execution_device_id_test.cpp",
+   "sha256": "774b0f81fdf00e6aad95dc49c30ae394bd0d51eea7ad3a8e584cf201c0ababb2"
+  },
+  {
+   "path": "tests/cpp/checkpoint_analytics_terminal_transport_test.cpp",
+   "sha256": "b043effee4c31229b8446d9c35b07afb8f830186a53ef45b512a8cdad0bf9719"
+  },
+  {
+   "path": "tests/cpp/checkpoint_gstreamer_analytics_frame_test.cpp",
+   "sha256": "cf80d77f11e15bf494b152f2df4afedfdc8431ac682f224bfe9e6d2933b590b0"
+  },
+  {
+   "path": "tests/cpp/checkpoint_gstreamer_cuda_transfer_v3_test.cpp",
+   "sha256": "695f7b08ce7db477eee2e368a8810d596134470e7498cb42a2c740f41263adc4"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_policy_client_test.cpp",
+   "sha256": "f079a7edebf388f24412bcd79593dde485a8becdbf1f2017dc1d18ca7761c6b8"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_policy_identity_test.cpp",
+   "sha256": "e04606dc424faca0f4867117b1a9fa6ad0cb121e8c6cecdea7e2eb06de371096"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_policy_topology_test.cpp",
+   "sha256": "abe69e68524aad4367c7c7355e97b73baa941adeb884f4430b49e69f6ce4daff"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_reset_queue_level_test.cpp",
+   "sha256": "ee64191ed62cb497f078f0adfb5e6886d887bfc885557867b835a0b66e4e1f1d"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_shutdown_test.cpp",
+   "sha256": "8656577bc2826181c3b770f8fa011ebc00c94bbcd8da158b47dfdd02ecc0590e"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_stage_artifact_test.cpp",
+   "sha256": "ce052c917dd3bb2017a1fb05d3a0d75cc8bdcb22d4befbabb859c8c54a28df53"
+  },
+  {
+   "path": "tests/cpp/checkpoint_native_study_prefix_test.cpp",
+   "sha256": "26f14cf160e1b0480d3eb49c69bfaf8a689b8568e0aa427cc6331d459d30651e"
+  },
+  {
+   "path": "tests/cpp/checkpoint_resource_interval_emitter_test.cpp",
+   "sha256": "9f0af2d3768ea9291103e2073e067e5e8908ec5d8757c5310b1e03d87c5a668a"
+  },
+  {
+   "path": "tests/cpp/checkpoint_resource_v2_emitter_test.cpp",
+   "sha256": "f55ec5bc933bd813d7758c842f4e236925c794eb1d197393982883e7ea1b5952"
+  },
+  {
+   "path": "tests/cpp/checkpoint_runtime_emitter_deadline_test.cpp",
+   "sha256": "8fde065f664c79621a648662abcf1d0222565ef7bd3ddcf8e56d17a1a1ab124f"
+  },
+  {
+   "path": "tests/cpp/checkpoint_runtime_emitter_test.cpp",
+   "sha256": "08bf78be8dd2a9197fd03800d35dc9e9f85fd830e170260458b89eb16577a155"
+  },
+  {
+   "path": "tests/cpp/checkpoint_source_lifecycle_test.cpp",
+   "sha256": "568e4c15d438cdc222617166b837f8eb3f79060c5fd05234496bfd62dfda6485"
+  },
+  {
+   "path": "tests/cpp/checkpoint_study_reference_test.cpp",
+   "sha256": "c976ea7daf44fa65c8b335b4c98a788c77cceb4550364b7e9ff7900579d39f2e"
+  },
+  {
+   "path": "tests/cpp/gst_vast_analytics_queue_test.cpp",
+   "sha256": "a601660ac238795c5498ca9f23fc85a0186b1f9949e8af7af4fa47b2da02e53a"
+  },
+  {
+   "path": "tests/cpp/gst_vast_analytics_terminal_test.cpp",
+   "sha256": "e46a34c8b126852a905df88d2d6c63c811a0f654bb802d3125163b25f06213e7"
+  },
+  {
+   "path": "tests/cpp/gst_vast_checkpoint_prefix_queue_test.cpp",
+   "sha256": "ba69ee97411c1ec7bdad68f8f44bb3cc9d04ea4551c65fbca9f28bf78644432f"
+  },
+  {
+   "path": "tests/cpp/replay_broker_artifact_bytes_observation_v4_test.cpp",
+   "sha256": "ee8dfac88ff29fccc6b5f79518fd709456f5ecfa2d304798cb72e11498b3c413"
+  },
+  {
+   "path": "tests/cpp/replay_broker_contract_v4_test.cpp",
+   "sha256": "f6913fc408d9098ce5370eaa9678d6637f1b79eef3ed05f19ce189441b481139"
+  },
+  {
+   "path": "tests/cpp/replay_broker_prepared_handles_v4_test.cpp",
+   "sha256": "8cfca8dcb8a0e30f076652b6bcdde9f3b0930fb8785c849d7ac0417dece1ad17"
+  },
+  {
+   "path": "tests/cpp/vast_deepstream_meta_bridge_test.cpp",
+   "sha256": "5835bb001b6696b5eca3abfd64e2095c2dd148bdb995c551530e8e49a24be6b5"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_consumer_fixture_v2.py",
+   "sha256": "cbce6b4db644e71a2e28c638abc0bf32baaf7d46fc7e9a10ca783bf7599cc2a6"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_fixture_provenance_v1.py",
+   "sha256": "54fdb9c602acd9ff1b82888ca1e25ff7f441c8589054792db233e7c78ac5ce5a"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_guardian_journal_fixture_v1.py",
+   "sha256": "6cb0553ca5dde2e45118f1bb5945f03d6883c1c548b12f0af1897b85af965000"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_guardian_lifecycle_fixture_v1.py",
+   "sha256": "2d3837adc2683eefbd9497de00ff724a0935bf8df9d8543ffac4844bbcc63910"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_native_fixture_v1.py",
+   "sha256": "ec6e9cede746fcf765007072e26b1a87d61276dfdc303643bc77f34e69d2ef2c"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_native_rows_v2.py",
+   "sha256": "057f9d3f4f11c30211ae811325c8c00f68faaa9390f1a8b35297ba2961a74fe2"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_original_custody_fixture_v1.py",
+   "sha256": "f1b37fa796714770443d79da89e70d4b5a017b279a9591791439f2e5d2b5fd28"
+  },
+  {
+   "path": "tests/fixtures/accepted_policy_physical_fixture_v1.py",
+   "sha256": "bc598a28366512df68f5dd7ff2e35a9dd9626ca8ee43dbf9575871119c202ec7"
+  },
+  {
+   "path": "tests/fixtures/backend_publication_v3_process_fixture.py",
+   "sha256": "118d22fda25d2f9d963e47e0a9977c7d78a8ed7508d9c6346cf790a88e3dd7d6"
+  },
+  {
+   "path": "tests/fixtures/checkpoint_admission_source.py",
+   "sha256": "1aef75a6b1293fbad104cd4578914567c4bcd3ebd954986bb53dd45f49c201b3"
+  },
+  {
+   "path": "tests/fixtures/checkpoint_event_worker.py",
+   "sha256": "836ae3f4af8d04f1e67f7e4792150f853f936550ff62d9a6eebf3e59f52b235a"
+  },
+  {
+   "path": "tests/fixtures/kpp_v2_ffmpeg_showinfo_recorded.txt",
+   "sha256": "e6193107f48c51ad57606855d0d490d466add689db388737537e56c06ccfe47a"
+  },
+  {
+   "path": "tests/fixtures/kpp_v2_ffprobe_recorded.json",
+   "sha256": "a60e18d12818fc70bec9c2bce71466af32db0aa83eb93fd78064a918c919f02b"
+  },
+  {
+   "path": "tests/run_publication_durable_process_split_gate_v1.py",
+   "sha256": "700869e8ff80bc3afd8451e9a9f8213e0a1a67053e25a40b441fc34a1a86d1d0"
+  },
+  {
+   "path": "tests/test_accepted_policy_checkpoint_fixture_v1.py",
+   "sha256": "0c0965a2c0983ff79d4ffbaa9b01116fa5bd8efc89897fafa7ab3a3ffe65a7e8"
+  },
+  {
+   "path": "tests/test_accepted_policy_guardian_lifecycle_fixture_v1.py",
+   "sha256": "e1af20940224933399de9ccf1d099d1ff4178548209737be1d01f67bc8baeb36"
+  },
+  {
+   "path": "tests/test_accepted_policy_guardian_transaction_lineage.py",
+   "sha256": "81186ed844ad5b2868c77841c6306f15f9d500803c5ba50b78cb584ae60bf346"
+  },
+  {
+   "path": "tests/test_accepted_policy_original_custody_fixture_v1.py",
+   "sha256": "fe1a4cb84722bea5c78469eb8f3f3c57a2c2d8946d147822d0adeff4658b37c4"
+  },
+  {
+   "path": "tests/test_accepted_policy_production_validation.py",
+   "sha256": "9bb4df0f1b7f5f1a75f702a17c62a5d92abbaa351755a1765d63e9c44ba3e81a"
+  },
+  {
+   "path": "tests/test_analytics_execution_bindings.py",
+   "sha256": "8b319f2c7fe9a93a00b0fb09e95b003f9be0a26848b69b4ccb3fdecd835faaeb"
+  },
+  {
+   "path": "tests/test_analytics_execution_capability.py",
+   "sha256": "0043a41e761aab428f6ec8f1d2bab11ff3b6545cf69763527f3cb8621aada566"
+  },
+  {
+   "path": "tests/test_analytics_execution_endpoint.py",
+   "sha256": "f1d5735b7d0cf4f01790de3eab170d8a789f8e1468a19b1db7414bb12bc9ed66"
+  },
+  {
+   "path": "tests/test_analytics_execution_evidence.py",
+   "sha256": "56038b0de5127bebc9299479ac571551c1df6dd3d07a129d4d6160b53fd307f6"
+  },
+  {
+   "path": "tests/test_analytics_execution_openvino_worker.py",
+   "sha256": "b7f9410711bc086f4f21b4228486169c1d2f9782af5af4c1094bcaeac681557a"
+  },
+  {
+   "path": "tests/test_analytics_execution_protocol.py",
+   "sha256": "6d7b479521c9548f7ead99879d91713f18d99430f7919359a57517b3d812bbf8"
+  },
+  {
+   "path": "tests/test_analytics_execution_tensorrt_worker.py",
+   "sha256": "45833147ae53df8dd4b324c9f444d16fa6341f2ef3a425f68f6c8c22eca6201d"
+  },
+  {
+   "path": "tests/test_analytics_execution_worker.py",
+   "sha256": "646e800dbab91ee1c3b84cc1149ff9fd707a27934c635e4ba47d08cccb99d37c"
+  },
+  {
+   "path": "tests/test_analytics_model_contract.py",
+   "sha256": "40eaeec0e15d484ace73a47b8f5e58b6553addf775511ca2a9aec165a9e2f505"
+  },
+  {
+   "path": "tests/test_analytics_peer_identity.py",
+   "sha256": "57f319e330f00e1e383ceb67fbc3bff1c5744eb04a65d0a89486d21b981b1871"
+  },
+  {
+   "path": "tests/test_analytics_worker_dockerfiles.py",
+   "sha256": "46eba49d31c8394293e08aca3e0ebf0c357bc097a2ddce62865598686527a6d4"
+  },
+  {
+   "path": "tests/test_backend_pair_archive_sizing_receipts_v1.py",
+   "sha256": "ccbbb01d018f21dc6214959274d0c9785d52d5e536b3ac3336d8ce30ae8a8ff3"
+  },
+  {
+   "path": "tests/test_backend_publication_broker_terminal_v3.py",
+   "sha256": "1e632d43c6a8361b7483ef9d160832e5993760f48103a8a22527c3bac1cbe1fa"
+  },
+  {
+   "path": "tests/test_backend_publication_dispatch.py",
+   "sha256": "08a74a3150f58d654613d45f44dd1297bb59204e2482a1d6e72b8bd7b51b1e53"
+  },
+  {
+   "path": "tests/test_backend_publication_dispatch_v3.py",
+   "sha256": "49a55ad5b94f9fc80b6f02a41593a6c46b8821322b9d1cc2a49a5d200c525806"
+  },
+  {
+   "path": "tests/test_backend_publication_launcher_invocation_v3.py",
+   "sha256": "2016dd9c5f0d528d9766a70f188bf374c5b672498cce6b3edf306e21d1c747b5"
+  },
+  {
+   "path": "tests/test_backend_publication_launcher_runtime_authority.py",
+   "sha256": "bf007ea9415f81fe2aded01ea54b45dc2ff10466dd4b73022a61a2231405ac66"
+  },
+  {
+   "path": "tests/test_backend_publication_output_receipt.py",
+   "sha256": "cbeee8db6b46bd80b8df41c2c0f9cbe58cc27e6229ec95605a588be627249364"
+  },
+  {
+   "path": "tests/test_backend_publication_output_transaction_production_v3.py",
+   "sha256": "f78c2fa070e672f3777aca28f5d5043a19fca63987afa5fd8300d1582334812d"
+  },
+  {
+   "path": "tests/test_backend_publication_output_transaction_v3.py",
+   "sha256": "600cd481bd72b22d72b1b01be95d1d5af4718971ff559a80279cce7504ceba00"
+  },
+  {
+   "path": "tests/test_backend_publication_process_supervisor_v3.py",
+   "sha256": "63a6835836ff057e2e38b2d3f18ed4f7cb8b5a6f8dddea926b376b0e8a6b5eb5"
+  },
+  {
+   "path": "tests/test_backend_publication_runtime_authority.py",
+   "sha256": "7cd239ac9d45a13c8f0f4e32ea3ac5278f26ea94dfb3c51dd9d0a525aaea88d3"
+  },
+  {
+   "path": "tests/test_backend_publication_runtime_authority_v2.py",
+   "sha256": "9213f66c4484a828925f8219d4f033c6756f7383b31544efa0c4dd91f82c9200"
+  },
+  {
+   "path": "tests/test_backend_q4_two_phase_executor_v1.py",
+   "sha256": "8a78670653a8f71e57803a72e7ceb495ec239571bf425de48a34b7c0d32ab8b1"
+  },
+  {
+   "path": "tests/test_backend_q4_two_phase_source_registry_v1.py",
+   "sha256": "6262f9167e990c4e3300f2949d0ecd620b4ee3e69cbe6677c079f4413009fdeb"
+  },
+  {
+   "path": "tests/test_backend_runtime_grant.py",
+   "sha256": "6ffe724da1b5896f429f45e715816cac8d9448233c55939c419ea287bfdbf0f9"
+  },
+  {
+   "path": "tests/test_backend_runtime_identity_grant_v2.py",
+   "sha256": "94037e9cf3e4d6271eedd4023c843c59b211c7b10933de3698eff7d64e5ccd93"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification.py",
+   "sha256": "10b1e4659e40fb5bbdd916d68bce1bb5727f92b3ba381831ef3e4910724d30bd"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification_v2.py",
+   "sha256": "6f965d3929f8ac6eedfd7a065dfb49cd3f01786877ac3e80699e5d2a4f4e0306"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification_v3.py",
+   "sha256": "3e6c11a3812f5d5973f8405853ebb5bb15149736e7b11651f2e13cce821536f2"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification_v4_catalog.py",
+   "sha256": "404cf189d5e70c0b94e9be7c42dab15bb4f44d78b75cb40e1242015f34ac578b"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification_v4_input_index.py",
+   "sha256": "11f38096f8d96c45245fe8145ba33a3b2f10e76debd4cd45cd217c3a7d1b3a88"
+  },
+  {
+   "path": "tests/test_backend_runtime_qualification_v4_persistence.py",
+   "sha256": "ea08cf1eb8ea04552642c9642068f838b2c5aba866141674b5f6ef1fa10ea304"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_handle_abi_authority_v1.py",
+   "sha256": "01e88374b025f5acfdb894988f5084d1cf7852e347978b14b051aa6c7dce9167"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_runner_authority_v2.py",
+   "sha256": "20a903cb40910b6f4c2981798e1456f6932b80ce0e916c2576cd1afc6f7cc6dc"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_runner_authority_v3.py",
+   "sha256": "e84d5e17b3f72af336dc079d462e262df30cbca1c9d18f5152a01bcb57a4cfa8"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_runner_invocation_protocol_v3.py",
+   "sha256": "442bcedd33079dc5217abea3ff1990f9b0948187f8b6353e2c4f5282ac125bbe"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_runner_invocation_protocol_v4.py",
+   "sha256": "d8e2c5247c5305ea328c982be0091c87d3f31b9999cf357724bd6909a8d4cdd1"
+  },
+  {
+   "path": "tests/test_backend_runtime_replay_runner_invocation_v2.py",
+   "sha256": "80067efd7a19e45085e78a9d29fbb880e480fb8f0389305ef99094980e98020e"
+  },
+  {
+   "path": "tests/test_backend_runtime_validation_records.py",
+   "sha256": "a658199125d16d9f58067c436e37a82048746e921e3fc8b8eeb00b276c6aebc9"
+  },
+  {
+   "path": "tests/test_backend_runtime_validation_records_v2.py",
+   "sha256": "23d2e2c8894ac298b65f682a9f6785e195a15ff0e7739697374cf4de50328ca3"
+  },
+  {
+   "path": "tests/test_backend_runtime_validation_runner_authority.py",
+   "sha256": "44226214c7586fc181d71806e7ab98ab10dd2301f1940e4a39d81a4dd706b985"
+  },
+  {
+   "path": "tests/test_backend_runtime_validator_authority.py",
+   "sha256": "744c8d59207d44e33d7ba8c8a97fe42f57646c5409cbdf0917154490928e00cc"
+  },
+  {
+   "path": "tests/test_backend_runtime_validator_authority_v4.py",
+   "sha256": "861864c0f8bbe7b7cf2f433fe4e667d9a652a4f8681bd8b89c3127d4abd4da51"
+  },
+  {
+   "path": "tests/test_benchmark_contract.py",
+   "sha256": "cd79cd27ba7265783fcacbab7879a01f8fb61aed8441ed64b4bcc135874014e7"
+  },
+  {
+   "path": "tests/test_benchmark_preparation_evidence_v1.py",
+   "sha256": "2864638a607121af6547406caf1d479bceacd93130e38e9f784f85a5ad3a4632"
+  },
+  {
+   "path": "tests/test_canonical_systems_study_plan_v1.py",
+   "sha256": "391b4725d25bcb372d96f1b4506957f832018f0de2315faffab5ef1a90e02816"
+  },
+  {
+   "path": "tests/test_checkpoint_acceptance_finalization.py",
+   "sha256": "690f714d7272489b0f60d02aa1246fdb244461b0683263d08d5c06284cac8f11"
+  },
+  {
+   "path": "tests/test_checkpoint_acceptance_metadata_binding.py",
+   "sha256": "f4d95eda65dc2c39fc96dc34db1bef980b43315c596a70cd40895f10839c721d"
+  },
+  {
+   "path": "tests/test_checkpoint_admission.py",
+   "sha256": "e3af66f09ad1b7c0d874b34b4f7b63bf7efb078b2a8e4ab639777f6e2f036f16"
+  },
+  {
+   "path": "tests/test_checkpoint_analytics_execution_client_cpp.py",
+   "sha256": "e80595e14a6b085411cc9860a4fb840ed58a352d4af3d6fea437921a326dbabb"
+  },
+  {
+   "path": "tests/test_checkpoint_backend_capabilities.py",
+   "sha256": "e242710ec66f5b78919c2f6a072e52c8a648cba4da06c6c4a547620324b96ded"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_container_runtime_v3.py",
+   "sha256": "e758ac8f4094d0bec2498b0f01f7f3752fefcd0ad9af293a4f1e2aca8e927cc0"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_launcher.py",
+   "sha256": "b700c4e8df91a331f64bf6353ae344b39ca01fe2868896bacb34c0fc20346de8"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_protocol_adapter.py",
+   "sha256": "0a49bfb696ec4bc1326a7b3d0f61ac1f1c5e41f530627e1d53d638a0f15b815b"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_protocol_bridge.py",
+   "sha256": "42f503e45c5ce9fb166a507c374a384acb0f32813746c6267d3e325f5d835fe4"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_publication_runtime_v3.py",
+   "sha256": "b3d02e0674f664138c59c33bba996421686ea550090ee86b5618b6582ca3cb6c"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_qualification_fragment_v1.py",
+   "sha256": "0f82dcfa8525ae459d482ae672fd4fd779a1dfeec22d160aded9d3d0cee86f73"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_resource_runtime_v3.py",
+   "sha256": "0f9796ab128363619948d6e654092f937bd8a9e8a8e09c6e4070d29f0c5def9b"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_runtime.py",
+   "sha256": "78e2969f171759fefc28d6552857686b5af88bb8bf6edbb56e6ac3874e75cea2"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_runtime_image_evidence_v1.py",
+   "sha256": "98ac3bbe89158b2aa58cb6c12bccd60385a1e1e7821104f2b1a797de0d3791d7"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_runtime_source_closure_v3.py",
+   "sha256": "2b74544af58b0876554e3573b3e80069e30f2974923a6d36aabd3a590162174f"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_sdk_runtime.py",
+   "sha256": "efd59afa2e7957d496fa489d87da2b3d7927d4507295f1f7dab35b988221e2ec"
+  },
+  {
+   "path": "tests/test_checkpoint_deepstream_service_clock.py",
+   "sha256": "3cb4b9cdd1ba296f0d651b2feb2c695eee4e838def222405fc2ba4c861fa748e"
+  },
+  {
+   "path": "tests/test_checkpoint_external_execution_manifest.py",
+   "sha256": "90a48b1343fd6f5b1dbeca2aa424458ebe9cffb64055da0e581736c3add6a628"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_analytics_bridge.py",
+   "sha256": "a4fbb2d80f0d815c499abc1c909ff09861415849e2347d37d94c40375a1a24db"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_analytics_sidecar.py",
+   "sha256": "47f74ffd43d81dff567b7f04576446fab9f246fb3937d6c97a92b73bff90a78d"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_cuda_transfer_intervals_v3.py",
+   "sha256": "44d4a87d3e268e61a8602cc5fc55e10c37fdc06aeb405477e2c951a0445560a6"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_custom_publication_image_v3.py",
+   "sha256": "a8172ab69a6da776602fca6d17008d6dfd9263fa3e493ffd58ca812171a6fce3"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "sha256": "d31cd41baf30c78e2b382ab880fc032d7b1e7bbea5a5424cbe0e325dff6b7409"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "sha256": "63e6c56eb10ac5ddf58d17c2a9cdc84940df5a8ef2a530bc113d6341db982a60"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_custom_runtime_source_closure_v3.py",
+   "sha256": "86ba49ca165d9c2fce1c699bc3e87845aa8cbac8bc73103d8d4006e29dc2ef8d"
+  },
+  {
+   "path": "tests/test_checkpoint_gstreamer_publication_plan.py",
+   "sha256": "93cbb08e3227e78ead3e8a5183a9032ffdad9d6bcfad3905a5431b0f4e62f282"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity.py",
+   "sha256": "1a3e6a9061c29a304566665ec4372e4af0909e4f2931d124cfff613b6e627de2"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_acceptance.py",
+   "sha256": "20b892006cf4b89f996bc45bb336756caaaafd546920940b295fbd7422681deb"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_acceptance_v4.py",
+   "sha256": "38d5ff92f0ff5ee1de0765a6c7e554b6e803c152f03a0fbeb27421e2457b15c5"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_materializer.py",
+   "sha256": "5e8da3fc368abf115efa1a3dbe95e77f4f4c30a83f801190f39bca5782df80d0"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_materializer_v4.py",
+   "sha256": "2aa4d4e8aedde6ca30ad178e7ff7d2fec13ed1d840f122e851075afa77000ac4"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_socket_namespace.py",
+   "sha256": "35cb6c45bf9815ce282544f14f622b022bcf956837d0308df0da04e369b4dd6e"
+  },
+  {
+   "path": "tests/test_checkpoint_model_parity_v4.py",
+   "sha256": "c9fb3828bc0ad770da5682ced58eab504f01f29945298e9fc3894cd9471c5f49"
+  },
+  {
+   "path": "tests/test_checkpoint_native_policy_publication_projection_v1.py",
+   "sha256": "ae6fc39ddfc3c13068e88f90aa76662c64a0a8927c6cbe0561b940c37ef0bf5c"
+  },
+  {
+   "path": "tests/test_checkpoint_native_policy_runtime.py",
+   "sha256": "5dd6730460e04f34a2b394409e4a38c21d8cf178ba57149fa168a810dee0ff77"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_execution_bridge.py",
+   "sha256": "b027d89e0a4a3d043318084f61ccff3d90a4e6ccf58fad8b69d87efb9b54b2e1"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gstreamer_publication_launchers.py",
+   "sha256": "0a1ad1f368c9d3224701a44a0cc28ad2c8a50fc9bd50dcb790dc852057cc7147"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_container_coordinator_v3.py",
+   "sha256": "c1c7940a11c3de293d6f9ed6e3627faa625c6c5ecf2e1fe02621a43e454c9631"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_launcher.py",
+   "sha256": "e57bdd152d28039c9de90301fa430daa8c1eb114264947d27a48af54341fed5e"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_publication_image_v3.py",
+   "sha256": "cc4ce2981830f213a538049586ffd41cbf48ce987564a890b9ebfaf2144c0d5e"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_publication_runtime_v3.py",
+   "sha256": "eb54f104016b6fb46cc887d70ece0dcba122ed6258e67919eb946ace4ceab00f"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "sha256": "f8ef46423bb6659f61a9a2bda501ab0ed2f030571176a695e6ed12e0ed2c1186"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_gva_runtime_source_closure_v3.py",
+   "sha256": "bdaa1b1b834da822ecff99190081f8e2f4d49012517f7aa7c2f4d5f04533d26c"
+  },
+  {
+   "path": "tests/test_checkpoint_openvino_runtime.py",
+   "sha256": "e2ea0f5384a53950fb41bd40a0930034f206f197b90874c7b777453df0943199"
+  },
+  {
+   "path": "tests/test_checkpoint_operational_admission_guard_v1.py",
+   "sha256": "344fd9c81f8a351a47eaba21b754e7d6d0ee91b631749b1a3f30ac3477ce0929"
+  },
+  {
+   "path": "tests/test_checkpoint_publication_fail_closed_launchers.py",
+   "sha256": "b9dd2cb0fc96e1aa10dbd42efa1968ac20b6673ba98dc58e473ef651137e2026"
+  },
+  {
+   "path": "tests/test_checkpoint_publication_fail_closed_launchers_v3.py",
+   "sha256": "9958c6141dd4c4d3fefcc66b440101837adcba84ded4a876cdec1bd01d35041c"
+  },
+  {
+   "path": "tests/test_checkpoint_publication_launcher_adapters_v3.py",
+   "sha256": "0586be79180d3f3069baf7b27a703b1bb8fd2d5da5065b5a8a4e4048403090a2"
+  },
+  {
+   "path": "tests/test_checkpoint_publication_runtime.py",
+   "sha256": "afb7a89ba8f77f94da4a419ec83caf67f0190f87a8036072310da75ce88f8e42"
+  },
+  {
+   "path": "tests/test_checkpoint_publication_system_backends.py",
+   "sha256": "1373358be099856f79bed451ce601cafa428354904250c46ba41e95f4d0aafc6"
+  },
+  {
+   "path": "tests/test_checkpoint_qualification_pilot_acceptance_v1.py",
+   "sha256": "ffbe3e8bb42a0397120a7d6a915a774e3d0ad4e80cc688a6d5d2b6842e352236"
+  },
+  {
+   "path": "tests/test_checkpoint_runtime.py",
+   "sha256": "bcb492023fdd4e24745b9378e36c86d7119a162107622680716997e92dccbae8"
+  },
+  {
+   "path": "tests/test_checkpoint_runtime_inherited_fds.py",
+   "sha256": "d59f37266f82e997188f0fd75285c6563524f27177e7656fd2caa9255c996616"
+  },
+  {
+   "path": "tests/test_checkpoint_runtime_plan.py",
+   "sha256": "213f9616f624570f9e252d8b11c5afe80de0a258ceed41c9fcd588ab1ee93f65"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_container_runtime_v3.py",
+   "sha256": "a60955e103502559370b62dde348d4a266901c736d1a99eb0ce8f09a3b6bcd31"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_ingress.py",
+   "sha256": "562467ee9cd4f9cd3973166ed31c9a3c128409eddf9f46297b6acf46d9db64ff"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_launcher.py",
+   "sha256": "44e0b81a60d42182f7130a5e6693fbbd90dd0a2d96a45f0c7664e967a8ddf0f9"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_native_identity_integration_v3.py",
+   "sha256": "3f44f9bed0bbfab469dbd618cfad3377c44971cdd706d9a3c172166244f2c402"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_native_module.py",
+   "sha256": "eb7f606dc97818367a9fafc001c7833e7de8e7e03fd122e0921fc81549457a93"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_protocol_bridge.py",
+   "sha256": "ad7e1a0869d17bf8f80bebe553aa6c5936b21d9f4413f9aa7eb198569a2d3189"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_publication_image_v3.py",
+   "sha256": "bd906ae53fe93aa3d5c3a0b5572c1ab9561cfaa750655832985bdbc01c9b0739"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_publication_runtime_v3.py",
+   "sha256": "e3c68f0a7485b7b24d0e1045c28f492ba0d69840f32a3f6f275a41063585ce50"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_qualification_fragment_v3.py",
+   "sha256": "75feb1788871e4f70f25b08d23020bf6fab9be250ce4b87034d262d42e9ce7fe"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_runtime.py",
+   "sha256": "df952edf5f2d9dbca8e42ced0a31eb74967aaa8a222a5c4cd5d14d5c3d19bd37"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_runtime_source_closure_v3.py",
+   "sha256": "9e53f57c6f83839be66363813e2de6f1a8b7ed74530832a77f4ef9d2f70afd4c"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_sdk_runtime_v3.py",
+   "sha256": "1d89f417315e33d9b1ba4ed24e1a41ad1508d76f4b8793e1db44487437fbe3c2"
+  },
+  {
+   "path": "tests/test_checkpoint_savant_stop_race.py",
+   "sha256": "026a94ed04d23476d09f3a7be952c4f7d2fb970bb2f1a95bcf21baee2fc4f90f"
+  },
+  {
+   "path": "tests/test_checkpoint_source_build_hardening.py",
+   "sha256": "9c9b2f3c96dca8de2f21cc6a2e3e6210b2b7228ed67fcd7387bb35f5c393d494"
+  },
+  {
+   "path": "tests/test_checkpoint_source_runtime_closure_authority_v1.py",
+   "sha256": "7a3e36a1cb642a5e914b9483261cc95ad3861d7752b0d47019d338bbbb6cfd95"
+  },
+  {
+   "path": "tests/test_ci_external_test_observer_v1.py",
+   "sha256": "cbd9be309e2092d66e68403432a7162ca00d77ca1408d6c7b600fa77458be9c4"
+  },
+  {
+   "path": "tests/test_ci_namespace_diagnostic_v1.py",
+   "sha256": "5c8519ff1a1d600ba6ed72051498dd0da62f68d89e29b48079f546315bb7ac64"
+  },
+  {
+   "path": "tests/test_ci_test_selection_v1.py",
+   "sha256": "eda164526e44f8084ed28ecceb6d99e0d7887c22750007aa1a04d8181f520b7a"
+  },
+  {
+   "path": "tests/test_ci_userns_profile_v1.py",
+   "sha256": "dbcea702679255fd64bb223875385fc1800ed0946958e83ceefda59a0fdc2695"
+  },
+  {
+   "path": "tests/test_collect_metrics.py",
+   "sha256": "db865aa25b8f7bf5f4332d4d52a38532831c47bc63e2caf48d87daba78d834ee"
+  },
+  {
+   "path": "tests/test_component_latency_diagnostics.py",
+   "sha256": "f84a7594521e8bd364179f40359aa3c2d9c90b1913e40c52cb78a2c148df9543"
+  },
+  {
+   "path": "tests/test_custom_cpp_policy_trace.py",
+   "sha256": "4f363096fc8ae8f44b46e01f6142dac42c8ce8212de9f8bba9448d2932ef65dc"
+  },
+  {
+   "path": "tests/test_decoder_research_v6.py",
+   "sha256": "039fa6478cbd316d8c0aba139969f0df88ec1a5a77b535517d6698a732429380"
+  },
+  {
+   "path": "tests/test_extract_kpp_legacy_iss.py",
+   "sha256": "c74affbd56e5a03d75d6d6926485f1d228c3c543de6b76592e9970c848d26afe"
+  },
+  {
+   "path": "tests/test_finite_study_static_names_v1.py",
+   "sha256": "f1ac254997df34ff52a4b4df91e4ccfd73ae0632f47aac907796e2ea7880926b"
+  },
+  {
+   "path": "tests/test_formal_aw_heft_reference.py",
+   "sha256": "5bfc9cb70488525311e4b8e3562e11adfbf48dc14481892705cbd0c416349534"
+  },
+  {
+   "path": "tests/test_freeze_kpp_frozen_reconstruction_v1.py",
+   "sha256": "bfe006e8136eef50bb02508310c28279a6d812737da7c3255b481e22d5b5c79c"
+  },
+  {
+   "path": "tests/test_freeze_kpp_iss_publication_v3.py",
+   "sha256": "06504e0bba40191fe0551a42df2101393ff18b0eae3cdf793c13750d630982aa"
+  },
+  {
+   "path": "tests/test_freeze_kpp_legacy_iss_v2_transcodes.py",
+   "sha256": "81f26142261289053ca06aeacf4bc9092e7751400ee5e113ee60d39b1003ddd3"
+  },
+  {
+   "path": "tests/test_full_consumers_foreign_kind_v1.py",
+   "sha256": "95dfda74280f7c85ac360b39bff00aa1199247c63e8b3bbe4b28e661c2356354"
+  },
+  {
+   "path": "tests/test_full_publication_entrypoint.py",
+   "sha256": "b44df1c1f256ec88591778c67a01cac61b1bc74ae892802724fa4f5e802bcfc1"
+  },
+  {
+   "path": "tests/test_full_publication_identity_artifacts.py",
+   "sha256": "16c03f518e8c6f8821d82598c45dbb3c36dddea52e7543ea6a338bceba7d1f52"
+  },
+  {
+   "path": "tests/test_full_publication_identity_manifest_v2.py",
+   "sha256": "cdbd868c33ed0bb77e5a4ba188878a859c45d029cf34af17bb9d370055c8b07b"
+  },
+  {
+   "path": "tests/test_full_publication_identity_parity_v4_dispatch.py",
+   "sha256": "a57a9d4c9cd0a9ad3c04821f8d4df16dc7f6cea50650d5321c8c5527ea534f97"
+  },
+  {
+   "path": "tests/test_full_publication_identity_policy_coverage.py",
+   "sha256": "1f485e20513ffc04ed8baf5ee77c21e3d47787075f87db95a716d6a28375b822"
+  },
+  {
+   "path": "tests/test_full_publication_identity_runtime_authority_v3.py",
+   "sha256": "e20048ca2918a90b610a5ebf7d79a53077a5161b43af8db65ceb54dcb17fe441"
+  },
+  {
+   "path": "tests/test_full_publication_results.py",
+   "sha256": "f5c59bb164d9925c347af565e8c3ac792f9b3462d78d264470c938aee7cb9802"
+  },
+  {
+   "path": "tests/test_full_publication_runner.py",
+   "sha256": "ce52c794a71d86f789603338ad66ec150b23fd8209558f462ba2e81015f66732"
+  },
+  {
+   "path": "tests/test_full_publication_runtime.py",
+   "sha256": "dab1eea8a9b0d433b7c4a47a9017c769f0c853345d3c0327c8e7dd7cfb2c17e7"
+  },
+  {
+   "path": "tests/test_full_publication_seafile_capacity_binding.py",
+   "sha256": "88a4560bc533beb4d250975f411cb64e7f965ca895b9d90b346acc88c512cb0d"
+  },
+  {
+   "path": "tests/test_full_publication_supervisor.py",
+   "sha256": "354cf9eb1a2cec293bbf76976f17e33d5ad41a380c14b9e20ae9f3fa56269139"
+  },
+  {
+   "path": "tests/test_full_publication_wsl_user_service_v1.py",
+   "sha256": "ca023670faa22e701ccc05619379023b979d17f7ead364535984ad6a9193a6f5"
+  },
+  {
+   "path": "tests/test_full_qualification_runbook_errexit_v1.py",
+   "sha256": "4ce80d3081fcacc52544526c47eb684012a89dac42e97df4280a6971c23f50d4"
+  },
+  {
+   "path": "tests/test_full_resource_contract.py",
+   "sha256": "474d69d29b47068e599c6f86ced1e625d8234515ac9b207c3d82eb9e336e01b7"
+  },
+  {
+   "path": "tests/test_full_resource_publication.py",
+   "sha256": "db6f26d4884ac88ea73f2cf6873ffcfa87d34b19024eb52ccfdaa9cf974c175b"
+  },
+  {
+   "path": "tests/test_full_resource_qualification.py",
+   "sha256": "385130d4c231533198e486914a69a6d04413095aac1fdb42b0931cd60160f626"
+  },
+  {
+   "path": "tests/test_full_resource_qualification_authority_v2.py",
+   "sha256": "f071c735a0166080ea99ff0715703ed35160ecd3c9ff6a0b3ac964687a2a06a0"
+  },
+  {
+   "path": "tests/test_full_resource_qualification_index_v1.py",
+   "sha256": "60648a8af16abb2090b132e2a0fe1fdff9d8642806d37eb694a0a9967bb7ed7b"
+  },
+  {
+   "path": "tests/test_full_resource_runtime_v2.py",
+   "sha256": "7e9e20f183c8a4ce74bfc40b404393990aaf7492f47213afd5b218a5cc04b6bb"
+  },
+  {
+   "path": "tests/test_image_input_eol_rules_v1.py",
+   "sha256": "1989974710a0970a8bdd5deb5bee87b308ea762208a5f47274682b0a0ac436b5"
+  },
+  {
+   "path": "tests/test_install_openvino_dlstreamer_guard.py",
+   "sha256": "dafee26d46ac7b973fd6c90d25623215a58666de9a943cc8b46160144ffa541b"
+  },
+  {
+   "path": "tests/test_kpp_dataset_contract.py",
+   "sha256": "6b9e4d49819e4ce23a6337e6a521d0a08fe0f041f78946903c223769188ffdf2"
+  },
+  {
+   "path": "tests/test_kpp_frozen_reconstruction_v1_dataset_integration.py",
+   "sha256": "1625dcceffc785a911d1dc49ba8c277d42d2942812ca5833a150adc9075f3222"
+  },
+  {
+   "path": "tests/test_kpp_iss_publication_v3_dataset_integration.py",
+   "sha256": "1c560990ce629f5d718582d9157804d1e991ee48b2e141db395b4db49264b20c"
+  },
+  {
+   "path": "tests/test_kpp_legacy_iss_v2_manifest_integration.py",
+   "sha256": "07c6cdbcab29f4162eb5068cc8fdee5e25e10429d14aa77d8bbec69b9b6f2659"
+  },
+  {
+   "path": "tests/test_kpp_legacy_iss_v2_offline_image_intake.py",
+   "sha256": "715860f02cbdf9edbcde6122ca3fdc44a47d755bb74eed233b1401bcd9724d14"
+  },
+  {
+   "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_decision.py",
+   "sha256": "1b7e64b65f8dae3884b16aa174b6adaf8d453bb61160f2eabdf0d7a142fc667d"
+  },
+  {
+   "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_executor.py",
+   "sha256": "965195e425d13d6c2047127d807db1f3c973624ad1d063bb78f8f169ba150ba8"
+  },
+  {
+   "path": "tests/test_kpp_legacy_iss_v2_secondary_sensitivity_pilot.py",
+   "sha256": "a69fa4797e03b15a01fddd923088f5c55edc49f166e45c393af3c0838fd22ada"
+  },
+  {
+   "path": "tests/test_kpp_v2_model_corpus_canonical_rejection.py",
+   "sha256": "8827d04dc75e936382f386d5965c08a0248db022f6aca80b5f066ab3fcaa4e6b"
+  },
+  {
+   "path": "tests/test_legacy_wall_clock_static_gate_v1.py",
+   "sha256": "69265f84e1e2d3327ea6a85f31b63e1969e3b98277b5e9beb9757bd8fe23429a"
+  },
+  {
+   "path": "tests/test_materialize_kpp_legacy_iss_v2.py",
+   "sha256": "7690d9670a3319afcb7af83c3b140c7ac6dd3368df3463e01631bb06c8d6d6f6"
+  },
+  {
+   "path": "tests/test_materialize_kpp_legacy_iss_v2_model_corpus.py",
+   "sha256": "e16f0450cc797cf60a903dc2248fa8e53da9eb46464485e1ef22afe02a9b3d04"
+  },
+  {
+   "path": "tests/test_materialize_kpp_legacy_iss_v2_model_corpus_parsers.py",
+   "sha256": "4e81a397a663f9cf7326db8949e1f7cc88c40213f8faaf3c0c939667af443d41"
+  },
+  {
+   "path": "tests/test_model_parity_grant.py",
+   "sha256": "de30a62f2d841b0bda0955e382d339057e49ce953113a969f485e68692c0712b"
+  },
+  {
+   "path": "tests/test_model_parity_grant_v4.py",
+   "sha256": "b71b4c0dc867f1525b197c71918efcff1d48be24db90b1b5064e00cdaec86dc2"
+  },
+  {
+   "path": "tests/test_mount_publication_evidence_wsl.py",
+   "sha256": "421f96f0070b2ee64c93c2a7dc3c1eea0c1f06cbcd60364e8e7868c4178b4195"
+  },
+  {
+   "path": "tests/test_mount_publication_runtime_wsl.py",
+   "sha256": "3bc8e263f78caa42fa2c71a8eeb1b777739fcb920217d534a27b92a3aabb6364"
+  },
+  {
+   "path": "tests/test_mount_publication_sockets_wsl.py",
+   "sha256": "ab9a573854d5ece1fb7ce626565a5ab2fedbc6676b29c4d0bf3c92834f87d117"
+  },
+  {
+   "path": "tests/test_native_image_include_closure_v1.py",
+   "sha256": "f4e209903a221a1756f510fd201cdc5ad58b502f659df91264fc4d5f28f910e9"
+  },
+  {
+   "path": "tests/test_native_werror_compile_v1.py",
+   "sha256": "4e6000c758f21ddfe55839f57ff7d2d473cb8eee79a165af77664ad105c14a3d"
+  },
+  {
+   "path": "tests/test_non_decreasing_wall_clock_v1.py",
+   "sha256": "53f9c789af541db61934874d55b1944fa96481d7aa8d9b34362d05217de85286"
+  },
+  {
+   "path": "tests/test_normalize_kpp_iss_metadata.py",
+   "sha256": "509ceab53a1554cc0d7c267e5e8d080f99a06079037386b76a70b27017fc7947"
+  },
+  {
+   "path": "tests/test_operational_identifier_domain_v1.py",
+   "sha256": "e059d3c65b755dcf8c38560eb455188761fc0e741cbcf22c518917de1472fab2"
+  },
+  {
+   "path": "tests/test_policy_decision_jsonl_binding.py",
+   "sha256": "902e9ee010340c648323456203bd539e50528c357e54fea9d101a2e7905a3c82"
+  },
+  {
+   "path": "tests/test_prepare_benchmark_dataset.py",
+   "sha256": "e8337a392631ba476b4dd65805e1eb56f2108b06f00ccd8d2ec925faaa4de2ad"
+  },
+  {
+   "path": "tests/test_prepare_ci_model_assets.py",
+   "sha256": "cbbbb4fe9ba0f5890966023ed28a8663f9b4f7f8c660d8fe8ad885b4e7718e3c"
+  },
+  {
+   "path": "tests/test_production_arm_evidence_finalizer_v1.py",
+   "sha256": "0470320c2038c5e3550be99781d00fb3c32a2426872e45aec99d262949fb8351"
+  },
+  {
+   "path": "tests/test_production_parent_artifact_pin_store_v1.py",
+   "sha256": "358cd1585058b1a8719a63f9b07d7ac7e0993a3ada27ad90bf4c3030b96e1b21"
+  },
+  {
+   "path": "tests/test_publication_acceptance_evidence.py",
+   "sha256": "463c4023ef9663fe6907987b6afbe7865235c491f83e48d36ba3d93369544bab"
+  },
+  {
+   "path": "tests/test_publication_archive.py",
+   "sha256": "1f69a075e57e0b734ef1f217c0020aa649d43458cf3f870e8ceef55ec03bb387"
+  },
+  {
+   "path": "tests/test_publication_article_statistics_v1.py",
+   "sha256": "725c996c560ec93568e04a411c43f8d7baaa660a7f3362df38c7837c2562931a"
+  },
+  {
+   "path": "tests/test_publication_benchmark_native_diagnostic_v1.py",
+   "sha256": "04a8f2e5cc6ef71f6a2319c1c2534a67eb179c2a71dd748060a5aaa0f18ecc58"
+  },
+  {
+   "path": "tests/test_publication_child_evidence_materializer_v1.py",
+   "sha256": "7e7544331e77beff3adf6b6854123f756a18b4a685d4574342b5d6fbef52dedf"
+  },
+  {
+   "path": "tests/test_publication_cloud_transaction.py",
+   "sha256": "b204513cf2ea15b671b9641984d0fd1cfb318634cfc5efbbe6523439549fece9"
+  },
+  {
+   "path": "tests/test_publication_gstreamer_component_cli_v1.py",
+   "sha256": "f8204fe8b4c45ef4a0dce6cafc3bed8242dc33e67468e6e35767fd42e752e125"
+  },
+  {
+   "path": "tests/test_publication_gstreamer_component_inputs_v1.py",
+   "sha256": "4a287e36b694855ca65d12749bcfcd1223546cd4bee481615a5fedcf250b6998"
+  },
+  {
+   "path": "tests/test_publication_gstreamer_component_runtime_v1.py",
+   "sha256": "18d72265cbed3d4d88f013f83922f458053329a22b1a10c04b1aa5938c34ef50"
+  },
+  {
+   "path": "tests/test_publication_guardian_accepted_policy_preprocessing_contract_v1.py",
+   "sha256": "856549b6d8a60cd1823650f826487194ac42740789864d214c0c941d3325b6a7"
+  },
+  {
+   "path": "tests/test_publication_guardian_component_preprocessing_contract_v1.py",
+   "sha256": "0593be7a09359ba0b0cc99db8dd3836167d3bf64fc33341f3243ca954a9e0ebe"
+  },
+  {
+   "path": "tests/test_publication_guardian_operational_recorder_v1.py",
+   "sha256": "dbd050caf3f753c553db90682edd64652df902f8a23da0e945211713e25741ae"
+  },
+  {
+   "path": "tests/test_publication_guardian_preprocessing_contract_v1.py",
+   "sha256": "d1af82cedc79b73469111397c2c6d6a841cc888ff07b072a0840c8deed764d79"
+  },
+  {
+   "path": "tests/test_publication_guardian_runtime_expectations_v1.py",
+   "sha256": "3831406ec342b0fdebc45c6bb9a89545a9ae2134245a63b16e4246241112d793"
+  },
+  {
+   "path": "tests/test_publication_image_build_v1.py",
+   "sha256": "59e9b6f3717d1ec3ac8c65d0b1524321dc94e765fb3c55d29f6788437f6ee5f3"
+  },
+  {
+   "path": "tests/test_publication_immutable_directory_v1.py",
+   "sha256": "04a242d248925b719d7f815beea6cfb77fe55e6e2eca57892acc7acbdb536f16"
+  },
+  {
+   "path": "tests/test_publication_matrix.py",
+   "sha256": "0c7a0911cdb5c1d6e639997bccad0b8f2afbfdff6c028cc43ef826863832e50e"
+  },
+  {
+   "path": "tests/test_publication_operational_boundary_v1.py",
+   "sha256": "b3562285f678a89ca7a17b1b463ec4f333c638371c1f7a51f505fe0dc6891dee"
+  },
+  {
+   "path": "tests/test_publication_operational_capture_plan_v1.py",
+   "sha256": "42693bbe3c68a0334424c1563d64d38aa84602e45be9a7701ff164b1478a7c9f"
+  },
+  {
+   "path": "tests/test_publication_operational_container_custody_v1.py",
+   "sha256": "6fd45b43fe0a5acc0cc59951d9c4bafa0496780110f89b59950c3bbd420d9cee"
+  },
+  {
+   "path": "tests/test_publication_operational_execution_binding_v1.py",
+   "sha256": "fc5ffa7b076d86d80d948c63ed76ba75fd72d9d243538db8fa95d5911ba49e96"
+  },
+  {
+   "path": "tests/test_publication_operational_pilot_custody_v1.py",
+   "sha256": "599e718280bde6a32d97866aaeca2871b78682f8746c7b7dd7f677193df1a6d7"
+  },
+  {
+   "path": "tests/test_publication_operational_process_custody_v1.py",
+   "sha256": "e34b65d2ec08863a010ed67fa4b41be06f9b49d584bcef3cd6cfff5be1b9663f"
+  },
+  {
+   "path": "tests/test_publication_operational_request_domain_v1.py",
+   "sha256": "d61e2e106bd9ee06cb618add74fb8b70d621408b5596dd961969bad0e0252ed5"
+  },
+  {
+   "path": "tests/test_publication_operational_runtime_context_v1.py",
+   "sha256": "fa1bd129d16bcb5002a56ea24d483d1826525dd79b959bf1516696446a888caf"
+  },
+  {
+   "path": "tests/test_publication_operational_runtime_input_binding_v1.py",
+   "sha256": "3a822d1f15bae2c7808af262d7031ace77becde98dc4bcc15a45970dc9301cda"
+  },
+  {
+   "path": "tests/test_publication_operational_stock_operations_v1.py",
+   "sha256": "0d443a0800a43f4ef1f7c5c366559788c80a22f7eba11a37757c25c7991ecb29"
+  },
+  {
+   "path": "tests/test_publication_operational_stock_request_v1.py",
+   "sha256": "9691205d85109cbb45a22043b2f735ca5fb6955aedff2d89d709829e1feadcf4"
+  },
+  {
+   "path": "tests/test_publication_operational_wrapper_composition_v1.py",
+   "sha256": "6695ed2cf270b9b28b1e33de19ec3a110bce30d351dd05b28408e33116c04612"
+  },
+  {
+   "path": "tests/test_publication_owned_staging_cleanup_v1.py",
+   "sha256": "3a328c45beb3419ef1c4b344b7349fcf440b52cefd7566f245ec03db5d873011"
+  },
+  {
+   "path": "tests/test_publication_physical_io_v1.py",
+   "sha256": "b9b2ccbd9a34e338ff789da68673d96199becb8d8adc4b36d7cf8cfdc1b78a27"
+  },
+  {
+   "path": "tests/test_publication_policy_contract.py",
+   "sha256": "bdf6fecb70524ae919d15541bd689baa9c03c1f4f11677f79eb68e5eb56a0105"
+  },
+  {
+   "path": "tests/test_publication_policy_history_acceptance_v1.py",
+   "sha256": "3c7417b653f293977a7255513b5dc17acef9be94b491ead21b8166fc5e5e79c5"
+  },
+  {
+   "path": "tests/test_publication_policy_history_namespace_v1.py",
+   "sha256": "565a7d269e254d90da1c2aefa7c6a1b8ded6012dc37bde5b66de615a63b2c7a6"
+  },
+  {
+   "path": "tests/test_publication_policy_history_resume_v1.py",
+   "sha256": "4201b7a02f82f56b3973f889ed23056901643e714fa0329dcd192f8898ad0437"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification.py",
+   "sha256": "eae9b1e987eebb65c9327d280136cf21eab19f5b33fe4704ee472a585faccc34"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_bootstrap_v2.py",
+   "sha256": "cd6e097e7c3bb082d78df965d71af563f104dbeadc716358f57195f67cc4b6c3"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_execution_closure_v1.py",
+   "sha256": "804ef0683164024dd7ab526a33708b218d1b204a0a50c8839b61ad99e9494f6d"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_execution_code_closure_v1.py",
+   "sha256": "d96d2697bfbb8a06b9174c448fe4340244afbe29c22980f775d889face9a4624"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_fragments_from_authority_v2.py",
+   "sha256": "54016ef16dfa92a5954886541be241d1716f964916f70e2b0a492d962b6ec09f"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_index_v2.py",
+   "sha256": "dd0ae8b1b239b28047dca03f3d7e2b9d01b1939ba34b355f7cf1c49dabbeaf30"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_pilot_executor_v2.py",
+   "sha256": "872ccaf04fe73f5a0f4d0f200c7241bfc4f18e9c5ddf52d18720f627c2ae8120"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_runtime_inputs_v2.py",
+   "sha256": "2e240c78d4ed46d9ed42c5b28dc058bd2210be6292856c6a16732ffb1a9c5b47"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_transaction_v2.py",
+   "sha256": "2650f29fafef4ae162033bfce2af70cd0e7b1b3e65886d1cfe5b91373b6be4b0"
+  },
+  {
+   "path": "tests/test_publication_policy_qualification_validation_leaves_v2.py",
+   "sha256": "533c1cc0a9d8e316badf3b268ac63067c53738b0411bcb57f47b36b8a38e928c"
+  },
+  {
+   "path": "tests/test_publication_q4_authority_plan_pipeline_v1.py",
+   "sha256": "5c9ec95b13ab2ba8c6fabcda585dea01e7c563537b83ee3d16c87591a6916827"
+  },
+  {
+   "path": "tests/test_publication_q4_authority_source_material_v1.py",
+   "sha256": "bc49335717f4cc19ba30b438637e15ac8d4459ee6d7f6827cd7868bdcef811d0"
+  },
+  {
+   "path": "tests/test_publication_q4_authority_source_request_v1.py",
+   "sha256": "2833ffd08ce196fa409e320df022440d10eb740b6ce2b076b78dbbfc01310a05"
+  },
+  {
+   "path": "tests/test_publication_q4_evidence_runner_v4.py",
+   "sha256": "29039dbed423fff1c16f458dc37b666a5a8495827630baa3c92c44b2de484e73"
+  },
+  {
+   "path": "tests/test_publication_q4_evidence_validator_v4.py",
+   "sha256": "bc0146af52f8f055a8a06922681753329259638d971917c90e28f1b01141ebfc"
+  },
+  {
+   "path": "tests/test_publication_q4_policy_projection_v1.py",
+   "sha256": "a7893ed4a2dab1b934e503baf1882921ccbbe42bf13ec083ddb0dc002da409f7"
+  },
+  {
+   "path": "tests/test_publication_q4_runtime_contract_v4.py",
+   "sha256": "8c714dcf6dfd773f19b83c565aa7b0fdc9955055b025a485ce3b913c4c0e6020"
+  },
+  {
+   "path": "tests/test_publication_q4_runtime_registry_materializer_v4.py",
+   "sha256": "79852f1e3061b6a75e1698d40f98db03bdb009765482a2d8a7aaf81811873b16"
+  },
+  {
+   "path": "tests/test_publication_qualification_image_refreeze_v1.py",
+   "sha256": "8d45576822512cc8a1ee12ebed42a38f3f43b5103277be5a0fd6191d0ed49543"
+  },
+  {
+   "path": "tests/test_publication_qualification_operational_owner_v1.py",
+   "sha256": "1d823a19562a7c27aa75657dad141f79c0d07af4672cd7cb65f62405eb43b55a"
+  },
+  {
+   "path": "tests/test_publication_qualification_policy_pilot_validator_v2.py",
+   "sha256": "c250fbbc95ffc51dfbaed42d3ffbc44e0bcb4512c9f55eafe4268274be0aa2a3"
+  },
+  {
+   "path": "tests/test_publication_qualification_promotion_v2.py",
+   "sha256": "5091e2efd98366cc7fe5f1db7aea4b728620abe2623a366e1aefef34e88c0235"
+  },
+  {
+   "path": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "sha256": "c5a0962168ed723ef47959512eef1f2cea9a96c1c3990b686d80f431518b06ad"
+  },
+  {
+   "path": "tests/test_publication_runtime_original_process_hooks_v1.py",
+   "sha256": "fd2b180bc20605779f62af48e77b906ffc05e3ea14038a3b26f4885909c7c7fd"
+  },
+  {
+   "path": "tests/test_publication_runtime_refreeze_handoff_v1.py",
+   "sha256": "6f2d8906d87bfab64b2c2ee6a1a9e7096184582bbf4477b5213418e5c2b6bbc2"
+  },
+  {
+   "path": "tests/test_publication_runtime_source_closure_guardian_v1.py",
+   "sha256": "36651ad58a8776b372a352b09c29f10ef45a1ac9de2f0983c9f71f431d2048a3"
+  },
+  {
+   "path": "tests/test_publication_storage_recovery.py",
+   "sha256": "206a8606353e81a23f5c40eb2945ffcbce760cdccfb29d910a4ff5901f627761"
+  },
+  {
+   "path": "tests/test_publication_worker_termination_facts_v1.py",
+   "sha256": "149127245376786f398234edefbb197e03656cb11f98a6e7f6f86cb1ce98afd3"
+  },
+  {
+   "path": "tests/test_qualification_complete_operational_promotion_gate_v1.py",
+   "sha256": "bf382dd9729e7418173d3bb34cf11577d94c2f4ad2d8fe34c644700cdb5fd90b"
+  },
+  {
+   "path": "tests/test_qualification_operational_closure_cold_gate_v1.py",
+   "sha256": "f853db53e3bc23bf1c4366d0d1cd366746f8b97542eafd25adf6b5a1ad39b8c2"
+  },
+  {
+   "path": "tests/test_qualification_promotion_clis.py",
+   "sha256": "a3203a09df2fe2dfe9d08c7a02d2bc170d364e76f78e810bbff87bfd9d3d335b"
+  },
+  {
+   "path": "tests/test_reduce_canonical_systems_study_v1.py",
+   "sha256": "8482ccc5013ceb0485d8f0b4273abcaf1041393ef44d61e5930b13e97c2b1e29"
+  },
+  {
+   "path": "tests/test_replay_broker_artifact_bytes_observation_v4.py",
+   "sha256": "2b484a675fb4808ccb8ab6340a7e53bad17a1d04c60cf2e35552036b2298314c"
+  },
+  {
+   "path": "tests/test_replay_broker_contract_v4.py",
+   "sha256": "a1ef7040b20424311c66bbe134f56f46a48d62337670e18e0908ebdca5be62f3"
+  },
+  {
+   "path": "tests/test_replay_broker_prepared_handles_v4.py",
+   "sha256": "c98fbe85bf89420bca07a8118c49c18d5ca663a192741330e32eeffea389d756"
+  },
+  {
+   "path": "tests/test_repository_integrity.py",
+   "sha256": "ec9232715e5d3f49c883ab7ca9f45a628109db190d1338690331eb79fa63a655"
+  },
+  {
+   "path": "tests/test_resource_interval_contract.py",
+   "sha256": "87daff13cb699b553b2f9f501e32e12da20557f00c46d501e80ee561fa3f9535"
+  },
+  {
+   "path": "tests/test_run_canonical_systems_study_v1.py",
+   "sha256": "0e1ce695009563b5ce95ae9603b373cda9cb90f62a693c9d48d5f0df16e9dd3e"
+  },
+  {
+   "path": "tests/test_run_ci_checks.py",
+   "sha256": "c622b17d500d6f13094b304d2da3ae4284592502fdd49cfe3d3b1d4da034b201"
+  },
+  {
+   "path": "tests/test_run_experiments_full_resource.py",
+   "sha256": "75b980f507081b1ac3eff9f766d3c0bbc7bac38faaf06ef6f593682d40555d10"
+  },
+  {
+   "path": "tests/test_run_experiments_project_root.py",
+   "sha256": "6bd06ae99dbf0aa2681738f093e0426d65093db4e7457abe7c063c956a1ea5f3"
+  },
+  {
+   "path": "tests/test_run_experiments_resume.py",
+   "sha256": "af9b7b8a03c873ad4c79947150aae9e39f5ba58ff5a0544c5bdb17bf70c6b45c"
+  },
+  {
+   "path": "tests/test_run_experiments_security.py",
+   "sha256": "8f0ed1aa81b1516f0b404991129b996cab0721e96a94596ee586c458f1698e36"
+  },
+  {
+   "path": "tests/test_runtime_build_context_v3.py",
+   "sha256": "fd119f1c4be48b2ebdfdc0a47ed45196f856e9414b2af0e627a72abe41097fdb"
+  },
+  {
+   "path": "tests/test_runtime_image_python310_compat_v1.py",
+   "sha256": "6674ff1ac56defab59973fc31fa3869130fc17a4535fb340bff5ab773a32bcf9"
+  },
+  {
+   "path": "tests/test_savant_native_stdio_contract_v3.py",
+   "sha256": "c72804af10a7f6e049a8e7799a6355da3a887f3297b77def8878067dab1ee196"
+  },
+  {
+   "path": "tests/test_savant_stage_geometry_contract_v3.py",
+   "sha256": "d0e6c0dd9711141b93815ed561c723f1ac7c544b5c842ae2a50e0a0088bffbb2"
+  },
+  {
+   "path": "tests/test_savant_worker_stdout_atomicity.py",
+   "sha256": "398e6e4dbde77d9077204c4a96ee945f0855e1cc4f82a1ff87d1c684d888a0ca"
+  },
+  {
+   "path": "tests/test_scenario_planning.py",
+   "sha256": "7d4f0a72c7277f589fe53601542cd05f97e98f442924de9248891fe842035420"
+  },
+  {
+   "path": "tests/test_seafile_artifact_store.py",
+   "sha256": "c55eaa01fd83b473aff372ac06137401b8e75b96f87902d7875c7bcb4bd93d6a"
+  },
+  {
+   "path": "tests/test_seafile_artifact_store_security.py",
+   "sha256": "9822d4c29ddacca16431d58479d773f6b3deae36ea577452f65a376fe299690b"
+  },
+  {
+   "path": "tests/test_seafile_capacity_attestation_v1.py",
+   "sha256": "b64738d345ae0a044dcaebf00bd25af2a439bd3adc3d0bd58fb56b83cdb4bdb0"
+  },
+  {
+   "path": "tests/test_seafile_destination_provision_v1.py",
+   "sha256": "e0e15f5b0e92f5896a69df0179efd55fcfdadd424d13888afa91fc86e43b3549"
+  },
+  {
+   "path": "tests/test_seafile_operator_capacity_attestation_v2.py",
+   "sha256": "d89c39584b1584a1603ff3a263b8c08cd9fcfa92bcb3e0122fccc01120a365b1"
+  },
+  {
+   "path": "tests/test_setup_target_bootstrap.py",
+   "sha256": "937e91b4a1c590b2eaa50caae1fe37438e0834cdbfb16a3786791f7955bc9b3c"
+  },
+  {
+   "path": "tests/test_strict_validation.py",
+   "sha256": "9cb7b23f9c5a765581369e759b764a1c4b4e5f0413465d18762d29f9c1f1623e"
+  },
+  {
+   "path": "tests/test_topology_contract.py",
+   "sha256": "a7d26e34fe863dcfbd5a1ca00d9635caa5a67066cc9096891c4f1175d8fe6d6c"
+  },
+  {
+   "path": "tests/test_vast_gui.py",
+   "sha256": "f33a19382a6eb4e83ca7ba118e2b838d381643c5d463a2f070568222980af380"
+  }
+ ],
+ "files": [
+  {
+   "changed_lines": [
+    43,
+    44,
+    47,
+    53,
+    54,
+    57,
+    63,
+    66,
+    73,
+    77,
+    92,
+    95,
+    99,
+    102,
+    108,
+    117
+   ],
+   "edits": 17,
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    53,
+    54,
+    55,
+    56,
+    70,
+    77
+   ],
+   "edits": 6,
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    56,
+    57,
+    58,
+    59,
+    68,
+    69,
+    78
+   ],
+   "edits": 7,
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    72,
+    75,
+    79,
+    82,
+    88,
+    97,
+    100
+   ],
+   "edits": 7,
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    31,
+    32,
+    36,
+    38,
+    41,
+    42,
+    44,
+    45,
+    49,
+    50,
+    51,
+    68,
+    84,
+    89,
+    328,
+    332,
+    335,
+    410,
+    414,
+    418,
+    422,
+    446,
+    447,
+    448,
+    449,
+    455,
+    456,
+    457,
+    463,
+    464,
+    465
+   ],
+   "edits": 31,
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+  },
+  {
+   "changed_lines": [
+    233,
+    234,
+    235,
+    236
+   ],
+   "edits": 4,
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    47,
+    51,
+    55
+   ],
+   "edits": 3,
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    250
+   ],
+   "edits": 1,
+   "file": "tests/test_publication_gstreamer_component_inputs_v1.py"
+  }
+ ],
+ "inventory_sites_equal_planned_sites": true,
+ "non_pin_ast_unchanged": true,
+ "patch_sha256": "60cfff8597aa53692f749c6070e7869f95c3d5a4598e5b98c3d0860a87b8198b",
+ "plan_sha256": "9faf81a6ade677afd6db3af947b3895ab286b43a93a8076602eaf5c173c3b311",
+ "protected_canonical_tags_observation_sha256": "ee236c401150072b6fbf4b1b051f98ed7793b0465b801787cc0169502b8d08e8",
+ "status": "verified_plan_rendered",
+ "unchanged_generic_build_defaults": [
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 15,
+   "new": "vast/deepstream-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-a",
+   "old": "vast/deepstream-publication-runtime-v3:materialized-determinism-a",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/deterministic_references/0",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/deterministic_references/0"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 16,
+   "new": "vast/deepstream-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-b",
+   "old": "vast/deepstream-publication-runtime-v3:materialized-determinism-b",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/deterministic_references/1",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/deterministic_references/1"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 35,
+   "new": "vast/deepstream-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/deepstream-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/final_reference",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 73,
+   "new": "vast/savant-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-a",
+   "old": "vast/savant-publication-runtime-v3:materialized-determinism-a",
+   "source": [
+    "identity_patch#/systems/savant/physical_identity/deterministic_references/0",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/deterministic_references/0"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 74,
+   "new": "vast/savant-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-b",
+   "old": "vast/savant-publication-runtime-v3:materialized-determinism-b",
+   "source": [
+    "identity_patch#/systems/savant/physical_identity/deterministic_references/1",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/deterministic_references/1"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 93,
+   "new": "vast/savant-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/savant-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/savant/physical_identity/final_reference",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 143,
+   "new": "vast/openvino-gva-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-a",
+   "old": "vast/openvino-gva-publication-runtime-v3:materialized-determinism-a",
+   "source": [
+    "identity_patch#/systems/openvino_gva/physical_identity/deterministic_references/0",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/deterministic_references/0"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 144,
+   "new": "vast/openvino-gva-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-b",
+   "old": "vast/openvino-gva-publication-runtime-v3:materialized-determinism-b",
+   "source": [
+    "identity_patch#/systems/openvino_gva/physical_identity/deterministic_references/1",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/deterministic_references/1"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 168,
+   "new": "vast/openvino-gva-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/openvino-gva-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/openvino_gva/physical_identity/final_reference",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 211,
+   "new": "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-a",
+   "old": "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/deterministic_references/0",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/deterministic_references/0",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/deterministic_references/0"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 212,
+   "new": "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a-determinism-b",
+   "old": "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-b",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/deterministic_references/1",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/deterministic_references/1",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/deterministic_references/1"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "configs/publication_qualification_image_refreeze_v1.json",
+   "file_sha256": "63890245c248bae1afae453b404bcd7ef60b586d4c5fb4f44ed8b5beabf88fb7",
+   "line": 236,
+   "new": "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/gstreamer-custom-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/final_reference",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/final_reference",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "scripts/build_deepstream_publication_runtime_v3.sh",
+   "file_sha256": "a21f29f455c803154713f7825795fbf821d6abc8bb645e3552aa6dd1049e6d3a",
+   "line": 7,
+   "new": "vast/deepstream-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/deepstream-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/final_reference",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "scripts/build_gstreamer_custom_publication_runtime_v3.sh",
+   "file_sha256": "dfd5412560adeb9002cd137f64d2e98a99fee9ec25f9d00ef2247b5d22dfa73c",
+   "line": 7,
+   "new": "vast/gstreamer-custom-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/gstreamer-custom-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/final_reference",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/final_reference",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "scripts/build_openvino_gva_publication_runtime_v3.sh",
+   "file_sha256": "0a0e51e5271768be52f1937c7d65cfa2e23f25ac51707ec224f2d160bee43401",
+   "line": 7,
+   "new": "vast/openvino-gva-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/openvino-gva-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/openvino_gva/physical_identity/final_reference",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  },
+  {
+   "classification": "unchanged_generic_build_default",
+   "file": "scripts/build_savant_publication_runtime_v3.sh",
+   "file_sha256": "9ff46e6aabea8ddb082255b504cdfce1a8d400b743ff11460866ab2d2214b437",
+   "line": 10,
+   "new": "vast/savant-publication-runtime-v3:accepted-policy-repair-20261011a",
+   "old": "vast/savant-publication-runtime-v3:materialized",
+   "source": [
+    "identity_patch#/systems/savant/physical_identity/final_reference",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/final_reference"
+   ]
+  }
+ ]
+}

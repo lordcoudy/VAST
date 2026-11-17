@@ -1,0 +1,21 @@
+FF
+======================================================================
+FAIL: test_final_charge_keeps_the_reserved_later_git_index_form (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_final_charge_keeps_the_reserved_later_git_index_form)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 570, in test_final_charge_keeps_the_reserved_later_git_index_form
+    self.assertGreaterEqual(result['ledger_after_receipt']['charge_bytes'], physical + 4352 + 16384)
+AssertionError: 46848 not greater than or equal to 63232
+
+======================================================================
+FAIL: test_host_noise_cannot_swallow_future_capture_or_index_liabilities (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_host_noise_cannot_swallow_future_capture_or_index_liabilities)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 584, in test_host_noise_cannot_swallow_future_capture_or_index_liabilities
+    self.assertEqual(result['ledger_after_receipt']['charge_bytes'],1048576+16384+4352)
+AssertionError: 1048576 != 1069312
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.053s
+
+FAILED (failures=2)

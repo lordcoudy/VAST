@@ -1,0 +1,62 @@
+controlled owner-relative, namespace and fresh PRE boot RED
+test_resume_namespace_rejects_unowned_names_links_and_future_stages (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_namespace_rejects_unowned_names_links_and_future_stages) ... ERROR
+test_d_binding_checks_fresh_pre_boot_before_chain_replay (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_d_binding_checks_fresh_pre_boot_before_chain_replay) ... FAIL
+test_resume_runner_keeps_owner_parent_relative_admission_and_full_replay (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_resume_runner_keeps_owner_parent_relative_admission_and_full_replay) ... FAIL
+
+======================================================================
+ERROR: test_resume_namespace_rejects_unowned_names_links_and_future_stages (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_resume_namespace_rejects_unowned_names_links_and_future_stages)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 419, in test_resume_namespace_rejects_unowned_names_links_and_future_stages
+    gate._resume_namespace_v1(self.root)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'tests.fixtures.accepted_policy_fixture_compiler_gate2_c_v1' has no attribute '_resume_namespace_v1'. Did you mean: '_resume_desc_v1'?
+
+======================================================================
+FAIL: test_d_binding_checks_fresh_pre_boot_before_chain_replay (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_d_binding_checks_fresh_pre_boot_before_chain_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 453, in test_d_binding_checks_fresh_pre_boot_before_chain_replay
+    gate.validated_c1_binding_v1(project_root=self.root, packet_descriptor={},
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 1497, in validated_c1_binding_v1
+    _, charged, cids, rows, _ = _previous_v1(root, packet, expected_packet_sha256, 6, completion_authorities)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: replayed after boot mismatch
+
+======================================================================
+FAIL: test_resume_runner_keeps_owner_parent_relative_admission_and_full_replay (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_resume_runner_keeps_owner_parent_relative_admission_and_full_replay)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 884, in test_resume_runner_keeps_owner_parent_relative_admission_and_full_replay
+    self._fixed_runner_replay(True)
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 992, in _fixed_runner_replay
+    result = gate.run_c_v1(stage, project_root=root, packet_descriptor={},
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 1584, in run_c_v1
+    owner = compiler._compile_fixture_component_v1(project_root=root, source_path=source_path,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 937, in compile
+    self.assertEqual(kwargs['project_root'], owner_root)
+AssertionError: PosixPath('/tmp/tmps29v5h2t/r1') != PosixPath('/tmp/tmps29v5h2t')
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.068s
+
+FAILED (failures=2, errors=1)

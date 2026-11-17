@@ -1,0 +1,136 @@
+{
+ "mode": "resource",
+ "inject_expected_streams_6": false,
+ "cells": {
+  "deepstream/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2048
+  },
+  "deepstream/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2168
+  },
+  "deepstream/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2072
+  },
+  "deepstream/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2156
+  },
+  "deepstream/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "deepstream/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "deepstream/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "deepstream/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 1808
+  },
+  "savant/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2144
+  },
+  "savant/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 1844
+  },
+  "savant/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2128
+  },
+  "savant/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "openvino_gva/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2232
+  },
+  "openvino_gva/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2180
+  },
+  "openvino_gva/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2080
+  },
+  "openvino_gva/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 1544
+  },
+  "openvino_gva/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4284
+  },
+  "openvino_gva/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "openvino_gva/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4296
+  },
+  "openvino_gva/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4296
+  },
+  "gstreamer_custom/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 2216
+  },
+  "gstreamer_custom/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 2212
+  },
+  "gstreamer_custom/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 2136
+  },
+  "gstreamer_custom/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 1476
+  },
+  "gstreamer_custom/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "gstreamer_custom/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "gstreamer_custom/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4296
+  },
+  "gstreamer_custom/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4296
+  }
+ },
+ "accepted": 32,
+ "refused": 0
+}

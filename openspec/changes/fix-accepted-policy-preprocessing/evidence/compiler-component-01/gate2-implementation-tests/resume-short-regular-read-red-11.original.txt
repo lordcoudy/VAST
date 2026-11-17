@@ -1,0 +1,22 @@
+test_returncode=1
+stdout_bytes=0
+test_legal_short_regular_reads_accumulate_without_reopening_or_overreading (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_legal_short_regular_reads_accumulate_without_reopening_or_overreading) ... ERROR
+
+======================================================================
+ERROR: test_legal_short_regular_reads_accumulate_without_reopening_or_overreading (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeAuthenticatedReadTests.test_legal_short_regular_reads_accumulate_without_reopening_or_overreading)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 175, in test_legal_short_regular_reads_accumulate_without_reopening_or_overreading
+    raw, observed, allocated = component._resume_read_v1(self.path, 4096)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 124, in _resume_read_v1
+    return _retention_read_v1(path, cap, _allocation=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 98, in _retention_read_v1
+    raise ComponentRecipeError("retention file drift")
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: retention file drift
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+FAILED (errors=1)

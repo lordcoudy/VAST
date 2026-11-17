@@ -1,0 +1,22 @@
+E
+======================================================================
+ERROR: test_accepted_policy_fixture_compiler_gate2_writer_v1 (unittest.loader._FailedTest.test_accepted_policy_fixture_compiler_gate2_writer_v1)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_accepted_policy_fixture_compiler_gate2_writer_v1
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/unittest/loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 8, in <module>
+    from tests.fixtures import accepted_policy_fixture_compiler_gate2_c_v1 as c
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 24, in <module>
+    from tests.fixtures import accepted_policy_fixture_compiler_v1 as compiler
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 15, in <module>
+    from publication_operational_request_domain_v1 import canonical_json_v1
+ModuleNotFoundError: No module named 'publication_operational_request_domain_v1'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

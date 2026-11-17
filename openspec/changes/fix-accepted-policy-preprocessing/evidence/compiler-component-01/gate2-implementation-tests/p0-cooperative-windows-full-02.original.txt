@@ -1,0 +1,62 @@
+.......................E....F..E......
+======================================================================
+ERROR: test_all_stream_caps_and_rounded_all_forms_ceiling_accept_exact_maxima (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_all_stream_caps_and_rounded_all_forms_ceiling_accept_exact_maxima)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1266, in test_all_stream_caps_and_rounded_all_forms_ceiling_accept_exact_maxima
+    result = self.validate()
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1073, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 549, in validate_p0_originals_v1
+    return _validate_p0_originals(descriptor, project_root, expected_code_commit,
+                                  expected_engine_id, expected_boot_id)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 569, in _validate_p0_originals
+    directory_signature, directory_allocation = _originals_inventory(path.parent, root)
+                                                ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 420, in _originals_inventory
+    allocation = _originals_allocation(info, DIRECTORY_RESERVE)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 411, in _originals_allocation
+    _originals_require(type(blocks) is int and blocks >= 0, "p0_original_blocks_unknown")
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 390, in _originals_require
+    raise P0OriginalsRefusal(cause)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1.P0OriginalsRefusal: p0_original_blocks_unknown
+
+======================================================================
+ERROR: test_rereads_fixed_originals_and_keeps_external_completion_proof_separate (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_rereads_fixed_originals_and_keeps_external_completion_proof_separate)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1093, in test_rereads_fixed_originals_and_keeps_external_completion_proof_separate
+    result = self.validate()
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1073, in validate
+    return p0.validate_p0_originals_v1(self.descriptor() if descriptor is None else descriptor, **options)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 549, in validate_p0_originals_v1
+    return _validate_p0_originals(descriptor, project_root, expected_code_commit,
+                                  expected_engine_id, expected_boot_id)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 569, in _validate_p0_originals
+    directory_signature, directory_allocation = _originals_inventory(path.parent, root)
+                                                ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 420, in _originals_inventory
+    allocation = _originals_allocation(info, DIRECTORY_RESERVE)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 411, in _originals_allocation
+    _originals_require(type(blocks) is int and blocks >= 0, "p0_original_blocks_unknown")
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_p0_v1.py", line 390, in _originals_require
+    raise P0OriginalsRefusal(cause)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_p0_v1.P0OriginalsRefusal: p0_original_blocks_unknown
+
+======================================================================
+FAIL: test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1313, in test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan
+    self.assertGreater(len(calls), 0)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+AssertionError: 0 not greater than 0
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.633s
+
+FAILED (failures=1, errors=2)

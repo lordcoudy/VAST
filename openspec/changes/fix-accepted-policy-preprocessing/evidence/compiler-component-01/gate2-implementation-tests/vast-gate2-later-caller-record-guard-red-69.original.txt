@@ -1,0 +1,205 @@
+CONTROLLED ONLY: real frozen CD_HARNESS; fake imports/spawn/streams/clock, no native/MCP operation
+FACTORY {"sha256": "3846857b1fc7796bbb5ec570c947f2c6832b4a2c4f9dee34d0a27a2ce33ea208", "size_bytes": 12596}
+test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) ... 
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='accessor') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='nonenumerable') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='symbol') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='accessor') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='nonenumerable') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='symbol') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='accessor') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='nonenumerable') ... FAIL
+  test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='symbol') ... FAIL
+test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) ... 
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery', kind='boxed') ... FAIL
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery', kind='custom') ... FAIL
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.receipt', kind='boxed') ... FAIL
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.receipt', kind='custom') ... FAIL
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.approval', kind='boxed') ... FAIL
+  test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.approval', kind='custom') ... FAIL
+test_plain_and_null_prototype_data_records_remain_valid (__main__.DataRecordTests.test_plain_and_null_prototype_data_records_remain_valid) ... ok
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='accessor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='nonenumerable')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery', kind='symbol')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='accessor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='nonenumerable')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.receipt', kind='symbol')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='accessor')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='nonenumerable')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) (record='delivery.approval', kind='symbol')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 87, in test_accessors_hidden_properties_and_symbols_refuse_without_getters
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery', kind='boxed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery', kind='custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.receipt', kind='boxed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.receipt', kind='custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.approval', kind='boxed')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+======================================================================
+FAIL: test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) (record='delivery.approval', kind='custom')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 76, in test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn
+    self.assert_denied(transform)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\AppData\Local\Temp\vast-gate2-later-caller-record-guard-69.original.py", line 65, in assert_denied
+    self.assertEqual(result['admission_error'],'cd_external_delivery')
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 'cd_external_delivery'
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.798s
+
+FAILED (failures=15)

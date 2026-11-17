@@ -1,0 +1,78 @@
+**CLEAR_WITH_NOTES** for exact planning commit `8332ed4ef720bb76881ef4055a57c11f9b58a1d4`. Planning adequacy only. This is not implementation approval, not physical permission, not successor admission, not task 2.10 completion, and not delegated AGENT approval. Required planning CI on this commit is still pending and was not fetched.
+
+HEAD before and after this read-only pass: `8332ed4ef720bb76881ef4055a57c11f9b58a1d4`. Parent: `c75ad950ee542621a365725db627fdd03d2363e8`. The diff is the nine named planning and evidence files, +225/−1. No path under `tests/`, `scripts/`, `.github/`, or `.gitattributes` changes. The eight historical untracked rehearsal files are still untracked. The keeper was not touched.
+
+The earlier advisory BLOCK stays in force for the directory-only drafts it reviewed. It is preserved verbatim at `gate2-review-c75a.dns-accounting.grok.advisory.exported.txt`, 9,115 B, SHA-256 `010395751e6c9e64d4805862466fc4e9cb89b02fb026d365f07cce8f69c7be6f`. The c75 export `gate2-review-c75a.grok.final-response.exported.txt`, 8,615 B, SHA-256 `36a8a6095990de002ca734d2aca23498f77e11ab0015b6dae7c37b13f4010afc`, reviews c75 only. Prior e162 BLOCK, e162 contiguous-envelope CLEAR_WITH_NOTES, and the c67, 4e1e, and c75 CLEAR_WITH_NOTES verdicts stay with those bytes.
+
+## What this commit closes
+
+Candidate B replaces the blocked 106,496 B directory-only debit. The committed ledger is internally consistent and matches the retained bytes that this review recomputed.
+
+`design.md:184-210`, `component-admission-plan.v8.md:307-315`, `proposal.md:59-69`, `spec.md:139-179`, and `tasks.md:123-130` agree on these figures:
+
+| Check | Result |
+|---|---:|
+| Old proof known | 106,496+83,200+32,768+12,288+45,056+53,248 = 333,056 |
+| Old proof cap 393,216 spare | 60,160 |
+| Successor F2 cap | 8,388,608−393,216 = 7,995,392 |
+| Entry | 8,216,576−245,760 = 7,970,816 |
+| Entry spare | 24,576 |
+| Owned | 2,057,216+12,288+32,768 = 2,102,272 |
+| Private failed-owned cap 2,162,688 spare | 60,416 |
+| Bridge | max(2,162,688, 5,369,856+524,288) = 5,894,144 |
+| Carry 6,291,456 spare | 397,312 |
+| Envelope | 535,785,472 |
+| Seal 536,870,912 spare | 1,085,440 |
+| Shared slack | 80 MiB−6,291,456 = 74 MiB = 77,594,624 |
+
+The 393,216 B old-proof debit sits inside the 6,291,456 B carry. It is not added again as a global line. Raw 6,291,456 B, tar 4,226,048 B, the 13 member caps, and the 12 MiB wire ceiling stay. D stays 2,097,152 B. Floors stay. Task checkboxes are 24 checked and 22 open, 46 total. `tasks.md:106` leaves 2.10 unchecked. The delta spec adds exactly four scenarios; the file now has 42 scenario headings, 38 previous plus those four.
+
+Current `accepted_policy_fixture_compiler_recovery_v1.py` is unchanged. `_account` at lines 653–657 still prices every absent control at `RECORD_LIMIT`. The footer write at lines 723–724 and `validate_supplement_v1` at lines 865, 870, 872, and 874 still use `2*RECORD_LIMIT`. The 7,970,816 B entry is a future per-file obligation, not current behavior.
+
+## Provenance checked
+
+`gate2-f2-c75a-retention.v1.json` is 9,637 ASCII bytes including one LF, SHA-256 `8925428192e339d52d2bcc7a2f99587303765796dc0769f47dcf192ce40ce006`. It is ordinary JSON. `commit` is c75. `successor_authorized` and `physical_acceptance` are false. It does not bind this amended plan.
+
+Existing bytes, read in place, match the index:
+
+- Tracked B1 `b1-01/outputs/RPC10.reply.original`: 26,378 B, SHA-256 `9d515b0717a579df4da87f3193e60eb5c8540e0ec1f52769470354f56ac5584b`.
+- UNC `\\wsl.localhost\Ubuntu\home\s-a-balashov\work\vast-fixture-compiler-gate2-c75ad950ee542621a365725db627fdd03d2363e8-01.f2\RPC03.reply.original`: 26,372 B, SHA-256 `58b2b00a2efb0331e734eb5af5146115f64c6f1a788f0ed48175dd3aab9ef086`.
+- The other five F2 RPC originals, `f2.failure.v1.json` (4,791 B, `a41a90e8…`), four AUX originals, both driver originals, and the committed outer-tool file match the index sizes and SHA-256 values.
+- Held Temp transcript: 6,651 B, SHA-256 `4677b02a792cf28f83cc59cf15c575b1358c6d9fd4b6ced00e33d9416e8d3db8`. Its longest string is 114 characters. `stdout_bytes` is 6,213 and `stdout_sha256` is `312075bfea5d2c8054e5af7240ae8274040ec549cc54ace38d40fb281c367666`. The separate native stdout original is not in that transcript.
+
+Decoded chunked inspect JSON for the same container `4df593e12ca3…` differs only in `HostConfig.Dns`, `DnsOptions`, and `DnsSearch`: sealed `null` to fresh `[]`. `NetworkMode` is `none` on both. Selected canonical SHA-256 values match the index: old `103be4ad…`, new `32c7886c…`. B1 `RPC05.request.original` sets `HostConfig.NetworkMode` to `none` and sends no DNS key. The raw HTTP `Date` headers differ, and the chunk-size lines are `6619` versus `6613` because the payload is 6 bytes smaller. Those are framing and timestamp differences, not a fourth inspect change.
+
+`f2.failure.v1.json` has `causes: ["f2_source_drift"]`, `attempts: 3`, and `runtime_acceptance: false`. Its own accounting produces the partial charge: `max(94,208, 73,728, 0)+524,288 = 618,496`. The index block sum of the directory plus the six RPC files is 65,536 B and matches `retained_data_allocated_bytes`. The setup-baseline-to-17:16:39Z diagnostic ext4 delta is also 618,496 B, by a different composition (`626,688−8,192`). That equality is not a recovered closing meter. The diagnostic C-free fall of 5,369,856 B remains idle-inclusive. The missing outer closing meter stays UNAVAILABLE.
+
+Twelve source and helper blobs at HEAD match the index Git SHA-1 and sizes, including capture 39,080 B and setup 45,589 B. Their cluster quotes are `(ceil/4096)+4096`: 45,056 and 53,248. The historical V8 blob at c75 is `92ffba8717f332b0a33f2b2ba518871c8f9ec977`, 18,036 B. HEAD’s V8 is 25,355 B. The index binds the c75 plan; successor authority still has to bind the index and this amended plan separately.
+
+The owned base 2,057,216 B is the index code terms 1,769,216 B plus the proof terms except transcript and index, 288,000 B. The 333,056 B proof quote then adds transcript and index once. Helper working and helper Git are separate allocations of 98,304 B each. Outside base 279,808 B equals those 196,608 B plus the 83,200 B nonshared AUX/Windows/copies term, inside the inventory and under the failed-specific 524,288 B outside cap. The successor’s own 524,288 B outside reserve is a second suballocation inside the new F2 cap. Combined outside ceiling is 1,048,576 B. The bridge’s 524,288 B copy term is conservatism, not another owned allocation.
+
+Legal closed footer, canonical `json.dumps` with `sort_keys` and `(",", ":")`: `schema_version` 1, `fragment_bytes` 4096, `size_bytes` 262144, the other uint64 counters at `2^64-1`, fixed path, 64-hex SHA. Length is 934 B. Assigning 20 digits to `schema_version`, both fragments, and `size_bytes` as well produces 999 B, which the closed schema rejects. Both are far under 16,384 B. The index keeps the older 776 B figure beside `peer_footer_bound` 934. Tests have to use 934.
+
+## Notes
+
+1. The private failed-owned ceiling is 2,162,688 B, which is 65,536 B above the advisory’s 2,097,152 B line. The corrected index quote is 32,768 B, not 24,576 B, because 9,637 B rounds to 12,288 B of data plus 4,096 B metadata, twice. With the transcript at 12,288 B, metadata already included (`8,192+4,096`), the owned total is 2,102,272 B, 5,120 B over 2 MiB and 60,416 B under the new private cap. The bridge result is unchanged because 2,162,688 B is still below 5,894,144 B. D and the seal do not move. `tasks.md:127` writes the bridge as `max(2,162,688, 5,894,144)`; `design.md:184` and V8 line 309 show the addition `5,369,856+524,288`.
+
+2. The 60,160 B old-proof spare can numerically hold one extra capture-sized or setup-sized Git form. Admission still has to refuse that form because it is an additional copy. The same applies to the 60,416 B owned spare. The two extra failure-file forms inside the 24,576 B term have no separate path or hash rows. This review found the one on-disk failure original. The directory quote already includes it. Any further copy has to be frozen before implementation-dependent physical use, or the admission stops.
+
+3. The 24,576 B entry margin assumes the fresh directory’s data allocation stays within 28,672 B. `design.md:196` already leaves that decision to before-write and actual-end measurement. Ext4 `st_blocks` were not re-read here. Logical sizes, hashes, Git blob sizes, and the failure record’s retained-data total were.
+
+4. The two review exports and the prose amendments are planning evidence. They are not in the 333,056 B F2 proof sum. Whole 1.5 retention of repository history stays open. CI and development review history is not charged again as executed F2 runtime.
+
+5. The committed outer-tool file is the 3,620 B capture receipt, SHA-256 `ea2c7de56180315803bca8dd3c7c1fa95713aac68a2a4bac2bd29e55da275cb7`, quote 8,192 B, plus its separate Git form. It is not the 6,651 B transcript and not a reconstructed native stdout.
+
+## Required implementation tests
+
+After planning CI and recorded delegated AGENT approval, and before any physical successor:
+
+- Replay the retained chunked B1 and c75 inspect bytes. Reproduce `f2_source_drift`, then accept only present `Dns`, `DnsOptions`, and `DnsSearch` with sealed `null` and fresh `null` or a typed empty list, under `NetworkMode=none`.
+- Refuse a missing, wrong-type, or nonempty DNS field, any other NetworkMode, any other selected Config, HostConfig, State, provider, mount, or size change, a changed source or hash binding, and fresh-first versus final representation drift. The digest is the actual selected inspect. The canonical selected hashes above must change when the raw representation changes.
+- One filename-to-cap table drives prospective accounting, `_write_json` before `open`, and `validate_supplement_v1`. Footer cap 16,384 B. The other three controls stay 262,144 B. Legal maximum canonical footer is 934 B. 16,385 B refuses before open.
+- Entry with that table is 7,970,816 B and fits 7,995,392 B by 24,576 B. One byte over refuses. Pre-footer reserve is 278,528 B plus 4,096 B rounding and 4,096 B metadata on each of the footer and failure slots. Update validator lines 865, 870, 872, and 874 together from `2*RECORD_LIMIT` to `FOOTER_LIMIT+RECORD_LIMIT`, keeping the 4×4,096 B term. A partial footer stays, the full failure liability stays, and a second write, truncation, or dropped fact does not create room.
+- Raw, tar, 13 member, and 12 MiB wire caps unchanged. Owned 2,102,272 ≤ 2,162,688 and old proof 333,056 ≤ 393,216. An extra or third helper Git copy refuses. The transcript quote stays 12,288 B with its 4,096 B metadata already inside. The 6,213 B native stdout is not reconstructed.
+- The bridge stays the idle-inclusive 5,894,144 B figure inside 6,291,456 B. The 618,496 B partial charge is not rewritten as final. Unknown, excess, deadline, or missing-meter states stop with no new sampler.
+
+## Scope still required
+
+Independent planning review of this commit is this note. Required planning CI and recorded delegated AGENT approval still precede code and tests. Two independent exact implemented-commit reviews, new CI, and recorded delegated AGENT approval still precede the one successor. That invocation uses a new root derived from the implemented commit, one new deadline, and all 19 F2 GETs plus fresh P0 inside the original 150 s envelope. Actual packet approval still precedes C1. Any failure consumes the admission. No c75 reuse, third setup, B or C rerun, fallback, extra C container, or cleanup follows. Component work does not close whole 1.5, genuine 2.8 or 5.3, Q1, archive, or merge.

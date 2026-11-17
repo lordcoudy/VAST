@@ -1,0 +1,21 @@
+..F
+======================================================================
+FAIL: test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 219, in test_native_bootstrap_binding_and_close_failure_preserve_primary_and_secondary
+    self.assertEqual(value['causes'],['close_failed']);self.assertTrue(value['unknown_closure'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [] != ['close_failed']
+
+Second list contains 1 additional elements.
+First extra element 0:
+'close_failed'
+
+- []
++ ['close_failed']
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.037s
+
+FAILED (failures=1)

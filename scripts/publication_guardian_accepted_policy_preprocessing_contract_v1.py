@@ -247,8 +247,76 @@ def _default_load_qualification_preprocessing(**kwargs: Any) -> dict[str, Any]:
 
 def _default_assess_policy_qualification(**kwargs: Any) -> dict[str, Any]:
     from publication_policy_qualification import assess_policy_qualification
+    from publication_policy_qualification_fragment_validation_v2 import (
+        validate_publication_policy_qualification_fragment_from_authority_v2,
+    )
+    from publication_policy_qualification_pilot_validation_v2 import policy_pilot_validator
+    from publication_policy_qualification_transaction_validation_v2 import (
+        PhysicalRootCustodyV1,
+        _ACTIVE_CUSTODY,
+        cold_validate_committed_transaction_v2,
+    )
 
-    return assess_policy_qualification(**kwargs)
+    root = _root(kwargs["project_root"])
+    index = _read_json(root, kwargs["index_path"], label="authority-v2 qualification index")
+    _closure_descriptor, closure_path = _verified_descriptor(
+        root, index.get("qualification_execution_closure"),
+        label="authority-v2 execution closure",
+    )
+    closure = _read_json(root, closure_path, label="authority-v2 execution closure")
+    binding = closure.get("qualification_input_transaction")
+    _require(type(binding) is dict, "authority-v2 transaction binding is absent")
+    _transaction_descriptor, transaction_path = _verified_descriptor(
+        root, binding.get("receipt"), label="authority-v2 input transaction",
+    )
+    transaction = _read_json(root, transaction_path, label="authority-v2 input transaction")
+    _require(
+        type(transaction.get("schema_version")) is int
+        and transaction["schema_version"] == 2
+        and transaction.get("artifact_kind")
+        == "vast_publication_policy_qualification_input_transaction_v2"
+        and transaction.get("status") == "qualification_inputs_materialized_nonaccepted"
+        and transaction.get("scope") == "forced_resource_qualification_pilots_only"
+        and transaction.get("accepted") is False
+        and transaction.get("publication_ready") is False
+        and transaction.get("authorization_eligible") is False
+        and transaction.get("systems") == list(SYSTEMS)
+        and type(transaction.get("cell_count")) is int
+        and transaction["cell_count"] == 32
+        and binding.get("receipt_sha256")
+        == _self_hash(transaction, "receipt_sha256", label="authority-v2 input transaction"),
+        "authority-v2 input transaction kind/status/scope/identity drifted",
+    )
+    def validate_held_transaction() -> None:
+        with PhysicalRootCustodyV1.open(root, label="accepted guardian cold project_root") as held:
+            token = _ACTIVE_CUSTODY.set(held)
+            try:
+                cold_validate_committed_transaction_v2(root=root, receipt_path=transaction_path)
+                held.verify()
+            finally:
+                _ACTIVE_CUSTODY.reset(token)
+
+    _call("authority-v2 cold input transaction validator", validate_held_transaction)
+    fragments = transaction.get("fragments")
+    rows = index.get("bindings")
+    _require(
+        type(fragments) is dict and set(fragments) == set(SYSTEMS)
+        and binding.get("fragments") == fragments
+        and type(rows) is list and bool(rows)
+        and all(
+            type(row) is dict and row.get("system") in SYSTEMS
+            and row.get("fragment_artifact") == fragments[row["system"]]
+            for row in rows
+        )
+        and {row["system"] for row in rows} == set(SYSTEMS),
+        "authority-v2 transaction/closure/index fragment lineage drifted",
+    )
+
+    return assess_policy_qualification(
+        **kwargs,
+        fragment_validator=validate_publication_policy_qualification_fragment_from_authority_v2,
+        pilot_validator=policy_pilot_validator,
+    )
 
 
 def _default_load_execution_closure(**kwargs: Any) -> dict[str, Any]:
@@ -294,6 +362,52 @@ def _default_load_binding_set(
         path,
         execution_config=execution_config,
         runtime_probes=runtime_probes,
+    )
+
+
+def _validate_measured_coverage(coverage: object, calibration: Mapping[str, Any]) -> None:
+    _require(
+        type(coverage) is dict
+        and set(coverage) == set(_COVERAGE)
+        and all(type(value) is int for value in coverage.values())
+        and all(
+            coverage[field] == minimum
+            for field, minimum in _COVERAGE.items()
+            if field != "accepted_sample_count"
+        )
+        and coverage["accepted_sample_count"] >= _COVERAGE["accepted_sample_count"],
+        "accepted policy measured coverage keys/types/minima drifted",
+    )
+    calibrations = calibration.get("calibrations")
+    _require(
+        type(calibrations) is dict and set(calibrations) == set(SYSTEMS),
+        "accepted policy calibration system coverage drifted",
+    )
+    total = 0
+    for system in SYSTEMS:
+        row = calibrations[system]
+        costs = row.get("costs") if type(row) is dict else None
+        _require(
+            type(costs) is dict and set(costs) == set(BRANCHES),
+            f"accepted policy calibration branch coverage drifted for {system}",
+        )
+        for branch in BRANCHES:
+            resources = costs[branch]
+            _require(
+                type(resources) is dict and set(resources) == set(RESOURCES),
+                f"accepted policy calibration resource coverage drifted for {system}/{branch}",
+            )
+            for resource in RESOURCES:
+                value = resources[resource]
+                samples = value.get("samples") if type(value) is dict else None
+                _require(
+                    type(samples) is int and samples >= 120,
+                    f"accepted policy balanced calibration samples drifted for {system}/{branch}/{resource}",
+                )
+                total += samples
+    _require(
+        total == coverage["accepted_sample_count"],
+        "accepted policy measured coverage/calibration total drifted",
     )
 
 
@@ -552,8 +666,7 @@ def _source_material(
         and accepted_receipt.get("artifact_kind")
         == "vast_publication_policy_qualification_receipt"
         and accepted_receipt.get("status")
-        == "accepted_evidence_driven_policy_qualification"
-        and accepted_receipt.get("coverage") == _COVERAGE,
+        == "accepted_evidence_driven_policy_qualification",
         "accepted policy qualification receipt schema/status/coverage drifted",
     )
     accepted_receipt_identity = _self_hash(
@@ -589,6 +702,7 @@ def _source_material(
     calibration = _read_json(
         root, calibration_path, label="accepted policy calibration mapping"
     )
+    _validate_measured_coverage(accepted_receipt.get("coverage"), calibration)
     outputs = accepted_receipt.get("outputs")
     _require(
         type(outputs) is dict
@@ -661,8 +775,16 @@ def _source_material(
         dependencies.load_execution_config,
         path=config_authority_path,
     )
+    expected_loaded_config = {
+        **config_physical,
+        "identity": {
+            "algorithm": "sha256",
+            "sha256": _semantic_sha(config_physical),
+        },
+    }
     _require(
-        config == config_physical
+        "identity" not in config_physical
+        and config == expected_loaded_config
         and type(config.get("identity")) is dict
         and config["identity"].get("sha256")
         == runtime_expectations["execution_config_identity_sha256"],
@@ -764,6 +886,13 @@ def _source_material(
                 }
             )
 
+    _require(
+        _descriptor(
+            root, config_authority_path, label="post-load accepted guardian execution config"
+        )
+        == config_descriptor,
+        "execution config changed while validating",
+    )
     return {
         "preprocessing_contract": copy.deepcopy(predecessor_contract),
         "predecessor_contract": predecessor_contract_descriptor,

@@ -1,0 +1,27 @@
+{
+  "breach": null,
+  "breached": false,
+  "child_returncode": 0,
+  "containers": {},
+  "exit_code": 0,
+  "guard_signals": [],
+  "last_sample": {
+    "C:": 386512699392,
+    "E:": 164090134528
+  },
+  "longest_read_seconds": {
+    "C:": 0.0,
+    "E:": 0.0
+  },
+  "max_staleness_seconds": 0.5,
+  "owner_token": "a4b84bc39617f95990d7264c2282b096",
+  "phase": "C2",
+  "reads": {
+    "C:": 3,
+    "E:": 3
+  },
+  "retained": "partial state retained; no prune, deletion, retry or floor change",
+  "samples": 6,
+  "schema": "vast.pr9.containment-guard.v1",
+  "stop": {}
+}

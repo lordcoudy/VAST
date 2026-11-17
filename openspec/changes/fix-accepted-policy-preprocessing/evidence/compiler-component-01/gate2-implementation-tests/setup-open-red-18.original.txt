@@ -1,0 +1,25 @@
+F
+======================================================================
+FAIL: test_bootstrap_nonregular_source_refuses_before_blocking_open (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.WindowsBoundaryTests.test_bootstrap_nonregular_source_refuses_before_blocking_open)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 154, in test_bootstrap_nonregular_source_refuses_before_blocking_open
+    with self.assertRaises(RuntimeError): setup.bounded_source(path)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py", line 114, in bounded_source
+    with path.open("rb") as file:
+         ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: blocking source open
+
+----------------------------------------------------------------------
+Ran 1 test in 0.009s
+
+FAILED (failures=1)

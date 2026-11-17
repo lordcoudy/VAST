@@ -1,0 +1,19 @@
+{
+  "scope": "one edges invocation; separate128MiB plus original512MiB cumulative",
+  "reviewer": "/root/blocker_plan_review",
+  "verdict": "CLEAR",
+  "tests_sha256": "0b3efbcc92280f9dee202c3fa55d1bfee3f2ea7f8949d3918ebd090c0ccc3ee8",
+  "runner_sha256": "240e9965ad7bceb7e20b0e0171dbc1f4c3161335282db0d3ff9a6985ce2cdebb",
+  "envelope_sha256": "945dfc21c487b5faf0c749bd065f975a714987c0b041aaf94d451f1e54a4167e",
+  "reservation_c_bytes": 671088640,
+  "c_floor_including_reservation": 43620761600,
+  "temporary_floor_including_reservation": 1744830464,
+  "fresh_windows_floor": {
+    "chunk_id": "d75dac",
+    "wall_time_seconds": 2.2767746,
+    "exit_code": 0,
+    "original_token_count": 15,
+    "output": "{\"AllocationUnitSize\":4096,\"SizeRemaining\":242203447296}\r\n"
+  },
+  "delegated_agent_admission": "ACCEPTED for8controlledmethods/13roots only; original4phases notrerun, realcompilerpositives excluded; runner rechecksactualLinuxfloors"
+}

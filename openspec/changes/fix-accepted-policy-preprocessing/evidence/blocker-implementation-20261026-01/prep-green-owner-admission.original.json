@@ -1,0 +1,24 @@
+{
+  "scope": "B2 GREEN and owner phases only, once each, cumulative original512MiB allowance",
+  "reviewer": "/root/blocker_plan_review",
+  "verdict": "CLEAR after two source findings resolved; RED independently accepted",
+  "source_sha256": {
+    "compiler": "54f475f6c20b6d927c091c726d72f0cd2878450cd1d6843d1e2452369fa43a13",
+    "original": "2e667cd568bb168192c60d73998e2296a659269b0eeec0c7f9cc8732880e6a5e",
+    "physical_v1": "a9c6acc953ad02fc56d455508290c796b3d0d65491c8d0448d5be6fd52ace6b4",
+    "physical_v2": "efd9223a1e931f4475cebf11b406800efb737b6b75b42fa9ffdb4e6f6a633f35"
+  },
+  "dispositions": [
+    "One already-sealed preparation deadline must be within150s; checks around preparation writes prevent renewing windows",
+    "Socket and ELF close independently; initiating and cleanup causes preserved"
+  ],
+  "windows_floor_actual_return": {
+    "chunk_id": "52de5c",
+    "wall_time_seconds": 1.6771164,
+    "exit_code": 0,
+    "original_token_count": 24,
+    "output": "{\"DriveLetter\":\"C\",\"FileSystem\":\"NTFS\",\"AllocationUnitSize\":4096,\"SizeRemaining\":242222624768}\r\n"
+  },
+  "linux_floors": "Per-phase original runner rechecks both Linux filesystem views and records actual observations before allocation",
+  "delegated_agent_admission": "ACCEPTED for sixGREEN then50owner cases only; no physical qualification or transport release"
+}

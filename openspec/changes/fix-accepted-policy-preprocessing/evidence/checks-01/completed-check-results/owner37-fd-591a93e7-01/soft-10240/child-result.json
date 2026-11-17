@@ -1,0 +1,188 @@
+{
+  "after_runner_and_class_cleanup": {
+    "fds": {
+      "count": 8,
+      "rows": [
+        {
+          "fd": 0,
+          "target": "pipe:[2923163]"
+        },
+        {
+          "fd": 1,
+          "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stdout.log"
+        },
+        {
+          "fd": 2,
+          "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stderr.log"
+        },
+        {
+          "fd": 13,
+          "target": "/"
+        },
+        {
+          "fd": 14,
+          "target": "/var"
+        },
+        {
+          "fd": 15,
+          "target": "/var/tmp"
+        },
+        {
+          "fd": 16,
+          "target": "/var/tmp/vast-owner-repfgsyn (deleted)"
+        },
+        {
+          "fd": 17,
+          "target": "/var/tmp/vast-owner-repfgsyn/guardian (deleted)"
+        }
+      ]
+    },
+    "identity": {
+      "cwd": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45",
+      "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+      "gid": 1000,
+      "monotonic_ns": 344655398848238,
+      "nofile": [
+        10240,
+        1048576
+      ],
+      "pid": 277249,
+      "tmpdir": "/var/tmp",
+      "uid": 1000
+    }
+  },
+  "errors": [],
+  "events": [
+    {
+      "event": "startTest",
+      "fds": {
+        "count": 10,
+        "rows": [
+          {
+            "fd": 0,
+            "target": "pipe:[2923163]"
+          },
+          {
+            "fd": 1,
+            "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stdout.log"
+          },
+          {
+            "fd": 2,
+            "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stderr.log"
+          },
+          {
+            "fd": 13,
+            "target": "/"
+          },
+          {
+            "fd": 14,
+            "target": "/var"
+          },
+          {
+            "fd": 15,
+            "target": "/var/tmp"
+          },
+          {
+            "fd": 16,
+            "target": "/var/tmp/vast-owner-repfgsyn"
+          },
+          {
+            "fd": 17,
+            "target": "/var/tmp/vast-owner-repfgsyn/guardian"
+          },
+          {
+            "fd": 18,
+            "target": "/var/tmp/vast-owner-repfgsyn.owner-fixture-engine/docker"
+          },
+          {
+            "fd": 19,
+            "target": "socket:[2891627]"
+          }
+        ]
+      },
+      "identity": {
+        "cwd": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45",
+        "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "gid": 1000,
+        "monotonic_ns": 344653411814318,
+        "nofile": [
+          10240,
+          1048576
+        ],
+        "pid": 277249,
+        "tmpdir": "/var/tmp",
+        "uid": 1000
+      },
+      "test_id": "tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators"
+    },
+    {
+      "event": "stopTest",
+      "fds": {
+        "count": 10,
+        "rows": [
+          {
+            "fd": 0,
+            "target": "pipe:[2923163]"
+          },
+          {
+            "fd": 1,
+            "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stdout.log"
+          },
+          {
+            "fd": 2,
+            "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-10240/stderr.log"
+          },
+          {
+            "fd": 13,
+            "target": "/"
+          },
+          {
+            "fd": 14,
+            "target": "/var"
+          },
+          {
+            "fd": 15,
+            "target": "/var/tmp"
+          },
+          {
+            "fd": 16,
+            "target": "/var/tmp/vast-owner-repfgsyn"
+          },
+          {
+            "fd": 17,
+            "target": "/var/tmp/vast-owner-repfgsyn/guardian"
+          },
+          {
+            "fd": 18,
+            "target": "/var/tmp/vast-owner-repfgsyn.owner-fixture-engine/docker"
+          },
+          {
+            "fd": 19,
+            "target": "socket:[2891627]"
+          }
+        ]
+      },
+      "identity": {
+        "cwd": "/home/s-a-balashov/work/vast-accepted-policy-repair-20261011a-source-591a93e778a9a7839da6278326d215e24e91ea45",
+        "executable": "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+        "gid": 1000,
+        "monotonic_ns": 344655377240774,
+        "nofile": [
+          10240,
+          1048576
+        ],
+        "pid": 277249,
+        "tmpdir": "/var/tmp",
+        "uid": 1000
+      },
+      "test_id": "tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators"
+    }
+  ],
+  "failures": [],
+  "production_overrides": false,
+  "qualification_authority": false,
+  "skips": [],
+  "successful": true,
+  "test_id": "tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators",
+  "tests_run": 1
+}

@@ -1,0 +1,158 @@
+{
+ "changed_lines_equal_planned_lines": true,
+ "files": [
+  {
+   "changed_lines": [
+    43,
+    44,
+    47,
+    53,
+    54,
+    57,
+    60,
+    63,
+    66,
+    73,
+    77,
+    82,
+    85,
+    95,
+    99,
+    102,
+    105,
+    108,
+    111,
+    117,
+    120
+   ],
+   "edits": 22,
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    53,
+    54,
+    55,
+    56,
+    57,
+    63,
+    67,
+    70,
+    72,
+    77,
+    79,
+    81
+   ],
+   "edits": 12,
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    57,
+    58,
+    59,
+    60,
+    61,
+    64,
+    68,
+    69,
+    72,
+    78,
+    80,
+    81
+   ],
+   "edits": 12,
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    62,
+    65,
+    75,
+    79,
+    82,
+    85,
+    88,
+    91,
+    97
+   ],
+   "edits": 9,
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    31,
+    36,
+    37,
+    38,
+    39,
+    41,
+    42,
+    44,
+    49,
+    50,
+    51,
+    68,
+    84,
+    89,
+    310,
+    318,
+    319,
+    328,
+    329,
+    332,
+    335,
+    410,
+    414,
+    418,
+    422,
+    446,
+    447,
+    448,
+    449,
+    455,
+    456,
+    457,
+    463,
+    464,
+    465,
+    471,
+    475
+   ],
+   "edits": 37,
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py"
+  },
+  {
+   "changed_lines": [
+    233,
+    234,
+    235,
+    236
+   ],
+   "edits": 4,
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py"
+  },
+  {
+   "changed_lines": [
+    47,
+    51,
+    55
+   ],
+   "edits": 3,
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py"
+  },
+  {
+   "changed_lines": [
+    250
+   ],
+   "edits": 1,
+   "file": "tests/test_publication_gstreamer_component_inputs_v1.py"
+  }
+ ],
+ "mapping_size": 224,
+ "non_pin_ast_unchanged": true,
+ "patch_bytes": 31839,
+ "patch_sha256": "ed23bb052e57447a499ee6486a5e8fbc7151c1b6fee2c4acbc5267c89015b253",
+ "plan_sha256": "f091a8d22000ee904f6d00583c4798e85d2ae47324af18f692402f16adc6d6c5",
+ "status": "verified_plan_rendered"
+}

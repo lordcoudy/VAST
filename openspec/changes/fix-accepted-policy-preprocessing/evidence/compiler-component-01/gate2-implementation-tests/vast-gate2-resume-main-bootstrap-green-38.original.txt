@@ -1,0 +1,21 @@
+.FF.....................
+======================================================================
+FAIL: test_actual_main_verified_closure_p0_api_write_order_and_single_terminal (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_main_verified_closure_p0_api_write_order_and_single_terminal)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 97, in test_actual_main_verified_closure_p0_api_write_order_and_single_terminal
+    self.assertEqual(status,0,emitted)
+AssertionError: 1 != 0 : [(1, b'{"cause_remainder_unknown":true,"causes":["p0_native_refused","output_dir_not_absolute"],"completed":false,"external_terminal_and_packet_review_required":true,"facts_bytes":1522,"facts_sha256":"e9cf9f14dac0573659c6d9dcedc5758027614d478e58710f9ca7e5cd8b7ea41c","known":[{"path":"rned_p0/control_record/write_proof/written_bytes","value":0},{"path":"ed_p0/control_record/write_proof/fsync_completed","value":false},{"path":"ed_p0/control_record/write_proof/close_completed","value":false},{"path":"ned_p0/control_record/write_proof/extent_unknown","value":false},{"path":"returned_p0/control_record/write_proof/completed","value":false}],"native_raw_originals_retained":0,"omitted_or_unknown":true,"physical_acceptance":false,"prefix_base64":"eyJwb3N0X3JldHVybl9mYWlsdXJlIjp7fSwicmV0dXJuZWRfcDAiOnsiYWNjZXB0"}\n')]
+
+======================================================================
+FAIL: test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 145, in test_actual_native_bootstrap_authenticates_buffers_and_refuses_expired_phase_without_effects
+    self.assertIn(b'resume_native_deadline',out[0][1])
+AssertionError: b'resume_native_deadline' not found in b'{"cause":"native_late_boot","causes":[],"external_status_eof_required":true,"facts_bytes":2,"facts_prefix_base64":"e30=","facts_remainder_unknown":true,"facts_sha256":"44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a","facts_unknown":false,"physical_acceptance":false}\n'
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.632s
+
+FAILED (failures=2)

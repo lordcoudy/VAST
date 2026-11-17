@@ -1,0 +1,184 @@
+{
+ "mode": "policy",
+ "inject_expected_streams_6": true,
+ "cells": {
+  "deepstream/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 3658
+  },
+  "deepstream/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3735
+  },
+  "deepstream/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 3693
+  },
+  "deepstream/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3734
+  },
+  "deepstream/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "deepstream/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "deepstream/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "deepstream/gpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 3544
+  },
+  "savant/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3716
+  },
+  "savant/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 3578
+  },
+  "savant/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3720
+  },
+  "savant/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4272
+  },
+  "savant/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "savant/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "openvino_gva/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 3649
+  },
+  "openvino_gva/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3391
+  },
+  "openvino_gva/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 3708
+  },
+  "openvino_gva/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3264
+  },
+  "openvino_gva/gpu/h264/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "openvino_gva/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "openvino_gva/gpu/h265/independent_processes": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "openvino_gva/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  },
+  "gstreamer_custom/cpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 3678
+  },
+  "gstreamer_custom/cpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3408
+  },
+  "gstreamer_custom/cpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 3741
+  },
+  "gstreamer_custom/cpu/h265/shared_video_dag": {
+   "status": "accepted",
+   "samples": 3255
+  },
+  "gstreamer_custom/gpu/h264/independent_processes": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "gstreamer_custom/gpu/h264/shared_video_dag": {
+   "status": "accepted",
+   "samples": 4300
+  },
+  "gstreamer_custom/gpu/h265/independent_processes": {
+   "status": "accepted",
+   "samples": 4296
+  },
+  "gstreamer_custom/gpu/h265/shared_video_dag": {
+   "status": "refused",
+   "chain": [
+    "QualificationError: GPU qualification sample lacks native transfer interval"
+   ],
+   "where": [
+    "diag_a9_pilots.py:55",
+    "publication_policy_qualification.py:846"
+   ]
+  }
+ },
+ "accepted": 24,
+ "refused": 8
+}

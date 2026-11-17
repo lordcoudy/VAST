@@ -26,6 +26,7 @@ assert SPEC is not None and SPEC.loader is not None
 target = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = target
 SPEC.loader.exec_module(target)
+import publication_policy_qualification_fragment_validation_v2 as validation
 from test_checkpoint_deepstream_qualification_fragment_v1 import historical_worker_project
 
 
@@ -244,7 +245,7 @@ class QualificationFragmentsFromAuthorityV2Tests(unittest.TestCase):
             self.assertEqual(set(value), target._DESCRIPTOR_FIELDS, label)
             return copy.deepcopy(value)
 
-        with mock.patch.object(target, "_descriptor", side_effect=descriptor_only):
+        with mock.patch.object(validation, "_descriptor", side_effect=descriptor_only):
             normalized = target._normalize_v4_refresh_authority(ROOT, binding)
         self.assertEqual(
             normalized["runtime_probes"],
@@ -260,7 +261,7 @@ class QualificationFragmentsFromAuthorityV2Tests(unittest.TestCase):
         binding["refresh_authority"]["runtime_probes"]["cpu"][
             "worker_implementation_sha256"
         ] = "a" * 64
-        with mock.patch.object(target, "_descriptor", side_effect=descriptor_only):
+        with mock.patch.object(validation, "_descriptor", side_effect=descriptor_only):
             with self.assertRaisesRegex(
                 target.QualificationFragmentsFromAuthorityV2Error,
                 "implementation",

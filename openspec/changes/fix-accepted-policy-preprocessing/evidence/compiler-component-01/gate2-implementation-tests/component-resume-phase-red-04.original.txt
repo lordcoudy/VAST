@@ -1,0 +1,43 @@
+controlled actual PRE and shared read wrapper component primary/close facts propagation RED
+test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts) ... ERROR
+
+======================================================================
+ERROR: test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 85, in _retention_read_v1
+    raw = stream.read(cap + 1)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 611, in read
+    def read(self,count):raise OSError('initiating read failure')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: initiating read failure
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 623, in test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts
+    gate.resume_pre_v1(code=self.code,plan=self.context['consumer_plan'],operator=self.context['operator'],
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 1094, in resume_pre_v1
+    retention = component.verify_resume_retention_v1(component.REVIEW_REPO_ROOT_LINUX_V1,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1199, in _execute_mock_call
+    result = effect(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 614, in read_failure
+    try:return component._retention_read_v1(path,4096)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_component_v1.py", line 116, in _retention_read_v1
+    raise error from failure
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: retention_read_OSError
+
+----------------------------------------------------------------------
+Ran 1 test in 0.074s
+
+FAILED (errors=1)

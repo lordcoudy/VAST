@@ -1,0 +1,16 @@
+test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance (caller.LaterStageCallerTests.test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance) ... FAIL
+test_post_proof_clock_at_end_never_advances_or_starts_next_stage (caller.LaterStageCallerTests.test_post_proof_clock_at_end_never_advances_or_starts_next_stage) ... ok
+
+======================================================================
+FAIL: test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance (caller.LaterStageCallerTests.test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 1492, in test_emitted_verification_reuses_its_checked_time_without_unchecked_late_state_advance
+    self.assertLess(value['verifySamples'][-1],350000)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 350000 not less than 350000
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.239s
+
+FAILED (failures=1)

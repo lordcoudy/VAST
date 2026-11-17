@@ -1,0 +1,62 @@
+FFFF
+======================================================================
+FAIL: test_late_read_stat_or_allocation_does_not_start_the_next_io (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_late_read_stat_or_allocation_does_not_start_the_next_io) (kind='read')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 482, in test_late_read_stat_or_allocation_does_not_start_the_next_io
+    if kind=='read':self.assertEqual(stats,[])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [100, 100] != []
+
+First list contains 2 additional elements.
+First extra element 0:
+100
+
+- [100, 100]
++ []
+
+======================================================================
+FAIL: test_late_read_stat_or_allocation_does_not_start_the_next_io (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_late_read_stat_or_allocation_does_not_start_the_next_io) (kind='stat')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 483, in test_late_read_stat_or_allocation_does_not_start_the_next_io
+    if kind=='stat':self.assertEqual(allocs,[])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [100] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+100
+
+- [100]
++ []
+
+======================================================================
+FAIL: test_late_read_stat_or_allocation_does_not_start_the_next_io (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_late_read_stat_or_allocation_does_not_start_the_next_io) (kind='allocation')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 484, in test_late_read_stat_or_allocation_does_not_start_the_next_io
+    if kind=='allocation':self.assertEqual(len(stats),1)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 2 != 1
+
+======================================================================
+FAIL: test_late_read_stat_or_allocation_does_not_start_the_next_io (tests.test_accepted_policy_fixture_compiler_gate2_resume_v1.ResumeBoundaries.test_late_read_stat_or_allocation_does_not_start_the_next_io) (kind='second_stat')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_resume_v1.py", line 485, in test_late_read_stat_or_allocation_does_not_start_the_next_io
+    if kind=='second_stat':self.assertEqual(late_paths,[])
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['/tmp/tmp991fanba/owned'] != []
+
+First list contains 1 additional elements.
+First extra element 0:
+'/tmp/tmp991fanba/owned'
+
+- ['/tmp/tmp991fanba/owned']
++ []
+
+----------------------------------------------------------------------
+Ran 1 test in 0.043s
+
+FAILED (failures=4)

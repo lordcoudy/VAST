@@ -42,7 +42,10 @@ from checkpoint_gstreamer_analytics_bridge import (  # noqa: E402
     native_probe_policy_systems,
 )
 from checkpoint_gstreamer_analytics_sidecar import (  # noqa: E402
+    DockerWorkerHandle,
     DockerWorkerProcessFactory,
+    _OwnedDockerContainer,
+    _retire_worker_handles,
     GStreamerAnalyticsSidecar,
     GStreamerAnalyticsProductionService,
     ProductionLifecycleEvidenceSink,
@@ -981,6 +984,71 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                 owner.run()
             self.assertTrue(factory.all_stopped())
             self.assertEqual(list((root / "runtime").iterdir()), [])
+
+    def test_startup_failure_lifecycle_persists_secondary_cleanup_details(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            owner = self._owner(root, _ProcessFactory(self.config))
+            primary = SidecarError("original capture startup failure")
+            primary.__notes__ = ["distinct capture cleanup failure"]
+            with mock.patch.object(owner, "_launch_workers", side_effect=primary):
+                with self.assertRaises(SidecarError) as caught:
+                    owner.run()
+            self.assertIs(caught.exception, primary)
+            lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+            self.assertIn("original capture startup failure", lifecycle["failure"]["message"])
+            self.assertIn("distinct capture cleanup failure", lifecycle["failure"]["message"])
+
+    def test_worker_start_and_pid_wrappers_persist_non_sidecar_cleanup_notes(self) -> None:
+        for phase in ("start", "pid"):
+            with self.subTest(phase=phase), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                factory = _ProcessFactory(self.config)
+                owner = self._owner(root, factory)
+                primary = RuntimeError("original " + phase + " failure")
+                primary.__notes__ = ["distinct " + phase + " cleanup failure"]
+                original_start = factory.start
+                def start(spec):
+                    if phase == "start":
+                        raise primary
+                    handle = original_start(spec)
+                    handle.expected_peer_pid = mock.Mock(side_effect=primary)
+                    return handle
+                with mock.patch.object(factory, "start", side_effect=start):
+                    with self.assertRaises(SidecarError) as caught:
+                        owner.run()
+                cause = caught.exception
+                for _ in range(8):
+                    if cause.__cause__ is None:
+                        break
+                    cause = cause.__cause__
+                self.assertIs(cause, primary)
+                lifecycle = json.loads((root / "engineering-evidence/lifecycle.json").read_text(encoding="utf-8"))
+                self.assertIn("original " + phase + " failure", lifecycle["failure"]["message"])
+                self.assertIn("distinct " + phase + " cleanup failure", lifecycle["failure"]["message"])
+                if phase == "start":
+                    self.assertEqual(factory.handles, {})
+                else:
+                    self.assertTrue(factory.all_stopped())
+                self.assertEqual(list((root / "runtime").iterdir()), [])
+
+    def test_stock_guardian_cli_persists_primary_and_secondary_failure(self) -> None:
+        import checkpoint_gstreamer_analytics_sidecar as sidecar_module
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            authority = root / "authority.json"
+            authority.write_text("{}\n", encoding="ascii")
+            primary = SidecarError("original guardian failure")
+            primary.__notes__ = ["distinct guardian cleanup failure"]
+            path = root / "stderr.json"
+            with path.open("w", encoding="utf-8") as saved, redirect_stderr(saved), \
+                    mock.patch.object(sidecar_module, "query_publication_sidecar_guardian_v1", side_effect=primary):
+                code = main(["--production-status-authority", str(authority)])
+            self.assertEqual(code, 78)
+            message = json.loads(path.read_text(encoding="utf-8"))["message"]
+            self.assertIn("original guardian failure", message)
+            self.assertIn("distinct guardian cleanup failure", message)
+            self.assertEqual(str(primary), "original guardian failure")
 
     def test_runtime_worker_crash_interrupts_front_service(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -2707,6 +2775,10 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
 
                 def drifted_request(*args: Any, **kwargs: Any) -> dict[str, Any]:
                     acknowledgement = original_request(*args, **kwargs)
+                    # Complete the producer before isolating acknowledgement drift.
+                    closer.join(timeout=5)
+                    self.assertFalse(closer.is_alive())
+                    self.assertEqual(closer_errors, [])
                     acknowledgement[field] = replacement
                     return acknowledgement
 
@@ -3055,6 +3127,14 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             class FakeDockerProcess:
                 pid = 4242
 
+                def __init__(self) -> None:
+                    streams = []
+                    for _ in range(2):
+                        read_fd, write_fd = os.pipe()
+                        os.close(write_fd)
+                        streams.append(os.fdopen(read_fd, "rb", buffering=0))
+                    self.stdout, self.stderr = streams
+
                 @staticmethod
                 def poll() -> None:
                     return None
@@ -3073,13 +3153,23 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     return None
 
             def popen(command: list[str], **kwargs: Any) -> FakeDockerProcess:
-                del kwargs
+                self.assertEqual(kwargs["stdout"], subprocess.PIPE)
+                self.assertEqual(kwargs["stderr"], subprocess.PIPE)
                 commands.append(command)
+                Path(command[command.index("--cidfile") + 1]).write_text("e" * 64, encoding="ascii")
                 return FakeDockerProcess()
 
             def runner(command: list[str], **kwargs: Any) -> subprocess.CompletedProcess[str]:
                 del kwargs
                 commands.append(command)
+                if command[1] == "info":
+                    return subprocess.CompletedProcess(command, 0, stdout="original-fixture-daemon\n", stderr="")
+                if command[1] == "inspect":
+                    return subprocess.CompletedProcess(command, 1, stdout="", stderr="not found")
+                if command[1] == "ps":
+                    return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+                self.assertEqual(command[1], "run")
+                Path(command[command.index("--cidfile") + 1]).write_text("a" * 64, encoding="ascii")
                 return subprocess.CompletedProcess(
                     command,
                     0,
@@ -3096,7 +3186,7 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
             )
             probe = factory.probe("gpu", self.config["workers"]["gpu"])
             self.assertEqual(probe["engine"], ENGINE_TENSORRT_CUDA)
-            factory.start(
+            handle = factory.start(
                 WorkerLaunchSpec(
                     branch="damage",
                     resource="gpu",
@@ -3112,8 +3202,15 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                     lifecycle_id="a" * 32,
                 )
             )
-            self.assertEqual(len(commands), 2)
-            probe_command, run_command = commands
+            self.addCleanup(handle.close_diagnostics)
+            launches = [command for command in commands if command[:2] == ["docker", "run"]]
+            self.assertEqual(len(launches), 2)
+            probe_command, run_command = launches
+            for command in launches:
+                self.assertEqual(command[command.index("--log-driver") + 1], "none")
+                self.assertFalse(Path(command[command.index("--cidfile") + 1]).is_relative_to(runtime))
+                self.assertIn("--label", command)
+            self.assertFalse(any(command[1] in {"stop", "kill", "rm"} for command in commands))
             expected_user = f"{runtime.stat().st_uid}:{runtime.stat().st_gid}"
             self.assertEqual(probe_command[:4], ["docker", "run", "--rm", "--network"])
             self.assertIn("none", probe_command)
@@ -3156,6 +3253,260 @@ class GStreamerAnalyticsSidecarTests(unittest.TestCase):
                 run_command[run_command.index("--max-requests") + 1],
                 "600",
             )
+
+
+class ConcurrentContainerRetirementTests(unittest.TestCase):
+    """Owned-container proofs run concurrently inside the one cleanup budget."""
+
+    class Process:
+        pid = 4242
+
+        @staticmethod
+        def poll() -> int:
+            return 0
+
+        @staticmethod
+        def wait(timeout: float | None = None) -> int:
+            return 0
+
+    class Owned:
+        def __init__(self, delay: float, result: list[str], log: list[tuple[str, float]]) -> None:
+            self.delay, self.result, self.log, self.closed = delay, result, log, False
+            self.cancelled = False
+
+        def retire(self, deadline: float) -> list[str]:
+            self.log.append(("start", time.monotonic()))
+            time.sleep(self.delay)  # e.g. four Docker CLI calls proving absence
+            return list(self.result)
+
+        @staticmethod
+        def cid() -> str:
+            return "a" * 64
+
+        def close(self) -> None:
+            self.closed = True
+
+    def handles(self, count: int, delay: float, result: list[str]) -> tuple[dict, list]:
+        log: list[tuple[str, float]] = []
+        handles = {}
+        for index in range(count):
+            handle = object.__new__(DockerWorkerHandle)
+            handle._process = self.Process()
+            handle._stdout_capture = handle._stderr_capture = None
+            handle._retirement_errors = None
+            handle._cleanup_deadline = None
+            handle._container_id = None
+            handle._owned_container = self.Owned(delay, result, log)
+            handles[(f"branch{index}", "gpu")] = handle
+        return handles, log
+
+    def test_eight_slow_proofs_fit_one_budget_that_serial_proofs_would_blow(self) -> None:
+        handles, log = self.handles(8, 0.6, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 3.0)  # serial would need 4.8 s
+        self.assertEqual(errors, [])
+        self.assertLess(time.monotonic() - start, 3.0)
+        self.assertLess(max(at for _, at in log) - min(at for _, at in log), 0.5)  # started together
+        for handle in handles.values():
+            self.assertEqual(handle._retirement_errors, [])
+            self.assertEqual(handle._container_id, "a" * 64)
+            self.assertTrue(handle._owned_container.closed)
+
+    def test_each_proof_error_stays_with_its_own_worker(self) -> None:
+        handles, _ = self.handles(2, 0.0, ["container_retirement_unproved"])
+        errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertEqual(sorted(errors), ["worker_cleanup:branch0/gpu:container_retirement_unproved",
+                                          "worker_cleanup:branch1/gpu:container_retirement_unproved"])
+
+    def test_several_hung_proofs_share_one_grace_second(self) -> None:
+        handles, _ = self.handles(4, 5.0, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 0.3)
+        self.assertLess(time.monotonic() - start, 2.0)  # 0.3 s budget + 1 s grace, not + 1 s per worker
+        self.assertEqual(sum("container_retirement_unfinished" in item for item in errors), 4)
+
+    def test_an_interrupt_while_joining_still_runs_client_and_custody_cleanup(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        real_join = threading.Thread.join
+        calls = []
+
+        def interrupted_join(thread, timeout=None):
+            calls.append(thread)
+            if len(calls) == 1:
+                raise KeyboardInterrupt
+            return real_join(thread, timeout)
+
+        with mock.patch.object(threading.Thread, "join", interrupted_join):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertTrue(any(item.startswith("worker_cleanup:container_retirers:") for item in errors))
+        for handle in handles.values():
+            self.assertIsNotNone(handle._retirement_errors)  # every handle still went through cleanup
+
+    def test_a_proof_finishing_after_the_shared_join_still_counts_and_is_closed(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        first, second = handles.values()
+        second._owned_container.delay = 1.8  # outlives the shared join (deadline + 1 s), done before its turn
+        real_finish = []
+
+        class SlowCapture:
+            def finish(self, deadline):  # the first handle's own cleanup takes a moment
+                time.sleep(1.2)
+                real_finish.append(True)
+                return True
+
+            def close(self):
+                return True
+
+        first._stdout_capture = SlowCapture()
+        with mock.patch("checkpoint_gstreamer_analytics_sidecar._BoundedPipeCapture", SlowCapture):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertTrue(real_finish)
+        self.assertNotIn("worker_cleanup:branch1/gpu:container_retirement_unfinished", errors)
+        self.assertTrue(second._owned_container.closed)
+        self.assertEqual(second._container_id, "a" * 64)
+
+    def test_an_interrupt_during_a_handle_rejoin_leaves_its_custody_untouched(self) -> None:
+        handles, _ = self.handles(1, 1.5, [])
+        (handle,) = handles.values()
+        real_join = threading.Thread.join
+        calls = []
+
+        def join(thread, timeout=None):
+            calls.append(thread)
+            if len(calls) == 2:  # the per-handle re-join, while the proof is still running
+                raise KeyboardInterrupt
+            return real_join(thread, timeout if len(calls) != 1 else 0.0)
+
+        with mock.patch.object(threading.Thread, "join", join):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertTrue(any(item.startswith("worker_cleanup:branch0/gpu:retirement:") for item in errors))
+        self.assertFalse(handle._owned_container.closed)  # never closed under a live retirer
+        self.assertIsNone(handle._container_id)
+
+    def test_an_unstarted_retirer_does_not_skip_client_cleanup(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        real_start = threading.Thread.start
+        calls = []
+
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:
+                raise KeyboardInterrupt
+            return real_start(thread)
+
+        with mock.patch.object(threading.Thread, "start", start):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        self.assertIn("worker_cleanup:branch1/gpu:container_retirement_not_started", errors)
+        for item in handles.values():
+            self.assertTrue(item._owned_container.closed)
+
+    def test_a_proof_that_outlives_the_budget_is_unfinished_and_its_custody_untouched(self) -> None:
+        handles, _ = self.handles(1, 3.0, [])
+        start = time.monotonic()
+        errors = _retire_worker_handles(handles, deadline=start + 0.3)
+        self.assertLess(time.monotonic() - start, 2.5)  # waits the budget plus one second, not the proof
+        self.assertIn("worker_cleanup:branch0/gpu:container_retirement_unfinished", errors)
+        self.assertIn("worker_cleanup_deadline_exhausted", errors)
+        (handle,) = handles.values()
+        self.assertFalse(handle._owned_container.closed)
+        self.assertIsNone(handle._container_id)
+        self.assertTrue(handle._owned_container.cancelled)  # it may finish its in-flight call, then stops
+
+    def test_a_failed_judgment_leaves_a_running_proof_untouched(self) -> None:
+        handles, _ = self.handles(1, 1.8, [])
+        (handle,) = handles.values()
+        calls = []
+
+        class Process(self.Process):
+            @staticmethod
+            def poll() -> int:
+                calls.append(True)
+                if len(calls) == 2:  # the per-handle judgment, before it records the proof as unfinished
+                    raise RuntimeError("poll failed")
+                return 0
+
+        handle._process = Process()
+        errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertIn("worker_cleanup:branch0/gpu:retirement:poll failed", errors)
+        self.assertFalse(handle._owned_container.closed)  # never closed under a live retirer
+        self.assertTrue(handle._owned_container.cancelled)
+
+    def test_an_unfinished_proof_is_cancelled_before_client_cleanup(self) -> None:
+        handles, _ = self.handles(1, 3.0, [])
+        (handle,) = handles.values()
+        seen = []
+        owned = handle._owned_container
+
+        class Process(self.Process):
+            @staticmethod
+            def poll() -> None:
+                return None
+
+            @staticmethod
+            def terminate() -> None:
+                seen.append(owned.cancelled)
+
+            @staticmethod
+            def kill() -> None:
+                return None
+
+        handle._process = Process()
+        _retire_worker_handles(handles, deadline=time.monotonic() + 0.3)
+        self.assertEqual(seen, [True])
+
+    def test_a_retirer_started_after_an_interrupted_start_is_never_closed_under(self) -> None:
+        import _thread
+        handles, _ = self.handles(2, 0.0, [])
+        first, second = handles.values()
+        second._owned_container.delay = 4.0  # still running when judged after the 1.5 s capture
+        real_start = threading.Thread.start
+        calls = []
+
+        def start(thread):
+            calls.append(thread)
+            if len(calls) == 2:  # interrupted before the thread had an ident; it starts a moment later
+                _thread.start_new_thread(lambda: (time.sleep(0.2), real_start(thread)), ())
+                raise KeyboardInterrupt
+            return real_start(thread)
+
+        class SlowCapture:
+            def finish(self, deadline):  # the first handle's own cleanup outlasts the late start
+                time.sleep(1.5)
+                return True
+
+            def close(self):
+                return True
+
+        first._stdout_capture = SlowCapture()
+        with mock.patch.object(threading.Thread, "start", start), \
+                mock.patch("checkpoint_gstreamer_analytics_sidecar._BoundedPipeCapture", SlowCapture):
+            errors = _retire_worker_handles(handles, deadline=time.monotonic() + 0.2)
+        self.assertIn("worker_cleanup:branch1/gpu:container_retirement_unfinished", errors)
+        self.assertFalse(second._owned_container.closed)
+        self.assertTrue(second._owned_container.cancelled)
+
+    def test_finished_proofs_are_not_cancelled(self) -> None:
+        handles, _ = self.handles(2, 0.0, [])
+        _retire_worker_handles(handles, deadline=time.monotonic() + 2.0)
+        for handle in handles.values():
+            self.assertFalse(handle._owned_container.cancelled)
+
+    def test_a_cancelled_proof_issues_no_further_docker_command(self) -> None:
+        calls: list[list[str]] = []
+
+        def runner(command, **kwargs):
+            calls.append(list(command))
+            return subprocess.CompletedProcess(command, 0, stdout="daemon" + chr(10), stderr="")
+
+        with tempfile.TemporaryDirectory() as tmp:
+            owned = _OwnedDockerContainer(name="w", image_id="sha256:" + "1" * 64, lifecycle_id="a" * 32,
+                                          role="gpu", receipt_dir=Path(tmp), daemon_id="daemon", runner=runner)
+            owned._same_daemon(time.monotonic() + 5.0)
+            self.assertEqual(len(calls), 1)
+            owned.cancelled = True
+            with self.assertRaisesRegex(Exception, "cancelled"):
+                owned._same_daemon(time.monotonic() + 5.0)
+            self.assertEqual(len(calls), 1)
 
 
 if __name__ == "__main__":

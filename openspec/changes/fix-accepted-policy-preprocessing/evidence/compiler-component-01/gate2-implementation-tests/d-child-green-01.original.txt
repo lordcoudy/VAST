@@ -1,0 +1,13 @@
+........F.
+======================================================================
+FAIL: test_work_term_kill_and_final_share_the_original_absolute_budget (tests.test_accepted_policy_fixture_compiler_gate2_d_child_v1.ChildTests.test_work_term_kill_and_final_share_the_original_absolute_budget) (mode='kill')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_child_v1.py", line 150, in test_work_term_kill_and_final_share_the_original_absolute_budget
+    self.assertTrue(result['reaped'])
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.007s
+
+FAILED (failures=1)

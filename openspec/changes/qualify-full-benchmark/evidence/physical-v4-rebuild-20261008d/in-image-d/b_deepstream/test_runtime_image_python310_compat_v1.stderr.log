@@ -1,0 +1,10 @@
+test_allowlists_name_existing_python_sources (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests) ... ok
+test_api_detector_resolves_aliases_and_keeps_guarded_forms (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests) ... ok
+test_runtime_sources_avoid_post_310_apis (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests) ... ok
+test_runtime_sources_use_python_310_grammar (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests) ... ok
+test_syntax_detector_flags_post_310_grammar (test_runtime_image_python310_compat_v1.RuntimeImagePython310CompatV1Tests) ... skipped 'PEP 701 tokens need Python 3.12+'
+
+----------------------------------------------------------------------
+Ran 5 tests in 94.599s
+
+OK (skipped=1)

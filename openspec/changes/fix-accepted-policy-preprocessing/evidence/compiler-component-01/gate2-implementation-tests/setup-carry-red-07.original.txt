@@ -1,0 +1,13 @@
+F.
+======================================================================
+FAIL: test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding (tests.test_accepted_policy_fixture_compiler_gate2_setup_v1.AccountingTests.test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_setup_v1.py", line 205, in test_actual_setup_growth_copy_liabilities_and_final_tail_are_binding
+    self.assertEqual(value, 6291456 + 11890688 + 1048576 + 1048576 + 4000000 + 524288 + 540672)
+AssertionError: 19052800 != 25344256
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+FAILED (failures=1)

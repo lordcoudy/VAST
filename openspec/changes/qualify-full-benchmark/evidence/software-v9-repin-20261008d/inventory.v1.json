@@ -1,0 +1,3172 @@
+{
+ "file_sizes": {
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/acceptance_binding.v4.json": [
+   18644,
+   18644
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.openvino_cpu.json": [
+   1141,
+   1141
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.tensorrt_cuda.json": [
+   1041,
+   1041
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.openvino_cpu.json": [
+   1158,
+   1158
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json": [
+   1058,
+   1058
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json": [
+   1877,
+   1877
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.openvino_cpu.json": [
+   1150,
+   1150
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.tensorrt_cuda.json": [
+   1051,
+   1051
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.openvino_cpu.json": [
+   1150,
+   1150
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json": [
+   1051,
+   1051
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json": [
+   659,
+   659
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json": [
+   654,
+   654
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/native-a/native_probe.freeze.json": [
+   6094,
+   6094
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json": [
+   29949,
+   29949
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/runtime_images/deepstream.runtime.freeze.json": [
+   5113,
+   5113
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/runtime_images/gstreamer_custom.runtime.freeze.json": [
+   6976,
+   6976
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/runtime_images/openvino_gva.runtime.freeze.json": [
+   6759,
+   6759
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/runtime_images/savant.runtime.freeze.json": [
+   6247,
+   6247
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json": [
+   6976,
+   6976
+  ],
+  "artifacts/qualify_full_benchmark_20261008c/worker_images/analytics-worker.freeze.json": [
+   3963,
+   3963
+  ],
+  "configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json": [
+   1498,
+   1498
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json": [
+   20462,
+   20462
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json": [
+   1684,
+   1684
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml": [
+   29892,
+   29892
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml": [
+   26052,
+   26052
+  ]
+ },
+ "hex_literal_classification": [
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 44,
+   "status": "changed_old_value_rebound",
+   "value": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 47,
+   "status": "changed_old_value_rebound",
+   "value": "33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 50,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 54,
+   "status": "changed_old_value_rebound",
+   "value": "900069e8eb009bbf6b93cf886691b82960d4208e99682055000357c91d0d9775"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 57,
+   "status": "changed_old_value_rebound",
+   "value": "cc4d326c3a7c678e0bf878b70912ff1214d06146505f5e7aa774c429a47011ff"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 60,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "d068e65aebd8831912dbdc5f949e4f765106674955be19450bcdd71c2669ea5c"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 63,
+   "status": "changed_old_value_rebound",
+   "value": "6052d390c71953e12baf5ddac0c3483b6730808d0b7bd2b9c0441feca20fc25f"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 66,
+   "status": "changed_old_value_rebound",
+   "value": "c0224ef22c464ae81289a2778a7bc8ab9ccbd9bc1d0dcd980cb23af549563d70"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 69,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 74,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0b496134ac3fec04449072218ddb6e2767d21b782127ab0d57c81c3b0daac874"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 78,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "b627a3790622cfb0e2334e7d3b31e6acf0b0fc5396f921d4552850056ba9b962"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 82,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "c9a022f5123425ddf83e7110c91e54aca5ae4930b5fccf83eb395fb9f0582886"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 85,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "1449e2074c2f5d7cf1a77ec271254f515495f1ac92ceab50abb90575003af6d3"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 88,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 89,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 95,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 99,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 102,
+   "status": "changed_old_value_rebound",
+   "value": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 105,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 108,
+   "status": "changed_old_value_rebound",
+   "value": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 111,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 114,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 117,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 120,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 123,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 54,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 55,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 56,
+   "status": "changed_old_value_rebound",
+   "value": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 57,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 63,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 67,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 69,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 70,
+   "status": "changed_old_value_rebound",
+   "value": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 71,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "7f70138de1e87ab43dfab1e37674979c551dd24ee02fba205cd9905790b060c5"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 72,
+   "status": "changed_old_value_rebound",
+   "value": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 73,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "d36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 74,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 75,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 76,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 77,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 78,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 79,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "98e36e7ae11bc2403c9305ad478edaf4927f5abe75bbacc723c8e20e3723bba0"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 80,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "2f241d0fbf8e250d09f3dc8c6c97999910991c8649c44e56ee69d4f1cb38b8e7"
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 81,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 57,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 58,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 59,
+   "status": "changed_old_value_rebound",
+   "value": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 60,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 61,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 64,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 67,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 68,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "7acc8f3e20cdd50bce28ba0aabf57681391f16a34fa957a8234c4381d558803c"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 69,
+   "status": "changed_old_value_rebound",
+   "value": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 72,
+   "status": "changed_old_value_rebound",
+   "value": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 73,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 74,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "d36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 75,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 76,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 77,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 78,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "7acc8f3e20cdd50bce28ba0aabf57681391f16a34fa957a8234c4381d558803c"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 79,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 80,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "98e36e7ae11bc2403c9305ad478edaf4927f5abe75bbacc723c8e20e3723bba0"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 81,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 82,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 59,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "3bed4ad0e5cd46b01649b054fa520c0f728a1ceeb14502fb9fe1f0f8f5941eff"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 62,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "c9a022f5123425ddf83e7110c91e54aca5ae4930b5fccf83eb395fb9f0582886"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 65,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "1449e2074c2f5d7cf1a77ec271254f515495f1ac92ceab50abb90575003af6d3"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 68,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "b5782c91b6bdab9958a4f63485acae8975b4930843453a61e2fbe61b2c4da63b"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 69,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "b8e6250e6f3871a2ffa5753a62300aeea77f132194b4309728ff74f49fbb9feb"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 75,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 79,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 82,
+   "status": "changed_old_value_rebound",
+   "value": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 85,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 88,
+   "status": "changed_old_value_rebound",
+   "value": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 91,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 94,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 97,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "7acc8f3e20cdd50bce28ba0aabf57681391f16a34fa957a8234c4381d558803c"
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 100,
+   "status": "changed_old_value_rebound",
+   "value": "0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 31,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 36,
+   "status": "changed_old_value_rebound",
+   "value": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 37,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "65b49dbbdb8b6e145cc07a7b28a66b406a0ccb076c41cb6e62a5dda9ee1056cf"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 38,
+   "status": "changed_old_value_rebound",
+   "value": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 39,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "042fa1a2bbc9c85d02a448a079992c2ee1c93a63bc7ce4de4151fc3b4c805d4b"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 40,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0f338b3aeca6756d31dccdbbc8caeb6239e8e07fec0541c1df3fea91dfc1963e"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 41,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "7acc8f3e20cdd50bce28ba0aabf57681391f16a34fa957a8234c4381d558803c"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 42,
+   "status": "changed_old_value_rebound",
+   "value": "0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 44,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 49,
+   "status": "changed_old_value_rebound",
+   "value": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 50,
+   "status": "changed_old_value_rebound",
+   "value": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 51,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "df206c7d3d9b276bf60b8107d88a3a381d03a771553e4dec3b4157c08c835cb2"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 200,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "c11befa808af8270e8ea0d0d7cc7cabbda08a2f496ee30b95f7acba5dce81759"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 220,
+   "status": "not_in_any_old_or_new_receipt",
+   "value": "314d4a4d71130e9b86caacb802e92fe97a89ee92b0240f9947dccebca3adc3dc"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 223,
+   "status": "not_in_any_old_or_new_receipt",
+   "value": "b6772ea56a31886b2599ed602e325d39b876d33d740bd3b983f1b96dbcf82c0f"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 226,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "3c0ef6f4bb57e385644da526789626f0c943dcb90ff32b72a7883e05798ce9e6"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 310,
+   "status": "changed_old_value_rebound",
+   "value": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 311,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "33a94d90919880c8f04b9e49a9841cda21ceceee1bb36ef1489e9103d2b4b583"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 312,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "d36642c99d55fac7d834c75b500c7ffd086f022e671cb2b38aecaf38b8d0ad9f"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 313,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "9909f2b19adc3f7e82dcf8923a3e719f8546cd4e5126663deafdce04121d2258"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 314,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "04962e14523cc570ce1b24735e76334820ed730b5aee72beac0685a4704f9e45"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 315,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "797a9311f06cc60ce3768dfc2b3a191525a8577dd8ce2a4eca057aa4fcefdabf"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 317,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "18b3fb289de3a7c101b12854beaabb38a8edb72c1ecaf6fc5deea39d307508bc"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 318,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "98e36e7ae11bc2403c9305ad478edaf4927f5abe75bbacc723c8e20e3723bba0"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 319,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "25c9d41025e18c25ce732f1a9c93d31d205be637333d1e0d23278e1ee77f11c9"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 320,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "3871aeb3037d041deb1722bfb6523125416a8939d204c21f2b9e8c906e9815ae"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 335,
+   "status": "changed_old_value_rebound",
+   "value": "324c22d640634d22943d976b8682df0dae5d8eb506eae765cb139580fb51a9c8"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 446,
+   "status": "changed_old_value_rebound",
+   "value": "61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 447,
+   "status": "changed_old_value_rebound",
+   "value": "8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 448,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 449,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 455,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 456,
+   "status": "changed_old_value_rebound",
+   "value": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 457,
+   "status": "changed_old_value_rebound",
+   "value": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 463,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 464,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 465,
+   "status": "changed_old_value_rebound",
+   "value": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 471,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "c9a022f5123425ddf83e7110c91e54aca5ae4930b5fccf83eb395fb9f0582886"
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 475,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "1449e2074c2f5d7cf1a77ec271254f515495f1ac92ceab50abb90575003af6d3"
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 235,
+   "status": "changed_old_value_rebound",
+   "value": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8"
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 236,
+   "status": "changed_old_value_rebound",
+   "value": "33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429"
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 241,
+   "status": "unchanged_in_old_and_new_receipts",
+   "value": "0307abfe6c5f652cc06f3f3df8ecf5050e5ed29b9ed5f40cb6fe728f47627090"
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "line": 51,
+   "status": "changed_old_value_rebound",
+   "value": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50"
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "line": 55,
+   "status": "changed_old_value_rebound",
+   "value": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a"
+  }
+ ],
+ "historical_or_excluded_occurrences": {
+  ".ci/fixtures/additional-origins.v1.json": 24,
+  ".ci/fixtures/gstreamer_fragment_unit_v1/artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json": 3,
+  "artifacts/qualify_full_benchmark_20261007a/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json": 2,
+  "artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json": 16,
+  "configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json": 1,
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json": 96,
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json": 14,
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml": 67,
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml": 11,
+  "docs/full-qualification-runbook-commands.sh": 8,
+  "docs/full-qualification-runbook.md": 6,
+  "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-J-failed-v1/b/current-code-closure.original.json": 1,
+  "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-J-failed-v1/b/source-transfer.original.json": 1,
+  "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-K-completed-v1/b/current-code-closure.original.json": 1,
+  "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-K-completed-v1/b/source-transfer.original.json": 1,
+  "openspec/changes/archive/2026-10-06-run-finite-component-study/evidence/physical-K-completed-v1/s__prepare/study-plan.original.json": 1,
+  "openspec/changes/qualify-full-benchmark/design.md": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/manual-v1-checks/r5-s5-fresh-checkouts.v1.e924f3dd.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/manual-v1-checks/r5-s5-fresh-checkouts.v1.failed-012232c7.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/manual-v1-checks/r5-s5-fresh-checkouts.v1.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/manual-v2-checks-20261008c/r5-s5-fresh-checkouts.v1.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/image_capture/assemble.stdout": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/image_capture/gstreamer_custom.stdout": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/image_capture/openvino_gva.stdout": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/image_capture/verify-patch.stdout": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/qualification_image_identity_patch.json": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/runtime_images/gstreamer_custom.runtime.freeze.json": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/runtime_images/openvino_gva.runtime.freeze.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v1-images/runtime_images/stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-ci-20261008c/ext4-clone.copied-ignored-receipts.sha256": 7,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-integration-20261008c/integration_lane.sh": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/guardian/service_authority.v1.json": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.guardian.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.guardian.stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.owner.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.owner.stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.runtime-inputs.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/code-closure-validate.runtime-inputs.stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/full-qualification-runbook-commands.sh": 8,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/guardian-status.owner.json": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/guardian-status.ready.json": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/guardian-status.runtime-inputs.json": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_02_transaction.inputs.sha256": 8,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_02_transaction.launch.txt": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_04_code_closure.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_04_code_closure.outputs.sha256": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_04_code_closure.stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_05_capture_plan.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_06_guardian.inputs.sha256": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_06_guardian.launch.txt": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_06_guardian.stdout.log": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/q1_09_owner_execute.launch.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/qualification_execution_code_closure.v1.receipt.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/q1_control/runbook-commands.sha256": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/savant-capture/savant-original-savant-cpu-h264-independent-processes/container-custody/original_container_custody.v1.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/savant-capture/savant-original-savant-cpu-h264-independent-processes/container-custody/reservation.v1.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/savant-capture/savant-original-savant-cpu-h264-independent-processes/engine_01.launch.v1.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/savant-capture/savant-original-savant-cpu-h264-independent-processes/engine_02.launch.v1.json": 15,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-q1-attempt2-failed/savant-capture/savant-original-savant-cpu-h264-independent-processes/original_engine_process_capture.v1.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/image_capture/assemble.stdout": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/image_capture/gstreamer_custom.stdout": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/image_capture/openvino_gva.stdout": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/image_capture/verify-patch.stdout": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/qualification_image_identity_patch.json": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/runtime_images/gstreamer_custom.runtime.freeze.json": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v2-refreeze/runtime_images/openvino_gva.runtime.freeze.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/acceptance_binding.v4.json": 118,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_downstream_images.sh": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_downstream_images.sh.recipe-diff.txt": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__deepstream-publication-runtime-v3__materialized-determinism-a.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__deepstream-publication-runtime-v3__materialized-determinism-b.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__deepstream-publication-runtime-v3__materialized.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__gstreamer-custom-publication-runtime-v3__materialized-determinism-a.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__gstreamer-custom-publication-runtime-v3__materialized-determinism-b.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__gstreamer-custom-publication-runtime-v3__materialized.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__openvino-gva-publication-runtime-v3__materialized-determinism-a.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__openvino-gva-publication-runtime-v3__materialized-determinism-b.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__openvino-gva-publication-runtime-v3__materialized.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__savant-publication-runtime-v3__materialized-determinism-a.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__savant-publication-runtime-v3__materialized-determinism-b.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/build_prep/inspect/vast__savant-publication-runtime-v3__materialized.inspect.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/capture_image_patch.sh": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/capture_image_patch.sh.recipe-diff.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/assemble.stdout": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/deepstream.stdout": 12,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/gstreamer_custom.stdout": 16,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/openvino_gva.stdout": 17,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/patch-file.sha256": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/savant.stdout": 13,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/image_capture/verify-patch.stdout": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/audit_model_parity_v1.py": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/audit_model_parity_v1.py.recipe-diff.txt": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/model-parity.original.execution.v1.json": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/model-parity.original.stdout.log": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/model_parity_v1/model-parity.audit.v1.json": 2516,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/run_audit_v1.py": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/independent_audits/run_audit_v1.py.recipe-diff.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/model_parity_control/stdout.log": 118,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/native-a/receipt-file.sha256": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/originals.sha256": 23,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/deepstream.external-manifest.result.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/deepstream.native-policy.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/deepstream.service-clock.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.backend-registry.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.bridge.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.deepstream_bridge_hash.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.external-manifest.result.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.native-policy.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.protocol.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/gstreamer_custom.sidecar.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.backend-registry.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.bridge.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.deepstream_bridge_hash.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.external-manifest.result.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.native-policy.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.protocol.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/openvino_gva.sidecar.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/savant.external-manifest.result.json": 3,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/savant.native-policy.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/savant.service-clock.result.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/packaged_regressions/summary.json": 30,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/qualification_image_identity_patch.json": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/root-move-cq1p/added-tracked-artifacts.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/root-move-cq1p/changed-paths.txt": 17,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/root-move-cq1p/root-git-status.before.txt": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/run_model_parity.sh": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/run_model_parity.sh.recipe-diff.txt": 5,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/run_packaged_checks.py": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/run_packaged_checks.py.recipe-diff.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/deepstream.runtime.freeze.json": 12,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/gstreamer_custom.runtime.freeze.json": 16,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/openvino_gva.runtime.freeze.json": 17,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/savant.runtime.freeze.json": 13,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/savant.runtime_image.materialized.v3.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/stderr.log": 8,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/runtime_images/stdout.log": 14,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/analytics_execution_layer.refreshed.v4.qfb-20261008c.json": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json": 96,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json": 14,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml": 67,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml": 11,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/untracked-configs-before-cq1/configs.sha256": 10,
+  "openspec/changes/qualify-full-benchmark/evidence/physical-v3-rebuild-20261008c/worker_images/receipt-file.sha256": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v3-pins/closure-diff.3a7f799d-vs-pins.u0.diff": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v3-pins/host-pin-rebind.applied.v1.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v3-pins/host-pin-rebind.plan.v1.json": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v3-pins/host-pin-rebind.planned.patch": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v3-pins/inventory.v1.json": 9,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/ci-fixtures.applied.v1.json": 23,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/ci-fixtures.plan.v1.json": 23,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/failed-01-noop-size-site/host-pin-rebind.plan.v1.json": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/host-pin-rebind.applied.v1.json": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/host-pin-rebind.plan.v1.json": 69,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/host-pin-rebind.planned.patch": 60,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/inventory.v1.json": 208,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/materialize_ci_fixtures_qfb_v2.py": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/materialize_ci_fixtures_qfb_v2.py.recipe-diff.txt": 1,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/rebind_host_identity_pins_qfb_v2.py": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c/rebind_host_identity_pins_qfb_v2.py.recipe-diff.txt": 4,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v8-py310-drvfs/baseline-head-frozen-identity.original.log": 2,
+  "openspec/changes/qualify-full-benchmark/evidence/software-v8-py310-drvfs/green-dependents.original.log": 2,
+  "openspec/changes/qualify-full-benchmark/tasks.md": 1
+ },
+ "mapping": [
+  {
+   "new": "11a6cc4bf82ecd6c86e5c3994d4b29df30be315852282f383bf17da524adc091",
+   "old": "01c401bc198aaa3dcfb838be9c0688a11ad84a60fa3608fd8b235dfd12357a25",
+   "source": [
+    "identity_patch#/receipts/runtime_images/openvino_gva/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/runtime_images/openvino_gva.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "fef8230f833ee06cb5c94242387bc2f59bd05d15d7eeeb2fc6d9117534314fb8",
+   "old": "0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/embedded_set_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_set_sha256"
+   ]
+  },
+  {
+   "new": "79fba96d75c694f4bc91e1cb73b5abd5353674ce3aa623f61385a12bdb749d99",
+   "old": "0eed2ecd564288fe66356d867332ab7b6506688402e32f55abce7f8de90dc2f1",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/6/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/28/sha256"
+   ]
+  },
+  {
+   "new": "bcd36872588579c7b85dfef3fbf07eb6927ba335598da63eff3cd2f2f24f0789",
+   "old": "13f0ea6b806fb077c9cb2780f60a9d1eadcfde3995e07c522c331a70e7c67dc5",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/26/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/17/sha256"
+   ]
+  },
+  {
+   "new": "01c08a7973765c793f5ac951ccd50320c2b3a82cc613f05c53cb35dc4c84708f",
+   "old": "16840dd3616da2b03bfb28dfcef831dcddad629c6ad07e693391ce5bd9933d1c",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/11/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/40/sha256"
+   ]
+  },
+  {
+   "new": "27ab377c987b0e428c6e83546d5f7dfe04a3ed98711c21c7be5588a67198446f",
+   "old": "16ad1223433a14a52d7134bfa3d0f6f4878c0106db1ea315cfad8a0c3181144b",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/3/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/32/sha256"
+   ]
+  },
+  {
+   "new": "4e477ff508b290ae4b81d29b332b6204557f1ccc6374ed7333d31f8b6e356363",
+   "old": "1ccbd9b41875e8f8b95c8fd54c9143fc62c20fa6e08f1a90a7c579ce3aa4d6c6",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/10/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/33/sha256"
+   ]
+  },
+  {
+   "new": "f3b0e0c769395345425f8f810730190396691693fcb5aab87941e9c57b1ee372",
+   "old": "23cee163896d06e2624ab3152b7d41b768085c8caba27891508e577be4a25e5b",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_assessment_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/assessment_sha256"
+   ]
+  },
+  {
+   "new": "0c0c786dbb39b4c92a224b12a7a1008427d2d3793a60d9675d60eec508112691",
+   "old": "24f8e5c7ae5c8b57c530c9552a539d533b34933af6be3ed282a0b3cdb5ae850c",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files/46/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/receipt/sha256",
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
+   ]
+  },
+  {
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "new": "136b23da9a68d7f13e7dd79a923a270878b73140680c70273ac2d077464b276b",
+   "old": "27d8cfa55dd112d25b84beee80c638d49fedd0cf338b6c5381c1ba6a1073a9dd",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/savant/physical_identity/inspect_projection_sha256",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "new": "dfa60a182b3cefaa7148fb74abd23eb8aa2af15dbbf97634760e29014737f5d1",
+   "old": "2bce2497b7569239997324a31bb29a475d494a3435a26187b5569da402eac660",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/embedded_set_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_set_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_set_sha256"
+   ]
+  },
+  {
+   "new": "03f00fde847d6bfe5ed35e2f691fa6fc3536ecfc8b81ff32ccfc91988f1fe49c",
+   "old": "2d9cb21125ba547cc7a9916b503ce7062cbda96e10181a4ccd53aa8940868bce",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/4/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/27/sha256"
+   ]
+  },
+  {
+   "new": "a714de3cf1e7e06bf4540629bc45bf33ec493d75457dea07d4a694fa0e3fa04a",
+   "old": "309fa66b66d07ea37bfaf38aeed2e6b13176c7f2c60432c917d80975f9babd0a",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/execution_bundles_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/execution_bundles_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/execution_bundles_sha256"
+   ]
+  },
+  {
+   "new": "3cff0664b40ac3593ff57d5b7c9987a5954852495fd30cbc626d273955e006bf",
+   "old": "31897e7fd4855ec09518529a3455771f85ce26380b023c9fac7d2a7799b64871",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/27/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/24/sha256"
+   ]
+  },
+  {
+   "new": "c703fafee94e25f73a6d1b10df49bdadf21cbb7766942cda24f447e1a3bd2380",
+   "old": "324c22d640634d22943d976b8682df0dae5d8eb506eae765cb139580fb51a9c8",
+   "source": [
+    "identity_patch#/receipts/runtime_images/gstreamer_custom/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/runtime_images/gstreamer_custom.runtime.freeze.json",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "25eead16da6d1356a5b8f7e1cd28a31d7f757407bbc45abdd3150be39a966f54",
+   "old": "33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest_content_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest_content_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest_content_identity_sha256"
+   ]
+  },
+  {
+   "new": "920f476b3fbdf364aaec1c34c025b01fdcd241ba4f0555358649cd1bfebcffbb",
+   "old": "396cb84198c56304807a4edfcd47cdd668b3f5808a06f9b11e002be34bcfd81f",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/output_segments_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/output_segments_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/output_segments_sha256"
+   ]
+  },
+  {
+   "new": "ec9b28d40b50841fec712b237b851e92cb363e06f2d5f043c58ccf4946f9252e",
+   "old": "3ec0ec678a191fd9213889ab7b96ba081f2227da6366f6e5bc1bce1cb468bcca",
+   "source": [
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml"
+   ]
+  },
+  {
+   "new": "ce498479df5c588e7400fe471963b6714cefd2c32629217a80fac050cb928e07",
+   "old": "431d928a5f7a537c46aa0154832d36317e155b8bf418ed46051487874fb9836d",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/12/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/35/sha256"
+   ]
+  },
+  {
+   "new": "c230449becf064a1e6bd3103505d6f7437f01d6f3d600dd4eb75114cae5bd757",
+   "old": "4cc2d9fcbd3e8d3076fdb4003295100effb9a4644c9d85523c3cbd48d29e2e38",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/30/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/20/sha256"
+   ]
+  },
+  {
+   "new": "502fe46754a3b6f5466148d2f43d37435f556cbf39ed616041420773af7508bf",
+   "old": "4cedf95212a316c7748d80c65c417f20d0c36bf58c21ab488bd02875afc78111",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/41/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/sha256"
+   ]
+  },
+  {
+   "new": "61a9d4d70d60071ecfe73e7344b6e624051673417622d2ecc662ae80ad4a0e86",
+   "old": "51e1be82a8d5bafb5a89ff44e3874e9f3f9b2caf911a6cbef71e3ad6670c5cc6",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/18/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/9/sha256"
+   ]
+  },
+  {
+   "new": "80a67a0146f9fcc5436f05ba4441bed711717ac35b9ccdb50c20e69e3522327c",
+   "old": "52ce486b8251a422b0ea842cc03b7ad22a62eaea24f31baff4da63f434c79a66",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/evidence_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/evidence_sha256"
+   ]
+  },
+  {
+   "new": "7d3da3fe7d70f6135c4f4b3035f38ea3f44a234c5b5c42500b69af5a2e7d4b57",
+   "old": "5388da62f84db8a739b7b43338b809c7bad0bc8469062f669f2d73409439a6ca",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/19/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/16/sha256"
+   ]
+  },
+  {
+   "new": "0a7a453465dc85176fc65eacd651efd2800c5285e6c3e2c13960d97ce45fd8c2",
+   "old": "54f3ddb8f8e16fa8a12aa199e384b05a02ed030141eb26e104537c2a1608dbb6",
+   "source": [
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/acceptance_binding.v4.json"
+   ]
+  },
+  {
+   "new": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "old": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py"
+   ]
+  },
+  {
+   "new": "d0693d5be943f57764faed8c9de3d29aa9009e2fc2740e480c0e95e8d85a8f68",
+   "old": "589f49a130a497be54514075c4f999e134e06c30b9956469c1f232d66c3f48e1",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/20/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/11/sha256"
+   ]
+  },
+  {
+   "new": "a61b0857373f8536170a8c9af26e06dff8878341d2e49e0d3a4df933c4677233",
+   "old": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "new": "1badaab198a7ba8da8d8db0810a6ee383748c9958dc957d3b52b3308c23407f7",
+   "old": "6052d390c71953e12baf5ddac0c3483b6730808d0b7bd2b9c0441feca20fc25f",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/execution_config/content_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/worker_runtime_registry/execution_config/content_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/execution_config/content_identity_sha256",
+    "model_parity_v4/bindings/index.json#/execution_config_identity_sha256"
+   ]
+  },
+  {
+   "new": "b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "old": "61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5",
+   "source": [
+    "identity_patch#/systems/deepstream/fragment_identity/image_id(bare-hex)",
+    "identity_patch#/systems/deepstream/physical_identity/image_id(bare-hex)",
+    "runtime_images/deepstream.runtime.freeze.json#/fragment_identity/image_id(bare-hex)",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/image_id(bare-hex)"
+   ]
+  },
+  {
+   "new": "77a6f4d58d23c189df70410779dc320f1cda101636c2e1e3ed1bc0760b8aebcc",
+   "old": "6790ceef9d14ac130c987a7655d36d3fda1017ec303278bc8648fc8803de6397",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/22/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/12/sha256"
+   ]
+  },
+  {
+   "new": "acd44b42029acd8d1f48676491e9a560678489e4755b615e7a07beb864dae935",
+   "old": "692cb498993096c0772a219b8e757a9cd5a404032f1964f537a0a9bfa1051193",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/5/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/30/sha256"
+   ]
+  },
+  {
+   "new": "5142213c2104ffcc4a37273aeba0073542cb2f4827a785aefb067bf45b5d6f05",
+   "old": "70a1f3f948b0307c1d73db64546490190297686996eba7eda28f80d2fece159e",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/14/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/36/sha256"
+   ]
+  },
+  {
+   "new": "8c5a8f0f7b49cc9184e67ca8df2d05e1b41278d6a28a4b534159040c84c3cfce",
+   "old": "7286747644bbd447baaaf77b05dfc95f2d504baf9633379141a6ecf95ec986b2",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/receipt_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/acceptance_identity_sha256"
+   ]
+  },
+  {
+   "new": "5b1c8f4dabfd8caaffd40ee23e52b448b4139b37d9b1d32a77ea360a4f4d8794",
+   "old": "797738435134a7162d57e193f7b4ce8f00a764198e50a95031affcb400446b24",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/28/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/19/sha256"
+   ]
+  },
+  {
+   "new": "c388a73d1b9526f0b649b01eeaccb953da48f38a5a7cb514df43f1ad99cbbfef",
+   "old": "7b5a129a18f7baa1eadcc7caf3453228f2b21716f26f3a00497d72e987613a41",
+   "source": [
+    "identity_patch#/receipts/runtime_images/deepstream/receipt_sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/receipt_sha256"
+   ]
+  },
+  {
+   "new": "20f13ae5500e02d999e9df75f1d60225aa93728079b82b846aaac326f155a4eb",
+   "old": "7bfc41f32496ee8a5e14c9584ecc8bd583cc9d543a6cf72c8576abdc6b65a70a",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/21/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/14/sha256"
+   ]
+  },
+  {
+   "new": "bd010a2ed7c824d34a0926c86fbfb6b002793686184b9bd3c102e6acd6fcd2cb",
+   "old": "7dc2e6a03861fa37af2d2bc93a0643c75e1cd266c492b8254f0a9908e9ac1694",
+   "source": [
+    "identity_patch#/receipts/runtime_images/gstreamer_custom/receipt_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/receipt_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/receipt_sha256"
+   ]
+  },
+  {
+   "new": "045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7",
+   "old": "8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/image_id(bare-hex)",
+    "identity_patch#/systems/savant/physical_identity/image_id(bare-hex)",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/image_id(bare-hex)",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/image_id(bare-hex)"
+   ]
+  },
+  {
+   "new": "a630b78b58f9ac7c875ac04d6d2ea453fc0d3fc68d53c3ab1222eb7df0d55890",
+   "old": "83f23f042c8f2fc4384741833587e4d2fd6bba81aff42879da3c2acc416e57fd",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/2/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/25/sha256"
+   ]
+  },
+  {
+   "new": "9a214b1b342687939f48e81e4fbff9ea304b746ab25b9b0b7f10857f9d940fdb",
+   "old": "848db69905c1b15c059b165f3db5a7c1d9e29b8d6b2b9b7638c4c8eb4d7a6ebb",
+   "source": [
+    "identity_patch#/systems/deepstream/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/deepstream/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/deepstream/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/labels/org.vast.runtime-source-sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/source_identity/runtime_source_sha256"
+   ]
+  },
+  {
+   "new": "ca05be1fddae8857b749a8cacf6e92c0fc5f26e6f2e56d535c9a19e6cc8d4496",
+   "old": "85e908eee57b7d75f8d61544b2da0d52ff9eed3f15932a90fd69412f91db2be8",
+   "source": [
+    "identity_patch#/patch_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/image_identity_patch/patch_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/image_identity_patch/patch_sha256"
+   ]
+  },
+  {
+   "new": "852417d734ff109898db9c4282f606b370ae8ef72badd8f52df61c5a60a05d7f",
+   "old": "869bd9633b022ac15613f45bfca44c7717144273df6770a993e2d55735eed509",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/7/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/31/sha256"
+   ]
+  },
+  {
+   "new": "8e81dddc25cdda8dcfb213c203f8805c2dfd1740a5776422a38cfabeef125362",
+   "old": "897295804bf0e0d2a1214c63dc783ce9322294bdf6f25bab4cba90077220dbe3",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/23/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/15/sha256"
+   ]
+  },
+  {
+   "new": "dafb90aa5f55198e2eea5cb40a74fad0fb4992e0be1db1c5341bd60c657031e1",
+   "old": "900069e8eb009bbf6b93cf886691b82960d4208e99682055000357c91d0d9775",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/index/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/4/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/index/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json"
+   ]
+  },
+  {
+   "new": "939215769022d4ba391fe8d7ab017a7214f683dfc350a81d66a50eef05913232",
+   "old": "91e665b883daf2530d788c20859710b63e52b76b642018065efa97d5d2494657",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_assessment/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_assessment/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/47/sha256",
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json"
+   ]
+  },
+  {
+   "new": "90d15e5f733d64d59f2149b48e28ee0fd12b35ea63af92763c3c386a07daf814",
+   "old": "96e90c419c3857d7c60b6f41edf0ed67028e5497f441cae023bc44414ddd344e",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_full_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_full_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_full_sha256"
+   ]
+  },
+  {
+   "new": "4199d1ba633eba2d38cee003790c47223c56f0e9b8242ede40862b083b21c739",
+   "old": "989d98ea73799cbb4c5746cf173c614412d94c26a1a6dee221c3c3c17154d09e",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/binding_sha256"
+   ]
+  },
+  {
+   "new": "8bfda3864546bc755b409d3e2e424ff8c6d4517e2acf442f8498d90cae28a4c1",
+   "old": "9c32aa63262ac34ddbabe856502d23d397ac1ba4ede0441a5b77a3d3ab36953f",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/savant/physical_identity/labels/org.vast.savant.runtime-source-sha256",
+    "identity_patch#/systems/savant/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/labels/org.vast.savant.runtime-source-sha256",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/source_identity/runtime_source_sha256"
+   ]
+  },
+  {
+   "new": "e39e6645dfe531e1649d0f5f630f3840469b815ba940512bc4e7010c789ae351",
+   "old": "9cb9528a691fcc8e275d7bc4379d200e532d97c5f78a19ec3334ab432bf07690",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/image_identity_patch/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/44/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/image_identity_patch/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
+   ]
+  },
+  {
+   "new": "7160c5a9234653c0c5beaaa26e2a1e426b34959d3edb3817691811a53a57d203",
+   "old": "a45e9cbe1595f31102502715b62662ab546f6c66d4a462db3e0fbec0f5d5957f",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files_sha256"
+   ]
+  },
+  {
+   "new": "049c935bb71909780203f5404e41497655dd95e5154f723d7f591fdeec3c6935",
+   "old": "a572f6665845ab640ffdf87742cff9587071fff84fdfcc954d1bdc705dfb86d2",
+   "source": [
+    "identity_patch#/systems/savant/physical_identity/inspect_full_sha256",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/inspect_full_sha256"
+   ]
+  },
+  {
+   "new": "a5ce1137fb4955468102f92c3de8aa959779c61aa32c7ac5b597fef05a205816",
+   "old": "a5dd9a2e991965648b13eb6d99b9fcfffc592cf95b2b576779e391ce5d070344",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/inspect_full_sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/inspect_full_sha256"
+   ]
+  },
+  {
+   "new": "e85f95b2bde37ac4359ec1099078b2657a03c91d99014f900b882d7c30cf7452",
+   "old": "af58619814bf4dd8a42935106e587e24f2c6ff790169f0563b066b020878772b",
+   "source": [
+    "identity_patch#/receipts/runtime_images/openvino_gva/receipt_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/receipt_sha256"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d",
+   "old": "artifacts/qualify_full_benchmark_20261008c",
+   "source": [
+    "artifact-dir"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4",
+   "source": [
+    "artifact-dir"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/acceptance_binding.v4.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/acceptance_binding.v4.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/acceptance_binding_path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/acceptance_binding.v4.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/damage.openvino_cpu.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.openvino_cpu.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/damage:cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/0/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/damage:cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.openvino_cpu.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.tensorrt_cuda.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/damage:gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/1/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/damage:gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/damage.tensorrt_cuda.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.openvino_cpu.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/foreign_object:cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/2/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/foreign_object:cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.openvino_cpu.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/foreign_object:gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/3/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/foreign_object:gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/foreign_object.tensorrt_cuda.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/index.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/index/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/4/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/index/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.openvino_cpu.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/plate_number:cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/5/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/plate_number:cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.openvino_cpu.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.tensorrt_cuda.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/plate_number:gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/6/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/plate_number:gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/plate_number.tensorrt_cuda.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.openvino_cpu.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/vehicle_type:cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/7/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/vehicle_type:cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.openvino_cpu.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/bindings/vehicle_type:gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/8/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/bindings/vehicle_type:gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/vehicle_type.tensorrt_cuda.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/calibration_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/calibration_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/18/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/9/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cpu_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cpu_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/16/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/10/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cpu_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cpu_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/20/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/11/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cpu_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cpu_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/22/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/12/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cuda_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cuda_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/17/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/13/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cuda_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cuda_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/21/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/14/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/cuda_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/cuda_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/23/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/15/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/damage/evaluation_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/damage/evaluation_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/19/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/16/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/calibration_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/calibration_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/26/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/17/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cpu_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cpu_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/24/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/18/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cpu_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cpu_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/28/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/19/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cpu_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cpu_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/30/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/20/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cuda_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cuda_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/25/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/21/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cuda_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cuda_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/29/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/22/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/cuda_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/cuda_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/31/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/23/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/foreign_object/evaluation_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/foreign_object/evaluation_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/27/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/24/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/calibration_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/calibration_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/2/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/25/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cpu_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cpu_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/0/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/26/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cpu_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cpu_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/4/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/27/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cpu_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cpu_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/6/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/28/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cuda_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cuda_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/1/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/29/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cuda_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cuda_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/5/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/30/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/cuda_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/cuda_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/7/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/31/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/plate_number/evaluation_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/plate_number/evaluation_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/3/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/32/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/calibration_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/calibration_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/10/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/33/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cpu_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cpu_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/8/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/34/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cpu_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cpu_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/12/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/35/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cpu_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cpu_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/14/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/36/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cuda_execution_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cuda_execution_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/9/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/37/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cuda_policy_calibration.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cuda_policy_calibration.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/13/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/38/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/cuda_raw_output_bundle.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/cuda_raw_output_bundle.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/15/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/39/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/documents/vehicle_type/evaluation_corpus.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/documents/vehicle_type/evaluation_corpus.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/11/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/40/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/materialization/transaction_index.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/materialization/transaction_index.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/41/path",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/runtime_probes/cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/42/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/runtime_probes/cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/runtime_probes/gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/43/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/runtime_probes/gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/native-a/native_probe.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/native-a/native_probe.freeze.json",
+   "source": [
+    "identity_patch#/receipts/native_probe/path",
+    "identity_patch#/systems/deepstream/physical_identity/native_receipt/path",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/native_receipt/path",
+    "identity_patch#/systems/openvino_gva/physical_identity/native_receipt/path",
+    "identity_patch#/systems/savant/physical_identity/native_receipt/path",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/native_receipt/path"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/image_identity_patch/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/44/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/image_identity_patch/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/runtime_images/deepstream.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/runtime_images/deepstream.runtime.freeze.json",
+   "source": [
+    "identity_patch#/receipts/runtime_images/deepstream/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/runtime_images/deepstream.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/runtime_images/gstreamer_custom.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/runtime_images/gstreamer_custom.runtime.freeze.json",
+   "source": [
+    "identity_patch#/receipts/runtime_images/gstreamer_custom/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/runtime_images/gstreamer_custom.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/runtime_images/openvino_gva.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/runtime_images/openvino_gva.runtime.freeze.json",
+   "source": [
+    "identity_patch#/receipts/runtime_images/openvino_gva/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/runtime_images/openvino_gva.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/runtime_images/savant.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/runtime_images/savant.runtime.freeze.json",
+   "source": [
+    "identity_patch#/receipts/runtime_images/savant/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/runtime_images/savant.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+   "source": [
+    "file-path:artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "artifacts/qualify_full_benchmark_20261008d/worker_images/analytics-worker.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/worker_images/analytics-worker.freeze.json",
+   "source": [
+    "identity_patch#/receipts/analytics_worker/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/worker_images/analytics-worker.freeze.json"
+   ]
+  },
+  {
+   "new": "8be74492c97b36d5459e968f5b4bf5739b0066568f1d10b333844dc828b025d5",
+   "old": "b57785f0c7a9cda4721e477012254573f49d1821aedcaef99d7b6bd53e2c9ea4",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/runtime_registries_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/runtime_registries_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/runtime_registries_sha256"
+   ]
+  },
+  {
+   "new": "810169b3bd43332db07141500a2ed9aa9ccb5b111fca128a2085a273439da327",
+   "old": "bc54bc16e7ced2787f43b6a3acfeb25a906e73f409d2ff5e7d5335a588ea6248",
+   "source": [
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_full_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_full_sha256"
+   ]
+  },
+  {
+   "new": "2079f480ceacc83308b4d964c0ddf75559e898e2f07997f47d01fdc717a42316",
+   "old": "be0cf24db5f3b964f7dd3552dc33db8230c01811f6ec8ca80e48e8076a04500d",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/execution_config/sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/worker_runtime_registry/execution_config/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/45/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/execution_config/sha256",
+    "file-sha256:configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json"
+   ]
+  },
+  {
+   "new": "b41205cb97a392bd86adea753a35752337219c150ea864d63e77ef582e8a0278",
+   "old": "bfc6c600f2dccf11dd8e6a551ad1c4ee036e0c65c758861ced222857c6f8c952",
+   "source": [
+    "identity_patch#/systems/deepstream/physical_identity/inspect_projection_sha256",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "new": "5bed05b0455256899d1ee78b6c7d83cca9b55d3df2def07a8526c3ffd797d1e8",
+   "old": "c0224ef22c464ae81289a2778a7bc8ab9ccbd9bc1d0dcd980cb23af549563d70",
+   "source": [
+    "model_parity_v4/bindings/index.json#/model_parity_manifest_identity_sha256"
+   ]
+  },
+  {
+   "new": "80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id(bare-hex)",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id(bare-hex)",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id(bare-hex)",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id(bare-hex)",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id(bare-hex)",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id(bare-hex)"
+   ]
+  },
+  {
+   "new": "b6c72fe726d7b25a2ccaf5939d1e74e062154b6bc367cf00562b5c1f4b9fc15f",
+   "old": "c3160588d54500d48241c55c7e63fd4896a231be7bc6736c27c28a409eb3ce6a",
+   "source": [
+    "identity_patch#/receipts/runtime_images/savant/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/runtime_images/savant.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "66a62b2e4b165190a558d8056a665954bdb5414a878cc3b8d382b76cf72fee8e",
+   "old": "c59288e7671c9acbb58aa2c696c3628d404b5f1a2d3a9d747b31d7225e6875a1",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/29/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/22/sha256"
+   ]
+  },
+  {
+   "new": "b424390579c68603a5913bf00996343f55907c9c374c77e566e644fdddc2b7f8",
+   "old": "c5a2b214e48a653a29040dd8609d506511b7e4b2569732ec1d3f41eb4e327886",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/13/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/38/sha256"
+   ]
+  },
+  {
+   "new": "96930e96931d06b876bba066805afac96022b5b30716087e529249c0443e3ee1",
+   "old": "cc4d326c3a7c678e0bf878b70912ff1214d06146505f5e7aa774c429a47011ff",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/identity_sha256",
+    "model_parity_v4/bindings/index.json#/identity/sha256"
+   ]
+  },
+  {
+   "new": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008d.json",
+   "old": "configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/execution_config/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/worker_runtime_registry/execution_config/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/45/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/execution_config/path",
+    "file-path:configs/analytics_execution_layer.refreshed.v4.qfb-20261008c.json"
+   ]
+  },
+  {
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files/46/path",
+    "model_parity_v4/acceptance_binding.v4.json#/receipt/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
+   ]
+  },
+  {
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.assessment.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_assessment/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_assessment/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/47/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json"
+   ]
+  },
+  {
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.yaml",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml",
+   "source": [
+    "configs/analytics_execution_layer.refreshed.v4.<ns>.json#/model_parity_manifest",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.yaml"
+   ]
+  },
+  {
+   "new": "8f822ea29ae68f8855334fc5f41853b6a2009d0cc5194375019158f018cb7a84",
+   "old": "d0fa920db832da26a03d07d3003de7a6581371e046e95e12b0521d46c40509f5",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/15/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/39/sha256"
+   ]
+  },
+  {
+   "new": "d2a1876bade07f5d8be1a665d4bcebd05072503169794952939489ae4c209dbb",
+   "old": "d4de00ba337d750f7e9e602ddb37c9c3169a57aee1485812a6a15fceb0a3ce35",
+   "source": [
+    "identity_patch#/receipts/runtime_images/savant/receipt_sha256",
+    "runtime_images/savant.runtime.freeze.json#/receipt_sha256"
+   ]
+  },
+  {
+   "new": "4e6b055df5b3e644df8463306e5bb89108685e7d96d35781c1954a7529b2afa6",
+   "old": "d9ba00f9528ead544f89a7a2ac6266647d8d13ce8335848317febdf82c16bc25",
+   "source": [
+    "identity_patch#/receipts/runtime_images/deepstream/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/runtime_images/deepstream.runtime.freeze.json"
+   ]
+  },
+  {
+   "new": "aa56b56a99291be89a1809eb5267841073b575d56e8507e0a59cb08f3a602497",
+   "old": "dab7559f5fb806244f7ad6aaacd98b13831db54535c3a831b6e330e708c2eabf",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/files_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/files_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/files_sha256"
+   ]
+  },
+  {
+   "new": "47319e641555baebcb09ad5b38b40f26e1d6552b6efa2259f381f22b86abc556",
+   "old": "e046f96ba03cba7357892227b86b53c9555f34d2ec061565188d5c5a4b6a1e60",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/transaction_index/transaction_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/transaction_index/transaction_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/transaction_index/transaction_sha256"
+   ]
+  },
+  {
+   "new": "bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id(bare-hex)",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id(bare-hex)",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id(bare-hex)",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id(bare-hex)"
+   ]
+  },
+  {
+   "new": "2673ed504c9d3adf8c1d7f688cf0b4cc9c59e1701222eb4deec27b8c3e7e0914",
+   "old": "e94a04d43930fd0ca4158548028bbf42325f64c1cb4f047d15831df762a32534",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/refresh_authority_sha256"
+   ]
+  },
+  {
+   "new": "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d",
+   "old": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "new": "05800c438b2fb1b72df6135740312caf428d6465194b6e433005eebf4b2c9334",
+   "old": "edd0a5fdabfdb7e70888302230d6bad703fe37c2f5556769c4ededb09c96f90a",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/31/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/23/sha256"
+   ]
+  },
+  {
+   "new": "bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d",
+   "old": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/sha256",
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "new": "95ffa044b78864d9af0793ce4c865a39d20dc18a1417f3fd23a20178c1750e29",
+   "old": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "new": "112af948e88162d13b3c509383fa4a68a1ebfae8fa6fffc1049a55732c27bd8c",
+   "old": "fedc30927281fecedcdfd0f051f2cfaa2de3541f736ca53c18d91ecc3afdb956",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/canonical_assessment_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/canonical_assessment_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/canonical_assessment_identity_sha256"
+   ]
+  },
+  {
+   "new": "qfb-20261008d",
+   "old": "qfb-20261008c",
+   "source": [
+    "namespace"
+   ]
+  },
+  {
+   "new": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "old": "sha256:61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5",
+   "source": [
+    "identity_patch#/systems/deepstream/fragment_identity/image_id",
+    "identity_patch#/systems/deepstream/physical_identity/image_id",
+    "runtime_images/deepstream.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "new": "sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7",
+   "old": "sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/image_id",
+    "identity_patch#/systems/savant/physical_identity/image_id",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "new": "vast/deepstream-publication-runtime-v3@sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "old": "vast/deepstream-publication-runtime-v3@sha256:61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5",
+   "source": [
+    "identity_patch#/systems/deepstream/fragment_identity/repository_digest",
+    "identity_patch#/systems/deepstream/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/deepstream/physical_identity/observed_repository_digests/0",
+    "runtime_images/deepstream.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "new": "vast/gstreamer-custom-publication-runtime-v3@sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/observed_repository_digests/0",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "new": "vast/openvino-gva-publication-runtime-v3@sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/observed_repository_digests/0",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "new": "vast/savant-publication-runtime-v3@sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7",
+   "old": "vast/savant-publication-runtime-v3@sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/repository_digests/0",
+    "identity_patch#/systems/savant/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/savant/physical_identity/observed_repository_digests/0",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/repository_digests/0",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  }
+ ],
+ "mapping_size": 146,
+ "numeric_receipt_changes": {
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/12/size_bytes": [
+   3131,
+   3129
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/13/size_bytes": [
+   3070,
+   3071
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/28/size_bytes": [
+   3197,
+   3195
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/29/size_bytes": [
+   3132,
+   3137
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/4/size_bytes": [
+   3133,
+   3131
+  ],
+  "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/evidence/5/size_bytes": [
+   3064,
+   3068
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/19/size_bytes": [
+   3197,
+   3195
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/22/size_bytes": [
+   3132,
+   3137
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/27/size_bytes": [
+   3133,
+   3131
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/30/size_bytes": [
+   3064,
+   3068
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/35/size_bytes": [
+   3131,
+   3129
+  ],
+  "model_parity_v4/acceptance_binding.v4.json#/files/38/size_bytes": [
+   3070,
+   3071
+  ]
+ },
+ "sites": [
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 43,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 44,
+   "new": "bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d",
+   "old": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/sha256",
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 47,
+   "new": "25eead16da6d1356a5b8f7e1cd28a31d7f757407bbc45abdd3150be39a966f54",
+   "old": "33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest_content_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest_content_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest_content_identity_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 53,
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/bindings/index.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/index/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/4/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/index/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 54,
+   "new": "dafb90aa5f55198e2eea5cb40a74fad0fb4992e0be1db1c5341bd60c657031e1",
+   "old": "900069e8eb009bbf6b93cf886691b82960d4208e99682055000357c91d0d9775",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/index/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/4/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/index/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/bindings/index.json"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 57,
+   "new": "96930e96931d06b876bba066805afac96022b5b30716087e529249c0443e3ee1",
+   "old": "cc4d326c3a7c678e0bf878b70912ff1214d06146505f5e7aa774c429a47011ff",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/binding_set/identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/binding_set/identity_sha256",
+    "model_parity_v4/bindings/index.json#/identity/sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 63,
+   "new": "1badaab198a7ba8da8d8db0810a6ee383748c9958dc957d3b52b3308c23407f7",
+   "old": "6052d390c71953e12baf5ddac0c3483b6730808d0b7bd2b9c0441feca20fc25f",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/execution_config/content_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/worker_runtime_registry/execution_config/content_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/execution_config/content_identity_sha256",
+    "model_parity_v4/bindings/index.json#/execution_config_identity_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 66,
+   "new": "5bed05b0455256899d1ee78b6c7d83cca9b55d3df2def07a8526c3ffd797d1e8",
+   "old": "c0224ef22c464ae81289a2778a7bc8ab9ccbd9bc1d0dcd980cb23af549563d70",
+   "source": [
+    "model_parity_v4/bindings/index.json#/model_parity_manifest_identity_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 73,
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/runtime_probes/cpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/42/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/runtime_probes/cpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/cpu_runtime_probe.json"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 77,
+   "new": "artifacts/qualify_full_benchmark_20261008d/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/runtime_probes/gpu/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/43/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/runtime_probes/gpu/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/model_parity_v4/runtime_probes/gpu_runtime_probe.json"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 95,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 99,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 102,
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 108,
+   "new": "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d",
+   "old": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 54,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 55,
+   "new": "vast/gstreamer-custom-publication-runtime-v3@sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/observed_repository_digests/0",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 56,
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 70,
+   "new": "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d",
+   "old": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_publication_runtime_v3.py",
+   "line": 72,
+   "new": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "old": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 57,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 58,
+   "new": "vast/openvino-gva-publication-runtime-v3@sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/observed_repository_digests/0",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 59,
+   "new": "a61b0857373f8536170a8c9af26e06dff8878341d2e49e0d3a4df933c4677233",
+   "old": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 69,
+   "new": "95ffa044b78864d9af0793ce4c865a39d20dc18a1417f3fd23a20178c1750e29",
+   "old": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_publication_runtime_v3.py",
+   "line": 72,
+   "new": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "old": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 75,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 79,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 82,
+   "new": "a61b0857373f8536170a8c9af26e06dff8878341d2e49e0d3a4df933c4677233",
+   "old": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 88,
+   "new": "95ffa044b78864d9af0793ce4c865a39d20dc18a1417f3fd23a20178c1750e29",
+   "old": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "line": 100,
+   "new": "fef8230f833ee06cb5c94242387bc2f59bd05d15d7eeeb2fc6d9117534314fb8",
+   "old": "0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/embedded_set_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_set_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "line": 51,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_publication_runtime_v3.py",
+   "line": 55,
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 233,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 235,
+   "new": "bad2874543baf08732794f6f2dd92d3f106cbdd83a1e3b7dad8e78af62c4405d",
+   "old": "f0b54f89f2fb4754ce1630f832dca313525b2c227839b5d5abe9b81b3d30baa8",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/sha256",
+    "file-sha256:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "file": "tests/test_checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "line": 236,
+   "new": "25eead16da6d1356a5b8f7e1cd28a31d7f757407bbc45abdd3150be39a966f54",
+   "old": "33d7bfffe9a9b9897f9fa99fdf7ff589537b5e80bc322995669952700c372429",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest_content_identity_sha256",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest_content_identity_sha256",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest_content_identity_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_gstreamer_component_inputs_v1.py",
+   "line": 250,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files/46/path",
+    "model_parity_v4/acceptance_binding.v4.json#/receipt/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 31,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 36,
+   "new": "a61b0857373f8536170a8c9af26e06dff8878341d2e49e0d3a4df933c4677233",
+   "old": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 38,
+   "new": "95ffa044b78864d9af0793ce4c865a39d20dc18a1417f3fd23a20178c1750e29",
+   "old": "fa7f4c6cf82e5d1b5f0f28a30e40b015d6e3987205a493daead1798a93967bae",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 42,
+   "new": "fef8230f833ee06cb5c94242387bc2f59bd05d15d7eeeb2fc6d9117534314fb8",
+   "old": "0d27762233db10e9fc556795b1de7b36a2e2447eb8ea8964250f380271fa1cc8",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/embedded_set_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/embedded_set_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_set_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 44,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 49,
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 50,
+   "new": "a7962d94985aa082bc98011e05815b491b62ede3b3b768f22202c84963b4de8d",
+   "old": "eb09a77d9619f9173cc78b1c34568890a14890e2d13789de1c6376c88fb03675",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/source_set/runtime_source_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/labels/org.vast.runtime-source-sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/source_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/runtime_source_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/source_set/runtime_source_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 68,
+   "new": "artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/image_identity_patch/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/44/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/image_identity_patch/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 84,
+   "new": "artifacts/qualify_full_benchmark_20261008d",
+   "old": "artifacts/qualify_full_benchmark_20261008c",
+   "source": [
+    "artifact-dir"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 89,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files/46/path",
+    "model_parity_v4/acceptance_binding.v4.json#/receipt/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 310,
+   "new": "8dd5b0efd461052aea58484574ae7ce1a6db7c9a2946a998ba9d7c7eefd41d16",
+   "old": "55b96e0b6f8ea15cd187bff3e757a416e4eee131625f6c55ce568b90106c6392",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "identity_patch#/systems/openvino_gva/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/embedded_files//opt/vast/checkpoint/checkpoint_gstreamer_runtime.py"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 328,
+   "new": "artifacts/qualify_full_benchmark_20261008d",
+   "old": "artifacts/qualify_full_benchmark_20261008c",
+   "source": [
+    "artifact-dir"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 335,
+   "new": "c703fafee94e25f73a6d1b10df49bdadf21cbb7766942cda24f447e1a3bd2380",
+   "old": "324c22d640634d22943d976b8682df0dae5d8eb506eae765cb139580fb51a9c8",
+   "source": [
+    "identity_patch#/receipts/runtime_images/gstreamer_custom/sha256",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/runtime_images/gstreamer_custom.runtime.freeze.json",
+    "file-sha256:artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 410,
+   "new": "artifacts/qualify_full_benchmark_20261008d/qualification_image_identity_patch.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/refresh_authority/image_identity_patch/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/44/path",
+    "model_parity_v4/acceptance_binding.v4.json#/refresh_authority/image_identity_patch/path",
+    "file-path:artifacts/qualify_full_benchmark_20261008c/qualification_image_identity_patch.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 414,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.yaml",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_manifest/path",
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.assessment.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_manifest/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/48/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.yaml"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 418,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.assessment.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json",
+   "source": [
+    "configs/checkpoint_analytics_model_parity.refreshed.v4.<ns>.accepted.acceptance_receipt.json#/accepted_assessment/path",
+    "model_parity_v4/acceptance_binding.v4.json#/accepted_assessment/path",
+    "model_parity_v4/acceptance_binding.v4.json#/files/47/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.assessment.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 422,
+   "new": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008d.accepted.acceptance_receipt.json",
+   "old": "configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json",
+   "source": [
+    "model_parity_v4/acceptance_binding.v4.json#/files/46/path",
+    "model_parity_v4/acceptance_binding.v4.json#/receipt/path",
+    "file-path:configs/checkpoint_analytics_model_parity.refreshed.v4.qfb-20261008c.accepted.acceptance_receipt.json"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 446,
+   "new": "sha256:b236e0f4024f5b6566ca1c724dc1c48a118d10c51ce7df4f97bc0d425ead4157",
+   "old": "sha256:61ceef0b60142313c6c84b41872f31b8a151c33d3b2e62ee03b2ff6f580241a5",
+   "source": [
+    "identity_patch#/systems/deepstream/fragment_identity/image_id",
+    "identity_patch#/systems/deepstream/physical_identity/image_id",
+    "runtime_images/deepstream.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/deepstream.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 447,
+   "new": "sha256:045ccc3527dac40959706a678480f1145a3c7de609a9262365f5787911f667a7",
+   "old": "sha256:8335a23ea4024cad52b2d0f1e94171888ec54316117d167c2ed0313f7d869ef3",
+   "source": [
+    "identity_patch#/systems/savant/fragment_identity/image_id",
+    "identity_patch#/systems/savant/physical_identity/image_id",
+    "runtime_images/savant.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/savant.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 448,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 449,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 455,
+   "new": "sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/image_id",
+    "identity_patch#/systems/openvino_gva/physical_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 456,
+   "new": "vast/openvino-gva-publication-runtime-v3@sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/observed_repository_digests/0",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 457,
+   "new": "a61b0857373f8536170a8c9af26e06dff8878341d2e49e0d3a4df933c4677233",
+   "old": "5dc901d910bb2ccc7708838e385443df1b7a519651483009b9d592c8b95df3c9",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/openvino_gva/physical_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 463,
+   "new": "sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/image_id",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/image_id",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/image_id"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 464,
+   "new": "vast/gstreamer-custom-publication-runtime-v3@sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/observed_repository_digests/0",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "line": 465,
+   "new": "d212fdd200de4d5ba2d19d4460f05fd6ca16922a29382bb3dc66a7e97e3491dd",
+   "old": "2514263a4a59e6ec5b19edc13a9b6f36a4984e8dcad8c82569b234ef7b89758a",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/inspect_projection_sha256",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/fragment_identity/inspect_projection_sha256",
+    "decision28:gstreamer_custom.runtime.freeze.json#/physical_identity/inspect_projection_sha256"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_gstreamer_custom_qualification_fragment_v3.py",
+   "kind": "split_over_concatenated_literals",
+   "line": 99,
+   "new": "vast/gstreamer-custom-publication-runtime-v3@sha256:80772c7838a7bf2784388b93fb18c3286f7b078ea996a23c479dc91f177762ef",
+   "old": "vast/gstreamer-custom-publication-runtime-v3@sha256:c0a5849ccd2becbce0ca41d2a06bde101d47f5ed242b68296a03fe04e2d8fe50",
+   "source": [
+    "identity_patch#/systems/gstreamer_custom/fragment_identity/repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/gstreamer_custom/physical_identity/observed_repository_digests/0",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/gstreamer_custom.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "scripts/checkpoint_openvino_gva_qualification_fragment_v3.py",
+   "kind": "split_over_concatenated_literals",
+   "line": 79,
+   "new": "vast/openvino-gva-publication-runtime-v3@sha256:bbdb026a71d0785ed82aa1475d3b1bbd30f3090f01e719d2cca533f869395c01",
+   "old": "vast/openvino-gva-publication-runtime-v3@sha256:e42595849b6291a4c072557c08a44e64ab8a3b8b097c0c0f20f233fb78220ac7",
+   "source": [
+    "identity_patch#/systems/openvino_gva/fragment_identity/repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/canonical_repository_digest",
+    "identity_patch#/systems/openvino_gva/physical_identity/observed_repository_digests/0",
+    "runtime_images/openvino_gva.runtime.freeze.json#/fragment_identity/repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/canonical_repository_digest",
+    "runtime_images/openvino_gva.runtime.freeze.json#/physical_identity/observed_repository_digests/0"
+   ]
+  },
+  {
+   "file": "tests/test_publication_runtime_frozen_identity_constants_v1.py",
+   "kind": "split_over_concatenated_literals",
+   "line": 328,
+   "new": "artifacts/qualify_full_benchmark_20261008d/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+   "old": "artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json",
+   "source": [
+    "file-path:artifacts/qualify_full_benchmark_20261008c/selected-original-build-copy-v1/gstreamer_custom.runtime.freeze.json"
+   ]
+  }
+ ],
+ "size_sites": []
+}

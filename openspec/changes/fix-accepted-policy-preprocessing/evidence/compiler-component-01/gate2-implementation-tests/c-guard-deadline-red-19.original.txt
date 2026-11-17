@@ -1,0 +1,25 @@
+command: canonical WSL Python3.12.3 controlled C unittest
+exit_code: 1
+.......................F....
+======================================================================
+FAIL: test_guard_late_fsync_starts_no_following_fsync_directory_sync_or_record (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.FixedEffectsTests.test_guard_late_fsync_starts_no_following_fsync_directory_sync_or_record)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 722, in test_guard_late_fsync_starts_no_following_fsync_directory_sync_or_record
+    gate.capture_guard_v1("gpu", output_dir=Path(tmp).resolve(), absolute_deadline_ns=10_000_000_000,
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py", line 581, in capture_guard_v1
+    compiler._compiler_directory_sync_v1(output)
+  File "/usr/lib/python3.12/unittest/mock.py", line 1134, in __call__
+    return self._mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1138, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/unittest/mock.py", line 1193, in _execute_mock_call
+    raise effect
+AssertionError: late directory sync
+System.Management.Automation.RemoteException
+----------------------------------------------------------------------
+Ran 28 tests in 0.764s
+System.Management.Automation.RemoteException
+FAILED (failures=1)

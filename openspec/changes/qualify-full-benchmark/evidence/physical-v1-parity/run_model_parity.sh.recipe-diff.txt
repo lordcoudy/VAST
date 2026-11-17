@@ -1,0 +1,22 @@
+4,5c4,5
+< root=/mnt/e/STUDY/VAST/tmp/openspec-review/fix-benchmark-preparations-spec
+< base="$root/artifacts/fix_benchmark_preparations_20260928g"
+---
+> root=/mnt/e/STUDY/VAST/tmp/qfb-root-20261007a
+> base="$root/artifacts/qualify_full_benchmark_20261007a"
+9c9
+< namespace=fix-benchmark-20260928g
+---
+> namespace=qfb-20261007a
+12c12
+< [[ ! -e /var/tmp/vast-parity-fix-benchmark-20260928g ]]
+---
+> [[ ! -e /var/tmp/vast-parity-qfb-20261007a ]]
+14c14
+< mkdir -m 700 /var/tmp/vast-parity-fix-benchmark-20260928g
+---
+> mkdir -m 700 /var/tmp/vast-parity-qfb-20261007a
+32c32
+<   --socket-dir /var/tmp/vast-parity-fix-benchmark-20260928g \
+---
+>   --socket-dir /var/tmp/vast-parity-qfb-20261007a \

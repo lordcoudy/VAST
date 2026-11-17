@@ -1,0 +1,4071 @@
+{
+  "command": [
+    "/home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python",
+    "-B",
+    "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/measure_owner37_fd_v1.py",
+    "--child",
+    "--output",
+    "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024",
+    "--soft-limit",
+    "1024"
+  ],
+  "finished_monotonic_ns": 344614553514849,
+  "first_observed": {
+    "count": 3,
+    "monotonic_ns": 344574844374834,
+    "rows": [
+      {
+        "fd": 0,
+        "target": "pipe:[2923163]"
+      },
+      {
+        "fd": 1,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stdout.log"
+      },
+      {
+        "fd": 2,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stderr.log"
+      }
+    ]
+  },
+  "original_returncode": 1,
+  "peak_observed": {
+    "count": 1007,
+    "monotonic_ns": 344614460166090,
+    "rows": [
+      {
+        "fd": 0,
+        "target": "pipe:[2923163]"
+      },
+      {
+        "fd": 1,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stdout.log"
+      },
+      {
+        "fd": 2,
+        "target": "/var/tmp/vast-repair-owner37-fd-591a93e7-01/soft-1024/stderr.log"
+      },
+      {
+        "fd": 3,
+        "target": "/"
+      },
+      {
+        "fd": 4,
+        "target": "/var"
+      },
+      {
+        "fd": 5,
+        "target": "/var/tmp"
+      },
+      {
+        "fd": 6,
+        "target": "/var/tmp/vast-owner-hxqo5d84"
+      },
+      {
+        "fd": 7,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/original_operational_execution_binding.v1.json"
+      },
+      {
+        "fd": 8,
+        "target": "/var/tmp/vast-owner-hxqo5d84/guardian/service_authority.v1.json"
+      },
+      {
+        "fd": 9,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/execution_config.json"
+      },
+      {
+        "fd": 10,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/probe-cpu.json"
+      },
+      {
+        "fd": 11,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/probe-gpu.json"
+      },
+      {
+        "fd": 12,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/index.json"
+      },
+      {
+        "fd": 13,
+        "target": "/"
+      },
+      {
+        "fd": 14,
+        "target": "/var"
+      },
+      {
+        "fd": 15,
+        "target": "/var/tmp"
+      },
+      {
+        "fd": 16,
+        "target": "/var/tmp/vast-owner-hxqo5d84"
+      },
+      {
+        "fd": 17,
+        "target": "/var/tmp/vast-owner-hxqo5d84/guardian"
+      },
+      {
+        "fd": 18,
+        "target": "/var/tmp/vast-owner-hxqo5d84.owner-fixture-engine/docker"
+      },
+      {
+        "fd": 19,
+        "target": "socket:[2918157]"
+      },
+      {
+        "fd": 20,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/plate_number.openvino_cpu.json"
+      },
+      {
+        "fd": 21,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/plate_number.tensorrt_cuda.json"
+      },
+      {
+        "fd": 22,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/vehicle_type.openvino_cpu.json"
+      },
+      {
+        "fd": 23,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/vehicle_type.tensorrt_cuda.json"
+      },
+      {
+        "fd": 24,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/damage.openvino_cpu.json"
+      },
+      {
+        "fd": 25,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/damage.tensorrt_cuda.json"
+      },
+      {
+        "fd": 26,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/foreign_object.openvino_cpu.json"
+      },
+      {
+        "fd": 27,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/foreign_object.tensorrt_cuda.json"
+      },
+      {
+        "fd": 28,
+        "target": "/"
+      },
+      {
+        "fd": 29,
+        "target": "/var"
+      },
+      {
+        "fd": 30,
+        "target": "/var/tmp"
+      },
+      {
+        "fd": 31,
+        "target": "/var/tmp/vast-owner-hxqo5d84"
+      },
+      {
+        "fd": 32,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/capture_plan_index.v1.json"
+      },
+      {
+        "fd": 33,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/original_operations.v1.json"
+      },
+      {
+        "fd": 34,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/source_plan_inventory.v1.json"
+      },
+      {
+        "fd": 35,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-cpu-original.json"
+      },
+      {
+        "fd": 36,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/calibration-openvino_gva.json"
+      },
+      {
+        "fd": 37,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/manifest.json"
+      },
+      {
+        "fd": 38,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/execution_code_closure.json"
+      },
+      {
+        "fd": 39,
+        "target": "/var/tmp/vast-owner-hxqo5d84/bindings/index.json"
+      },
+      {
+        "fd": 40,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/checkpoint_native_policy_runtime.py"
+      },
+      {
+        "fd": 41,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/vast_native_gst_probe.cpp"
+      },
+      {
+        "fd": 42,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-cpu-source-plan.json"
+      },
+      {
+        "fd": 43,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-gpu-original.json"
+      },
+      {
+        "fd": 44,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-gpu-source-plan.json"
+      },
+      {
+        "fd": 45,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-cpu-original.json"
+      },
+      {
+        "fd": 46,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/calibration-gstreamer_custom.json"
+      },
+      {
+        "fd": 47,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-cpu-source-plan.json"
+      },
+      {
+        "fd": 48,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-gpu-original.json"
+      },
+      {
+        "fd": 49,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-gpu-source-plan.json"
+      },
+      {
+        "fd": 50,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/savant-original-original.json"
+      },
+      {
+        "fd": 51,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/calibration-savant.json"
+      },
+      {
+        "fd": 52,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/savant-original-source-plan.json"
+      },
+      {
+        "fd": 53,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 54,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/calibration-deepstream.json"
+      },
+      {
+        "fd": 55,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 56,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 57,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 58,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 59,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 60,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 61,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 62,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 63,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 64,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 65,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 66,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 67,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 68,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 69,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 70,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 71,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 72,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 73,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 74,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 75,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 76,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 77,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 78,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 79,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 80,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 81,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 82,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 83,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 84,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 85,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 86,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 87,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 88,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 89,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 90,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 91,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 92,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 93,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 94,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 95,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 96,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 97,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 98,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 99,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 100,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 101,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 102,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 103,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 104,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 105,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 106,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 107,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 108,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 109,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 110,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 111,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h264-False-source-plan.json"
+      },
+      {
+        "fd": 112,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 113,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h264-True-source-plan.json"
+      },
+      {
+        "fd": 114,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 115,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h265-False-source-plan.json"
+      },
+      {
+        "fd": 116,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 117,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h265-True-source-plan.json"
+      },
+      {
+        "fd": 118,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/guardian_capture_context.v1.json"
+      },
+      {
+        "fd": 119,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/execution_config.json"
+      },
+      {
+        "fd": 120,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/checkpoint_deepstream_protocol_bridge.py"
+      },
+      {
+        "fd": 121,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_00.v1.json"
+      },
+      {
+        "fd": 122,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_01.v1.json"
+      },
+      {
+        "fd": 123,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_02.v1.json"
+      },
+      {
+        "fd": 124,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_03.v1.json"
+      },
+      {
+        "fd": 125,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_04.v1.json"
+      },
+      {
+        "fd": 126,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_05.v1.json"
+      },
+      {
+        "fd": 127,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_06.v1.json"
+      },
+      {
+        "fd": 128,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_07.v1.json"
+      },
+      {
+        "fd": 129,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_08.v1.json"
+      },
+      {
+        "fd": 130,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_09.v1.json"
+      },
+      {
+        "fd": 131,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_10.v1.json"
+      },
+      {
+        "fd": 132,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_11.v1.json"
+      },
+      {
+        "fd": 133,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_12.v1.json"
+      },
+      {
+        "fd": 134,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_13.v1.json"
+      },
+      {
+        "fd": 135,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_14.v1.json"
+      },
+      {
+        "fd": 136,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_15.v1.json"
+      },
+      {
+        "fd": 137,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_16.v1.json"
+      },
+      {
+        "fd": 138,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_17.v1.json"
+      },
+      {
+        "fd": 139,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_18.v1.json"
+      },
+      {
+        "fd": 140,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_19.v1.json"
+      },
+      {
+        "fd": 141,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_20.v1.json"
+      },
+      {
+        "fd": 142,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_21.v1.json"
+      },
+      {
+        "fd": 143,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_22.v1.json"
+      },
+      {
+        "fd": 144,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_23.v1.json"
+      },
+      {
+        "fd": 145,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_24.v1.json"
+      },
+      {
+        "fd": 146,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_25.v1.json"
+      },
+      {
+        "fd": 147,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_26.v1.json"
+      },
+      {
+        "fd": 148,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_27.v1.json"
+      },
+      {
+        "fd": 149,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_28.v1.json"
+      },
+      {
+        "fd": 150,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_29.v1.json"
+      },
+      {
+        "fd": 151,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_30.v1.json"
+      },
+      {
+        "fd": 152,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_31.v1.json"
+      },
+      {
+        "fd": 153,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_32.v1.json"
+      },
+      {
+        "fd": 154,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_33.v1.json"
+      },
+      {
+        "fd": 155,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_34.v1.json"
+      },
+      {
+        "fd": 156,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_35.v1.json"
+      },
+      {
+        "fd": 157,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_36.v1.json"
+      },
+      {
+        "fd": 158,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/guardian-operational/operational_group.v1.json"
+      },
+      {
+        "fd": 159,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-cpu-original.json"
+      },
+      {
+        "fd": 160,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-cpu-h264-False.json"
+      },
+      {
+        "fd": 161,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 162,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_00.v1.json"
+      },
+      {
+        "fd": 163,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 164,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 165,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-0efc11953685c7e1cd296d711b52767503f0bf652ed715006057647f19f27e9a.json"
+      },
+      {
+        "fd": 166,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-0efc11953685c7e1cd296d711b52767503f0bf652ed715006057647f19f27e9a.json"
+      },
+      {
+        "fd": 167,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/diagnostics/precheck-openvino_gva-cpu/evidence.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 168,
+        "target": "/var/tmp/vast-owner-hxqo5d84.owner-fixture-engine/docker"
+      },
+      {
+        "fd": 169,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 170,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 171,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/measurement.cid"
+      },
+      {
+        "fd": 172,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 173,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 174,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 175,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 176,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 177,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 178,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 179,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 180,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 181,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 182,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 183,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-cpu/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 184,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-openvino_gva-gpu-original.json"
+      },
+      {
+        "fd": 185,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-gpu-h264-False.json"
+      },
+      {
+        "fd": 186,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 187,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_01.v1.json"
+      },
+      {
+        "fd": 188,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 189,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 190,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-434688a9ceea67a7783d2003f074d831793b32fc4bee21946251f0426cf507c5.json"
+      },
+      {
+        "fd": 191,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-434688a9ceea67a7783d2003f074d831793b32fc4bee21946251f0426cf507c5.json"
+      },
+      {
+        "fd": 192,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/diagnostics/precheck-openvino_gva-gpu/evidence.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 193,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 194,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 195,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/measurement.cid"
+      },
+      {
+        "fd": 196,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 197,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 198,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 199,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 200,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 201,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 202,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 203,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 204,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 205,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 206,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 207,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-openvino_gva-gpu/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 208,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-cpu-original.json"
+      },
+      {
+        "fd": 209,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-gstreamer_custom-cpu-h264-False.json"
+      },
+      {
+        "fd": 210,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 211,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_02.v1.json"
+      },
+      {
+        "fd": 212,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 213,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 214,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-ca9ea8cc77307db99847279b8428fc1ae9066fa3a239db6bcdde1190013f625c.json"
+      },
+      {
+        "fd": 215,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-ca9ea8cc77307db99847279b8428fc1ae9066fa3a239db6bcdde1190013f625c.json"
+      },
+      {
+        "fd": 216,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/diagnostics/precheck-gstreamer_custom-cpu/evidence.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 217,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 218,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 219,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/measurement.cid"
+      },
+      {
+        "fd": 220,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 221,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 222,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 223,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 224,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 225,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 226,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 227,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 228,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 229,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 230,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 231,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-cpu/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 232,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/precheck-gstreamer_custom-gpu-original.json"
+      },
+      {
+        "fd": 233,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-gstreamer_custom-gpu-h264-False.json"
+      },
+      {
+        "fd": 234,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 235,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_03.v1.json"
+      },
+      {
+        "fd": 236,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 237,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 238,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-3084a26b30ef83f99c401f8c997ef7af2b27bf080f48dd845dca8340a647894d.json"
+      },
+      {
+        "fd": 239,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-3084a26b30ef83f99c401f8c997ef7af2b27bf080f48dd845dca8340a647894d.json"
+      },
+      {
+        "fd": 240,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/diagnostics/precheck-gstreamer_custom-gpu/evidence.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 241,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 242,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 243,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/measurement.cid"
+      },
+      {
+        "fd": 244,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 245,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 246,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 247,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 248,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 249,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 250,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 251,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 252,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 253,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 254,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 255,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/precheck-gstreamer_custom-gpu/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 256,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/savant-original-original.json"
+      },
+      {
+        "fd": 257,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-cpu-h264-False.json"
+      },
+      {
+        "fd": 258,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 259,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_04.v1.json"
+      },
+      {
+        "fd": 260,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 261,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 262,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-224de167882161b10616580579c841ade4f82e254fcb9b7da040521dd7f1417e.json"
+      },
+      {
+        "fd": 263,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-224de167882161b10616580579c841ade4f82e254fcb9b7da040521dd7f1417e.json"
+      },
+      {
+        "fd": 264,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/diagnostics/savant-original/evidence.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 265,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 266,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 267,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/measurement.cid"
+      },
+      {
+        "fd": 268,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 269,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 270,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 271,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 272,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 273,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 274,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 275,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 276,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 277,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 278,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 279,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/savant-original/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 280,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 281,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-cpu-h264-False.json"
+      },
+      {
+        "fd": 282,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 283,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_05.v1.json"
+      },
+      {
+        "fd": 284,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 285,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 286,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-8cf4c788313fdfe10f307422f98b74542078aa2cd5ea4fdc1aeec95879299e94.json"
+      },
+      {
+        "fd": 287,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-8cf4c788313fdfe10f307422f98b74542078aa2cd5ea4fdc1aeec95879299e94.json"
+      },
+      {
+        "fd": 288,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-4205222782988d68514b576bbd0a11ca9b93db17f561025f21ecc5157d4cd078.json"
+      },
+      {
+        "fd": 289,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-4205222782988d68514b576bbd0a11ca9b93db17f561025f21ecc5157d4cd078.json"
+      },
+      {
+        "fd": 290,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/cpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 291,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 292,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 293,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 294,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 295,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 296,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 297,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 298,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 299,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 300,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 301,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 302,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 303,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 304,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 305,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 306,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 307,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-cpu-h264-True.json"
+      },
+      {
+        "fd": 308,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 309,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_06.v1.json"
+      },
+      {
+        "fd": 310,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 311,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 312,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-0ff4ca751e67c5221ebd009067a437afd7fc8adb0db523b606e645fe6d2abd92.json"
+      },
+      {
+        "fd": 313,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-0ff4ca751e67c5221ebd009067a437afd7fc8adb0db523b606e645fe6d2abd92.json"
+      },
+      {
+        "fd": 314,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-680be3dfc8dc7ae8c5592a5bffc704cfe48238522389447840b83d80fcd14538.json"
+      },
+      {
+        "fd": 315,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-680be3dfc8dc7ae8c5592a5bffc704cfe48238522389447840b83d80fcd14538.json"
+      },
+      {
+        "fd": 316,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/cpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 317,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 318,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 319,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 320,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 321,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 322,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 323,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 324,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 325,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 326,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 327,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 328,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 329,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 330,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 331,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 332,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 333,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-cpu-h265-False.json"
+      },
+      {
+        "fd": 334,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 335,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_07.v1.json"
+      },
+      {
+        "fd": 336,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 337,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 338,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-6f1bad2139b6202cf82b1a613e55e516fba87334ab93ba0836790e0b7124c322.json"
+      },
+      {
+        "fd": 339,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-6f1bad2139b6202cf82b1a613e55e516fba87334ab93ba0836790e0b7124c322.json"
+      },
+      {
+        "fd": 340,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-7624faf7b89dffa2bdecc037ba300dce2487e3c27a4c0fb7829e13a40877487c.json"
+      },
+      {
+        "fd": 341,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-7624faf7b89dffa2bdecc037ba300dce2487e3c27a4c0fb7829e13a40877487c.json"
+      },
+      {
+        "fd": 342,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/cpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 343,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 344,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 345,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 346,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 347,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 348,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 349,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 350,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 351,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 352,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 353,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 354,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 355,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 356,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 357,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 358,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 359,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-cpu-h265-True.json"
+      },
+      {
+        "fd": 360,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 361,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_08.v1.json"
+      },
+      {
+        "fd": 362,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 363,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 364,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-17dbffa0fecc8c6fbcf1946f9851b15d8a3c61296e0be231d701d89890843dc1.json"
+      },
+      {
+        "fd": 365,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-17dbffa0fecc8c6fbcf1946f9851b15d8a3c61296e0be231d701d89890843dc1.json"
+      },
+      {
+        "fd": 366,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-00c354ad5bbe89719bd58b7fa33fc4ab9dafa78a962e746c9d9bdb91d70a0e00.json"
+      },
+      {
+        "fd": 367,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-00c354ad5bbe89719bd58b7fa33fc4ab9dafa78a962e746c9d9bdb91d70a0e00.json"
+      },
+      {
+        "fd": 368,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/cpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 369,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 370,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 371,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 372,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 373,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 374,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 375,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 376,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 377,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 378,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 379,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 380,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 381,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 382,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 383,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-cpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 384,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 385,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-gpu-h264-False.json"
+      },
+      {
+        "fd": 386,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 387,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_09.v1.json"
+      },
+      {
+        "fd": 388,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 389,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 390,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-c857af817d1d6be2b0f22c0e107d44a5478aed82b73425c1c0d223a0705a42a1.json"
+      },
+      {
+        "fd": 391,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-c857af817d1d6be2b0f22c0e107d44a5478aed82b73425c1c0d223a0705a42a1.json"
+      },
+      {
+        "fd": 392,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-517dd3fc5d53f5d6d363381a4236256ccae21342a87d2a414e06d6d303649f1a.json"
+      },
+      {
+        "fd": 393,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-517dd3fc5d53f5d6d363381a4236256ccae21342a87d2a414e06d6d303649f1a.json"
+      },
+      {
+        "fd": 394,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/gpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 395,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 396,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 397,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 398,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 399,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 400,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 401,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 402,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 403,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 404,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 405,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 406,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 407,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 408,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 409,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 410,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 411,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-gpu-h264-True.json"
+      },
+      {
+        "fd": 412,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 413,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_10.v1.json"
+      },
+      {
+        "fd": 414,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 415,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 416,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-0481f49cdb40e263bcabe085690b58751972dfb9bf2ca38c7492cb8f3d54a309.json"
+      },
+      {
+        "fd": 417,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-0481f49cdb40e263bcabe085690b58751972dfb9bf2ca38c7492cb8f3d54a309.json"
+      },
+      {
+        "fd": 418,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-6bc5cce8e6cb107e553fb6b53e4f25e1b4387fd1b14f546bd82e70400fd1bc24.json"
+      },
+      {
+        "fd": 419,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-6bc5cce8e6cb107e553fb6b53e4f25e1b4387fd1b14f546bd82e70400fd1bc24.json"
+      },
+      {
+        "fd": 420,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/gpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 421,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 422,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 423,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 424,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 425,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 426,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 427,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 428,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 429,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 430,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 431,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 432,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 433,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 434,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 435,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 436,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 437,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-gpu-h265-False.json"
+      },
+      {
+        "fd": 438,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 439,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_11.v1.json"
+      },
+      {
+        "fd": 440,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 441,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 442,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-2be26332345ab0b9721dce8569b7c02ed8758feb21de7f18c92dab26e4079e26.json"
+      },
+      {
+        "fd": 443,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-2be26332345ab0b9721dce8569b7c02ed8758feb21de7f18c92dab26e4079e26.json"
+      },
+      {
+        "fd": 444,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-1ca8e9492abafe3e7fcc3650ac389c2d11b90383fbc1618c7b4d6cb978fba3a0.json"
+      },
+      {
+        "fd": 445,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-1ca8e9492abafe3e7fcc3650ac389c2d11b90383fbc1618c7b4d6cb978fba3a0.json"
+      },
+      {
+        "fd": 446,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/gpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 447,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 448,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 449,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 450,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 451,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 452,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 453,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 454,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 455,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 456,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 457,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 458,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 459,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 460,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 461,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 462,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-deepstream-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 463,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-deepstream-gpu-h265-True.json"
+      },
+      {
+        "fd": 464,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 465,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_12.v1.json"
+      },
+      {
+        "fd": 466,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 467,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 468,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-891de1b7f06baf5aa122933cc44806cefb2c9f2989ccf2970364e6f3fe9f19b5.json"
+      },
+      {
+        "fd": 469,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-891de1b7f06baf5aa122933cc44806cefb2c9f2989ccf2970364e6f3fe9f19b5.json"
+      },
+      {
+        "fd": 470,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-8d5932622e8b65296d7696e7d2f7aaa391e920b5b0de03de7fcb3112c6112cf3.json"
+      },
+      {
+        "fd": 471,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-8d5932622e8b65296d7696e7d2f7aaa391e920b5b0de03de7fcb3112c6112cf3.json"
+      },
+      {
+        "fd": 472,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/deepstream/gpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 473,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 474,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 475,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 476,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 477,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 478,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 479,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 480,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 481,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 482,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 483,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 484,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 485,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 486,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 487,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-deepstream-gpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 488,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 489,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 490,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_13.v1.json"
+      },
+      {
+        "fd": 491,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 492,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 493,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-912e61c6d14596fb3e2e46eae55ded83de3750d136a2427343efa96992ab034a.json"
+      },
+      {
+        "fd": 494,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-912e61c6d14596fb3e2e46eae55ded83de3750d136a2427343efa96992ab034a.json"
+      },
+      {
+        "fd": 495,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-d07929154b669f0deb12cfee29a4cf40b47f1a3b432f0da2b62c24533992cb71.json"
+      },
+      {
+        "fd": 496,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-d07929154b669f0deb12cfee29a4cf40b47f1a3b432f0da2b62c24533992cb71.json"
+      },
+      {
+        "fd": 497,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/cpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 498,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 499,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 500,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 501,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 502,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 503,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 504,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 505,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 506,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 507,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 508,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 509,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 510,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 511,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 512,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 513,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 514,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-cpu-h264-True.json"
+      },
+      {
+        "fd": 515,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 516,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_14.v1.json"
+      },
+      {
+        "fd": 517,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 518,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 519,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-748c8679aeac2df841783e2cd85ddd6fee3fa48e3fda6437cb547c2fce8b8ca1.json"
+      },
+      {
+        "fd": 520,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-748c8679aeac2df841783e2cd85ddd6fee3fa48e3fda6437cb547c2fce8b8ca1.json"
+      },
+      {
+        "fd": 521,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-084ede76c25af176daa90607a0847f9ad61de0b782e5798240931d8e00346669.json"
+      },
+      {
+        "fd": 522,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-084ede76c25af176daa90607a0847f9ad61de0b782e5798240931d8e00346669.json"
+      },
+      {
+        "fd": 523,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/cpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 524,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 525,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 526,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 527,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 528,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 529,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 530,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 531,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 532,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 533,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 534,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 535,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 536,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 537,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 538,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 539,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 540,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-cpu-h265-False.json"
+      },
+      {
+        "fd": 541,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 542,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_15.v1.json"
+      },
+      {
+        "fd": 543,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 544,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 545,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-cea94223eb0370a6ca2f0226ef0f087bb67098db28cb67dd7c6ccd11454c3609.json"
+      },
+      {
+        "fd": 546,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-cea94223eb0370a6ca2f0226ef0f087bb67098db28cb67dd7c6ccd11454c3609.json"
+      },
+      {
+        "fd": 547,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-cdb3ce40fd94b1d28f41191d0d78bda85fd6a6b6a8835eff99a8b31e59f7768a.json"
+      },
+      {
+        "fd": 548,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-cdb3ce40fd94b1d28f41191d0d78bda85fd6a6b6a8835eff99a8b31e59f7768a.json"
+      },
+      {
+        "fd": 549,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/cpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 550,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 551,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 552,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 553,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 554,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 555,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 556,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 557,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 558,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 559,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 560,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 561,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 562,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 563,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 564,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 565,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 566,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-cpu-h265-True.json"
+      },
+      {
+        "fd": 567,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 568,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_16.v1.json"
+      },
+      {
+        "fd": 569,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 570,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 571,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-8830a403766de4013c46da6c7948eddd3c1e295c459eef5b7bcdafbba7a3a2d9.json"
+      },
+      {
+        "fd": 572,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-8830a403766de4013c46da6c7948eddd3c1e295c459eef5b7bcdafbba7a3a2d9.json"
+      },
+      {
+        "fd": 573,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-a1e6905e2e5d7544f74e7a4a8d34a00998f86f644a27d4327bac4bef53149d8c.json"
+      },
+      {
+        "fd": 574,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-a1e6905e2e5d7544f74e7a4a8d34a00998f86f644a27d4327bac4bef53149d8c.json"
+      },
+      {
+        "fd": 575,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/cpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 576,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 577,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 578,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 579,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 580,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 581,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 582,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 583,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 584,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 585,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 586,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 587,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 588,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 589,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 590,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-cpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 591,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 592,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-gpu-h264-False.json"
+      },
+      {
+        "fd": 593,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 594,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_17.v1.json"
+      },
+      {
+        "fd": 595,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 596,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 597,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-eb11a9cb80851bafa2ec0aa962eefd84ad42829a912e8da1b7e19679e81268a5.json"
+      },
+      {
+        "fd": 598,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-eb11a9cb80851bafa2ec0aa962eefd84ad42829a912e8da1b7e19679e81268a5.json"
+      },
+      {
+        "fd": 599,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-4c19f64b5b8e4ef25eaecd700443de85f68ee66f37c780144bf5eeacbde56867.json"
+      },
+      {
+        "fd": 600,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-4c19f64b5b8e4ef25eaecd700443de85f68ee66f37c780144bf5eeacbde56867.json"
+      },
+      {
+        "fd": 601,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/gpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 602,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 603,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 604,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 605,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 606,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 607,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 608,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 609,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 610,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 611,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 612,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 613,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 614,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 615,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 616,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 617,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 618,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-gpu-h264-True.json"
+      },
+      {
+        "fd": 619,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 620,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_18.v1.json"
+      },
+      {
+        "fd": 621,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 622,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 623,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-48f4134769be1277c76655e239c5e74a77c31bcdd711c778bae57d9a1ed0a09a.json"
+      },
+      {
+        "fd": 624,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-48f4134769be1277c76655e239c5e74a77c31bcdd711c778bae57d9a1ed0a09a.json"
+      },
+      {
+        "fd": 625,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-643a8cf1a0f9b8e30aa681d8c6dd7b9dd773e4891e362ab066d82c58d9543cf4.json"
+      },
+      {
+        "fd": 626,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-643a8cf1a0f9b8e30aa681d8c6dd7b9dd773e4891e362ab066d82c58d9543cf4.json"
+      },
+      {
+        "fd": 627,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/gpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 628,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 629,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 630,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 631,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 632,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 633,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 634,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 635,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 636,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 637,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 638,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 639,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 640,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 641,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 642,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 643,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 644,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-gpu-h265-False.json"
+      },
+      {
+        "fd": 645,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 646,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_19.v1.json"
+      },
+      {
+        "fd": 647,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 648,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 649,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-68e037bf35eff5ee338c75e4a3d140200ab37dd6fe5951724eaf7da965f63217.json"
+      },
+      {
+        "fd": 650,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-68e037bf35eff5ee338c75e4a3d140200ab37dd6fe5951724eaf7da965f63217.json"
+      },
+      {
+        "fd": 651,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-50ae69aee56efd48cfe5351672b220b7cf49fd21fd370339537c801387661cf0.json"
+      },
+      {
+        "fd": 652,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-50ae69aee56efd48cfe5351672b220b7cf49fd21fd370339537c801387661cf0.json"
+      },
+      {
+        "fd": 653,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/gpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 654,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 655,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 656,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 657,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 658,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 659,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 660,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 661,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 662,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 663,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 664,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 665,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 666,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 667,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 668,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 669,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-savant-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 670,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-savant-gpu-h265-True.json"
+      },
+      {
+        "fd": 671,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 672,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_20.v1.json"
+      },
+      {
+        "fd": 673,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 674,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 675,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-df19c2339762b49294e73d3980ac9296ee3cf5426dc5428f11b91f989d4a28d1.json"
+      },
+      {
+        "fd": 676,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-df19c2339762b49294e73d3980ac9296ee3cf5426dc5428f11b91f989d4a28d1.json"
+      },
+      {
+        "fd": 677,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-5e104eb682c3056f14d0dc2fa3e45afeb3c99c92a2654f973cbd532e68d2791c.json"
+      },
+      {
+        "fd": 678,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-5e104eb682c3056f14d0dc2fa3e45afeb3c99c92a2654f973cbd532e68d2791c.json"
+      },
+      {
+        "fd": 679,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/savant/gpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 680,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 681,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 682,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 683,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 684,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 685,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 686,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 687,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 688,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 689,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 690,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 691,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 692,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 693,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 694,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-savant-gpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 695,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 696,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 697,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_21.v1.json"
+      },
+      {
+        "fd": 698,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 699,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 700,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-2656567d3361ec149eeb746e235cf3878423581d08c148770840ad4b29144b95.json"
+      },
+      {
+        "fd": 701,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-2656567d3361ec149eeb746e235cf3878423581d08c148770840ad4b29144b95.json"
+      },
+      {
+        "fd": 702,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-d46c594605fee06d75375832330252742421ef03d2c9519a0b315d5885621f85.json"
+      },
+      {
+        "fd": 703,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-d46c594605fee06d75375832330252742421ef03d2c9519a0b315d5885621f85.json"
+      },
+      {
+        "fd": 704,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/cpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 705,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 706,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 707,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 708,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 709,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 710,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 711,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 712,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 713,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 714,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 715,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 716,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 717,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 718,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 719,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 720,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 721,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-cpu-h264-True.json"
+      },
+      {
+        "fd": 722,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 723,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_22.v1.json"
+      },
+      {
+        "fd": 724,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 725,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 726,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-10e7560bd074d645764a0823bf5d004353b684942fff72b9f8de00665481e647.json"
+      },
+      {
+        "fd": 727,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-10e7560bd074d645764a0823bf5d004353b684942fff72b9f8de00665481e647.json"
+      },
+      {
+        "fd": 728,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-9b6ade75c8705223dc919f15b03eb745c962d82b1c892654172d30ad4ced1c67.json"
+      },
+      {
+        "fd": 729,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-9b6ade75c8705223dc919f15b03eb745c962d82b1c892654172d30ad4ced1c67.json"
+      },
+      {
+        "fd": 730,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/cpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 731,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 732,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 733,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 734,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 735,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 736,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 737,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 738,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 739,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 740,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 741,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 742,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 743,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 744,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 745,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 746,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 747,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-cpu-h265-False.json"
+      },
+      {
+        "fd": 748,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 749,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_23.v1.json"
+      },
+      {
+        "fd": 750,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 751,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 752,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-e56c8393a600190780805f8f222ac95c9968024ff677a4ac6c4bf71e61da5b99.json"
+      },
+      {
+        "fd": 753,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-e56c8393a600190780805f8f222ac95c9968024ff677a4ac6c4bf71e61da5b99.json"
+      },
+      {
+        "fd": 754,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-a1270d8cb3d2a025e8cb7b9b63b98f96c20b8f39e386678026e892d40ace9c18.json"
+      },
+      {
+        "fd": 755,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-a1270d8cb3d2a025e8cb7b9b63b98f96c20b8f39e386678026e892d40ace9c18.json"
+      },
+      {
+        "fd": 756,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/cpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 757,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 758,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 759,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 760,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 761,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 762,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 763,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 764,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 765,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 766,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 767,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 768,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 769,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 770,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 771,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 772,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 773,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-cpu-h265-True.json"
+      },
+      {
+        "fd": 774,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 775,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_24.v1.json"
+      },
+      {
+        "fd": 776,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 777,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 778,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-aa99423a4fd00ce66931848bde1f825718cb3cbc567725bfa663ded27ae447d8.json"
+      },
+      {
+        "fd": 779,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-aa99423a4fd00ce66931848bde1f825718cb3cbc567725bfa663ded27ae447d8.json"
+      },
+      {
+        "fd": 780,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-11077445e973b8647c1b7befacdddc2bb0dad098bd89f3bd786638ea52e443b1.json"
+      },
+      {
+        "fd": 781,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-11077445e973b8647c1b7befacdddc2bb0dad098bd89f3bd786638ea52e443b1.json"
+      },
+      {
+        "fd": 782,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/cpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 783,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 784,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 785,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 786,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 787,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 788,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 789,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 790,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 791,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 792,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 793,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 794,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 795,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 796,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 797,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-cpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 798,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 799,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 800,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_25.v1.json"
+      },
+      {
+        "fd": 801,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 802,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 803,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-ae1816e08aeea6e531442bef07f209fc6de1d4d0aedaeae6ed1b77101ddd4cf3.json"
+      },
+      {
+        "fd": 804,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-ae1816e08aeea6e531442bef07f209fc6de1d4d0aedaeae6ed1b77101ddd4cf3.json"
+      },
+      {
+        "fd": 805,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-1469e3316e61fb9f91790c13c2d8fd7915355541307a1251f5b67f80b6dd903f.json"
+      },
+      {
+        "fd": 806,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-1469e3316e61fb9f91790c13c2d8fd7915355541307a1251f5b67f80b6dd903f.json"
+      },
+      {
+        "fd": 807,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/gpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 808,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 809,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 810,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 811,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 812,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 813,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 814,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 815,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 816,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 817,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 818,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 819,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 820,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 821,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 822,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 823,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h264-True-original.json"
+      },
+      {
+        "fd": 824,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-gpu-h264-True.json"
+      },
+      {
+        "fd": 825,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 826,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_26.v1.json"
+      },
+      {
+        "fd": 827,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 828,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 829,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-be0344db99a2ce7c958165aa969e852b50d4ee4482e36d77501b217b3815c309.json"
+      },
+      {
+        "fd": 830,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-be0344db99a2ce7c958165aa969e852b50d4ee4482e36d77501b217b3815c309.json"
+      },
+      {
+        "fd": 831,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-5aed501ec426c569b139ae2d824d2d4ba30199ed3b323c49644bd1cb56aa4453.json"
+      },
+      {
+        "fd": 832,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-5aed501ec426c569b139ae2d824d2d4ba30199ed3b323c49644bd1cb56aa4453.json"
+      },
+      {
+        "fd": 833,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/gpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 834,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 835,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 836,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 837,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 838,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 839,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 840,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 841,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 842,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 843,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 844,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 845,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 846,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 847,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 848,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 849,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-False-original.json"
+      },
+      {
+        "fd": 850,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-gpu-h265-False.json"
+      },
+      {
+        "fd": 851,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 852,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_27.v1.json"
+      },
+      {
+        "fd": 853,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 854,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 855,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-0b2ebc33b1370fca735a501f46b1e0bfa4bfb1866e8fa40a0948c7e90d4fb299.json"
+      },
+      {
+        "fd": 856,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-0b2ebc33b1370fca735a501f46b1e0bfa4bfb1866e8fa40a0948c7e90d4fb299.json"
+      },
+      {
+        "fd": 857,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-756e38ca2bb406a41ab8e519e4bda141f2203b87c0589b9317307199e92bb7fd.json"
+      },
+      {
+        "fd": 858,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-756e38ca2bb406a41ab8e519e4bda141f2203b87c0589b9317307199e92bb7fd.json"
+      },
+      {
+        "fd": 859,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/gpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 860,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 861,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 862,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 863,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 864,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 865,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 866,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 867,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 868,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 869,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 870,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 871,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 872,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 873,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 874,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 875,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-openvino_gva-gpu-h265-True-original.json"
+      },
+      {
+        "fd": 876,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-openvino_gva-gpu-h265-True.json"
+      },
+      {
+        "fd": 877,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 878,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_28.v1.json"
+      },
+      {
+        "fd": 879,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 880,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 881,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-24a84401f010fae6cf03cdfd33e6069a61ae9c50e6c4fd2c616ce42c2bcc3a86.json"
+      },
+      {
+        "fd": 882,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-24a84401f010fae6cf03cdfd33e6069a61ae9c50e6c4fd2c616ce42c2bcc3a86.json"
+      },
+      {
+        "fd": 883,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-4e03ba51a284d5b21fb13aece9b585457d2aa7f61824a2b2b896bd08087728ea.json"
+      },
+      {
+        "fd": 884,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-4e03ba51a284d5b21fb13aece9b585457d2aa7f61824a2b2b896bd08087728ea.json"
+      },
+      {
+        "fd": 885,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/openvino_gva/gpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 886,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 887,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 888,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 889,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 890,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 891,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 892,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 893,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 894,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 895,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 896,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 897,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 898,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 899,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 900,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-openvino_gva-gpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 901,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-False-original.json"
+      },
+      {
+        "fd": 902,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 903,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_29.v1.json"
+      },
+      {
+        "fd": 904,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 905,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 906,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-8c98b84b0243c8df3a159f819afa445af6379122380888a2f8dc24bbfffb9751.json"
+      },
+      {
+        "fd": 907,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-8c98b84b0243c8df3a159f819afa445af6379122380888a2f8dc24bbfffb9751.json"
+      },
+      {
+        "fd": 908,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-cbdd252a8826bf705f02d016e3d0ffcd92f0705a539ee0918524ad99e3dcaac9.json"
+      },
+      {
+        "fd": 909,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-cbdd252a8826bf705f02d016e3d0ffcd92f0705a539ee0918524ad99e3dcaac9.json"
+      },
+      {
+        "fd": 910,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/gstreamer_custom/cpu/h264/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 911,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 912,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 913,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 914,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 915,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 916,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 917,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 918,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 919,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 920,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 921,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 922,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 923,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 924,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 925,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 926,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h264-True-original.json"
+      },
+      {
+        "fd": 927,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-gstreamer_custom-cpu-h264-True.json"
+      },
+      {
+        "fd": 928,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 929,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_30.v1.json"
+      },
+      {
+        "fd": 930,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 931,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 932,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-06b74ee0d56866c83adfc4d41d27ad29249befc93439aa16a733805c6e29606b.json"
+      },
+      {
+        "fd": 933,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-06b74ee0d56866c83adfc4d41d27ad29249befc93439aa16a733805c6e29606b.json"
+      },
+      {
+        "fd": 934,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-ca0b5c7dd9a1b9f5faf6913d2c3a7a24aec388396cbc5608ca3aee510ca9b8d3.json"
+      },
+      {
+        "fd": 935,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-ca0b5c7dd9a1b9f5faf6913d2c3a7a24aec388396cbc5608ca3aee510ca9b8d3.json"
+      },
+      {
+        "fd": 936,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/gstreamer_custom/cpu/h264/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 937,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 938,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 939,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 940,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 941,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 942,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 943,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 944,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 945,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 946,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 947,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 948,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 949,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 950,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 951,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h264-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 952,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-False-original.json"
+      },
+      {
+        "fd": 953,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-gstreamer_custom-cpu-h265-False.json"
+      },
+      {
+        "fd": 954,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 955,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_31.v1.json"
+      },
+      {
+        "fd": 956,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 957,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 958,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-2029c61e754522025c82f5e38fd9e0f1719dfd805cd947e5c763208a29876ddf.json"
+      },
+      {
+        "fd": 959,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-2029c61e754522025c82f5e38fd9e0f1719dfd805cd947e5c763208a29876ddf.json"
+      },
+      {
+        "fd": 960,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-a7c8f8e45d868af0fe6850f0464d8fe27630077e6b883c9fed6442bd4d236b85.json"
+      },
+      {
+        "fd": 961,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-a7c8f8e45d868af0fe6850f0464d8fe27630077e6b883c9fed6442bd4d236b85.json"
+      },
+      {
+        "fd": 962,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/gstreamer_custom/cpu/h265/independent_processes.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 963,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 964,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 965,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/measurement.cid"
+      },
+      {
+        "fd": 966,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 967,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 968,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 969,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 970,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 971,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 972,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 973,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 974,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 975,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 976,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 977,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-False/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 978,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-cpu-h265-True-original.json"
+      },
+      {
+        "fd": 979,
+        "target": "/var/tmp/vast-owner-hxqo5d84/runtime-bundles/cell-gstreamer_custom-cpu-h265-True.json"
+      },
+      {
+        "fd": 980,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/original_engine_process_capture.v1.json"
+      },
+      {
+        "fd": 981,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/capture-plan/native_context_32.v1.json"
+      },
+      {
+        "fd": 982,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/engine_01.launch.v1.json"
+      },
+      {
+        "fd": 983,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/engine_01.terminal.v1.json"
+      },
+      {
+        "fd": 984,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-0392fb833452ccdc2c25b26922e9e3d19e3a87cb8bc28b8ed3867e5c11de6d8c.json"
+      },
+      {
+        "fd": 985,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-0392fb833452ccdc2c25b26922e9e3d19e3a87cb8bc28b8ed3867e5c11de6d8c.json"
+      },
+      {
+        "fd": 986,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-receipts-v1/group-5f1821e841e0c5ee3f4492398beabcb93c4c8481d7c443707aae23e2f95d62e5.json"
+      },
+      {
+        "fd": 987,
+        "target": "/var/tmp/vast-owner-hxqo5d84/.publication-child-evidence-intents-v1/group-5f1821e841e0c5ee3f4492398beabcb93c4c8481d7c443707aae23e2f95d62e5.json"
+      },
+      {
+        "fd": 988,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/pilots/gstreamer_custom/cpu/h265/shared_video_dag.operational/native_operational_requests.v1.jsonl"
+      },
+      {
+        "fd": 989,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/original_container_custody.v1.json"
+      },
+      {
+        "fd": 990,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/reservation.v1.json"
+      },
+      {
+        "fd": 991,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/measurement.cid"
+      },
+      {
+        "fd": 992,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_01.v1.json"
+      },
+      {
+        "fd": 993,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_01.stdout"
+      },
+      {
+        "fd": 994,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_01.stderr"
+      },
+      {
+        "fd": 995,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_02.v1.json"
+      },
+      {
+        "fd": 996,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_02.stdout"
+      },
+      {
+        "fd": 997,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_02.stderr"
+      },
+      {
+        "fd": 998,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_03.v1.json"
+      },
+      {
+        "fd": 999,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_03.stdout"
+      },
+      {
+        "fd": 1000,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_03.stderr"
+      },
+      {
+        "fd": 1001,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_04.v1.json"
+      },
+      {
+        "fd": 1002,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_04.stdout"
+      },
+      {
+        "fd": 1003,
+        "target": "/var/tmp/vast-owner-hxqo5d84/outputs/stock-operations/process-captures/cell-gstreamer_custom-cpu-h265-True/container-custody/command_04.stderr"
+      },
+      {
+        "fd": 1004,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs/cell-gstreamer_custom-gpu-h264-False-original.json"
+      },
+      {
+        "fd": 1005,
+        "target": "/var/tmp/vast-owner-hxqo5d84"
+      },
+      {
+        "fd": 1006,
+        "target": "/var/tmp/vast-owner-hxqo5d84/inputs"
+      }
+    ]
+  },
+  "pid": 276503,
+  "requested_soft_limit": 1024,
+  "sample_count": 3472,
+  "sampling_limit": "Observed peak is a lower bound; no prior suite process is instrumented.",
+  "started_monotonic_ns": 344574844033015
+}

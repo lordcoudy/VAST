@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/verify_reconstruction_a16_independent_02.py", line 271, in <module>
+    sys.stdout.buffer.write(json_bytes(verify_child()))
+                                       ^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/verify_reconstruction_a16_independent_02.py", line 170, in verify_child
+    require(len(cases) == 212 and sum(line.endswith(" ... ok") for line in cases) == 211, "focused actual case count/status differs")
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/openspec/changes/fix-accepted-policy-preprocessing/evidence/checks-01/verify_reconstruction_a16_independent_02.py", line 46, in require
+    raise RuntimeError(message)
+RuntimeError: focused actual case count/status differs

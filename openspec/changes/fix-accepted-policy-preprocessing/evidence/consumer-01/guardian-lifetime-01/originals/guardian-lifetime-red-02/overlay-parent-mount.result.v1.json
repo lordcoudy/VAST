@@ -1,0 +1,24 @@
+{
+  "executable": "wsl.exe",
+  "arguments": [
+    "-d",
+    "Ubuntu",
+    "-u",
+    "s-a-balashov",
+    "--exec",
+    "findmnt",
+    "-T",
+    "/home/s-a-balashov/work",
+    "-n",
+    "-o",
+    "SOURCE,FSTYPE,TARGET"
+  ],
+  "started_utc": "2026-10-12T11:36:34.3406495Z",
+  "finished_utc": "2026-10-12T11:36:34.4298448Z",
+  "elapsed_seconds": 0.0891621,
+  "original_exit_code": 0,
+  "stdout_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\overlay-parent-mount.stdout.raw",
+  "stderr_path": "E:\\STUDY\\VAST\\tmp\\host-cache-cleanup-20261012\\guardian-lifetime-red-02\\overlay-parent-mount.stderr.raw",
+  "stdout_sha256": "37bc2f1c90926b9af7d74e49f91f6050571526479a4006088d65301469e4ac32",
+  "stderr_sha256": "ab3fa8d50ef1cef82ab68c8cc777ed0a8a449d020f78fd2b521d9cff7c5ca578"
+}

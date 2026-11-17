@@ -1,0 +1,12 @@
+2c2
+< # Amendment 6, task 6C.8: nine physical integration tests on C_Q1' in the root (precedent 5.6).
+---
+> # Amendment 7, task 6D.8: nine physical integration tests on C_Q1''' in the root (precedent 5.6).
+5c5
+< N=$R/artifacts/qualify_full_benchmark_20261008d
+---
+> N=$R/artifacts/qualify_full_benchmark_20261008e
+11c11
+< [[ "$(git rev-parse HEAD)" == 4947e35a70fcfd94cf53179f05c021f8fb9dd3d1 ]] || exit 64
+---
+> [[ "$(git rev-parse HEAD)" == 0aeb955bdf49d35ddb429c6a8e83d897608b00aa ]] || exit 64

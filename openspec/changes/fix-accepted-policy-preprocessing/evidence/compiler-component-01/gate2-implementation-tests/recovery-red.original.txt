@@ -1,0 +1,125 @@
+FFFFFFFFFFFFFFF
+======================================================================
+FAIL: test_archive_bytes_return_only_with_complete_framing_and_originals (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_archive_bytes_return_only_with_complete_framing_and_originals)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_archive_prebody_cap_keeps_only_header_on_oversized_length (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_archive_prebody_cap_keeps_only_header_on_oversized_length)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_archive_refuses_inventory_drift_and_does_not_send_a_mutation (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_archive_refuses_inventory_drift_and_does_not_send_a_mutation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_chunk_cap_is_checked_before_chunk_body_and_aggregate_does_not_expand (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_chunk_cap_is_checked_before_chunk_body_and_aggregate_does_not_expand)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_five_second_deadline_and_whole_sequence_epoch_drift (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_five_second_deadline_and_whole_sequence_epoch_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_fixed_inventory_and_limits (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_fixed_inventory_and_limits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_linker_scripts_must_match_original_hash_before_reference_interpretation (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_linker_scripts_must_match_original_hash_before_reference_interpretation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_md5_reader_refuses_traversal_duplicate_and_invalid_lines (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_md5_reader_refuses_traversal_duplicate_and_invalid_lines)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_package_reader_labels_metadata_and_rejects_duplicates (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_package_reader_labels_metadata_and_rejects_duplicates)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_preencoding_bound_and_exclusive_persistence_preserve_original (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_preencoding_bound_and_exclusive_persistence_preserve_original)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_stat_refuses_bad_encoding_duplicates_and_name_size_link_drift (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_stat_refuses_bad_encoding_duplicates_and_name_size_link_drift)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_stat_uses_go_file_mode_regular_not_posix_type_bits (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_stat_uses_go_file_mode_regular_not_posix_type_bits)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_tar_refuses_other_members_paths_links_and_sparse_metadata (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_tar_refuses_other_members_paths_links_and_sparse_metadata)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_tar_refuses_truncation_wrong_size_abi_and_trailing_content (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_tar_refuses_truncation_wrong_size_abi_and_trailing_content)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+======================================================================
+FAIL: test_tar_single_regular_member_and_bounded_pax (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_tar_single_regular_member_and_bounded_pax)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 49, in setUp
+    self.assertIsNotNone(recovery, "fixed F2 recovery helper is absent")
+AssertionError: unexpectedly None : fixed F2 recovery helper is absent
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.014s
+
+FAILED (failures=15)

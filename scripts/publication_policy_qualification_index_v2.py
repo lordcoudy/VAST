@@ -22,6 +22,9 @@ from pathlib import Path
 from typing import Any, Callable, Mapping
 
 import publication_policy_qualification as qualification
+from checkpoint_qualification_pilot_acceptance_v1 import (
+    ARTIFACT_KIND as PILOT_ACCEPTANCE_KIND,
+)
 from publication_physical_io_v1 import (
     PhysicalRootCustodyV1,
     PublicationPhysicalIoV1Error,
@@ -207,6 +210,28 @@ def _descriptor(root: Path, value: Path | str, label: str) -> dict[str, Any]:
     }
 
 
+def _require_pilot_acceptance_kind(
+    root: Path, descriptor: Mapping[str, Any], label: str
+) -> None:
+    """Refuse a JSON acceptance of a foreign kind before any index output exists.
+
+    Complete acceptance validation remains with promotion; this read-only gate
+    only keeps component, study and unknown kinds out of a qualification index.
+    """
+    payload = (root / str(descriptor["path"])).read_bytes()
+    if hashlib.sha256(payload).hexdigest() != descriptor["sha256"]:
+        raise PolicyQualificationIndexV2Error(f"{label} changed while checking its kind")
+    try:
+        value = json.loads(payload)
+    except (UnicodeError, ValueError):
+        return
+    if type(value) is dict and value.get("artifact_kind") != PILOT_ACCEPTANCE_KIND:
+        raise PolicyQualificationIndexV2Error(
+            f"{label} is not a qualification pilot acceptance kind: "
+            f"{value.get('artifact_kind')!r}"
+        )
+
+
 def _read_fragment(
     *,
     root: Path,
@@ -379,6 +404,12 @@ def _build_pilots(
                                 f"{system}/{resource}/{codec}/{topology}/{role}"
                             )
                         identities.add(identity)
+                        if role == "checkpoint_acceptance":
+                            _require_pilot_acceptance_kind(
+                                root,
+                                descriptor,
+                                f"pilot acceptance {system}/{resource}/{codec}/{topology}",
+                            )
                         evidence[role] = descriptor
                     pilots.append(
                         {

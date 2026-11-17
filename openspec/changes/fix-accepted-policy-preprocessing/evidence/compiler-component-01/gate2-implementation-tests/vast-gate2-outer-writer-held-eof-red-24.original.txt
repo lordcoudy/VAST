@@ -1,0 +1,15 @@
+test_failed_final_eof_read_preserves_full_prefix_and_unknown_unreturned_extent (caller.HeldWriterTests.test_failed_final_eof_read_preserves_full_prefix_and_unknown_unreturned_extent) ... FAIL
+
+======================================================================
+FAIL: test_failed_final_eof_read_preserves_full_prefix_and_unknown_unreturned_extent (caller.HeldWriterTests.test_failed_final_eof_read_preserves_full_prefix_and_unknown_unreturned_extent)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 990, in test_failed_final_eof_read_preserves_full_prefix_and_unknown_unreturned_extent
+    self.assertTrue(known['stdin_extent_unknown'])
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 1 test in 0.014s
+
+FAILED (failures=1)

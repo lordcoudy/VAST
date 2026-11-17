@@ -1,0 +1,16 @@
+9c9
+< evidence=$root/openspec/changes/qualify-full-benchmark/evidence/software-v3-pins
+---
+> evidence=$root/openspec/changes/qualify-full-benchmark/evidence/software-v7-repin-20261008c
+16,18c16,18
+<   inventory) exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v1.py" inventory >"$evidence/inventory.v1.json" ;;
+<   plan) exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v1.py" plan >"$evidence/host-pin-rebind.plan.v1.json" ;;
+<   render) exec "$python" -B "$evidence/render_plan_review_qfb_v1.py" >"$evidence/host-pin-rebind.plan-review.v1.json" ;;
+---
+>   inventory) exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v2.py" inventory >"$evidence/inventory.v1.json" ;;
+>   plan) exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v2.py" plan >"$evidence/host-pin-rebind.plan.v1.json" ;;
+>   render) exec "$python" -B "$evidence/render_plan_review_qfb_v2.py" >"$evidence/host-pin-rebind.plan-review.v1.json" ;;
+22c22
+<     exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v1.py" apply "$plan_sha" >"$evidence/host-pin-rebind.applied.v1.json" ;;
+---
+>     exec "$python" -B "$evidence/rebind_host_identity_pins_qfb_v2.py" apply "$plan_sha" >"$evidence/host-pin-rebind.applied.v1.json" ;;

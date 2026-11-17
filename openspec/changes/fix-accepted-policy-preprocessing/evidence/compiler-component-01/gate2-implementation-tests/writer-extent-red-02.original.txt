@@ -1,0 +1,25 @@
+FF
+======================================================================
+FAIL: test_c_record_reports_unknown_extent_after_partial_underlying_write (tests.test_accepted_policy_fixture_compiler_gate2_writer_v1.OriginalWriterExtentTests.test_c_record_reports_unknown_extent_after_partial_underlying_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 69, in test_c_record_reports_unknown_extent_after_partial_underlying_write
+    self.check_partial_underlying_write(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 56, in check_partial_underlying_write
+    self.assertTrue(facts["write_extent_unknown"], facts)
+AssertionError: False is not true : {'path': '/tmp/tmpc1h0sjte/record.original.json', 'open_completed': True, 'written_bytes': 29, 'write_extent_unknown': False, 'flush_completed': False, 'fsync_completed': False, 'close_completed': False, 'directory_persisted': False, 'complete': False, 'deadline_failed': False, 'failure_causes': ['record_flush_OSError', 'record_close_OSError']}
+
+======================================================================
+FAIL: test_f2_record_reports_unknown_extent_after_partial_underlying_write (tests.test_accepted_policy_fixture_compiler_gate2_writer_v1.OriginalWriterExtentTests.test_f2_record_reports_unknown_extent_after_partial_underlying_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 73, in test_f2_record_reports_unknown_extent_after_partial_underlying_write
+    self.check_partial_underlying_write(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_writer_v1.py", line 56, in check_partial_underlying_write
+    self.assertTrue(facts["write_extent_unknown"], facts)
+AssertionError: False is not true : {'path': '/tmp/tmp9n056m08/record.original.json', 'complete': False, 'open_completed': True, 'written_bytes': 29, 'persisted_bytes': 0, 'write_extent_unknown': False, 'flush_completed': False, 'fsync_completed': False, 'close_completed': False, 'deadline_failed': False}
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.004s
+
+FAILED (failures=2)

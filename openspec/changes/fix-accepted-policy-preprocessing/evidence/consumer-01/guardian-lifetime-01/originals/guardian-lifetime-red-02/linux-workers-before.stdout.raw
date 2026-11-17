@@ -1,0 +1,138 @@
+    PID    PPID COMMAND
+      1       0 /sbin/init
+      2       1 /init
+      7       2 plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+     41       1 /usr/lib/systemd/systemd-journald
+     92       1 /usr/lib/systemd/systemd-udevd
+    166       1 /usr/lib/systemd/systemd-resolved
+    175       1 /usr/sbin/cron -f -P
+    176       1 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+    180       1 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+    186       1 /usr/lib/systemd/systemd-logind
+    206       1 /sbin/agetty -o -p -- \u --noclear --keep-baud - 115200,38400,9600 vt220
+    215       1 /usr/sbin/rsyslogd -n -iNONE
+    216       1 /usr/bin/containerd
+    221       1 /sbin/agetty -o -p -- \u --noclear - linux
+    237       1 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    245       1 /usr/sbin/chronyd -F 1 -x
+    246     245 /usr/sbin/chronyd -F 1 -x
+    250       1 /usr/lib/systemd/systemd --user
+    260     250 (sd-pam)
+    330       1 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+    584       2 /init
+    587     584 /init
+    588     587 sh
+    592       2 /bin/login -f
+    595     592 -bash
+    615       2 /bin/login -f
+    667       1 /usr/lib/systemd/systemd --user
+    668     667 (sd-pam)
+    679     615 -bash
+    786     584 /init
+    787     786 /run/docker-desktop/docker-desktop-user-distro proxy --distro-name Ubuntu --docker-desktop-root /mnt/wsl/docker-desktop C:\Program Files\Docker\Docker\resources
+  27239       1 /usr/lib/polkit-1/polkitd --no-debug
+  34009       1 /init
+  34407   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  34662   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  35590   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  35850   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  36740   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  37002   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  37881   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  38148   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  38943   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  39179   34009 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  68474       1 /init
+  68936   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  69264   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  70456   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  70781   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  71999   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  72309   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  73492   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  73819   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  74940   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  75288   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  76497   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+  76774   68474 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 113753       1 /init
+ 114224  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 114545  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 115719  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 116052  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 117224  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 117558  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 118730  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 119054  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 120243  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 120591  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 121827  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 122200  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 123085  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 123421  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 124332  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 124681  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 125556  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 125904  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 126806  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 127156  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 128039  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 128393  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 129278  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 129626  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 130507  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 130871  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 131732  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 132086  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 132990  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 133337  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 134210  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 134566  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 135464  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 135811  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 136699  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 137050  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 137948  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 138308  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 139186  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 139556  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 140422  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 140780  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 141716  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 142042  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 142983  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 143292  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 144240  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 144551  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 145762  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 146084  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 147501  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 147843  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 148790  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 149094  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 150026  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 150361  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 151314  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 151617  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 152550  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 152907  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 153828  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 154124  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 155050  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 155379  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 156291  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 156591  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 157521  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 157860  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 158774  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 159073  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 160019  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 160345  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 161247  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 161574  113753 /usr/bin/dbus-daemon --syslog --fork --print-pid 4 --print-address 6 --session
+ 322854      92 (udev-worker)
+ 322862       2 /init
+ 322863  322862 /init
+ 322864      92 (udev-worker)
+ 322865      92 (udev-worker)
+ 322866  322863 ps -eo pid,ppid,args

@@ -1,0 +1,56 @@
+commit_base=gitdir: E:/STUDY/VAST/.git/worktrees/VAST3
+test_actual_platform_fixture_has_exact_raw_bytes_and_compact_hashes (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_actual_platform_fixture_has_exact_raw_bytes_and_compact_hashes) ... ok
+test_arbitrary_pid_uid_gid_and_platform_combinations_fail_closed (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_arbitrary_pid_uid_gid_and_platform_combinations_fail_closed) ... ok
+test_docker_desktop_4_93_build_is_an_exact_observed_platform (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_docker_desktop_4_93_build_is_an_exact_observed_platform) ... ERROR
+test_docker_desktop_builds_reject_mixed_server_and_containerd_pairs (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_docker_desktop_builds_reject_mixed_server_and_containerd_pairs) ... ok
+test_docker_desktop_builds_reject_rehashed_mixed_pairs (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_docker_desktop_builds_reject_rehashed_mixed_pairs) ... ERROR
+test_materializer_and_sidecar_complete_only_after_global_handshake (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_materializer_and_sidecar_complete_only_after_global_handshake) ... ok
+test_native_ext4_private_socket_custody_is_hash_bound (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_native_ext4_private_socket_custody_is_hash_bound) ... ok
+test_observed_containerd_profile_cannot_replace_old_profile_without_rehash (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observed_containerd_profile_cannot_replace_old_profile_without_rehash) ... ok
+test_observed_containerd_profile_preserves_actual_commit_and_roundtrips (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observed_containerd_profile_preserves_actual_commit_and_roundtrips) ... ok
+test_observed_containerd_profile_rejects_rehashed_platform_tampering (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observed_containerd_profile_rejects_rehashed_platform_tampering) ... ok
+test_observed_containerd_profile_rejects_unknown_commit_and_platform_drift (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observed_containerd_profile_rejects_unknown_commit_and_platform_drift) ... ok
+test_observer_reads_exact_proc_file_and_small_docker_projection (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_observer_reads_exact_proc_file_and_small_docker_projection) ... ok
+test_pid0_identity_is_never_represented_as_pid_attested (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_pid0_identity_is_never_represented_as_pid_attested) ... ok
+test_platform_observation_rejects_backend_and_hash_drift (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_platform_observation_rejects_backend_and_hash_drift) ... ok
+test_platform_parser_rejects_non_wsl_kernel_bytes (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_platform_parser_rejects_non_wsl_kernel_bytes) ... ok
+test_platform_projection_ignores_unclaimed_docker_info_bulk (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_platform_projection_ignores_unclaimed_docker_info_bulk) ... ok
+test_visible_pid_mode_remains_exact_pid_attestation (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_visible_pid_mode_remains_exact_pid_attestation) ... ok
+
+======================================================================
+ERROR: test_docker_desktop_4_93_build_is_an_exact_observed_platform (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_docker_desktop_4_93_build_is_an_exact_observed_platform)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_analytics_peer_identity.py", line 96, in test_docker_desktop_4_93_build_is_an_exact_observed_platform
+    observed = authority._build_peercred_pid0_platform_observation(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1246, in _build_peercred_pid0_platform_observation
+    docker_projection = _docker_desktop_platform_projection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1182, in _docker_desktop_platform_projection
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 286, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: Docker Desktop containerd commit drifted
+
+======================================================================
+ERROR: test_docker_desktop_builds_reject_rehashed_mixed_pairs (tests.test_analytics_peer_identity.AnalyticsPeerIdentityAuthorityTests.test_docker_desktop_builds_reject_rehashed_mixed_pairs)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/tests/test_analytics_peer_identity.py", line 119, in test_docker_desktop_builds_reject_rehashed_mixed_pairs
+    newer = authority._build_peercred_pid0_platform_observation(
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1246, in _build_peercred_pid0_platform_observation
+    docker_projection = _docker_desktop_platform_projection(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 1182, in _docker_desktop_platform_projection
+    _require(
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/qualify-full-benchmark/VAST/scripts/checkpoint_gstreamer_analytics_sidecar.py", line 286, in _require
+    raise SidecarError(message)
+checkpoint_gstreamer_analytics_sidecar.SidecarError: Docker Desktop containerd commit drifted
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.017s
+
+FAILED (errors=2)
+rc=1

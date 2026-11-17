@@ -8,6 +8,7 @@ import sys
 import unittest
 from unittest import mock
 from pathlib import Path
+from types import SimpleNamespace
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -28,6 +29,8 @@ from analytics_execution_endpoint import terminal_detector_identity  # noqa: E40
 from checkpoint_runtime import DirectRuntimeJoinCoordinator, WorkerBinding  # noqa: E402
 from publication_policy_contract import ANALYTICS_BRANCHES  # noqa: E402
 from topology_contract import INDEPENDENT_PROCESSES, SHARED_VIDEO_DAG  # noqa: E402
+import non_decreasing_wall_clock_v1 as wall_clock  # noqa: E402
+from non_decreasing_wall_clock_v1 import NonDecreasingWallClock  # noqa: E402
 
 
 def sha(value: str) -> str:
@@ -61,6 +64,26 @@ class SequenceClock:
 
     def __call__(self) -> float:
         return next(self.values)
+
+
+WALL_BASE_NS = 1_790_000_000_000_000_000
+
+
+def step_back_host_wall_clock(test_case: unittest.TestCase, values: list[int]) -> None:
+    """Replay raw CLOCK_REALTIME ``values`` (then +1 ms per read) for both the
+    raw host clock and the shared per-process non-decreasing wrapper."""
+
+    pending = list(values)
+    current = [values[-1]]
+
+    def raw_ns() -> int:
+        current[0] = pending.pop(0) if pending else current[0] + 1_000_000
+        return current[0]
+
+    test_case.enterContext(mock.patch("time.time_ns", raw_ns))
+    test_case.enterContext(mock.patch.object(
+        wall_clock, "_PROCESS_CLOCK", NonDecreasingWallClock(raw_ns=raw_ns)
+    ))
 
 
 def mock_service_clock(test_case: unittest.TestCase) -> None:
@@ -451,6 +474,54 @@ class DeepStreamProtocolBridgeContractTests(unittest.TestCase):
         )
         self.assertEqual(decision["decision_time_ms"], 2_000.5)
         self.assertEqual(path["timestamp_ms"], 2_000.5)
+
+    def test_default_clock_keeps_decision_after_admission_across_host_clock_step_back(self) -> None:
+        run_id = "run-deepstream-host-clock-step"
+        branch = "damage"
+        admitted = admission(run_id)
+        identity = nvds_identity(admitted)
+        frame = SimpleNamespace(
+            sequence=1, access_unit_pts_ns=admitted["access_unit_pts_ns"],
+            transport_pts_ns=admitted["access_unit_pts_ns"], admission_id=admitted["admission_id"],
+            input_frame_key=admitted["input_frame_key"], payload=b"access-unit", payload_sha256=AU_SHA,
+        )
+        policy = FakePolicyExchange({item: "cpu" for item in ANALYTICS_BRANCHES})
+        bridge = DeepStreamProtocolBridge(
+            run_id=run_id,
+            arm_id="arm-host-clock-step",
+            worker_id="deepstream-shared-stream-0",
+            topology_kind=SHARED_VIDEO_DAG,
+            stream_id=0,
+            branch_id=None,
+            event_sink=lambda _line: None,
+            policy_exchange=policy,
+            analytics_endpoints=endpoints(tuple(ANALYTICS_BRANCHES)),
+        )
+        spec, payload = tensor(branch)
+        base_ms = WALL_BASE_NS // 1_000_000
+        # Admission is stamped by the bridge clock; the decision read follows
+        # a raw CLOCK_REALTIME step back of 2 ms inside the same process.
+        step_back_host_wall_clock(self, [WALL_BASE_NS, WALL_BASE_NS - 2_000_000])
+        bridge.admit_transport_frame(frame)
+        bridge.observe_decoded_frame(identity, observed_timestamp_ms=base_ms)
+        bridge.observe_preprocessed_frame(identity, observed_timestamp_ms=base_ms)
+        bridge.observe_fanout(identity, branch=branch, tensor_spec=spec, observed_timestamp_ms=base_ms)
+
+        result = bridge.execute_branch(
+            str(admitted["input_frame_key"]),
+            branch,
+            tensor_payload=payload,
+            queue_depths={"cpu": 0, "gpu": 0},
+            deadline_monotonic_ns=10_000_000_000,
+        )
+
+        self.assertEqual(result.selected_resource, "cpu")
+        decision = next(row for row in policy.messages if row["message_type"] == "decision_request")
+        path = next(row for row in policy.messages if row["message_type"] == "path_enter")
+        self.assertEqual(decision["arrival_ms"], float(base_ms))
+        self.assertEqual(decision["decision_time_ms"], (WALL_BASE_NS + 1) / 1_000_000.0)
+        self.assertGreaterEqual(path["timestamp_ms"], decision["decision_time_ms"])
+        self.assertEqual(wall_clock.process_wall_clock().max_clamp_ns(), 2_000_001)
 
     def test_gpu_topology_uses_native_d2h_boundaries(self) -> None:
         run_id = "run-deepstream-gpu-transfer-boundaries"

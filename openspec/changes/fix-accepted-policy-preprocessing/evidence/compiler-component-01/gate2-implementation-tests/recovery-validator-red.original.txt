@@ -1,0 +1,13 @@
+....................F...
+======================================================================
+FAIL: test_supplement_validator_is_read_only_and_refuses_controlled_qualification (tests.test_accepted_policy_fixture_compiler_recovery_v1.RecoveryTests.test_supplement_validator_is_read_only_and_refuses_controlled_qualification)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_recovery_v1.py", line 337, in test_supplement_validator_is_read_only_and_refuses_controlled_qualification
+    self.assertTrue(callable(getattr(recovery, "validate_supplement_v1", None)), "independent F2 validator absent")
+AssertionError: False is not true : independent F2 validator absent
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.792s
+
+FAILED (failures=1)

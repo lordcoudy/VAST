@@ -1,0 +1,6 @@
+$ python -m unittest tests.test_publication_operational_stock_operations_v1.StockOperationPlanningCliTests (RED)
+python -m unittest: error: unrecognized arguments: --container-engine-socket /run/docker.sock
+KeyError: 'container_engine_socket_path'
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+Ran 2 tests in 0.009s
+FAILED (errors=2)

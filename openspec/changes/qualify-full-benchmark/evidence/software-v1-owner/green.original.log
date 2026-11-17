@@ -1,0 +1,117 @@
+# tasks 4.1-4.2 GREEN
+# base commit: 36c395bebf73ec4881caa30d5bb14c0b6a438ce9 + uncommitted 4.2 implementation
+# sha256 1d823a19562a7c27aa75657dad141f79c0d07af4672cd7cb65f62405eb43b55a  tests/test_publication_qualification_operational_owner_v1.py
+# sha256 7f169a307873e785c408097cf6efb357e216639eefaec5137718ef16422a8907  scripts/publication_qualification_operational_owner_v1.py
+# sha256 c20abd07e857af47e91d1e81cf45adc5f9bf4aedcfc861509acd4f96492bad98  scripts/publication_operational_stock_operations_v1.py
+# sha256 30f26ddf30dc2d5489485f67b644e7832c8dd504d74020fd12808cc266ab1edc  scripts/publication_benchmark_native_diagnostic_v1.py
+# sha256 fa89690897cf58ffd8e8b8b62aad0da1e399fdd2b260157bae768157d3481dc0  scripts/publication_policy_qualification_execution_code_closure_v1.py
+# date_utc: 2026-10-07T04:36:02Z
+# host: WSL 6.6.87.2-microsoft-standard-WSL2; no Docker, build, GPU or benchmark was run
+# REAL: capture-plan builder/held loader; owner sequencing, ledger and runtime_registry wrapper; capture_original_engine_processes_v1; measurement_container_custody_v1 around stock checkpoint_gstreamer_publication_runtime_v3._invoke_engine; genuine ELF child processes and /proc identities; stock native transfer materializer (first transfer + stock pilot _commit_operational_capture_for_cell second transfer); NativePolicyRuntimeCoordinator producers; actual guardian front/recorder (GStreamerAnalyticsProductionService fixture workers); owner binding writer; cold closure reconcile_operational_capture_binding_v1 with UNMOCKED original_process_validator_v1/original_container_validator_v1 (wrapped only to count calls).
+# FIXTURE: engine = locally compiled ELF modelling Docker daemon replies (no real Docker/container/image); in-container producer replaced by in-process coordinator writing into the same mounted scratch; held precheck/Savant runner and pilot-executor loop are stand-ins for stock loaders (execute_native_diagnostic_operation_v1 / execute_qualification_pilots_v2 need the full physical input universe); local inference backend; stock CSV cohort adapter _operational_measured_ingress_v1 mocked as in the existing 37-binding test; 30 unread diagnostic-mode runtime bundle records are placeholders.
+# command 1: /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_qualification_operational_owner_v1
+test_missing_diagnostic_receipt_blocks_binding (tests.test_publication_qualification_operational_owner_v1.DiagnosticOwner2Tests.test_missing_diagnostic_receipt_blocks_binding) ... ok
+test_owner_executes_exact_two_held_originals_and_cold_closure_accepts_binding (tests.test_publication_qualification_operational_owner_v1.DiagnosticOwner2Tests.test_owner_executes_exact_two_held_originals_and_cold_closure_accepts_binding) ... ok
+test_two_operation_binding_cannot_satisfy_complete_qualification (tests.test_publication_qualification_operational_owner_v1.DiagnosticOwner2Tests.test_two_operation_binding_cannot_satisfy_complete_qualification) ... ok
+test_foreign_or_inactive_bundle_context_is_rejected (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_foreign_or_inactive_bundle_context_is_rejected) ... ok
+test_held_runner_dispatches_each_system_to_its_stock_runtime (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_held_runner_dispatches_each_system_to_its_stock_runtime) ... ok
+test_native_precheck_changes_only_its_own_pinned_context (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_native_precheck_changes_only_its_own_pinned_context) ... ok
+test_savant_original_keeps_sdk_context_mount_path (tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests.test_savant_original_keeps_sdk_context_mount_path) ... ok
+test_cells_retain_actual_two_transfer_chain_and_held_operations_one_transfer (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_cells_retain_actual_two_transfer_chain_and_held_operations_one_transfer) ... ok
+test_extra_foreign_capture_namespace_blocks_binding (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_extra_foreign_capture_namespace_blocks_binding) ... ok
+test_missing_original_receipt_blocks_binding (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_missing_original_receipt_blocks_binding) ... ok
+test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_owner_executes_exact_37_and_binding_passes_cold_closure_with_real_validators) ... ok
+test_repeated_owner_invocation_is_rejected_before_any_launch (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_repeated_owner_invocation_is_rejected_before_any_launch) ... ok
+test_resumed_pilot_checkpoint_cannot_satisfy_one_owner (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_resumed_pilot_checkpoint_cannot_satisfy_one_owner) ... ok
+test_stock_binding_writer_rejects_missing_extra_and_duplicate_outputs (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_stock_binding_writer_rejects_missing_extra_and_duplicate_outputs) ... ok
+test_swapped_original_receipts_block_binding (tests.test_publication_qualification_operational_owner_v1.QualificationOwner37Tests.test_swapped_original_receipts_block_binding) ... ok
+test_duplicate_cell_invocation_is_rejected_before_second_launch (tests.test_publication_qualification_operational_owner_v1.QualificationOwnerFailClosedTests.test_duplicate_cell_invocation_is_rejected_before_second_launch) ... ok
+test_foreign_cell_request_is_rejected_before_launch (tests.test_publication_qualification_operational_owner_v1.QualificationOwnerFailClosedTests.test_foreign_cell_request_is_rejected_before_launch) ... ok
+test_missing_cells_after_pilot_return_fail_closed (tests.test_publication_qualification_operational_owner_v1.QualificationOwnerFailClosedTests.test_missing_cells_after_pilot_return_fail_closed) ... ok
+test_substituted_cell_coordinates_are_rejected_before_launch (tests.test_publication_qualification_operational_owner_v1.QualificationOwnerFailClosedTests.test_substituted_cell_coordinates_are_rejected_before_launch) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 65.258s
+
+OK
+# exit_code: 0
+
+# command 2 (unchanged existing 37/32, closure and adjacent regressions): /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest tests.test_publication_operational_execution_binding_v1 tests.test_publication_policy_qualification_execution_closure_v1 tests.test_qualification_operational_closure_cold_gate_v1 tests.test_qualification_complete_operational_promotion_gate_v1 tests.test_publication_operational_capture_plan_v1 tests.test_publication_operational_stock_operations_v1 tests.test_publication_benchmark_native_diagnostic_v1 tests.test_publication_operational_process_custody_v1 tests.test_publication_operational_container_custody_v1 tests.test_publication_policy_qualification_execution_code_closure_v1 tests.test_publication_policy_qualification_pilot_executor_v2 tests.test_ci_test_selection_v1
+..................................................................................................................................................................
+----------------------------------------------------------------------
+Ran 162 tests in 79.673s
+
+OK
+# exit_code: 0
+
+# --- appended: held precheck/Savant path tests after independent source review (base 97f0c129) ---
+# date_utc: 2026-10-07T04:59:56Z; host: WSL 6.6.87.2-microsoft-standard-WSL2; no Docker, build, GPU or benchmark
+# sha256 9691205d85109cbb45a22043b2f735ca5fb6955aedff2d89d709829e1feadcf4  tests/test_publication_operational_stock_request_v1.py
+# sha256 04a8f2e5cc6ef71f6a2319c1c2534a67eb179c2a71dd748060a5aaa0f18ecc58  tests/test_publication_benchmark_native_diagnostic_v1.py
+# sha256 c20abd07e857af47e91d1e81cf45adc5f9bf4aedcfc861509acd4f96492bad98  scripts/publication_operational_stock_operations_v1.py
+# sha256 30f26ddf30dc2d5489485f67b644e7832c8dd504d74020fd12808cc266ab1edc  scripts/publication_benchmark_native_diagnostic_v1.py
+# REAL: stock planner/held plan, held_stock_operational_request_v1 in QUALIFICATION_MODE, stock request constructor/validator/barriers, held_operation_runtime_inputs_v1, stock OpenVINO/GStreamer/Savant runtime _open_pin. FIXTURE (as in the existing test): heavy authority loads _load_qualification_inputs/_load_operational_inputs/_load_execution_code_closure; diagnostic delegation keeps the existing mocked stock spine.
+# Code under test already existed (a8e20c41), so RED is shown by reversible source mutations; each mutation is undone from a byte copy before the next.
+# env: PYTHONPATH=scripts (the diagnostic test module imports scripts directly)
+# command: /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest -v tests.test_publication_operational_stock_request_v1 tests.test_publication_benchmark_native_diagnostic_v1
+test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused (tests.test_publication_operational_stock_request_v1.HeldGstreamerCustomPrecheckRequestTests.test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused) ... ok
+test_cell_phase_and_unheld_system_are_refused (tests.test_publication_operational_stock_request_v1.HeldGstreamerCustomPrecheckRequestTests.test_cell_phase_and_unheld_system_are_refused) ... ok
+test_held_original_reuses_stock_cell_bundle_with_only_its_own_context (tests.test_publication_operational_stock_request_v1.HeldGstreamerCustomPrecheckRequestTests.test_held_original_reuses_stock_cell_bundle_with_only_its_own_context) ... ok
+test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused (tests.test_publication_operational_stock_request_v1.HeldOpenvinoGvaPrecheckRequestTests.test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused) ... ok
+test_cell_phase_and_unheld_system_are_refused (tests.test_publication_operational_stock_request_v1.HeldOpenvinoGvaPrecheckRequestTests.test_cell_phase_and_unheld_system_are_refused) ... ok
+test_held_original_reuses_stock_cell_bundle_with_only_its_own_context (tests.test_publication_operational_stock_request_v1.HeldOpenvinoGvaPrecheckRequestTests.test_held_original_reuses_stock_cell_bundle_with_only_its_own_context) ... ok
+test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused (tests.test_publication_operational_stock_request_v1.HeldSavantOriginalRequestTests.test_bundle_with_foreign_cell_own_or_diagnostic_context_is_refused) ... ok
+test_cell_phase_and_unheld_system_are_refused (tests.test_publication_operational_stock_request_v1.HeldSavantOriginalRequestTests.test_cell_phase_and_unheld_system_are_refused) ... ok
+test_held_original_reuses_stock_cell_bundle_with_only_its_own_context (tests.test_publication_operational_stock_request_v1.HeldSavantOriginalRequestTests.test_held_original_reuses_stock_cell_bundle_with_only_its_own_context) ... ok
+test_actual_declared_context_drift_is_rejected_by_held_exit_barrier (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_actual_declared_context_drift_is_rejected_by_held_exit_barrier) ... ok
+test_missing_or_alias_engine_is_rejected_without_launch (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_missing_or_alias_engine_is_rejected_without_launch) ... ok
+test_missing_or_foreign_context_is_rejected_before_request_yield (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_missing_or_foreign_context_is_rejected_before_request_yield) ... ok
+test_orphan_bundle_and_occupied_original_output_are_rejected (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_orphan_bundle_and_occupied_original_output_are_rejected) ... ok
+test_physical_stock_request_constructor_validator_finalizer_and_barriers (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_physical_stock_request_constructor_validator_finalizer_and_barriers) ... ok
+test_qualification_activation_in_diagnostic_plan_is_rejected (tests.test_publication_operational_stock_request_v1.HeldStockRequestTests.test_qualification_activation_in_diagnostic_plan_is_rejected) ... ok
+test_cold_witness_drift_during_finalizer_blocks_complete_receipt (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_cold_witness_drift_during_finalizer_blocks_complete_receipt) ... ok
+test_collector_cleanup_error_keeps_original_runtime_cause (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_collector_cleanup_error_keeps_original_runtime_cause) ... ok
+test_designated_external_engine_and_empty_capture_use_shared_held_custody (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_designated_external_engine_and_empty_capture_use_shared_held_custody) ... ok
+test_held_savant_and_openvino_originals_delegate_to_their_stock_runtime (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_held_savant_and_openvino_originals_delegate_to_their_stock_runtime) ... ok
+test_native_outcome_zero_cannot_replace_original_process_container_proof (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_native_outcome_zero_cannot_replace_original_process_container_proof) ... ok
+test_occupied_operation_fails_without_new_launch (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_occupied_operation_fails_without_new_launch) ... ok
+test_original_failure_stops_collector_and_writes_no_completion (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_original_failure_stops_collector_and_writes_no_completion) ... ok
+test_owner_maps_stock_arguments_to_the_held_runner_exactly (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_owner_maps_stock_arguments_to_the_held_runner_exactly) ... ok
+test_ready_failure_stops_collector_before_any_original_launch (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_ready_failure_stops_collector_before_any_original_launch) ... ok
+test_stock_delegation_stops_collector_and_validates_original_before_finalization (tests.test_publication_benchmark_native_diagnostic_v1.NativeDiagnosticDelegationTests.test_stock_delegation_stops_collector_and_validates_original_before_finalization) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 9.205s
+
+OK
+# exit_code: 0
+
+# mutation M1: held qualification originals keep the cell context (substitution skipped)
+1
+Ran 15 tests in 8.997s
+
+FAILED (failures=9, errors=3)
+# exit_code: 1
+
+# mutation M2: deepstream admitted as a held precheck
+2
+Ran 15 tests in 8.529s
+
+FAILED (failures=3)
+# exit_code: 1
+
+# mutation M3: held runner always uses the gstreamer stock runtime
+1
+Ran 10 tests in 0.168s
+
+FAILED (failures=2)
+# exit_code: 1
+
+# restored sources:
+c20abd07e857af47e91d1e81cf45adc5f9bf4aedcfc861509acd4f96492bad98  scripts/publication_operational_stock_operations_v1.py
+30f26ddf30dc2d5489485f67b644e7832c8dd504d74020fd12808cc266ab1edc  scripts/publication_benchmark_native_diagnostic_v1.py
+# command (restored): /home/s-a-balashov/.local/state/vast/publication/runtime/full-publication-cp312-v1/bin/python -m unittest tests.test_publication_operational_stock_request_v1 tests.test_publication_benchmark_native_diagnostic_v1 tests.test_publication_qualification_operational_owner_v1.HeldQualificationOriginalTests
+Ran 29 tests in 9.168s
+
+OK
+# exit_code: 0

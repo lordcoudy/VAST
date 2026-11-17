@@ -1,0 +1,16 @@
+controlled actual early PRE component exception + shared read wrapper facts RED (correct producer exception class)
+test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts) ... ERROR
+
+======================================================================
+ERROR: test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts (tests.test_accepted_policy_fixture_compiler_gate2_c_v1.ResumePacketTests.test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_c_v1.py", line 629, in test_pre_and_read_wrapper_keep_actual_component_read_and_close_failure_facts
+    self.assertEqual(wrapped.exception.facts['causes'],errors[0].causes)
+                     ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+KeyError: 'causes'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.077s
+
+FAILED (errors=1)

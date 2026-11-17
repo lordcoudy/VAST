@@ -1,0 +1,103 @@
+{
+  "scope": "review06_actual_failed_startup_public_witness_only",
+  "source_commit": "605eb02733fe256ad5ef14f358eaa81ee1a0ae44",
+  "admission_comment": 6465025655,
+  "actual_return_metadata": {
+    "chunk_id": "e8dce3",
+    "wall_time_seconds": 4.4035464,
+    "exit_code": 1,
+    "original_token_count": 140
+  },
+  "api_calls": 1,
+  "polls": 0,
+  "main_complete": false,
+  "capture_complete": false,
+  "observation_completed_tick": null,
+  "controller_exit_code": 1,
+  "grok_cli_exit_code": 1,
+  "main_primary_code": "post_comparison",
+  "capture_primary_code": "job_accounting",
+  "controller_failure_code": "model_capture_incomplete",
+  "main_secondary_codes": [],
+  "capture_secondary_codes": [],
+  "recorded_local_resource_facts": {
+    "original_pid": 64360,
+    "original_creation_filetime_decimal": "134376521896332449",
+    "assigned_before_resume": true,
+    "resumed": true,
+    "job_kill_on_close": true,
+    "active_after_retirement": 0,
+    "job_handle_closed": true,
+    "process_handle_closed": true,
+    "parent_writers_closed": [
+      true,
+      true
+    ],
+    "pipe_handles_closed": [
+      true,
+      true
+    ],
+    "channels": [
+      {
+        "cancel_completed": false,
+        "cancel_requested": false,
+        "close_completed": true,
+        "discarded_bytes_lower_bound": 0,
+        "eof": true,
+        "fsync_completed": true,
+        "io_settled": true,
+        "observed_bytes": 77,
+        "overflow": false,
+        "pending_ever": true,
+        "quarantined": false,
+        "read_completions": 2,
+        "read_failed": false,
+        "read_starts": 2,
+        "remainder_unknown": false,
+        "retention_failed": false,
+        "write_extent_unknown": false,
+        "written_prefix_bytes": 77
+      },
+      {
+        "cancel_completed": false,
+        "cancel_requested": false,
+        "close_completed": true,
+        "discarded_bytes_lower_bound": 0,
+        "eof": true,
+        "fsync_completed": true,
+        "io_settled": true,
+        "observed_bytes": 55,
+        "overflow": false,
+        "pending_ever": true,
+        "quarantined": false,
+        "read_completions": 3,
+        "read_failed": false,
+        "read_starts": 3,
+        "remainder_unknown": false,
+        "retention_failed": false,
+        "write_extent_unknown": false,
+        "written_prefix_bytes": 55
+      }
+    ],
+    "forced": false,
+    "deadline_exceeded": false
+  },
+  "post_comparison_complete": true,
+  "raw_sealed": true,
+  "preflight_checks": {
+    "extensions_and_experiments_empty": true,
+    "mcp_and_plugins_disabled": true,
+    "original_configuration_join": true,
+    "pager_ack_disposition": true,
+    "recognized_model_and_provider_route": true,
+    "reviewed_configuration_layers": true
+  },
+  "response_checks": null,
+  "original_controller_and_terminal_joins": true,
+  "external_collection_ended": true,
+  "completion_unknown": false,
+  "known_public_error": "Pinned headless generic resume/load failure; exact fixed stderr confirmed. This does not identify an absent session versus denied I/O or prove a required write.",
+  "network_or_model_request_proven": false,
+  "model_or_product_accepted": false,
+  "interpretation": "Failure and recorded phases remain authoritative; job_accounting/post_comparison labels do not identify the root cause. Captured EOF/retirement/persistence facts do not turn capture.complete=false into success."
+}

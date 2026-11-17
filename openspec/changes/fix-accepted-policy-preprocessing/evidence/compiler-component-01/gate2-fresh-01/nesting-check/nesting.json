@@ -1,0 +1,38 @@
+{
+  "breach": {
+    "kind": "interrupted",
+    "reason": "GuardInterrupted",
+    "volume": null
+  },
+  "breached": true,
+  "child_returncode": -15,
+  "containers": {},
+  "exit_code": 3,
+  "guard_signals": [],
+  "last_sample": {
+    "C:": 185923481600,
+    "E:": 142138482688
+  },
+  "longest_read_seconds": {
+    "C:": 0.001,
+    "E:": 0.001
+  },
+  "max_staleness_seconds": 0.501,
+  "owner_token": "396fe3c6409b4b17466e064782ba0afe",
+  "phase": "nesting",
+  "reads": {
+    "C:": 14,
+    "E:": 14
+  },
+  "retained": "partial state retained; no prune, deletion, retry or floor change",
+  "samples": 28,
+  "schema": "vast.pr9.containment-guard.v1",
+  "stop": {
+    "cause": "interrupted",
+    "client_signals": [
+      "SIGTERM"
+    ],
+    "failures": [],
+    "killed_containers": []
+  }
+}

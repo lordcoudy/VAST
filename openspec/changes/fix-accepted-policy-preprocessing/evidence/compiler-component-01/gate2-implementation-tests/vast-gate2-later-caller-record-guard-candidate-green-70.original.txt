@@ -1,0 +1,12 @@
+CONTROLLED ONLY: real frozen CD_HARNESS; fake imports/spawn/streams/clock, no native/MCP operation
+FACTORY {"sha256": "997579f8ffcc50d6e05ae859dd9164b1dc08ce5a71e82a1d8070633c3cdf3677", "size_bytes": 13073}
+test_accessors_hidden_properties_and_symbols_refuse_without_getters (__main__.DataRecordTests.test_accessors_hidden_properties_and_symbols_refuse_without_getters) ... ok
+test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn (__main__.DataRecordTests.test_boxed_and_custom_prototypes_refuse_before_fields_imports_or_spawn) ... ok
+test_plain_and_null_prototype_data_records_remain_valid (__main__.DataRecordTests.test_plain_and_null_prototype_data_records_remain_valid) ... ok
+test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry (frozen_caller_record_guard_69.LaterStageCallerTests.test_authentic_98_character_native_c1_c6_d_outputs_and_complete_six_frame_geometry) ... CONTROLLED_AUTHENTIC_LATER_SIX_FRAME_GEOMETRY [{"complete_bytes": 3682, "poststdout_failure": false, "stage": "C1", "stderr": 0, "stdout": 725}, {"complete_bytes": 3986, "poststdout_failure": true, "stage": "C1", "stderr": 388, "stdout": 725}, {"complete_bytes": 2998, "poststdout_failure": false, "stage": "C6", "stderr": 0, "stdout": 725}, {"complete_bytes": 3302, "poststdout_failure": true, "stage": "C6", "stderr": 388, "stdout": 725}, {"complete_bytes": 2926, "poststdout_failure": false, "stage": "D", "stderr": 0, "stdout": 568}, {"complete_bytes": 3234, "poststdout_failure": true, "stage": "D", "stderr": 388, "stdout": 568}]
+ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 2.438s
+
+OK

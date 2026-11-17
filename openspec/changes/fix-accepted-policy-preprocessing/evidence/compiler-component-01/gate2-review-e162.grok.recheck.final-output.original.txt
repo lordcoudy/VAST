@@ -1,0 +1,35 @@
+**CLEAR_WITH_NOTES** for unchanged `e16273e4a3f450fd16c6d2079b22c05de389eb10`. HEAD was that commit before this re-review and again immediately before this verdict. Parent remains `93bb04b647a9015f47ad3743551cb416b1695376`. No file was edited.
+
+The original BLOCK stands as the verdict for an F2-closed, then idle, then packet reading. It is not withdrawn. Under the operational boundary below, that reading is not the selected run, and lines 395–397 do not reintroduce the historical `3,402,481,664` B gap. This is a reviewed operational boundary. The source is unchanged. Nothing physical is accepted.
+
+The source is ready for required exact CI and delegated AGENT implementation approval, then for a separate exact-command review and actual packet-evidence approval. It is not ready for physical F2, P0, C, or D until those later gates pass. The operator command is not reviewed and is not claimed done.
+
+## Operational condition
+
+V8 lines 7–8 and 173–174 require implemented-source review, CI, and delegated approval before physical F2 recovery or C/D. V8 line 291 reviews raw evidence and charged forms after the physical runs. V8 does not require a separate actual-F2 evidence review before P0, and it does not require a new helper to authenticate operator measurements. V7 §5 charges C: free decrease over each run and explicitly allows that delta to overcharge for in-run host noise. V8 §5 carries fixed B `11,890,688` B, measures the non-container F2, export, and D intervals, and counts the same allocation once.
+
+The selected recipe is one finite setup operation:
+
+1. Authenticate Git blobs, path identities, fixed invocations, capacity quotes, and approval inputs before any fresh allocation.
+2. Record fresh C: free, ext4 used, floors, and monotonic time before the first export mkdir. Keep that start through the final packet fsync, close, and tail inside one outer envelope of at most 150 s. F2 stays one 90 s deadline and at most 5 s per request. P0 stays one 30 s deadline and at most 10 s per command.
+3. Order inside that live envelope: export the reviewed code paths, native F2, pure F2 verification and the corrected B2 index, native P0 from the exported reviewed P0 bytes with actual status, EOF, and completed write proof, then construct and persist the packet. No external review, user wait, idle pause, rebase, or copied measurement is inserted.
+4. `initial_charged_bytes` is one non-overlapping total: fixed B `11,890,688`, the separate old and fresh `1,048,576` B code-root liabilities, F2 `physical_charge_bytes` and outstanding F2 tails, and every envelope byte of `max(ext4 growth, C: free decrease, all retained forms)` plus outstanding copy and persistence tails that is not already inside those rows. The caller integer is not evidence. Ordered entry and end originals are approved before `expected_packet_sha256` is supplied to C. A copied historical endpoint fails that review.
+5. Freeze the packet only after successful native returns and completed write and close proofs. Independent actual-evidence review happens only after that freeze. Idle time after the freeze is outside the setup charge. If F2 is closed and a review or idle pause is inserted, this clearance does not apply; that case needs its own reviewed finite-interval disposition. The open historical gap is not the charge, a fabricated endpoint is not a measurement, and export growth is not dropped.
+
+## Why lines 395–397 fit this envelope
+
+`accounting["last"]` is F2’s own interior sample (`accepted_policy_fixture_compiler_recovery_v1.py:630-660`), taken from F2’s entry baseline, not from B3 or the readiness endpoint. `initial_measurement` is the later pre-packet sample. With no pause between them, `interval_charge_v1` is growth and host noise inside the active envelope. The historical `3,402,481,664` B drop is before the envelope’s first write, so it is a floor fact in `gate2-readiness-01.v1.json` and is not a term in this subtraction.
+
+The minimum is fixed B plus both `1,048,576` B roots plus F2 physical charge plus `f2_tail` plus only the interior growth above `f2_tail + 1,048,576`. The `1,048,576` B credit is the fresh code/P0/packet row already added. `f2_tail` is the outstanding F2 control, rounding, and metadata liability already added. P0 remains inside the fresh `1,048,576` B row and its own `384` KiB cap. That is a lower bound on one interior slice, not a second copy of the same bytes and not a B3 anchor.
+
+C then carries the reviewed integer as `ledger_before` (`accepted_policy_fixture_compiler_gate2_c_v1.py:976`). D still measures its own interval and sets `gap_charge_bytes` to 0. Packet SHA and Git provenance stay outside the file: `build_packet_v1` documents that a recomputed blob id is not approval, and `validate_packet_v1` requires the external hash and commit.
+
+## Notes the later gates still have to enforce
+
+The source check is not the full-envelope proof. `build_packet_v1` accepts any integer at or above that interior minimum and below `536,870,912`. It will also accept an `initial_measurement` numerically equal to F2 `last`. Success of `initial_charge_omitted_forms` does not prove the outer endpoints.
+
+Evidence review has to bind the operator command’s before-first-write and after-fsync originals to the integer. Pre-F2 export noise and post-sample packet persistence sit outside the interior gap. They are carried by the fresh `1,048,576` B row only up to that row. Residual growth above it, and in-envelope noise hidden by unused credit slack, has to be present in the reviewed integer. Overlapping addition is also a review failure: F2 `physical_charge_bytes` is already inside an envelope max that starts before export, so it is not added a second time on top of that max.
+
+The 150 s figure is this recipe’s outer bound. It is not a new V8 deadline and does not relax F2 or P0. D’s later index stays `LATER_INDEX_ALLOCATION` `4,352` B (`4,096 + 256`) for one summary form, with the raw receipt kept once. P0 `METADATA_COPY_CAP` stays `12` KiB inside `maximum_inclusive_charge()`. No full duplicate receipt is authorized.
+
+Matching source behavior from the first review is unchanged: N3 label union and present-only empty Volumes, preserved null-200 transport, F2’s 19 GETs and caps, fixed P0 argv and completion refusal, C outcome tables and external completion authorities, distinct C3 host and namespace PIDs, unavailable cc1 direct version, and D’s CORE, FSIZE, UID, and aggregate limits.

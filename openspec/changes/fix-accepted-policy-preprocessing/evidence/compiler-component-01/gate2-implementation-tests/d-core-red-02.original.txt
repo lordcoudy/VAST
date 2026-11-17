@@ -1,0 +1,39 @@
+E
+======================================================================
+ERROR: test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation (tests.test_accepted_policy_fixture_compiler_gate2_d_v1.OuterTests.test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 650, in run_d_v1
+    upper = compiler._json_bound(facts)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 247, in _json_bound
+    size += _json_bound(item, depth=depth+1, ancestors=ancestors, nodes=nodes) + 1
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  [Previous line repeated 2 more times]
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_v1.py", line 237, in _json_bound
+    raise ValueError("fixture JSON type/container bound exceeded")
+ValueError: fixture JSON type/container bound exceeded
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 518, in test_native_shaped_maximum_raw_controls_fit_with_rounded_allocation
+    result = self.run_d(observer=observer)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_d_v1.py", line 313, in run_d
+    return stage.run_d_v1(project_root=self.root,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/fixtures/accepted_policy_fixture_compiler_gate2_d_v1.py", line 685, in run_d_v1
+    raise StageDRefusal(code, facts) from error
+tests.fixtures.accepted_policy_fixture_compiler_gate2_d_v1.StageDRefusal: d_ValueError
+
+----------------------------------------------------------------------
+Ran 1 test in 0.084s
+
+FAILED (errors=1)

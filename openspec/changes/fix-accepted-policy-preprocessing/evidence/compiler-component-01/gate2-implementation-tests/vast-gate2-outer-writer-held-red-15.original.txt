@@ -1,0 +1,15 @@
+test_exact_held_buffers_then_eof_are_authenticated_before_same_fd_write (w.HeldWriterTests.test_exact_held_buffers_then_eof_are_authenticated_before_same_fd_write) ... FAIL
+
+======================================================================
+FAIL: test_exact_held_buffers_then_eof_are_authenticated_before_same_fd_write (w.HeldWriterTests.test_exact_held_buffers_then_eof_are_authenticated_before_same_fd_write)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 751, in test_exact_held_buffers_then_eof_are_authenticated_before_same_fd_write
+    self.assertEqual(code, 0)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^
+AssertionError: 1 != 0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.017s
+
+FAILED (failures=1)

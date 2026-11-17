@@ -1,0 +1,77 @@
+FFFFFFFFF
+======================================================================
+FAIL: test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1311, in test_exact_eight_original_inventory_refuses_extra_forms_with_bounded_scan
+    with patch.object(p0.os, "scandir", TrackedScan), self.assertRaises(ValueError):
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0', blocks=769)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0', blocks=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0', blocks=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0', blocks=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0-id.stderr.original', blocks=769)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0-id.stderr.original', blocks=None)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0-id.stderr.original', blocks=-1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_actual_block_allocation_and_unknown_blocks_refuse (tests.test_accepted_policy_fixture_compiler_gate2_p0_v1.OriginalValidationTests.test_actual_block_allocation_and_unknown_blocks_refuse) (target='p0-id.stderr.original', blocks=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/c/Users/s-a-balashov/.codex/worktrees/fix-accepted-policy-preprocessing/VAST/tests/test_accepted_policy_fixture_compiler_gate2_p0_v1.py", line 1337, in test_actual_block_allocation_and_unknown_blocks_refuse
+    with patch.object(Path, "lstat", fake_lstat), patch.object(p0.os, "fstat", fake_fstat), \
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.020s
+
+FAILED (failures=9)

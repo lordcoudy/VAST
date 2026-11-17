@@ -1,0 +1,37 @@
+test_ack_hash_refuses_before_any_target_allocation (caller_controlled_tests.WriterTests.test_ack_hash_refuses_before_any_target_allocation) ... ERROR
+test_actual_literal_ready_ack_same_fd_success (caller_controlled_tests.WriterTests.test_actual_literal_ready_ack_same_fd_success) ... ERROR
+
+======================================================================
+ERROR: test_ack_hash_refuses_before_any_target_allocation (caller_controlled_tests.WriterTests.test_ack_hash_refuses_before_any_target_allocation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 118, in test_ack_hash_refuses_before_any_target_allocation
+    code, lines, opened = self.invoke(self.ack(sha256='0' * 64))
+                          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 95, in invoke
+    exec(compile(source or WRITER_SOURCE, '<fixed-inline-outer-writer>', 'exec'),
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         {'__name__': '__main__'})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<fixed-inline-outer-writer>", line 1, in <module>
+RuntimeError: outer_writer_not_implemented
+
+======================================================================
+ERROR: test_actual_literal_ready_ack_same_fd_success (caller_controlled_tests.WriterTests.test_actual_literal_ready_ack_same_fd_success)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 104, in test_actual_literal_ready_ack_same_fd_success
+    code, lines, opened = self.invoke()
+                          ~~~~~~~~~~~^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_caller_v1.py", line 95, in invoke
+    exec(compile(source or WRITER_SOURCE, '<fixed-inline-outer-writer>', 'exec'),
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         {'__name__': '__main__'})
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<fixed-inline-outer-writer>", line 1, in <module>
+RuntimeError: outer_writer_not_implemented
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.015s
+
+FAILED (errors=2)

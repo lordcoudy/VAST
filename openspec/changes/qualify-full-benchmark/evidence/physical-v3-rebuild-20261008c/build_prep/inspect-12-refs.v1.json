@@ -1,0 +1,78 @@
+{
+ "all_ids_equal": true,
+ "count": 12,
+ "rows": [
+  {
+   "system": "deepstream",
+   "reference": "vast/deepstream-publication-runtime-v3:materialized",
+   "id_equal": true,
+   "raw_sha256": "9bee19f752c3d316248dbc08a724949cfceb56be18f401d8d7dfb390ccb8ea77"
+  },
+  {
+   "system": "deepstream",
+   "reference": "vast/deepstream-publication-runtime-v3:materialized-determinism-a",
+   "id_equal": true,
+   "raw_sha256": "9bee19f752c3d316248dbc08a724949cfceb56be18f401d8d7dfb390ccb8ea77"
+  },
+  {
+   "system": "deepstream",
+   "reference": "vast/deepstream-publication-runtime-v3:materialized-determinism-b",
+   "id_equal": true,
+   "raw_sha256": "9bee19f752c3d316248dbc08a724949cfceb56be18f401d8d7dfb390ccb8ea77"
+  },
+  {
+   "system": "gstreamer_custom",
+   "reference": "vast/gstreamer-custom-publication-runtime-v3:materialized",
+   "id_equal": true,
+   "raw_sha256": "a0b6be0047ae55136802fb47fe4193283512b87cb8a4560b5583c288b1f1ac6f"
+  },
+  {
+   "system": "gstreamer_custom",
+   "reference": "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-a",
+   "id_equal": true,
+   "raw_sha256": "a0b6be0047ae55136802fb47fe4193283512b87cb8a4560b5583c288b1f1ac6f"
+  },
+  {
+   "system": "gstreamer_custom",
+   "reference": "vast/gstreamer-custom-publication-runtime-v3:materialized-determinism-b",
+   "id_equal": true,
+   "raw_sha256": "a0b6be0047ae55136802fb47fe4193283512b87cb8a4560b5583c288b1f1ac6f"
+  },
+  {
+   "system": "openvino_gva",
+   "reference": "vast/openvino-gva-publication-runtime-v3:materialized",
+   "id_equal": true,
+   "raw_sha256": "bba7ae173dda08736824e5b9f3dc3965da8d4c7113aeb86f26db06df95a1d04d"
+  },
+  {
+   "system": "openvino_gva",
+   "reference": "vast/openvino-gva-publication-runtime-v3:materialized-determinism-a",
+   "id_equal": true,
+   "raw_sha256": "bba7ae173dda08736824e5b9f3dc3965da8d4c7113aeb86f26db06df95a1d04d"
+  },
+  {
+   "system": "openvino_gva",
+   "reference": "vast/openvino-gva-publication-runtime-v3:materialized-determinism-b",
+   "id_equal": true,
+   "raw_sha256": "bba7ae173dda08736824e5b9f3dc3965da8d4c7113aeb86f26db06df95a1d04d"
+  },
+  {
+   "system": "savant",
+   "reference": "vast/savant-publication-runtime-v3:materialized",
+   "id_equal": true,
+   "raw_sha256": "4741896b10c89998c2cc00faf22138fc830839fa341e6a5f95e786372096c46d"
+  },
+  {
+   "system": "savant",
+   "reference": "vast/savant-publication-runtime-v3:materialized-determinism-a",
+   "id_equal": true,
+   "raw_sha256": "4741896b10c89998c2cc00faf22138fc830839fa341e6a5f95e786372096c46d"
+  },
+  {
+   "system": "savant",
+   "reference": "vast/savant-publication-runtime-v3:materialized-determinism-b",
+   "id_equal": true,
+   "raw_sha256": "4741896b10c89998c2cc00faf22138fc830839fa341e6a5f95e786372096c46d"
+  }
+ ]
+}

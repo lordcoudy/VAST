@@ -22,6 +22,7 @@ RUNTIME_SAFETY_MODULES = frozenset((
     "test_checkpoint_native_policy_runtime",
     "test_checkpoint_native_policy_publication_projection_v1",
     "test_checkpoint_operational_admission_guard_v1",
+    "test_publication_qualification_operational_owner_v1",
     "test_qualification_operational_closure_cold_gate_v1",
     "test_qualification_complete_operational_promotion_gate_v1",
     "test_publication_runtime_source_closure_guardian_v1",

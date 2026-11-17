@@ -1,0 +1,116 @@
+.EE.E
+======================================================================
+ERROR: test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 148, in _resume_index_v1
+    resume.validate_retention_index_v1(value, retained_source_bindings_v1(repo_root)["sources"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 277, in validate_retention_index_v1
+    need(index.get('roots')=={'owner':str(OWNER),'child':str(ROOT),'aux':str(AUX)}
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and index.get('roles')=={'c75':'c75ad950ee542621a365725db627fdd03d2363e8',
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'producer465':PRODUCER,'p0fix':'bf2c3df73470c198eb71772efa473e5766bcc122',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'planning':'69c2c35f3d51c8d4ef047e7050fe82bfc3b79eae'},'retention_roots_roles')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 54, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: retention_roots_roles
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 73, in test_extra_intermediate_plan_git_is_additive_even_when_current_bytes_unchanged
+    self.assertEqual(self.quote(), 946176)
+                     ~~~~~~~~~~^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 51, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        plan=self.sources[10], operator=self.sources[13], index_descriptor=self.index_descriptor)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 156, in resume_code_forms_quote_v1
+    index = _resume_index_v1(repo_root, index_descriptor)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 150, in _resume_index_v1
+    raise ComponentRecipeError("resume index schema") from error
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: resume index schema
+
+======================================================================
+ERROR: test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 148, in _resume_index_v1
+    resume.validate_retention_index_v1(value, retained_source_bindings_v1(repo_root)["sources"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 277, in validate_retention_index_v1
+    need(index.get('roots')=={'owner':str(OWNER),'child':str(ROOT),'aux':str(AUX)}
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and index.get('roles')=={'c75':'c75ad950ee542621a365725db627fdd03d2363e8',
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'producer465':PRODUCER,'p0fix':'bf2c3df73470c198eb71772efa473e5766bcc122',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'planning':'69c2c35f3d51c8d4ef047e7050fe82bfc3b79eae'},'retention_roots_roles')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 54, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: retention_roots_roles
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 69, in test_scoped_budget_keeps_legacy_and_counts_full_current_and_superseded_forms
+    self.assertEqual(self.quote(), 946176)
+                     ~~~~~~~~~~^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 51, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        plan=self.sources[10], operator=self.sources[13], index_descriptor=self.index_descriptor)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 156, in resume_code_forms_quote_v1
+    index = _resume_index_v1(repo_root, index_descriptor)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 150, in _resume_index_v1
+    raise ComponentRecipeError("resume index schema") from error
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: resume index schema
+
+======================================================================
+ERROR: test_wrong_index_source_identity_or_unchanged_alias_refuses (tests.test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.ResumeSourceFormsTests.test_wrong_index_source_identity_or_unchanged_alias_refuses)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 148, in _resume_index_v1
+    resume.validate_retention_index_v1(value, retained_source_bindings_v1(repo_root)["sources"])
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 277, in validate_retention_index_v1
+    need(index.get('roots')=={'owner':str(OWNER),'child':str(ROOT),'aux':str(AUX)}
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and index.get('roles')=={'c75':'c75ad950ee542621a365725db627fdd03d2363e8',
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'producer465':PRODUCER,'p0fix':'bf2c3df73470c198eb71772efa473e5766bcc122',
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'planning':'69c2c35f3d51c8d4ef047e7050fe82bfc3b79eae'},'retention_roots_roles')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_gate2_resume_v1.py", line 54, in need
+    raise ResumeRefusal(cause, facts)
+tests.fixtures.accepted_policy_fixture_compiler_gate2_resume_v1.ResumeRefusal: retention_roots_roles
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 94, in test_wrong_index_source_identity_or_unchanged_alias_refuses
+    self.quote()
+    ~~~~~~~~~~^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\test_accepted_policy_fixture_compiler_gate2_resume_retention_v1.py", line 51, in quote
+    return component.resume_code_forms_quote_v1(self.root, code=self.code,
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        plan=self.sources[10], operator=self.sources[13], index_descriptor=self.index_descriptor)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 156, in resume_code_forms_quote_v1
+    index = _resume_index_v1(repo_root, index_descriptor)
+  File "C:\Users\s-a-balashov\.codex\worktrees\fix-accepted-policy-preprocessing\VAST\tests\fixtures\accepted_policy_fixture_compiler_component_v1.py", line 150, in _resume_index_v1
+    raise ComponentRecipeError("resume index schema") from error
+tests.fixtures.accepted_policy_fixture_compiler_component_v1.ComponentRecipeError: resume index schema
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.146s
+
+FAILED (errors=3)
