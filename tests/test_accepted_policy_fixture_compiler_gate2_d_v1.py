@@ -294,13 +294,55 @@ class OriginalTests(unittest.TestCase):
     def test_crash_listing_is_complete_and_prebounded(self):
         (self.root / 'unrelated').write_bytes(b'x')
         (self.root / 'wsl-crash-test.dmp').write_bytes(b'old')
-        value = json.loads(stage._crash_listing_v1(self.root))
-        self.assertEqual(len(value), 1)
-        self.assertEqual(value[0][:2], ['wsl-crash-test.dmp', 3])
-        for index in range(64):
-            (self.root / ('wsl-crash-%02d.dmp' % index)).write_bytes(b'')
-        with self.assertRaises(stage.StageDRefusal):
-            stage._crash_listing_v1(self.root)
+        with patch.object(stage, '_crash_parent_v1'):
+            value = json.loads(stage._crash_listing_v1(self.root))
+            self.assertEqual(len(value), 1)
+            self.assertEqual(value[0][:2], ['wsl-crash-test.dmp', 3])
+            for index in range(64):
+                (self.root / ('wsl-crash-%02d.dmp' % index)).write_bytes(b'')
+            with self.assertRaises(stage.StageDRefusal):
+                stage._crash_listing_v1(self.root)
+
+    def test_absent_crash_directory_is_an_explicit_compared_state(self):
+        crashes = self.root / 'wsl-crashes'
+        with patch.object(stage, '_crash_parent_v1') as parent:
+            absent = stage._crash_listing_v1(crashes)
+            self.assertEqual(absent, b'{"directory_present":false}')
+            self.assertEqual(stage._crash_listing_v1(crashes), absent)
+            crashes.mkdir()
+            present = stage._crash_listing_v1(crashes)
+            self.assertEqual(present, b'[]')
+            (crashes / 'wsl-crash-1.dmp').write_bytes(b'd')
+            dumped = stage._crash_listing_v1(crashes)
+        parent.assert_called_with(self.root)
+        self.assertEqual(len({absent, present, dumped}), 3)
+
+    def test_crash_path_that_is_not_a_real_directory_refuses(self):
+        target = self.root / 'real'
+        target.mkdir()
+        (self.root / 'file').write_bytes(b'')
+        (self.root / 'link').symlink_to(target)
+        with patch.object(stage, '_crash_parent_v1'):
+            for name in ('file', 'link'):
+                with self.subTest(name), self.assertRaises(stage.StageDRefusal):
+                    stage._crash_listing_v1(self.root / name)
+            with patch.object(stage.os, 'scandir', side_effect=FileNotFoundError), self.assertRaises(FileNotFoundError):
+                stage._crash_listing_v1(target)
+
+    def test_crash_parent_must_be_a_mounted_real_directory(self):
+        real = self.root / 'real'
+        real.mkdir()
+        (self.root / 'link').symlink_to(real)
+        for parent in (self.root / 'missing', self.root / 'link'):
+            with self.subTest(parent.name), self.assertRaises(stage.StageDRefusal) as caught:
+                stage._crash_parent_v1(parent)
+            self.assertEqual(caught.exception.cause, 'd_crash_parent')
+        same = os.stat_result((0o40755, 0, os.lstat('/').st_dev) + (0,) * 7)
+        with patch.object(stage.os, 'lstat', return_value=same), self.assertRaises(stage.StageDRefusal):
+            stage._crash_parent_v1(real)
+        mounted = os.stat_result((0o40755, 0, os.lstat('/').st_dev + 1) + (0,) * 7)
+        with patch.object(stage.os, 'lstat', side_effect=lambda p: mounted if p == real else os.stat('/')):
+            stage._crash_parent_v1(real)
 
     def test_control_rounding_and_symlinks_are_charged(self):
         controls = self.root / 'controls'
@@ -878,9 +920,13 @@ class ReservationTests(unittest.TestCase):
     def test_exact_crash_directory_pin_is_used_by_default(self):
         expected = Path('/mnt/c/Users/s-a-balashov/AppData/Local/Temp/wsl-crashes')
         self.assertEqual(stage.CRASH_DIRECTORY, expected)
-        with patch.object(stage.os, 'scandir', return_value=nullcontext([])) as scan:
+        root_dev = os.lstat('/').st_dev
+        def lstat(path):
+            return os.stat_result((0o40755, 0, root_dev if str(path) == '/' else root_dev + 1) + (0,) * 7)
+        with patch.object(stage.os, 'lstat', side_effect=lstat) as probe,                 patch.object(stage.os, 'scandir', return_value=nullcontext([])) as scan:
             self.assertEqual(stage._crash_listing_v1(), b'[]')
         scan.assert_called_once_with(expected)
+        self.assertEqual([call.args[0] for call in probe.call_args_list], [expected.parent, '/', expected])
 
 
 class SnapshotTests(unittest.TestCase):

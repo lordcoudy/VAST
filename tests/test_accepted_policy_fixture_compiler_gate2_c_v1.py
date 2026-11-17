@@ -2,10 +2,12 @@
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path, PureWindowsPath
 import struct
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -877,6 +879,69 @@ class B1EnvironmentTests(unittest.TestCase):
         for value in (None, [], sorted(self.env)):
             with self.subTest(value=type(value).__name__), self.assertRaises(gate.Gate2Refusal):
                 gate._b1_image_environment_keys_v1(value)
+
+
+class CrashListingTests(unittest.TestCase):
+    """Amendment A2: an absent WSL crash directory is an explicit, compared state."""
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.root = Path(self.tmp.name).resolve()
+        self.crashes = self.root / "wsl-crashes"
+        self.count = 0
+
+    def listing(self):
+        self.count += 1
+        path = self.root / ("listing-%d.json" % self.count)
+        with patch.object(gate, "CRASH_DIRECTORY", self.crashes), patch.object(gate, "_crash_parent_v1") as parent:
+            desc = gate._crash_listing_v1(path, time.monotonic_ns() + 5_000_000_000)
+        parent.assert_called_once_with(self.root)
+        return path.read_bytes(), desc
+
+    def test_absent_present_and_dumped_listings_differ(self):
+        absent, desc = self.listing()
+        self.assertEqual(absent, b'{"directory_present":false}')
+        self.assertEqual(desc["size_bytes"], len(absent))
+        self.assertEqual(self.listing()[0], absent)
+        self.crashes.mkdir()
+        present = self.listing()[0]
+        self.assertEqual(present, b"[]")
+        (self.crashes / "wsl-crash-1.dmp").write_bytes(b"d")
+        dumped = self.listing()[0]
+        self.assertEqual(len({absent, present, dumped}), 3)
+
+    def test_crash_path_that_is_not_a_real_directory_refuses(self):
+        real = self.root / "real"
+        real.mkdir()
+        self.crashes.write_bytes(b"")
+        with self.assertRaises(gate.Gate2Refusal) as caught:
+            self.listing()
+        self.assertEqual(caught.exception.cause, "crash_directory_kind")
+        self.crashes.unlink()
+        self.crashes.symlink_to(real)
+        with self.assertRaises(gate.Gate2Refusal):
+            self.listing()
+        self.crashes.unlink()
+        self.crashes.mkdir()
+        with patch.object(gate.os, "scandir", side_effect=FileNotFoundError), self.assertRaises(FileNotFoundError):
+            self.listing()
+
+    def test_crash_parent_must_be_a_mounted_real_directory(self):
+        real = self.root / "real"
+        real.mkdir()
+        (self.root / "link").symlink_to(real)
+        for parent in (self.root / "missing", self.root / "link"):
+            with self.subTest(parent.name), self.assertRaises(gate.Gate2Refusal) as caught:
+                gate._crash_parent_v1(parent)
+            self.assertEqual(caught.exception.cause, "crash_parent")
+        root_dev = os.lstat("/").st_dev
+        same = os.stat_result((0o40755, 0, root_dev) + (0,) * 7)
+        with patch.object(gate.os, "lstat", return_value=same), self.assertRaises(gate.Gate2Refusal):
+            gate._crash_parent_v1(real)
+        mounted = os.stat_result((0o40755, 0, root_dev + 1) + (0,) * 7)
+        with patch.object(gate.os, "lstat", side_effect=lambda p: mounted if p == real else os.stat("/")):
+            gate._crash_parent_v1(real)
+        self.assertEqual(gate.CRASH_DIRECTORY.parent, Path("/mnt/c/Users/s-a-balashov/AppData/Local/Temp"))
 
 
 class FreshPacketTests(unittest.TestCase):

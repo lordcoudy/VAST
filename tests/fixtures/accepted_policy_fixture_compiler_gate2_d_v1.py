@@ -346,7 +346,24 @@ def _copy_c1_elf_v1(root, binding, destination, *, clock, deadline):
                 nlink=actual.st_nlink, interpreter=interpreter)
 
 
+def _crash_parent_v1(parent):
+    """A2: the crash directory's parent must be a real directory on the mounted Windows drive."""
+    try:
+        info, root = os.lstat(parent), os.lstat('/')
+    except OSError as error:
+        raise StageDRefusal('d_crash_parent') from error
+    if not stat.S_ISDIR(info.st_mode) or info.st_dev == root.st_dev:
+        raise StageDRefusal('d_crash_parent')
+
+
 def _crash_listing_v1(directory=CRASH_DIRECTORY):
+    _crash_parent_v1(directory.parent)
+    try:
+        info = os.lstat(directory)
+    except FileNotFoundError:
+        return recipe.canonical_json_v1({'directory_present': False})
+    if not stat.S_ISDIR(info.st_mode):
+        raise StageDRefusal('d_crash_inventory_shape')
     rows, count = [], 0
     with os.scandir(directory) as entries:
         for entry in entries:

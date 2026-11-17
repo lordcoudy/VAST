@@ -1699,7 +1699,22 @@ def _allocation_summary_v1(root):
     "metadata_upper_bytes": len(paths) * 4096}
 
 
+def _crash_parent_v1(parent):
+  """A2: the crash directory's parent must be a real directory on the mounted Windows drive."""
+  try:
+    info, root = os.lstat(parent), os.lstat("/")
+  except OSError as error:
+    raise Gate2Refusal("crash_parent") from error
+  _require(stat.S_ISDIR(info.st_mode) and info.st_dev != root.st_dev, "crash_parent")
+
+
 def _crash_listing_v1(path, deadline):
+  _crash_parent_v1(CRASH_DIRECTORY.parent)
+  try:
+    info = os.lstat(CRASH_DIRECTORY)
+  except FileNotFoundError:
+    return write_record_v1(path, {"directory_present": False}, cap=16384, absolute_deadline_ns=deadline)
+  _require(stat.S_ISDIR(info.st_mode), "crash_directory_kind")
   rows = []
   with os.scandir(CRASH_DIRECTORY) as entries:
     for index, entry in enumerate(entries):
