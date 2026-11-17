@@ -2594,13 +2594,15 @@ executor's fixed configuration, and a test ties the constant to
 
 **Before attempt 03:**
 - a local read-only dry run against the retained attempt-02 root and aux, with the
-  fixed `gate2_c` loaded in memory and the code descriptors taken from the new
-  commit (so the new `gate2_c` size counts): `build_packet_v1` succeeds; the packet is
+  fixed `gate2_c` loaded in memory from the new commit, but the code descriptors and
+  manifest of attempt 02 (the root holds those bytes, and `_verify_code` and the fresh
+  authentication bind them): `build_packet_v1` succeeds; the packet is
   encoded exactly as `write_record_v1` encodes it, decoded with
   `_json(..., canonical=True)`, rebuilt and compared, as `validate_packet_v1` does.
   The run prints the three limits a real-evidence packet meets for the first time:
   the seed against 4,096 B, `_json_bound(packet)` against 32,768 B, and code plus
-  packet plus plan plus seed against 640 KiB. Nothing is written;
+  packet plus plan plus seed against 640 KiB, the last recomputed separately with the
+  new `gate2_c` size swapped in. Nothing is written;
 - independent Claude-subagent review of the exact implementation commit, required
   CI and a recorded delegated agent approval naming attempt 03 and the new X;
 - the uid-1000 keepalive before any WSL step (the VM idles out between calls);
