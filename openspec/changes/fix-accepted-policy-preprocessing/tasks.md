@@ -990,6 +990,12 @@ states are unchanged; the spec counts become 11/90.
      unmocked `/proc` test; review, CI and approval of the fix commit, a new
      re-admission, and attempt 02 under that commit's own fresh root, retained in
      `gate2-fresh-01/packet-attempt-02/`.
+   - Attempt 02 (approved `a3c88945`, 2026-11-17): PRE, EXPORT and P0 passed; PACKET
+     refused `b_environment` before writing a packet. `gate2_c` compares B1's
+     in-container environment keys with the pin taken from the image `Config.Env`
+     keys. Originals in `gate2-fresh-01/packet-attempt-02/`; the attempt is consumed,
+     and its root stays in place, charged. A further attempt needs the human's
+     decision and a reviewed predicate amendment.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
