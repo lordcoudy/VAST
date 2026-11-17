@@ -10,10 +10,11 @@ from tests.fixtures.accepted_policy_change_paths_v1 import change_directory_v1
 ROOT = Path(__file__).resolve().parents[1]
 RETIRED = "evidence/retired-development-tests-20261111"
 # Byte-exact operators (design.md R1 and the 2026-11-11 setup/capture finding). gate2_c is pinned at its
-# reviewed fresh-gate-2 bytes (design.md, "Fresh direct gate 2"); its earlier bytes are a retired copy.
+# reviewed fresh-gate-2 bytes as amended by A1 (design.md, "Fresh direct gate 2" and "Amendment A1"); its
+# pre-fresh bytes are a retired copy, and its pre-A1 bytes (d005a380) stay in Git history.
 FROZEN = {
     "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py":
-        (141129, "d005a380726e3495ee0558d645b4a385b25aa1b8779f079d6225455be6cc2735"),
+        (142335, "7c46383fe16678c5395e2381c4739201b35c98e2bf17405f6b55a08f85051fd7"),
     "tests/fixtures/accepted_policy_fixture_compiler_v1.py":
         (103925, "1e40d4786fd03543ac43df7fe0e42a4349d55bad9288ead28f5d2a6ad87bcb03"),
     "tests/fixtures/accepted_policy_fixture_compiler_gate2_setup_v1.py":

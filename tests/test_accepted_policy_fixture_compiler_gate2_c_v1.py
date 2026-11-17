@@ -828,6 +828,57 @@ class ResumePacketTests(unittest.TestCase):
                 'preencode_bound':gate.compiler._json_bound(packet),'logical_bytes':logical}}))
 
 
+class B1EnvironmentTests(unittest.TestCase):
+    """Amendment A1: the real B1 environment, unmocked (packet tests mock _authenticate_evidence)."""
+    def setUp(self):
+        fixture = json.loads((ROOT / "tests/fixtures/gate2/b1-environment-v1.json").read_bytes())
+        self.assertEqual(fixture["source"]["sha256"], gate.B_ORIGINAL_SHA256["b1_report"])
+        self.env = fixture["environment"]
+
+    def test_real_b1_environment_yields_the_pinned_image_keys(self):
+        keys = gate._b1_image_environment_keys_v1(copy.deepcopy(self.env))
+        self.assertEqual((len(self.env), len(keys)), (70, 60))
+        self.assertEqual(sha(canonical(keys)), gate.EXPECTED["env_keys_sha256"])
+        self.assertIn("PATH", keys)
+        self.assertNotIn("HOSTNAME", keys)
+        self.assertEqual({k: v for k, v in self.env.items() if v}, gate.B1_RUNTIME_ENVIRONMENT_V1)
+
+    def test_b1_environment_is_exactly_what_the_executor_configures(self):
+        keys = gate._b1_image_environment_keys_v1(copy.deepcopy(self.env))
+        image = {"Id": gate.compiler.PROVIDER_ID, "Os": "linux", "Architecture": "amd64", "Config": {
+            "Env": [key + "=image" for key in keys], "Labels": {"l%d" % i: "v" for i in range(23)}, "Volumes": None}}
+        profile = (ROOT / "tests/fixtures/accepted_policy_fixture_compiler_seccomp_v1.json").read_bytes()
+        config = gate.compiler.compiler_container_config_v1(image, environment_keys=keys,
+            publisher_path="/fixture/compiler.py", profile_raw=profile, nonce="0" * 32, source_sha256="0" * 64)
+        built = dict(entry.split("=", 1) for entry in config["Env"])
+        built["HOSTNAME"] = config["Hostname"]
+        self.assertEqual(built, self.env)
+
+    def test_every_other_b1_environment_refuses(self):
+        def put(key, value):
+            return lambda env: env.__setitem__(key, value)
+        def drop(key):
+            return lambda env: env.pop(key)
+        mutations = {
+            "override missing": drop("HOME"), "override changed": put("TMPDIR", "/tmp"),
+            "path changed": put("PATH", "/usr/local/bin:/usr/bin:/bin"), "path missing": drop("PATH"),
+            "hostname missing": drop("HOSTNAME"), "hostname changed": put("HOSTNAME", "other"),
+            "image value set": put("CUDA_VERSION", "12.2"), "image key missing": drop("CUDA_VERSION"),
+            "extra empty key": put("EXTRA", ""), "extra set key": put("EXTRA", "1"),
+            "non-string value": put("CUDA_VERSION", None), "non-ascii key": put("CUDAé", ""),
+            "too many keys": lambda env: env.update({"K%d" % i: "" for i in range(187)}),
+        }
+        for name, mutate in mutations.items():
+            env = copy.deepcopy(self.env)
+            mutate(env)
+            with self.subTest(name), self.assertRaises(gate.Gate2Refusal) as caught:
+                gate._b1_image_environment_keys_v1(env)
+            self.assertEqual(caught.exception.cause, "b_environment")
+        for value in (None, [], sorted(self.env)):
+            with self.subTest(value=type(value).__name__), self.assertRaises(gate.Gate2Refusal):
+                gate._b1_image_environment_keys_v1(value)
+
+
 class FreshPacketTests(unittest.TestCase):
     """Fresh direct gate 2 (design.md 2026-11-12, component-admission-plan.v9.md sections 2 and 5)."""
     COMMIT = 'e' * 40

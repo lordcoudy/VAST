@@ -183,7 +183,11 @@ class FreshOperatorTests(unittest.TestCase):
 
     def test_p0_needs_its_own_and_the_packet_budget(self):
         order, writes = self.main_world({"PRE": self.PRE, "EXPORT": {}, "PACKET": {}})
-        status = fresh.main(COMMIT, "a", "m.json", fresh.sha(self.raw), _original_start_ns=time.monotonic_ns() - 100 * fresh.NS)
+        real = time.monotonic_ns
+        # Offset the clock so the start 100 s back stays positive even just after a VM boot.
+        with patch.object(fresh.time, "monotonic_ns", lambda: real() + 1000 * fresh.NS):
+            status = fresh.main(COMMIT, "a", "m.json", fresh.sha(self.raw),
+                _original_start_ns=fresh.time.monotonic_ns() - 100 * fresh.NS)
         self.assertEqual((status, order, json.loads(writes[-1][1])["causes"]), (1, ["PRE", "EXPORT"], ["p0_budget"]))
 
     def test_a_late_child_is_killed_and_waited_for_after_its_facts_are_copied(self):

@@ -86,6 +86,11 @@ EXPECTED = {
   "env_keys_sha256": "6785bc7c38e52df3c99c3856d0619875fc1a1f44aab077baa550da820b8f1db9",
   "platform_manifest": compiler.PROVIDER_PLATFORM_MANIFEST, "unpacked_bytes": 18930790400,
 }
+# B1's initial environment beyond the image keys (amendment A1): compiler_container_config_v1's fixed
+# overrides plus Docker's HOSTNAME from the configured Hostname. Every other key is an image key set to "".
+B1_RUNTIME_ENVIRONMENT_V1 = {"HOME": "/work", "HOSTNAME": "vast-fixture-compiler", "LANG": "C", "LC_ALL": "C",
+  "PATH": "/usr/bin:/bin", "PYTHONDONTWRITEBYTECODE": "1", "PYTHONHASHSEED": "0", "PYTHONNOUSERSITE": "1",
+  "TEMP": "/work", "TMP": "/work", "TMPDIR": "/work"}
 CODE_PATHS = (
   "tests/fixtures/accepted_policy_fixture_compiler_gate2_c_v1.py",
   "tests/fixtures/accepted_policy_fixture_compiler_component_v1.py",
@@ -559,9 +564,20 @@ def _authenticate_evidence(evidence, review, plan_sha):
   _require(Path(evidence["f2_accounting"]["path"]) == f2_root / "f2.final-accounting.v1.json" and
     actual["f2_accounting"] == _read(f2_root / "f2.final-accounting.v1.json", component.F2_FOOTER_LIMIT_V1), "f2_accounting_binding")
   b1 = _json(actual["b1_report"], 1048576)
-  environment = ((b1.get("report") or {}).get("environment") or {}).get("environment")
-  _require(type(environment) is dict and _sha(component.canonical_json_v1(sorted(environment))) == EXPECTED["env_keys_sha256"], "b_environment")
-  return {"environment_keys": sorted(environment), "accounting": _json(actual["f2_accounting"], component.F2_FOOTER_LIMIT_V1)["accounting"]}
+  environment_keys = _b1_image_environment_keys_v1(((b1.get("report") or {}).get("environment") or {}).get("environment"))
+  return {"environment_keys": environment_keys, "accounting": _json(actual["f2_accounting"], component.F2_FOOTER_LIMIT_V1)["accounting"]}
+
+
+def _b1_image_environment_keys_v1(environment):
+  """B1's initial environment is exactly the image keys set to "" plus B1_RUNTIME_ENVIRONMENT_V1; return the image keys."""
+  _require(type(environment) is dict and len(environment) <= 256 and all(type(key) is str and key.isascii() and
+    type(value) is str for key, value in environment.items()), "b_environment")
+  _require(all(environment.get(key) == value for key, value in B1_RUNTIME_ENVIRONMENT_V1.items()), "b_environment")
+  _require(all(value == "" for key, value in environment.items() if key not in B1_RUNTIME_ENVIRONMENT_V1), "b_environment")
+  added = set(B1_RUNTIME_ENVIRONMENT_V1) - {"PATH"}
+  keys = sorted(key for key in environment if key not in added)
+  _require(_sha(component.canonical_json_v1(keys)) == EXPECTED["env_keys_sha256"], "b_environment")
+  return keys
 
 
 def _proof_envelopes(evidence):
