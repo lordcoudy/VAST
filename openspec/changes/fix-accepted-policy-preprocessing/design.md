@@ -1928,7 +1928,7 @@ diagnostics volume stays required.
 
 **Capacity: one whole-chain admission from measured bounds, plus a containment guard.**
 Both VHDX files are dynamic, sit on C: and never shrink: Desktop `docker_data.vhdx`
-(143.6GB) and Ubuntu `ext4.vhdx` (144.1GB). WSL's reported 820GB is virtual and earns
+(143.6GiB, which is 154.2GB; unit corrected by amendment A1) and Ubuntu `ext4.vhdx` (144.1GB). WSL's reported 820GB is virtual and earns
 no credit. No Desktop or WSL disk setting is changed, because lowering a virtual-disk
 limit can recreate the disk and so lose protected images.
 
@@ -2551,13 +2551,17 @@ for "the 60 sorted env keys". So the seed must carry the 60 image keys, not B1's
 No other code reads B1's environment.
 
 **Corrected predicate (`gate2_c` only).** One new constant,
-`B1_RUNTIME_ENVIRONMENT_V1`, holds the 11 non-empty pairs above. `_authenticate_evidence`
-then requires, in order:
+`B1_RUNTIME_ENVIRONMENT_V1`, holds the 11 non-empty pairs above. One new helper,
+`_b1_image_environment_keys_v1(environment)`, called by `_authenticate_evidence` in
+place of the old line, requires, in order:
 1. the environment is a dict of at most 256 ASCII string keys to string values;
 2. every key of `B1_RUNTIME_ENVIRONMENT_V1` is present with exactly its value;
 3. every other key has the value `""`;
 4. `image_keys = sorted(keys − {HOSTNAME} − (override keys other than PATH))` hashes
-   to `EXPECTED["env_keys_sha256"]` and contains `PATH`.
+   to `EXPECTED["env_keys_sha256"]` (which already implies that `PATH` is an image key).
+
+The `b1_report` bytes are pinned by `B_ORIGINAL_SHA256` before this check, so the only
+real input is the retained report; the other branches are reached only by tests.
 
 Any failure refuses `b_environment`. The function returns `image_keys` (60) as
 `environment_keys`, so the seed is unchanged in form and C1–C6 accept it. The pin
@@ -2567,13 +2571,18 @@ executor's fixed configuration, and a test ties the constant to
 `compiler_container_config_v1`.
 
 **Implementation scope** (after this amendment is approved):
-- `gate2_c`: the constant and the four checks. Its byte pin in
-  `tests/test_accepted_policy_retired_development_tests_v1.py` moves deliberately;
-  the current bytes (141,129 B, `d005a380…`) become a ninth `.retired` copy with its
-  README row.
+- `gate2_c`: the constant, the helper and the four checks. Its `FROZEN` byte pin in
+  `tests/test_accepted_policy_retired_development_tests_v1.py` moves deliberately to the
+  new size and SHA256. No new `.retired` copy is made: the copy name
+  `accepted_policy_fixture_compiler_gate2_c_v1.py.retired` is already taken by the
+  earlier retired bytes that the retired-route tests read, and the README keeps its 8
+  rows. The replaced bytes (141,129 B, `d005a380…`, git blob `f5dab827`) stay in Git
+  history, in the attempt-02 manifest, and in the attempt-02 root's exported copy.
 - Tests:
   - GREEN on the real B1 environment, kept as a small JSON fixture whose source
-    report SHA256 is the pinned `B_ORIGINAL_SHA256["b1_report"]`;
+    report SHA256 is the pinned `B_ORIGINAL_SHA256["b1_report"]`, calling the real
+    helper (existing packet tests mock `_authenticate_evidence`, which is how this
+    defect passed);
   - RED for each rule: a missing, extra or changed override; a non-empty image value;
     a missing or changed `HOSTNAME`; a dropped or added image key; non-string values;
   - the constant equals the `Env` that `compiler_container_config_v1` builds for an
@@ -2585,9 +2594,13 @@ executor's fixed configuration, and a test ties the constant to
 
 **Before attempt 03:**
 - a local read-only dry run against the retained attempt-02 root and aux, with the
-  fixed `gate2_c` loaded in memory: `build_packet_v1` succeeds, and an in-memory
-  `validate_packet_v1` equivalent (canonical encode, decode, rebuild, compare)
-  matches. Nothing is written;
+  fixed `gate2_c` loaded in memory and the code descriptors taken from the new
+  commit (so the new `gate2_c` size counts): `build_packet_v1` succeeds; the packet is
+  encoded exactly as `write_record_v1` encodes it, decoded with
+  `_json(..., canonical=True)`, rebuilt and compared, as `validate_packet_v1` does.
+  The run prints the three limits a real-evidence packet meets for the first time:
+  the seed against 4,096 B, `_json_bound(packet)` against 32,768 B, and code plus
+  packet plus plan plus seed against 640 KiB. Nothing is written;
 - independent Claude-subagent review of the exact implementation commit, required
   CI and a recorded delegated agent approval naming attempt 03 and the new X;
 - the uid-1000 keepalive before any WSL step (the VM idles out between calls);
@@ -2596,5 +2609,7 @@ executor's fixed configuration, and a test ties the constant to
 **Remnants.** The attempt-01 `.guard` and the attempt-02 root, `.operator-originals`
 and `.guard` (734,720 B measured for root plus aux) stay in place and are charged
 into whole 1.5. They are outside the new X ledger, which starts from its own fresh
-root. Attempt 03 is one invocation under V9 sections 3 and 6; its failure stops the
+root. V9's cumulative ledger is not reset: the guard row (8 × 65,536 B) funds 8
+new invocations under X, and the two used attempt guards are not among them.
+Attempt 03 is one invocation under V9 sections 3 and 6; its failure stops the
 chain again, and any further attempt is the human's decision.

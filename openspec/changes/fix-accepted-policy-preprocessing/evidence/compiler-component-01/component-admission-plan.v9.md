@@ -321,4 +321,6 @@ unchanged pin and become the seed's `environment_keys`.
 Attempt 03 then follows sections 3 and 6 unchanged, under a new reviewed commit X
 with its own fresh root, guard directory, re-admission and manifest. Its originals
 go to `gate2-fresh-01/packet-attempt-03/`. The attempt-01 and attempt-02 remnants
-stay in place and are charged into whole 1.5, outside the new X ledger.
+stay in place and are charged into whole 1.5, outside the new X ledger. The ledger
+of section 5 is not reset: its guard row funds 8 new invocations under X, and the
+two used attempt guards are not among them.
