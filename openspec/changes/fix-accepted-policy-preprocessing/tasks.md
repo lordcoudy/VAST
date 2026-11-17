@@ -1002,6 +1002,11 @@ states are unchanged; the spec counts become 11/90.
      dry run on the attempt-02 originals; implementation review, CI and an approval
      naming attempt 03; keepalive, pre-flight, re-admission and manifest; then one
      attempt 03 retained in `gate2-fresh-01/packet-attempt-03/`.
+   - A1 approved at `02cbc1e8`; implementation `6741b6cd` reviewed, CI green and
+     approved. Attempt 03 (2026-11-17) completed: PRE, EXPORT, P0, PACKET and POST
+     passed, no guard breach; packet 17,937 B `e7686254…`, allocation 734,720 B,
+     noise and excess 0. Originals in `gate2-fresh-01/packet-attempt-03/`. Next: the
+     independent packet review and an approval naming the packet hash.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
