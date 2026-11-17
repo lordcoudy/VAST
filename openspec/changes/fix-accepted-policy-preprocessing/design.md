@@ -2673,9 +2673,11 @@ and file names are unchanged.
   present, present to absent, and a new crash file each fail the comparison; a file or
   symlink at the pinned path refuses; a parent that is missing, a symlink, or on the
   same device as `/` refuses; a directory that vanishes after `lstat` refuses.
-  `test_exact_crash_directory_pin_is_used_by_default` (D tests) changes: it mocks
-  `lstat` as well as `scandir`, because the real path is now checked first. The other
-  present-directory tests are unchanged.
+  Two D tests change only in their mocks, because the parent and path are now checked
+  first: `test_exact_crash_directory_pin_is_used_by_default` mocks `lstat` as well as
+  `scandir`, and `test_crash_listing_is_complete_and_prebounded` mocks the parent
+  check for its temporary directory. Their assertions are unchanged, and so are the
+  other present-directory tests.
 
 **Before attempt 04:**
 - independent Claude-subagent review of the implementation commit, required CI and a
