@@ -88,6 +88,9 @@ EXPECTED = {
 }
 # B1's initial environment beyond the image keys (amendment A1): compiler_container_config_v1's fixed
 # overrides plus Docker's HOSTNAME from the configured Hostname. Every other key is an image key set to "".
+# A3: C3's exact compiler stderr (GCC 11 ICE "File size limit exceeded signal terminated program as" plus its fixed
+# bug-report lines), retained from attempt 04; the pinned image and LC_ALL=C make it deterministic.
+C3_COMPILER_STDERR_SHA256 = "c297c364275e74a0b3dabf12a5b4f84754b0cada1cfa6c1b6db4a6803744f24b"
 B1_RUNTIME_ENVIRONMENT_V1 = {"HOME": "/work", "HOSTNAME": "vast-fixture-compiler", "LANG": "C", "LC_ALL": "C",
   "PATH": "/usr/bin:/bin", "PYTHONDONTWRITEBYTECODE": "1", "PYTHONHASHSEED": "0", "PYTHONNOUSERSITE": "1",
   "TEMP": "/work", "TMP": "/work", "TMPDIR": "/work"}
@@ -1632,7 +1635,8 @@ def kernel_delta_v1(stage, before, after, compiler_stderr):
     return {"passed": not delta, "delta_sha256": _sha(delta), "direct_pid_cgroup_observation": False}
   try:
     lines = [re.sub(r"^\[\s*[0-9.]+\]\s*", "", line) for line in delta.decode("ascii").splitlines()]
-    banners = [line for line in lines if re.fullmatch(r"(?:[^\s:]+/)?as(?:: as)?: potentially unexpected fatal signal 25\.", line)]
+    # A3: the kernel prints the executable's basename then comm; in the provider image `as` is x86_64-linux-gnu-as.
+    banners = [line for line in lines if re.fullmatch(r"(?:(?:[^\s:]+/)?as|x86_64-linux-gnu-as)(?:: as)?: potentially unexpected fatal signal 25\.", line)]
     cpu = [line for line in lines if re.fullmatch(r"CPU: [0-9]+ PID: [0-9]+ Comm: as +Not tainted 6\.6\.87\.2-microsoft-standard-WSL2 #1", line)]
     core = [line for line in lines if re.fullmatch(r"Process [0-9]+\(as\) has RLIMIT_CORE set to 1", line)]
     audit = [line for line in lines if re.fullmatch(r'audit: type=1701 audit\([0-9.:]+\): .*\buid=1000\b.*\bgid=1000\b.*\bcomm="as" .*\bsig=25\b.*', line)]
@@ -1653,7 +1657,7 @@ def kernel_delta_v1(stage, before, after, compiler_stderr):
     audit_bound = not audit or len(audit) == 1 and len(audit_pids) == 1 and int(audit_pids[0]) == host_pid
     passed = (len(banners) == len(cpu) == len(core) == 1 and lines.count("Aborting core") == 1 and
       host_pid > 0 and namespace_pid > 0 and audit_bound and
-      b"File size limit exceeded" in compiler_stderr and all(allowed(line) for line in lines))
+      _sha(compiler_stderr) == C3_COMPILER_STDERR_SHA256 and all(allowed(line) for line in lines))
   except (UnicodeError, TypeError):
     passed = False
   return {"passed": passed, "delta_sha256": _sha(delta), "direct_pid_cgroup_observation": False}
@@ -2266,7 +2270,7 @@ def evaluate_c_v1(stage, owner, observations):
       runtime.get("core") == [1, 1] and all(type(v) is int for v in runtime["core"]) and
       runtime.get("fsize") == [16777216, 16777216] and all(type(v) is int for v in runtime["fsize"]) and
       runtime.get("interpreter_elf64_amd64") is True and runtime.get("compiler_elf64_amd64") is True, "runtime_limits_abi")
-    code = 0 if stage in ("C1", "C6") else 1 if stage in ("C2", "C3") else -15
+    code = 0 if stage in ("C1", "C6") else 1 if stage == "C2" else 4 if stage == "C3" else -15  # A3: GCC ICE exit for C3
     check(type(child.get("returncode")) is int and child["returncode"] == code and
       child.get("started") is True and child.get("reaped") is True and header.get("descendants_reaped") is True, "compiler_status_reap")
     expected = [[]] if stage in ("C1", "C6") else [["compiler_exit_nonzero"]]

@@ -28,6 +28,12 @@ def sha(raw):
     return hashlib.sha256(raw).hexdigest()
 
 
+# A3: the real C3 dmesg delta and compiler stderr retained from attempt 04 (tests/fixtures/gate2/c3-actual-v1.json).
+C3_ACTUAL = json.loads((ROOT / "tests/fixtures/gate2/c3-actual-v1.json").read_bytes())
+C3_STDERR = C3_ACTUAL["compiler_stderr"]["text"].encode("ascii")
+C3_DELTA = C3_ACTUAL["dmesg_delta"]["text"].encode("ascii")
+
+
 def canonical(value):
     return component.canonical_json_v1(value)
 
@@ -43,14 +49,14 @@ def elf():
 
 def outcome(stage, adopted=False):
     source = component.component_source_v1("c1" if stage == "C6" else stage.lower())
-    code = 0 if stage in ("C1", "C6") else 1 if stage in ("C2", "C3") else -15
+    code = 0 if stage in ("C1", "C6") else 1 if stage == "C2" else 4 if stage == "C3" else -15
     pub = [] if stage in ("C1", "C6") else ["compiler_exit_nonzero"]
     if stage in ("C4", "C5"):
         pub = ["stderr_overflow" if stage == "C4" else "compiler_deadline", "compiler_term_attempted"]
         if adopted:
             pub.append("descendant_exit_nonzero")
         pub.append("compiler_exit_nonzero")
-    data = {"stdout": b"", "stderr": b"x" * 1048576 if stage == "C4" else b"as: File size limit exceeded\n" if stage == "C3" else b"diagnostic\n" if stage == "C2" else b"",
+    data = {"stdout": b"", "stderr": b"x" * 1048576 if stage == "C4" else C3_STDERR if stage == "C3" else b"diagnostic\n" if stage == "C2" else b"",
             "elf": elf() if stage in ("C1", "C6") else b""}
     channels = {name: {"size_bytes": len(data[name]), "sha256": sha(data[name]), "eof": True,
                 "observed_bytes": len(data[name]) + (17 if stage == "C4" and name == "stderr" else 0),
@@ -1656,21 +1662,69 @@ class FixedEffectsTests(unittest.TestCase):
                  b"[ 2.1] CPU: 1 PID: 22 Comm: as Not tainted 6.6.87.2-microsoft-standard-WSL2 #1\n"
                  b"[ 2.2] RIP: 0033:0x401007\n"
                  b"[ 2.3] Process 12(as) has RLIMIT_CORE set to 1\n[ 2.4] Aborting core\n")
-        self.assertTrue(gate.kernel_delta_v1("C3", before, before + lines, b"as: File size limit exceeded\n")["passed"])
+        self.assertTrue(gate.kernel_delta_v1("C3", before, before + lines, C3_STDERR)["passed"])
         self.assertFalse(gate.kernel_delta_v1("C1", before, before + lines, b"")["passed"])
         self.assertFalse(gate.kernel_delta_v1("C3", before, before + lines + b"[ 3.0] unrelated crash\n",
-                                             b"as: File size limit exceeded\n")["passed"])
+                                             C3_STDERR)["passed"])
         self.assertFalse(gate.kernel_delta_v1("C3", before, before + lines.replace(b"signal 25", b"signal 31"),
-                                             b"as: File size limit exceeded\n")["passed"])
+                                             C3_STDERR)["passed"])
         # B2 originals prove CPU PID is host-native (1120) while the core
         # diagnostic uses container PID (12); equality would be a false gate.
         self.assertTrue(gate.kernel_delta_v1("C3", before, before + lines,
-                                            b"as: File size limit exceeded\n")["passed"])
+                                            C3_STDERR)["passed"])
         audit = b'[ 2.5] audit: type=1701 audit(1.2:3): auid=4294967295 uid=1000 gid=1000 pid=22 comm="as" exe="/usr/bin/as" sig=25 res=1\n'
         self.assertTrue(gate.kernel_delta_v1("C3", before, before + lines + audit,
-                                            b"as: File size limit exceeded\n")["passed"])
+                                            C3_STDERR)["passed"])
         self.assertFalse(gate.kernel_delta_v1("C3", before, before + lines + audit.replace(b"pid=22", b"pid=99"),
-                                             b"as: File size limit exceeded\n")["passed"])
+                                             C3_STDERR)["passed"])
+
+    def test_real_c3_delta_and_stderr_match_the_retained_originals(self):
+        observations = json.loads(current_path_v1(ROOT, C3_ACTUAL["dmesg_delta"]["source"]["observations"]).read_bytes())
+        header_raw = current_path_v1(ROOT, C3_ACTUAL["compiler_stderr"]["source"]).parent.joinpath(
+            "export.header.original").read_bytes()
+        header = json.loads(header_raw[12:])
+        self.assertEqual(sha(C3_DELTA), observations["kernel"]["delta_sha256"])
+        self.assertEqual((len(C3_DELTA), sha(C3_DELTA)), (1057, C3_ACTUAL["dmesg_delta"]["sha256"]))
+        self.assertEqual(sha(C3_STDERR), header["compiler"]["stderr"]["sha256"])
+        self.assertEqual(current_path_v1(ROOT, C3_ACTUAL["compiler_stderr"]["source"]).read_bytes(), C3_STDERR)
+        self.assertEqual((header["compiler"]["returncode"], sha(C3_STDERR)), (4, gate.C3_COMPILER_STDERR_SHA256))
+
+    def test_real_c3_delta_passes_and_its_variants_refuse(self):
+        before = b"[ 1.0] boot complete\n"
+        self.assertTrue(gate.kernel_delta_v1("C3", before, before + C3_DELTA, C3_STDERR)["passed"])
+        self.assertEqual(gate.kernel_delta_v1("C3", before, before + C3_DELTA, C3_STDERR)["delta_sha256"], sha(C3_DELTA))
+        banner = b"x86_64-linux-gnu-as: as: potentially unexpected fatal signal 25."
+        first = C3_DELTA.split(b"\n", 1)[0] + b"\n"
+        variants = {
+            "other executable": C3_DELTA.replace(banner, banner.replace(b"x86_64-linux-gnu-as", b"x86_64-linux-gnu-ld")),
+            "second banner": first + C3_DELTA,
+            "no aborting core": C3_DELTA.replace(C3_DELTA.splitlines(True)[-1], b""),
+            "other signal": C3_DELTA.replace(b"signal 25", b"signal 31"),
+        }
+        for name, delta in variants.items():
+            with self.subTest(name):
+                self.assertNotEqual(delta, C3_DELTA)
+                self.assertFalse(gate.kernel_delta_v1("C3", before, before + delta, C3_STDERR)["passed"])
+        for stderr in (b"", b"as: File size limit exceeded\n", C3_STDERR + b"x", C3_STDERR.replace(b"program as", b"program as2")):
+            with self.subTest(stderr=stderr[:40]):
+                self.assertFalse(gate.kernel_delta_v1("C3", before, before + C3_DELTA, stderr)["passed"])
+        self.assertFalse(gate.kernel_delta_v1("C1", before, before + C3_DELTA, C3_STDERR)["passed"])
+
+    def test_c3_comparison_requires_gcc_ice_exit_4(self):
+        owner, seen = outcome("C3")
+        self.assertTrue(gate.evaluate_c_v1("C3", owner, seen)["passed"])
+        for code in (1, -25, 0):
+            owner, seen = outcome("C3")
+            framed = seen["header_original"]
+            header = json.loads(framed[12:])
+            header["compiler"]["returncode"] = code
+            body = canonical(header)
+            seen["header_original"] = framed[:8] + struct.pack("!I", len(body)) + body
+            owner["export"]["header"] = header
+            with self.subTest(code=code):
+                self.assertIn("compiler_status_reap", gate.evaluate_c_v1("C3", owner, seen)["causes"])
+        owner, seen = outcome("C2")
+        self.assertTrue(gate.evaluate_c_v1("C2", owner, seen)["passed"])
 
     def test_d_binding_cannot_use_only_c1_or_arbitrary_elf(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(gate, "validate_packet_v1", return_value={}):
