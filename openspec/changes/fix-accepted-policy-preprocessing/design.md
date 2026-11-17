@@ -2667,7 +2667,16 @@ and file names are unchanged.
 **Implementation scope** (after this amendment is approved):
 - `gate2_c._crash_listing_v1` and `gate2_d._crash_listing_v1`: the four steps above.
 - `gate2_c`'s `FROZEN` pin moves again to its new bytes; the A1 bytes (142,335 B,
-  `7c46383f…`) stay in Git history. `gate2_d` has no byte pin.
+  `7c46383f…`) stay in Git history.
+- `gate2_d` has no `FROZEN` pin, but the retired 465-resume route pins it as a fixed
+  unchanged source (its retention index binds `gate2_d` by blob, size and SHA256), so
+  the resume and resume-retention tests read it. Found by CI run 44087215748 at the
+  first implementation commit `37e1350b` (6 resume tests: `resume fixed source drift`).
+  As already done for `gate2_c`, the pre-A2 `gate2_d` bytes (48,660 B, `31c3a7c9…`,
+  blob `6e00541b`) become a ninth `.retired` copy,
+  `accepted_policy_fixture_compiler_gate2_d_v1.py.retired`, with its README row;
+  `retired_route_path_v1` maps `gate2_d` to it; and the retired-copies test expects 9
+  rows. The resume tests themselves are unchanged.
 - Tests in both modules: the absent directory yields exactly
   `{"directory_present":false}`; absent before and after compares equal; absent to
   present, present to absent, and a new crash file each fail the comparison; a file or
