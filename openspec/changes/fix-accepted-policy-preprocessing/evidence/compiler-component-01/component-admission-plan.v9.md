@@ -342,3 +342,17 @@ code, stdout size and stderr size of `dmesg`, `journalctl` and `nvidia-smi`. Its
 `gate2-fresh-01/packet-attempt-04/`, and its C and D originals to
 `gate2-fresh-01/outputs-04/<stage>/`. The attempt-03 remnants, including
 `outputs/C1`, stay in place and are charged into whole 1.5, outside the new X ledger.
+
+## 10. Amendment A3, 2026-11-17: C3's actual banner and GCC exit code
+
+Under packet `fd4c6a8f...` C1 and C2 passed and C3 refused `kernel_delta` although it ran
+as designed. A3 (design.md, "Amendment A3") corrects two predictions: the C3 dmesg
+banner may name the executable `x86_64-linux-gnu-as`, and the GCC driver's C3 return
+code is 4 (internal compiler error), bound to its stderr line. This supersedes V8
+section 4's "The GCC driver return is 1"; every other expected outcome stands.
+
+Before attempt 05 an independent read-only review also checks the C4, C5, C6 and D
+predictions. Attempt 05 then follows sections 3, 6 and 9 under a new reviewed commit
+X with its own fresh root; its originals go to `gate2-fresh-01/packet-attempt-05/` and
+its C and D originals to `gate2-fresh-01/outputs-05/<stage>/`. The attempt-04
+remnants stay in place and are charged into whole 1.5, outside the new X ledger.

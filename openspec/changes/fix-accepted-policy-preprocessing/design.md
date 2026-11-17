@@ -2706,3 +2706,79 @@ and file names are unchanged.
 place and are charged into whole 1.5, like the attempt-01 and attempt-02 remnants,
 outside the new X ledger. The ledger is not reset; the guard row funds 8 new
 invocations under the new X. C1 under packet `e7686254…` is consumed and never rerun.
+
+### Amendment A3, 2026-11-17: C3's actual banner and GCC exit code (attempt 05 and the chain)
+
+Attempt 04 (`e95a31db`) built packet `fd4c6a8f…`, which was reviewed and approved (PR #9
+comment 6950948120). C1 and C2 passed. C3 then refused `kernel_delta` (comment
+6951179624). The human chose "Yes, draft A3".
+
+**Finding.** C3 behaved as designed: one container, stopped and closed normally
+(`ExitCode` 1, containment closed, owner causes `["owner_wait_status"]`, publisher
+causes `["compiler_exit_nonzero"]`, PID 1, CORE 1/1, FSIZE 16 MiB, compiler and
+descendants reaped), and the assembler died of SIGXFSZ 25. Two of V8 section 4's
+predictions were wrong:
+1. **Banner.** The kernel prints `<executable basename>: <comm>: potentially unexpected
+   fatal signal 25.`, as B2's originals already show (`memfd:vast-probe-x32:
+   memfd:vast-prob: …`). In the provider image `as` is a symlink to
+   `x86_64-linux-gnu-as`, so the real line is
+   `x86_64-linux-gnu-as: as: potentially unexpected fatal signal 25.`.
+   `kernel_delta_v1` (`gate2_c:1634`) accepts only `as: …` or `<dir>/as: as: …`.
+2. **GCC exit code.** The GCC 11 driver returned **4** and printed
+   `cc: internal compiler error: File size limit exceeded signal terminated program as`.
+   GCC exits 4 (ICE) when a subprocess is killed by a signal. V8 predicted 1;
+   `evaluate_c_v1` (`gate2_c:2269-2271`) checks that and reports `compiler_status_reap`.
+
+A read-only, in-memory re-evaluation of the retained C3 originals, with only these
+two expectations changed, finds no other deviation. All other dmesg lines (CPU,
+registers, `Process 9(as) has RLIMIT_CORE set to 1`, `Aborting core`) already match.
+
+**Corrected expectations (`gate2_c` only).**
+- `kernel_delta_v1`: the banner pattern also accepts exactly
+  `x86_64-linux-gnu-as: as: potentially unexpected fatal signal 25.`; the existing
+  forms stay accepted. The stderr binding becomes the GCC line
+  `internal compiler error: File size limit exceeded signal terminated program as`
+  (in place of the bare `File size limit exceeded`), so a 4 from any other cause
+  cannot pass. Every other C3 kernel rule is unchanged: exactly one banner, one CPU
+  line for `Comm: as` on the pinned kernel, one `RLIMIT_CORE set to 1` line, one
+  `Aborting core`, the optional bound audit line, and only the listed register lines.
+- `evaluate_c_v1`: C3's expected compiler return code becomes **4**. C2 stays 1, C4
+  and C5 stay -15, C1 and C6 stay 0. Container `ExitCode` 1, the owner and publisher
+  causes and every other C3 check are unchanged.
+- V8 section 4's C3 sentence "The GCC driver return is 1, not -25" is superseded by
+  this amendment; the rest of V8 section 4 stands.
+
+**Implementation scope** (after this amendment is approved):
+- `gate2_c`: the two pattern/binding changes in `kernel_delta_v1` and C3's code in
+  `evaluate_c_v1`. Its `FROZEN` pin moves; the A2 bytes (142,965 B, `67938a07…`) stay
+  in Git history. The retired resume route still reads its own retired copy.
+- Tests:
+  - a fixture `tests/fixtures/gate2/c3-actual-v1.json` holding the real C3 dmesg delta
+    (1,057 B) and compiler stderr (222 B), each with its source path and SHA256 from
+    attempt 04 (the stderr is committed in `outputs-04/C3/`; the after-dump is
+    recorded by reference);
+  - GREEN: `kernel_delta_v1("C3", …)` passes on the real delta and stderr, and the C3
+    comparison passes with return code 4;
+  - RED: the real delta with a different executable name, a second banner, a missing
+    `Aborting core`, or stderr without the ICE line refuses; return code 1 refuses;
+  - the synthetic C3 inputs in the existing tests (`outcome()` and the kernel-delta
+    tests) move to the real stderr text and return code 4; their other assertions
+    are unchanged.
+- Unchanged: `gate2_d`, the operator, P0, the guard, the other stages' expectations.
+
+**Before attempt 05:**
+- independent review of the implementation commit, required CI and an approval naming
+  attempt 05 and its X;
+- an independent read-only review of the C4, C5, C6 and D predictions against the
+  observed C1–C3 originals, the pinned toolchain and the code, so a foreseeable miss
+  is amended before the chain rather than after a container;
+- the keepalive, the extended pre-flight (as for attempt 04), a fresh re-admission and
+  a manifest recorded in PR #9;
+- one packet attempt 05, its review and approval, then C1–C6 and D under the new root,
+  with originals in `gate2-fresh-01/outputs-05/<stage>/`.
+
+**Remnants.** Attempt 04's root, `.operator-originals`, `.guard` and `outputs/C1`–`C3`
+(with their containers' metadata in the native engine) stay in place and are charged
+into whole 1.5 with the earlier remnants, outside the new X ledger. The ledger is not
+reset; the guard row funds 8 new invocations under the new X. No stage under packet
+`fd4c6a8f…` is rerun.

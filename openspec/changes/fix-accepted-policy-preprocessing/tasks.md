@@ -1032,6 +1032,13 @@ states are unchanged; the spec counts become 11/90.
      no other deviation. Originals in `gate2-fresh-01/outputs-04/`. The chain is
      stopped; continuing needs the human's decision, a reviewed amendment and a new
      packet, since `outputs/C1`–`C3` now exist in this root.
+   - Amendment A3 (human: "Yes, draft A3"; design.md "Amendment A3", V9 section 10):
+     independent review of this planning commit, CI and a recorded approval; then
+     the C3 banner, stderr binding and return code 4 in `gate2_c` with the pin move
+     and tests on the real C3 originals; implementation review, CI, a read-only
+     review of the C4–C6 and D predictions, and an approval naming attempt 05;
+     keepalive, extended pre-flight, re-admission and manifest; packet attempt 05,
+     its review and approval; then C1–C6 and D into `gate2-fresh-01/outputs-05/`.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
