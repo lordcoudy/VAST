@@ -330,12 +330,15 @@ two used attempt guards are not among them.
 C1 under packet `e7686254...` refused before any container because the pinned crash
 directory `%TEMP%\wsl-crashes` no longer exists. A2 (design.md, "Amendment A2") makes
 the C and D crash listings record a missing directory as `{"directory_present":false}`
-instead of refusing; any other error still refuses, and any change of that state or
-of the `wsl-crash-*` rows between a stage's snapshots still stops the chain.
+instead of refusing, but only after checking that the parent Temp directory is a real
+directory on the mounted Windows drive; any other error still refuses, and any change
+of that state or of the `wsl-crash-*` rows between a stage's snapshots still stops the
+chain.
 
 Attempt 04 then follows sections 3 and 6 under a new reviewed commit X with its own
-fresh root. Its pre-flight also checks the C and D control inputs (the crash
-directory state, `dmesg`, `journalctl`, `nvidia-smi`). Its originals go to
+fresh root. Its pre-flight also checks the C and D control inputs: the crash
+directory and its parent's device, the `.wslconfig` crash settings, and the exit
+code, stdout size and stderr size of `dmesg`, `journalctl` and `nvidia-smi`. Its originals go to
 `gate2-fresh-01/packet-attempt-04/`, and its C and D originals to
 `gate2-fresh-01/outputs-04/<stage>/`. The attempt-03 remnants, including
 `outputs/C1`, stay in place and are charged into whole 1.5, outside the new X ledger.

@@ -2631,15 +2631,30 @@ snapshot refuses. The listing exists only to detect a WSL crash between a stage'
 before and after snapshots: C compares the two descriptors (`crash_listing_drift`,
 `gate2_c:1804-1805`) and D compares their SHA256 (`crashes_unchanged`).
 
-**Corrected behaviour (`gate2_c` and `gate2_d`).** In both listing functions:
-- If `CRASH_DIRECTORY` does not exist (`FileNotFoundError` from `scandir` of that exact
-  path), the listing is the canonical record `{"directory_present":false}`, written and
-  bounded exactly as a listing is today.
-- If it exists, the listing is unchanged: the sorted `[name, size, mtime_ns]` rows of
-  regular `wsl-crash-*` entries, with the existing bounds and refusals.
-- Every other error still refuses: the path is a non-directory or a symlink
-  (`NotADirectoryError`, or `lstat` not a directory), a permission error, a bound or a
-  shape refusal.
+**Corrected behaviour (`gate2_c` and `gate2_d`).** In both listing functions, in this
+order:
+1. `lstat` the parent, `/mnt/c/Users/s-a-balashov/AppData/Local/Temp`. It must be a real
+   directory (not a symlink) on a different `st_dev` from `/`, so the Windows drive is
+   mounted. Anything else refuses. Without this, an unmounted `/mnt/c` would read as
+   "absent" before and after while WSL keeps writing dumps on Windows.
+2. `lstat` `CRASH_DIRECTORY`. If it raises `FileNotFoundError`, the listing is the
+   canonical record `{"directory_present":false}`, written and bounded exactly as a
+   listing is today.
+3. If it exists but is not a real directory (a symlink, file or other type), refuse.
+4. Otherwise `scandir` it. The listing is unchanged: the sorted `[name, size, mtime_ns]`
+   rows of regular `wsl-crash-*` entries, with the existing bounds and refusals. Any
+   `OSError` from `scandir`, including `FileNotFoundError` after a good `lstat`,
+   refuses, so a directory that vanishes between steps 2 and 4 cannot pass.
+
+Every other error still refuses (permissions, bounds, shapes).
+
+WSL's own source supports this: on every crash dump it creates the folder
+(`WslCoreVm.cpp`, `create_directories(CrashDumpFolder)`) and the default folder is
+`%TEMP%\wsl-crashes` (`WslCoreConfig.cpp`). So a dump turns "absent" into "present" and
+the stage stops. Dump collection is off only if `.wslconfig` sets
+`maxCrashDumpCount` below 0 or another `crashDumpFolder`; today it sets only `memory`.
+Two limits are unchanged by A2: a dump is written asynchronously and can land after
+the after-snapshot, and C3 sets `RLIMIT_CORE=1`, so it expects no dump.
 
 So the comparison rules are unchanged and still fail closed: the directory appearing
 (for example a crash dump created it), disappearing (for example Temp cleanup), or
@@ -2650,22 +2665,28 @@ for a fact the snapshots still compare. The pinned path, caps, D control categor
 and file names are unchanged.
 
 **Implementation scope** (after this amendment is approved):
-- `gate2_c._crash_listing_v1` and `gate2_d._crash_listing_v1`: the absent branch, with
-  an explicit `lstat` that refuses a non-directory or symlink at the pinned path.
+- `gate2_c._crash_listing_v1` and `gate2_d._crash_listing_v1`: the four steps above.
 - `gate2_c`'s `FROZEN` pin moves again to its new bytes; the A1 bytes (142,335 B,
   `7c46383f…`) stay in Git history. `gate2_d` has no byte pin.
 - Tests in both modules: the absent directory yields exactly
   `{"directory_present":false}`; absent before and after compares equal; absent to
   present, present to absent, and a new crash file each fail the comparison; a file or
-  symlink at the pinned path refuses; the existing present-directory tests are
-  unchanged.
+  symlink at the pinned path refuses; a parent that is missing, a symlink, or on the
+  same device as `/` refuses; a directory that vanishes after `lstat` refuses.
+  `test_exact_crash_directory_pin_is_used_by_default` (D tests) changes: it mocks
+  `lstat` as well as `scandir`, because the real path is now checked first. The other
+  present-directory tests are unchanged.
 
 **Before attempt 04:**
 - independent Claude-subagent review of the implementation commit, required CI and a
   recorded delegated agent approval naming attempt 04 and its X;
 - the keepalive, then a read-only pre-flight that now also covers the C and D control
-  inputs: the crash directory's state at the pinned path, `/usr/bin/dmesg` with
-  `dmesg_restrict` 0, `/usr/bin/journalctl` and `/usr/lib/wsl/lib/nvidia-smi`;
+  inputs: the crash directory's state and its parent's device at the pinned path;
+  that `.wslconfig` sets neither `maxCrashDumpCount` nor `crashDumpFolder`;
+  `dmesg_restrict` 0; and, for each of `/usr/bin/dmesg --color=never`,
+  `/usr/bin/journalctl --disk-usage` and `/usr/lib/wsl/lib/nvidia-smi
+  --query-compute-apps=pid --format=csv,noheader`, the exit code, stdout size against
+  its cap, and stderr size (D refuses any stderr byte);
 - a fresh re-admission and a manifest recorded in PR #9;
 - one packet attempt 04 under V9 sections 3 and 6, then an independent packet review
   and an approval naming the packet hash, which admits C1–C6 and D under the new root.
