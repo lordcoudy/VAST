@@ -348,11 +348,12 @@ code, stdout size and stderr size of `dmesg`, `journalctl` and `nvidia-smi`. Its
 Under packet `fd4c6a8f...` C1 and C2 passed and C3 refused `kernel_delta` although it ran
 as designed. A3 (design.md, "Amendment A3") corrects two predictions: the C3 dmesg
 banner may name the executable `x86_64-linux-gnu-as`, and the GCC driver's C3 return
-code is 4 (internal compiler error), bound to its stderr line. This supersedes V8
+code is 4 (internal compiler error), bound to the exact retained stderr bytes. This supersedes V8
 section 4's "The GCC driver return is 1"; every other expected outcome stands.
 
-Before attempt 05 an independent read-only review also checks the C4, C5, C6 and D
-predictions. Attempt 05 then follows sections 3, 6 and 9 under a new reviewed commit
+The A3 planning review also checked the C4, C5, C6 and D predictions and found no
+foreseeable miss; attempt 05's pre-flight adds a look at the background kernel-log
+rate. Attempt 05 then follows sections 3, 6 and 9 under a new reviewed commit
 X with its own fresh root; its originals go to `gate2-fresh-01/packet-attempt-05/` and
 its C and D originals to `gate2-fresh-01/outputs-05/<stage>/`. The attempt-04
 remnants stay in place and are charged into whole 1.5, outside the new X ledger.

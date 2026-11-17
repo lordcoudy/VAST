@@ -2736,10 +2736,13 @@ registers, `Process 9(as) has RLIMIT_CORE set to 1`, `Aborting core`) already ma
 **Corrected expectations (`gate2_c` only).**
 - `kernel_delta_v1`: the banner pattern also accepts exactly
   `x86_64-linux-gnu-as: as: potentially unexpected fatal signal 25.`; the existing
-  forms stay accepted. The stderr binding becomes the GCC line
-  `internal compiler error: File size limit exceeded signal terminated program as`
-  (in place of the bare `File size limit exceeded`), so a 4 from any other cause
-  cannot pass. Every other C3 kernel rule is unchanged: exactly one banner, one CPU
+  forms stay accepted. The stderr binding becomes the exact retained C3 stderr: 222 B
+  with SHA256 `c297c364275e74a0b3dabf12a5b4f84754b0cada1cfa6c1b6db4a6803744f24b`
+  (the GCC line `cc: internal compiler error: File size limit exceeded signal
+  terminated program as` plus GCC's fixed bug-report lines), in place of the bare
+  `File size limit exceeded` substring. The image is pinned and the publisher sets
+  `LC_ALL=C`, so the bytes are deterministic, and a 4 from any other cause (for
+  example a `cc1` crash, or a program named `as2`) cannot pass. Every other C3 kernel rule is unchanged: exactly one banner, one CPU
   line for `Comm: as` on the pinned kernel, one `RLIMIT_CORE set to 1` line, one
   `Aborting core`, the optional bound audit line, and only the listed register lines.
 - `evaluate_c_v1`: C3's expected compiler return code becomes **4**. C2 stays 1, C4
@@ -2750,13 +2753,17 @@ registers, `Process 9(as) has RLIMIT_CORE set to 1`, `Aborting core`) already ma
 
 **Implementation scope** (after this amendment is approved):
 - `gate2_c`: the two pattern/binding changes in `kernel_delta_v1` and C3's code in
-  `evaluate_c_v1`. Its `FROZEN` pin moves; the A2 bytes (142,965 B, `67938a07…`) stay
-  in Git history. The retired resume route still reads its own retired copy.
+  `evaluate_c_v1`. Its `FROZEN` pin and the pin's comment move to A3; the A2 bytes
+  (142,965 B, `67938a07…`) stay in Git history. The retired resume route still reads its own retired copy.
 - Tests:
   - a fixture `tests/fixtures/gate2/c3-actual-v1.json` holding the real C3 dmesg delta
     (1,057 B) and compiler stderr (222 B), each with its source path and SHA256 from
     attempt 04 (the stderr is committed in `outputs-04/C3/`; the after-dump is
-    recorded by reference);
+    recorded by reference). The GREEN test asserts that the delta's SHA256 equals
+    `f6b2e91a…`, the `kernel.delta_sha256` committed in
+    `outputs-04/C3/observations.original.json`, and that the stderr's SHA256 equals
+    the C3 export header's `compiler.stderr.sha256`, so the fixture cannot drift from
+    the originals;
   - GREEN: `kernel_delta_v1("C3", …)` passes on the real delta and stderr, and the C3
     comparison passes with return code 4;
   - RED: the real delta with a different executable name, a second banner, a missing
@@ -2769,13 +2776,25 @@ registers, `Process 9(as) has RLIMIT_CORE set to 1`, `Aborting core`) already ma
 **Before attempt 05:**
 - independent review of the implementation commit, required CI and an approval naming
   attempt 05 and its X;
-- an independent read-only review of the C4, C5, C6 and D predictions against the
-  observed C1–C3 originals, the pinned toolchain and the code, so a foreseeable miss
-  is amended before the chain rather than after a container;
-- the keepalive, the extended pre-flight (as for attempt 04), a fresh re-admission and
-  a manifest recorded in PR #9;
+- the keepalive, the extended pre-flight (as for attempt 04, plus a read-only look at
+  the before-dump's latest kernel-log timestamps to estimate the background log rate
+  over C5's roughly 47 s window, since non-C3 deltas must be empty), a fresh
+  re-admission and a manifest recorded in PR #9;
 - one packet attempt 05, its review and approval, then C1–C6 and D under the new root,
   with originals in `gate2-fresh-01/outputs-05/<stage>/`.
+
+**Prediction review of C4, C5, C6 and D (done in the A3 planning review).** The
+independent reviewer checked these expectations against the observed C1–C3 originals,
+the publisher, owner and D code and the toolchain, and found no foreseeable miss:
+SIGTERM and SIGKILL are not core-dump signals, so `print-fatal-signals=1` prints no
+banner and the empty-delta rule holds for C4 and C5; the publisher TERMs the whole
+process group, and the GCC driver re-raises TERM, so its return is -15 and no ICE path
+is reached; either reap order gives one of the two accepted cause lists; C4's
+`#warning`s cross 1 MiB of stderr; C5's `/proc/self/fd/1` read never reaches EOF and
+its timing fits; C6's ELF is within its bound; and D's ELF loads on the host's glibc.
+The residual risk is background kernel-log lines during C5, covered by the pre-flight
+look above. This is recorded so no second implementation is needed for a miss found
+later.
 
 **Remnants.** Attempt 04's root, `.operator-originals`, `.guard` and `outputs/C1`–`C3`
 (with their containers' metadata in the native engine) stay in place and are charged
