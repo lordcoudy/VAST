@@ -2523,3 +2523,78 @@ the reasons and the code changes.
 
 The task rows and checked states are unchanged (24/46). The spec gains two
 scenarios, so the counts are 11 requirements and 90 scenarios.
+
+### Amendment A1, 2026-11-17: B1 environment predicate (attempt 03)
+
+Packet attempt 01 (`ac8dedeb`) refused in PRE on the procfs boot-id read; `a3c88945`
+fixed it. Attempt 02 (`a3c88945`) passed PRE, EXPORT and P0, then PACKET refused
+`b_environment` (PR #9 comment 6945377606). The human chose "Draft amendment".
+
+**Finding.** `_authenticate_evidence` hashes the sorted keys of B1's in-container
+environment (`report.environment.environment`) and compares the hash with
+`EXPECTED["env_keys_sha256"]` (`6785bc7c…`). That pin is the hash of the provider
+image's 60 `Config.Env` keys (V5 section 1; the guard identity and the probe compute
+it that way). B1's real environment has 70 keys, so the two can never match. Read
+from the retained B1 report (`b1_report`, already authenticated by
+`B_ORIGINAL_SHA256` before this check), its environment is exactly what
+`compiler_container_config_v1` configures plus Docker's hostname:
+- the 60 image keys, each with the value `""`;
+- the executor overrides `PATH=/usr/bin:/bin`, `HOME=/work`, `LANG=C`, `LC_ALL=C`,
+  `TMPDIR=/work`, `TMP=/work`, `TEMP=/work`, `PYTHONDONTWRITEBYTECODE=1`,
+  `PYTHONNOUSERSITE=1`, `PYTHONHASHSEED=0` (`PATH` is also an image key; the other
+  nine are not);
+- `HOSTNAME=vast-fixture-compiler`, from the container's `Hostname`.
+
+The seed's `environment_keys` reach C1–C6 through `compiler_container_config_v1`,
+which requires them to equal the image's sorted `Config.Env` keys. V5 sized the seed
+for "the 60 sorted env keys". So the seed must carry the 60 image keys, not B1's 70.
+No other code reads B1's environment.
+
+**Corrected predicate (`gate2_c` only).** One new constant,
+`B1_RUNTIME_ENVIRONMENT_V1`, holds the 11 non-empty pairs above. `_authenticate_evidence`
+then requires, in order:
+1. the environment is a dict of at most 256 ASCII string keys to string values;
+2. every key of `B1_RUNTIME_ENVIRONMENT_V1` is present with exactly its value;
+3. every other key has the value `""`;
+4. `image_keys = sorted(keys − {HOSTNAME} − (override keys other than PATH))` hashes
+   to `EXPECTED["env_keys_sha256"]` and contains `PATH`.
+
+Any failure refuses `b_environment`. The function returns `image_keys` (60) as
+`environment_keys`, so the seed is unchanged in form and C1–C6 accept it. The pin
+`6785bc7c…`, every other B, F2 and P0 check, the seal, the caps and the C/D
+predicates are unchanged. No value is learned from the run: the pairs are the
+executor's fixed configuration, and a test ties the constant to
+`compiler_container_config_v1`.
+
+**Implementation scope** (after this amendment is approved):
+- `gate2_c`: the constant and the four checks. Its byte pin in
+  `tests/test_accepted_policy_retired_development_tests_v1.py` moves deliberately;
+  the current bytes (141,129 B, `d005a380…`) become a ninth `.retired` copy with its
+  README row.
+- Tests:
+  - GREEN on the real B1 environment, kept as a small JSON fixture whose source
+    report SHA256 is the pinned `B_ORIGINAL_SHA256["b1_report"]`;
+  - RED for each rule: a missing, extra or changed override; a non-empty image value;
+    a missing or changed `HOSTNAME`; a dropped or added image key; non-string values;
+  - the constant equals the `Env` that `compiler_container_config_v1` builds for an
+    image with the fixture's 60 keys, plus the configured `Hostname`;
+  - the returned keys pass `compiler_container_config_v1`.
+- Test-only: `test_p0_needs_its_own_and_the_packet_budget` stops depending on host
+  uptime (it failed within 100 s of a VM boot).
+- Unchanged: the operator, P0, the guard, every other pin.
+
+**Before attempt 03:**
+- a local read-only dry run against the retained attempt-02 root and aux, with the
+  fixed `gate2_c` loaded in memory: `build_packet_v1` succeeds, and an in-memory
+  `validate_packet_v1` equivalent (canonical encode, decode, rebuild, compare)
+  matches. Nothing is written;
+- independent Claude-subagent review of the exact implementation commit, required
+  CI and a recorded delegated agent approval naming attempt 03 and the new X;
+- the uid-1000 keepalive before any WSL step (the VM idles out between calls);
+- the read-only pre-flight, a fresh re-admission and a manifest recorded in PR #9.
+
+**Remnants.** The attempt-01 `.guard` and the attempt-02 root, `.operator-originals`
+and `.guard` (734,720 B measured for root plus aux) stay in place and are charged
+into whole 1.5. They are outside the new X ledger, which starts from its own fresh
+root. Attempt 03 is one invocation under V9 sections 3 and 6; its failure stops the
+chain again, and any further attempt is the human's decision.

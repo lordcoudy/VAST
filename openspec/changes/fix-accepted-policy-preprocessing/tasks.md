@@ -996,6 +996,12 @@ states are unchanged; the spec counts become 11/90.
      keys. Originals in `gate2-fresh-01/packet-attempt-02/`; the attempt is consumed,
      and its root stays in place, charged. A further attempt needs the human's
      decision and a reviewed predicate amendment.
+   - Amendment A1 (human: "Draft amendment"; design.md "Amendment A1", V9 section 8):
+     independent review of this planning commit, CI and a recorded approval; then
+     the `gate2_c` B1-environment fix with its pin move, tests and the in-memory
+     dry run on the attempt-02 originals; implementation review, CI and an approval
+     naming attempt 03; keepalive, pre-flight, re-admission and manifest; then one
+     attempt 03 retained in `gate2-fresh-01/packet-attempt-03/`.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then

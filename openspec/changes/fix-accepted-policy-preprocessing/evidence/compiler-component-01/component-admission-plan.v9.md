@@ -272,8 +272,8 @@ file is rounded up to 4,096 B, plus 256 B per inode.
 
 - **Re-admission.** Before the packet operation, a fresh C:/E: sample is re-admitted
   against the remaining whole-chain peak and recorded in PR #9. The peak includes:
-  - the observed Desktop `docker_data.vhdx` growth: 143.6 GB at admission, 154.2 GB
-    on 2026-11-12;
+  - the observed Desktop `docker_data.vhdx` size on 2026-11-12: 143.6 GiB, which is
+    154.2 GB (one size in two units, not growth; corrected by amendment A1);
   - the gate-2 seal remainder;
   - the external terms in section 5.
 - **Guard.** Every invocation (packet, C1–C6, D) runs under
@@ -308,3 +308,17 @@ before 2.10 is checked. These remnants are carried into whole 1.5:
 
 Reader 2.12, whole 1.5, genuine 2.8/5.3, renewal, conformance, archive and final
 approval are still required. No component result grants Q1 or merge.
+
+## 8. Amendment A1, 2026-11-17: B1 environment predicate
+
+Attempt 02 refused `b_environment` in PACKET: `gate2_c` compared B1's in-container
+environment keys with the image `Config.Env` key pin. A1 corrects only that check
+(design.md, "Amendment A1"). B1's environment must equal the 60 image keys with
+empty values, plus the executor's fixed overrides and
+`HOSTNAME=vast-fixture-compiler`; the derived 60 image keys must hash to the
+unchanged pin and become the seed's `environment_keys`.
+
+Attempt 03 then follows sections 3 and 6 unchanged, under a new reviewed commit X
+with its own fresh root, guard directory, re-admission and manifest. Its originals
+go to `gate2-fresh-01/packet-attempt-03/`. The attempt-01 and attempt-02 remnants
+stay in place and are charged into whole 1.5, outside the new X ledger.
