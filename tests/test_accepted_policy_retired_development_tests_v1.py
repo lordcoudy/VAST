@@ -37,7 +37,7 @@ class RetiredDevelopmentTestsV1(unittest.TestCase):
 
     def test_every_retired_copy_matches_its_readme_row(self):
         rows = readme_rows(self.directory)
-        self.assertEqual(len(rows), 8)
+        self.assertEqual(len(rows), 9)
         listed = {name for _, name, _, _ in rows}
         self.assertEqual(listed, {p.name for p in self.directory.glob("*.retired")})
         for original, name, size, digest in rows:
