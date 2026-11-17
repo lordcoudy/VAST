@@ -1007,6 +1007,12 @@ states are unchanged; the spec counts become 11/90.
      passed, no guard breach; packet 17,937 B `e7686254…`, allocation 734,720 B,
      noise and excess 0. Originals in `gate2-fresh-01/packet-attempt-03/`. Next: the
      independent packet review and an approval naming the packet hash.
+   - Packet approved (PR #9 comment 6947341404). C1 (2026-11-17) refused
+     `c_stage_stopped`/`FileNotFoundError` before any container: its first control
+     snapshot lists the WSL crash directory `%TEMP%\wsl-crashes`, which no longer
+     exists. `outputs/C1` now exists, so C1 cannot run again in this root. The chain
+     is stopped; continuing needs the human's decision, a reviewed disposition and a
+     new packet.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
