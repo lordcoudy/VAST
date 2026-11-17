@@ -1024,6 +1024,14 @@ states are unchanged; the spec counts become 11/90.
      CI green and approved. Attempt 04 (2026-11-17) completed with no guard breach:
      packet 17,937 B `fd4c6a8f…`, allocation 738,816 B, noise and excess 0. Originals
      in `gate2-fresh-01/packet-attempt-04/`. Next: packet review and approval.
+   - Packet `fd4c6a8f…` approved (PR #9 comment 6950948120). C1 and C2 passed. C3
+     refused `kernel_delta` after a real container: the assembler died of SIGXFSZ as
+     intended, but the dmesg banner names the executable `x86_64-linux-gnu-as` (the
+     `as` symlink target), which the C3 pattern does not accept, and GCC 11 returned
+     4 (internal compiler error) where V8 predicted 1. Read-only re-evaluation finds
+     no other deviation. Originals in `gate2-fresh-01/outputs-04/`. The chain is
+     stopped; continuing needs the human's decision, a reviewed amendment and a new
+     packet, since `outputs/C1`–`C3` now exist in this root.
 5. **C1–C6, then D:** one guarded invocation each. Stop at the first refusal or
    deviation; no stage is rerun. A disposition needs review, CI and approval.
 6. **Completion:** an independent review of the raw evidence and charged forms. Then
